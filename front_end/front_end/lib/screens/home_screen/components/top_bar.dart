@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/utils/colors.dart';
+import '../../../utils/colors.dart';
 
 class TopBar extends StatelessWidget {
   const TopBar({Key? key}) : super(key: key);
@@ -22,9 +22,17 @@ class TopBar extends StatelessWidget {
               height: 25,
               color: Colors.grey.withOpacity(0.5),
             ),
-            SizedBox(width: 20),
-            Container(child: Image.asset('assets/arjun profile.jpg'),),
-            SizedBox(width: 5),
+            const SizedBox(width: 20),
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                image: const DecorationImage(
+                  image: AssetImage('assets/arjun profile.jpg'),
+                ),
+              ),
+            ),
           ],
         ),
       ],

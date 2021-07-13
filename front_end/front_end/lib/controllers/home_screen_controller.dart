@@ -1,11 +1,28 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeScreenController extends GetxController {
+  int _currentPage = 0;
 
-  RxInt currentIndex = 0.obs;
+  PageController salesPageController = PageController(initialPage: 0);
 
-  void updateIndex(int value) {
-    currentIndex.value = value;
+  @override
+  void onReady() {
+    Timer.periodic(const Duration(seconds: 4), (Timer timer) {
+      if (_currentPage < 2) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+
+      salesPageController.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.bounceInOut,
+      );
+    });
+    super.onReady();
   }
 }

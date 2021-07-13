@@ -2,12 +2,12 @@ import 'package:badges/badges.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/controllers/home_screen_controller.dart';
-import 'package:front_end/utils/colors.dart';
+import '../../../controllers/root_screen_controller.dart';
+import '../../../utils/colors.dart';
 import 'package:get/get.dart';
 
 class CustomBar extends StatelessWidget {
-  final HomeScreenController controller;
+  final RootScreenController controller;
 
   const CustomBar({required this.controller});
 
@@ -17,6 +17,7 @@ class CustomBar extends StatelessWidget {
       () => CustomNavigationBar(
         iconSize: 30.0,
         backgroundColor: darkBlue,
+
         isFloating: true,
         elevation: 2,
         strokeColor: Colors.white,
