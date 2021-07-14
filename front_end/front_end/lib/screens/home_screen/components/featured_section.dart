@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '../../detail_screen/detail_screen.dart';
 import '../../../utils/colors.dart';
 import 'package:get/get.dart';
 
@@ -21,16 +22,21 @@ class FeaturedSection extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             alignment: Alignment.bottomRight,
             children: [
-              Container(
-                padding: const EdgeInsets.all(5),
-                decoration: const BoxDecoration(
-                  color: customGrey,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
+              GestureDetector(
+                onTap: () {
+                  Get.off(() => DetailScreen());
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: const BoxDecoration(
+                    color: customGrey,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
                   ),
-                ),
-                child: BuildItem(
-                  index: index,
+                  child: BuildItem(
+                    index: index,
+                  ),
                 ),
               ),
               Container(

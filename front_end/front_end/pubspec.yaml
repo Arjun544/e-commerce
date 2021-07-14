@@ -23,16 +23,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  badges: ^2.0.1
   cupertino_icons: ^1.0.2
+  custom_navigation_bar: ^0.8.2
   custom_sliding_segmented_control: ^1.0.0
+  flutter_staggered_grid_view: ^0.4.0
   flutter_svg: ^0.22.0
   get: ^4.1.4
+  get_storage: ^2.0.2
+  http: ^0.13.3
   lottie: ^1.1.0
   pedantic: ^1.11.1
   pinput: ^1.2.0
-  custom_navigation_bar: ^0.8.2
-  badges: ^2.0.1
-  flutter_staggered_grid_view: ^0.4.0
   rxdart: ^0.27.1
   smooth_page_indicator: ^0.3.0-nullsafety.0
 

@@ -16,13 +16,21 @@ class HomeScreenController extends GetxController {
       } else {
         _currentPage = 0;
       }
-
-      salesPageController.animateToPage(
-        _currentPage,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.bounceInOut,
-      );
+      if (salesPageController.hasClients) {
+        salesPageController.animateToPage(
+          _currentPage,
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.bounceInOut,
+        );
+      }
+      ;
     });
     super.onReady();
+  }
+
+  @override
+  void dispose() {
+    salesPageController.dispose();
+    super.dispose();
   }
 }

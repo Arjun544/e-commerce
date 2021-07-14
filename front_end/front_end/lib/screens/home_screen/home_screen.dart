@@ -5,7 +5,7 @@ import '../../controllers/home_screen_controller.dart';
 import '../../widgets/draggable_home.dart';
 import 'components/arrivals_section.dart';
 import 'components/categories_section.dart';
-import 'components/feaured_section.dart';
+import 'components/featured_section.dart';
 import 'components/sales_section.dart';
 import 'components/top_bar.dart';
 
