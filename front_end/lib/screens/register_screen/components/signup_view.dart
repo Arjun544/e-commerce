@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/controllers/register_screen_controller.dart';
-import 'package:front_end/services/api_services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import '../../../controllers/register_screen_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
 import 'package:get/get.dart';
 import '../../../widgets/email_textField.dart';
 import '../../../widgets/pass_textField.dart';
+import '../../verificationScreen.dart';
 
 class SignupView extends StatelessWidget {
   final RegisterScreenController controller =
@@ -78,12 +79,7 @@ class SignupView extends StatelessWidget {
             text: 'Sign Up',
             color: darkBlue,
             onPressed: () async {
-              await ApiServices().signUp(
-                controller.usernameController.text,
-                controller.emailController.text,
-                controller.passController.text,
-                controller.confirmPassController.text,
-              );
+              await controller.signUp();
             },
           ),
         ],

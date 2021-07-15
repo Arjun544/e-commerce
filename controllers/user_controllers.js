@@ -8,7 +8,11 @@ const userSchema = Joi.object().keys({
   username: Joi.string().required().min(2),
   email: Joi.string().email({ minDomainSegments: 2 }),
   password: Joi.string().required().min(8),
-  confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
+  confirmPassword: Joi.any()
+    .equal(Joi.ref("password"))
+    .required()
+    .label("Confirm password")
+    .messages({ "any.only": "{{#label}} does not match" }),
 });
 
 exports.register = async (req, res) => {

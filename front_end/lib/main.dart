@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'screens/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       home: SplashScreen(),
+      builder: EasyLoading.init(),
     );
   }
 }
