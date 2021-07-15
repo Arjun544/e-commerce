@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/controllers/register_screen_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/social_btn.dart';
@@ -7,7 +8,8 @@ import '../../../widgets/email_textField.dart';
 import '../../../widgets/pass_textField.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({Key? key}) : super(key: key);
+  final RegisterScreenController controller =
+      Get.put(RegisterScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +35,14 @@ class LoginView extends StatelessWidget {
                 height: 20,
               ),
               EmailTextField(
+                 controller: controller.emailController,
                 text: 'Email',
                 icon: 'assets/images/Message.svg',
               ),
               const SizedBox(height: 20),
               PassTextField(
+                controller: controller.passController,
+                registerScreenController: controller,
                 text: 'Password',
                 icon: 'assets/images/Lock.svg',
               ),
@@ -62,6 +67,7 @@ class LoginView extends StatelessWidget {
             width: Get.width * 0.5,
             text: 'Log In',
             color: darkBlue,
+            onPressed: (){},
           ),
           Column(
             children: [

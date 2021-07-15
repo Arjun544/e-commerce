@@ -7,15 +7,16 @@ import 'package:get/get.dart';
 class PassTextField extends StatelessWidget {
   final String text;
   final String icon;
+  final TextEditingController controller;
+  final RegisterScreenController registerScreenController;
 
   PassTextField({
     Key? key,
     required this.text,
     required this.icon,
+    required this.controller,
+    required this.registerScreenController,
   }) : super(key: key);
-
-  final RegisterScreenController controller =
-      Get.put(RegisterScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +47,8 @@ class PassTextField extends StatelessWidget {
             Expanded(
               child: Obx(
                 () => TextField(
-                  controller: controller.passController,
-                  obscureText: controller.isPasswordHide.value ? true : false,
+                  controller: controller,
+                  obscureText: registerScreenController.isPasswordHide.value ? true : false,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -63,11 +64,11 @@ class PassTextField extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                controller.togglePassword();
+                registerScreenController.togglePassword();
               },
               child: Obx(
                 () => SvgPicture.asset(
-                  controller.isPasswordHide.value
+                  registerScreenController.isPasswordHide.value
                       ? 'assets/images/Hide.svg'
                       : 'assets/images/Show.svg',
                   height: 25,

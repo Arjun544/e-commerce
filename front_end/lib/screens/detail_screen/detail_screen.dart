@@ -72,6 +72,7 @@ class DetailScreen extends StatelessWidget {
               width: Get.width * 0.5,
               text: 'Add to Cart',
               color: darkBlue,
+              onPressed: (){},
             ),
           ],
         ),

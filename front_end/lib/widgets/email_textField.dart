@@ -7,15 +7,14 @@ import 'package:get/get.dart';
 class EmailTextField extends StatelessWidget {
   final String text;
   final String icon;
+  final TextEditingController controller;
 
   EmailTextField({
     Key? key,
     required this.text,
+    required this.controller,
     required this.icon,
   }) : super(key: key);
-
-  final RegisterScreenController controller =
-      Get.put(RegisterScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class EmailTextField extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: TextField(
-                controller: controller.emailController,
+                controller: controller,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),

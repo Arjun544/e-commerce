@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:front_end/controllers/register_screen_controller.dart';
+import 'package:front_end/services/api_services.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,8 @@ import '../../../widgets/email_textField.dart';
 import '../../../widgets/pass_textField.dart';
 
 class SignupView extends StatelessWidget {
-  const SignupView({Key? key}) : super(key: key);
+  final RegisterScreenController controller =
+      Get.put(RegisterScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -44,21 +46,27 @@ class SignupView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               EmailTextField(
+                controller: controller.usernameController,
                 text: 'Username',
                 icon: 'assets/images/Profile.svg',
               ),
               const SizedBox(height: 20),
               EmailTextField(
+                controller: controller.emailController,
                 text: 'Email',
                 icon: 'assets/images/Message.svg',
               ),
               const SizedBox(height: 20),
               PassTextField(
+                controller: controller.passController,
+                registerScreenController: controller,
                 text: 'Password',
                 icon: 'assets/images/Lock.svg',
               ),
               const SizedBox(height: 20),
               PassTextField(
+                controller: controller.confirmPassController,
+                registerScreenController: controller,
                 text: 'Confirm Password',
                 icon: 'assets/images/Lock.svg',
               ),
@@ -69,6 +77,14 @@ class SignupView extends StatelessWidget {
             width: Get.width * 0.5,
             text: 'Sign Up',
             color: darkBlue,
+            onPressed: () async {
+              await ApiServices().signUp(
+                controller.usernameController.text,
+                controller.emailController.text,
+                controller.passController.text,
+                controller.confirmPassController.text,
+              );
+            },
           ),
         ],
       ),

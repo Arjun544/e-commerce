@@ -2,10 +2,11 @@ include: package:pedantic/analysis_options.yaml
 
 linter:
   rules:
-    - prefer_const_constructors
-    - prefer_const_declarations
-    - unnecessary_new
-    - unnecessary_const
-    - implementation_imports
-    - prefer_relative_imports
-    - avoid_relative_lib_imports
+    omit_local_variable_types: false
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    unnecessary_new: true
+    unnecessary_const: true
+    implementation_imports: true
+    prefer_relative_imports: true
+    avoid_relative_lib_imports: true

@@ -106,6 +106,7 @@ class VerificationScreen extends StatelessWidget {
                   width: Get.width * 0.8,
                   text: 'Submit',
                   color: darkBlue,
+                  onPressed: (){},
                 ),
               ],
             ),

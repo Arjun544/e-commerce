@@ -1,57 +1,23 @@
 require("dotenv").config();
-const nodemailer = require("nodemailer");
-const { google } = require("googleapis");
-const OAuth2 = google.auth.OAuth2;
+const sgMail = require("@sendgrid/mail");
 
 async function sendEmail(email, code) {
   try {
-    const oauth2Client = new OAuth2(
-      process.env.CLIENT_ID, // ClientID
-      process.env.CLIENT_SECRET, // Client Secret
-      "https://developers.google.com/oauthplayground" // Redirect URL
- );
+    const senderAddress = "SellCorner <SellCorner1@gmail.com>";
 
- oauth2Client.setCredentials({
-  refresh_token: process.env.REFRESH_TOKEN,
-});
-
-const accessToken = oauth2Client.getAccessToken();
-
-    var toAddress = email;
-
-    var subject = "Verify your email";
-
-    // The body of the email for recipients
-    var body_html = `<!DOCTYPE> 
-    <html>
-      <body>
-        <p>Your authentication code is : </p> <b>${code}</b>
-      </body>
-    </html>`;
-
-    // Create the SMTP transport.
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        type: "OAuth2",
-        // replace it with your details
-        user: process.env.SENDER_EMAIL, 
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-        refreshToken: process.env.REFRESH_TOKEN,
-        accessToken: accessToken
-      },
-    });
+    sgMail.setApiKey(process.env.SG_APIKEY);
 
     // Specify the fields in the email.
     let mailOptions = {
-      from: `Stylish <${process.env.SENDER_EMAIL}>`,
-      to: toAddress,
-      subject: subject,
-      html: body_html,
+      from: senderAddress,
+      to: email,
+      templateId: "d-f0849983599447bd9afef90f6dc05afe",
+      dynamic_template_data: {
+        code: code,
+      },
     };
 
-    let info = await transporter.sendMail(mailOptions);
+    await sgMail.send(mailOptions);
     return { error: false };
   } catch (error) {
     console.error("send-email-error", error);
