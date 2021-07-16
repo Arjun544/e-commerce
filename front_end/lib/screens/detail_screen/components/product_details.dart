@@ -70,7 +70,7 @@ class ProductDetails extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        const FeaturedSection(),
+        // const FeaturedSection(),
       ],
     );
   }
