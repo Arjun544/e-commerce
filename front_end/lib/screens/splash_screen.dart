@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/screens/home_screen/home_screen.dart';
+import 'package:get_storage/get_storage.dart';
 import '../utils/colors.dart';
-import 'dart:math' as math; 
+import 'dart:math' as math;
 
 import 'register_screen/register_screen.dart';
 
@@ -18,20 +20,30 @@ class _SplashScreenState extends State<SplashScreen>
 
   double _opacity = 0;
   bool _value = true;
+  bool isLogin = false;
 
   @override
   void initState() {
     super.initState();
-
+    isLogin = GetStorage().read('isLogin');
     scaleController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
     )..addStatusListener(
         (status) {
           if (status == AnimationStatus.completed) {
-            Navigator.of(context).pushReplacement(
-              ThisIsFadeRoute(route: RegisterScreen(), page: RegisterScreen()),
-            );
+            if (isLogin == true) {
+              Navigator.of(context).pushReplacement(
+                ThisIsFadeRoute(route: HomeScreen(), page: HomeScreen()),
+              );
+            }
+           else {
+              Navigator.of(context).pushReplacement(
+                ThisIsFadeRoute(
+                    route: RegisterScreen(), page: RegisterScreen()),
+              );
+            }
+
             Timer(
               const Duration(milliseconds: 300),
               () {

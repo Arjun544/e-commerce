@@ -40,11 +40,21 @@ class HomeScreen extends StatelessWidget {
             const CategoriesSection(),
             Padding(
               padding: const EdgeInsets.only(top: 15, left: 15, bottom: 10),
-              child: Text(
-                'New Arrivals + ${homeScreenController.currentUser!.user.username}',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
+              child: Obx(() => Row(
+                    children: [
+                      const Text(
+                        'New Arrivals',
+                        style:  TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      const SizedBox(width: 10,),
+                      Text(
+                        homeScreenController.currentUser?.value.data?.username?? 'Not logged in',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                    ],
+                  )),
             ),
             const ArrivalsSection(),
             const Padding(

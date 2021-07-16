@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:front_end/screens/home_screen/home_screen.dart';
+import 'package:front_end/utils/constants.dart';
 import '../screens/register_screen/register_screen.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,14 +18,9 @@ class RegisterScreenController extends GetxController {
   final TextEditingController passController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
-  final GetStorage getStorage = GetStorage();
   String currentUserId = '';
   RxInt currentTab = 1.obs;
   RxBool isPasswordHide = true.obs;
-
-  Dio dio = Dio();
-
-  final String baseUrl = 'https://sell-corner.herokuapp.com/api/';
 
   void togglePassword() {
     isPasswordHide.value = !isPasswordHide.value;
@@ -139,13 +135,12 @@ class RegisterScreenController extends GetxController {
           maskType: EasyLoadingMaskType.clear,
         );
       } else {
-        log(response.data['user']['id'].toString());
         // Saving jwt token in local storage
         await getStorage.write('token', response.data['token']);
 
         // Save login status
         await getStorage.write('isLogin', true);
-        currentUserId = response.data['user']['id'].toString();
+        currentUserId = response.data['userId'].toString();
         await EasyLoading.dismiss();
         await Get.offAll(() => HomeScreen());
       }

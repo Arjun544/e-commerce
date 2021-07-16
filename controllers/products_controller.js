@@ -190,7 +190,7 @@ exports.featuredProducts = async (req, res) => {
   if (!products) {
     res.status(500).json({ success: false });
   }
-  res.send(products);
+  res.send({ products: products });
 };
 
 exports.updateProduct = async (req, res) => {
