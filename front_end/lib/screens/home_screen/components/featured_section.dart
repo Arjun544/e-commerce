@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:front_end/controllers/home_screen_controller.dart';
@@ -13,6 +15,7 @@ class FeaturedSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Obx(
       () => StaggeredGridView.countBuilder(
           shrinkWrap: true,
@@ -65,6 +68,9 @@ class FeaturedSection extends StatelessWidget {
             );
           },
           staggeredTileBuilder: (index) {
+            log(
+              homeScreenController.featuredProducts[index].featuredProducts.length.toString(),
+            );
             return StaggeredTile.count(1, index.isEven ? 1.2 : 1.3);
           }),
     );

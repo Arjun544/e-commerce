@@ -2,8 +2,6 @@
 //
 //     final featuredProductModel = featuredProductModelFromJson(jsonString);
 
-import 'package:front_end/models/userModel.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 FeaturedProductModel featuredProductModelFromJson(String str) =>
@@ -71,7 +69,7 @@ class FeaturedProduct {
   int countInStock;
   DateTime dateCreated;
   int v;
-  int saleDiscount;
+  int? saleDiscount;
   String featuredProductId;
 
   factory FeaturedProduct.fromJson(Map<String, dynamic> json) =>
@@ -95,7 +93,7 @@ class FeaturedProduct {
         dateCreated: DateTime.parse(json['dateCreated']),
         v: json['__v'],
         saleDiscount:
-            json['saleDiscount'] == null ? null : json['saleDiscount'],
+            json['saleDiscount'] ?? 0,
         featuredProductId: json['id'],
       );
 
@@ -117,7 +115,7 @@ class FeaturedProduct {
         'countInStock': countInStock,
         'dateCreated': dateCreated.toIso8601String(),
         '__v': v,
-        'saleDiscount': saleDiscount == null ? null : saleDiscount,
+        'saleDiscount': saleDiscount,
         'id': featuredProductId,
       };
 }

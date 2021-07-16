@@ -79,7 +79,7 @@ class HomeScreenController extends GetxController {
   Future<FeaturedProductModel?> getFeaturedProducts() async {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
 
-    try {
+    // try {
       var response = await dio.get(
         baseUrl + 'products/featured',
       );
@@ -95,11 +95,11 @@ class HomeScreenController extends GetxController {
         await EasyLoading.dismiss();
         return FeaturedProductModel.fromJson(response.data);
       }
-    } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
-      print(e);
-    }
+    // } catch (e) {
+    //   Get.snackbar('Something is wrong', e.toString(),
+    //       snackPosition: SnackPosition.TOP);
+    //   print(e);
+    // }
   }
 
   @override
