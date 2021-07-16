@@ -38,11 +38,11 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CategoriesSection(),
-            const Padding(
-              padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
+             Padding(
+              padding: const EdgeInsets.only(top: 15, left: 15, bottom: 10),
               child: Text(
-                'New Arrivals',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                'New Arrivals + ${homeScreenController.currentUser.user.username}',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ),
             const ArrivalsSection(),

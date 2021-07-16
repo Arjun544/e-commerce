@@ -128,7 +128,7 @@ exports.logIn = async (req, res) => {
     return res.json({
       success: true,
       token: token,
-      currentUser: user,
+      user: user,
       message: "User logged in successfully",
     });
   } catch (err) {

@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:front_end/controllers/home_screen_controller.dart';
+import 'package:front_end/models/userModel.dart';
 import 'package:front_end/screens/home_screen/home_screen.dart';
 import 'package:front_end/screens/register_screen/register_screen.dart';
 import 'package:front_end/widgets/custom_snackbar.dart';
@@ -17,6 +19,8 @@ class RegisterScreenController extends GetxController {
   final TextEditingController passController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
+  final HomeScreenController homeScreenController =
+      Get.put(HomeScreenController());
   RxInt currentTab = 1.obs;
   RxBool isPasswordHide = true.obs;
 
@@ -112,42 +116,48 @@ class RegisterScreenController extends GetxController {
 
   Future<void> signIn() async {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    final GetStorage getStorage = GetStorage();
     Map data = {
       'email': emailController.text,
       'password': passController.text,
     };
-    try {
-      var response = await dio.post(
-        baseUrl + 'users/login',
-        data: data,
-        options: Options(
-          followRedirects: false,
-          validateStatus: (status) {
-            return status! < 500;
-          },
-        ),
+    // try {
+    var response = await dio.post(
+      baseUrl + 'users/login',
+      data: data,
+      options: Options(
+        followRedirects: false,
+        validateStatus: (status) {
+          return status! < 500;
+        },
+      ),
+    );
+
+    log(response.data.toString());
+    if (response.data['error'] == true) {
+      // ignore: unawaited_futures
+      EasyLoading.showToast(
+        response.data['message'],
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
       );
-
+    } else {
       log(response.data.toString());
-      if (response.data['error'] == true) {
-        // ignore: unawaited_futures
-        EasyLoading.showToast(
-          response.data['message'],
-          toastPosition: EasyLoadingToastPosition.top,
-          maskType: EasyLoadingMaskType.clear,
-        );
-      } else {
-        log(response.data.toString());
-        // Saveing jwt token in local storage
-        await GetStorage().write('token', response.data['token']);
+      // Saving jwt token in local storage
+      await getStorage.write('token', response.data['token']);
 
-        await EasyLoading.dismiss();
-        await Get.to(() => HomeScreen());
-      }
-    } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
-      print(e);
+      // Save login status
+      await getStorage.write('isLogin', true);
+      homeScreenController.currentUser =
+          UserModel.fromJson(response.data['currentUser']);
+
+      await EasyLoading.dismiss();
+      await Get.to(() => HomeScreen());
     }
+    // } catch (e) {
+    //   Get.snackbar('Something is wrong', e.toString(),
+    //       snackPosition: SnackPosition.TOP);
+    //   print(e);
+    // }
   }
 }
