@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:front_end/models/userModel.dart';
 import 'package:front_end/screens/home_screen/home_screen.dart';
 import 'package:front_end/screens/register_screen/register_screen.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ class RegisterScreenController extends GetxController {
   final TextEditingController passController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
+  final GetStorage getStorage = GetStorage();
   RxInt currentTab = 1.obs;
   RxBool isPasswordHide = true.obs;
 
@@ -112,7 +114,7 @@ class RegisterScreenController extends GetxController {
 
   Future<void> signIn() async {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
-    final GetStorage getStorage = GetStorage();
+
     Map data = {
       'email': emailController.text,
       'password': passController.text,
@@ -129,7 +131,6 @@ class RegisterScreenController extends GetxController {
         ),
       );
 
-   
       if (response.data['error'] == true) {
         // ignore: unawaited_futures
         EasyLoading.showToast(
@@ -144,7 +145,7 @@ class RegisterScreenController extends GetxController {
 
         // Save login status
         await getStorage.write('isLogin', true);
-       
+
         await EasyLoading.dismiss();
         await Get.offAll(() => HomeScreen());
       }

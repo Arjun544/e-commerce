@@ -15,25 +15,6 @@ const userSchema = Joi.object().keys({
     .messages({ "any.only": "{{#label}} does not match" }),
 });
 
-//@desc  Get current User
-exports.currentUser = async (req, res) => {
-  try {
-    if (!req.user) {
-      res.status(403).send({ success: false, message: "User not found" });
-    } else {
-      console.log("got current user");
-      return res.json({
-        user: req.user,
-      });
-    }
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
-  }
-};
-
 exports.register = async (req, res) => {
   try {
     const result = userSchema.validate(req.body);
@@ -136,7 +117,6 @@ exports.logIn = async (req, res) => {
     let token = jwt.sign(
       {
         userId: user.id,
-        user: user.toJSON(),
         isAdmin: user.isAdmin,
       },
       process.env.JWT_SECRET,
@@ -148,6 +128,7 @@ exports.logIn = async (req, res) => {
     return res.json({
       success: true,
       token: token,
+      userId: user.id,
       message: "User logged in successfully",
     });
   } catch (err) {
