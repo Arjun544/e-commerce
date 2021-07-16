@@ -117,7 +117,6 @@ exports.logIn = async (req, res) => {
     let token = jwt.sign(
       {
         userId: user.id,
-        currentUser: user.toJSON(),
         isAdmin: user.isAdmin,
       },
       process.env.JWT_SECRET,
@@ -129,7 +128,7 @@ exports.logIn = async (req, res) => {
     return res.json({
       success: true,
       token: token,
-      // currentUser: user,
+      currentUser: user,
       message: "User logged in successfully",
     });
   } catch (err) {

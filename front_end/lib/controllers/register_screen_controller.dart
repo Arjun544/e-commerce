@@ -137,9 +137,10 @@ class RegisterScreenController extends GetxController {
           maskType: EasyLoadingMaskType.clear,
         );
       } else {
-        log(response.data);
+        log(response.data.toString());
         // Saveing jwt token in local storage
         await GetStorage().write('token', response.data['token']);
+
         await EasyLoading.dismiss();
         await Get.to(() => HomeScreen());
       }
