@@ -4,14 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/controllers/home_screen_controller.dart';
-import 'package:front_end/models/userModel.dart';
 import 'package:front_end/screens/home_screen/home_screen.dart';
 import 'package:front_end/screens/register_screen/register_screen.dart';
-import 'package:front_end/widgets/custom_snackbar.dart';
-import 'package:get_storage/get_storage.dart';
-import '../screens/verificationScreen.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+import '../screens/verificationScreen.dart';
 
 class RegisterScreenController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
@@ -19,8 +17,6 @@ class RegisterScreenController extends GetxController {
   final TextEditingController passController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
-  final HomeScreenController homeScreenController =
-      Get.put(HomeScreenController());
   RxInt currentTab = 1.obs;
   RxBool isPasswordHide = true.obs;
 
@@ -148,9 +144,7 @@ class RegisterScreenController extends GetxController {
 
         // Save login status
         await getStorage.write('isLogin', true);
-        homeScreenController.currentUser =
-            userModelFromJson(response.data['user'].toString());
-
+       
         await EasyLoading.dismiss();
         await Get.offAll(() => HomeScreen());
       }
