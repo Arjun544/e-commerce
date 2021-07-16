@@ -13,6 +13,7 @@ function isAuthenticated() {
       { url: /\/api\/products(.*)/, methods: ["GET", "OPTIONS", "PATCH"] },
       { url: /\/api\/categories(.*)/, methods: ["GET", "OPTIONS"] },
       { url: /\/api\/orders(.*)/, methods: ["GET", "OPTIONS", "POST"] },
+      { url: /\/api\/users(.*)/, methods: ["GET", "OPTIONS"] },
       "/api/users/login",
       "/api/users/register",
       "/api/users/activate",
