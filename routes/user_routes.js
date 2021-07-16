@@ -12,11 +12,9 @@ const {
   deleteUserById,
   updateUser,
   count,
-  currentUser,
 } = require("../controllers/user_controllers");
 
 router.post("/login", cleanBody, logIn);
-router.get("/currentUser", cleanBody, currentUser);
 router.post("/register", cleanBody, register);
 router.patch("/activate", cleanBody, activate);
 router.patch("/forgotPassword", cleanBody, forgotPassword);
