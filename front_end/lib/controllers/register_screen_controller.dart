@@ -121,43 +121,43 @@ class RegisterScreenController extends GetxController {
       'email': emailController.text,
       'password': passController.text,
     };
-    // try {
-    var response = await dio.post(
-      baseUrl + 'users/login',
-      data: data,
-      options: Options(
-        followRedirects: false,
-        validateStatus: (status) {
-          return status! < 500;
-        },
-      ),
-    );
-
-    log(response.data.toString());
-    if (response.data['error'] == true) {
-      // ignore: unawaited_futures
-      EasyLoading.showToast(
-        response.data['message'],
-        toastPosition: EasyLoadingToastPosition.top,
-        maskType: EasyLoadingMaskType.clear,
+    try {
+      var response = await dio.post(
+        baseUrl + 'users/login',
+        data: data,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
       );
-    } else {
-      log(response.data.toString());
-      // Saving jwt token in local storage
-      await getStorage.write('token', response.data['token']);
 
-      // Save login status
-      await getStorage.write('isLogin', true);
-      homeScreenController.currentUser =
-          UserModel.fromJson(response.data['currentUser']);
+   
+      if (response.data['error'] == true) {
+        // ignore: unawaited_futures
+        EasyLoading.showToast(
+          response.data['message'],
+          toastPosition: EasyLoadingToastPosition.top,
+          maskType: EasyLoadingMaskType.clear,
+        );
+      } else {
+        log(response.data['user'].toString());
+        // Saving jwt token in local storage
+        await getStorage.write('token', response.data['token']);
 
-      await EasyLoading.dismiss();
-      await Get.to(() => HomeScreen());
+        // Save login status
+        await getStorage.write('isLogin', true);
+        homeScreenController.currentUser =
+            userModelFromJson(response.data['user'].toString());
+
+        await EasyLoading.dismiss();
+        await Get.offAll(() => HomeScreen());
+      }
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
     }
-    // } catch (e) {
-    //   Get.snackbar('Something is wrong', e.toString(),
-    //       snackPosition: SnackPosition.TOP);
-    //   print(e);
-    // }
   }
 }
