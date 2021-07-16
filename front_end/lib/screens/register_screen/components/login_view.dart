@@ -35,7 +35,7 @@ class LoginView extends StatelessWidget {
                 height: 20,
               ),
               EmailTextField(
-                 controller: controller.emailController,
+                controller: controller.emailController,
                 text: 'Email',
                 icon: 'assets/images/Message.svg',
               ),
@@ -67,7 +67,9 @@ class LoginView extends StatelessWidget {
             width: Get.width * 0.5,
             text: 'Log In',
             color: darkBlue,
-            onPressed: (){},
+            onPressed: () async {
+              await controller.signIn();
+            },
           ),
           Column(
             children: [

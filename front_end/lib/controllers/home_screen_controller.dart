@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:front_end/models/userModel.dart';
 import 'package:get/get.dart';
 
 class HomeScreenController extends GetxController {
+  PageController salesPageController = PageController(initialPage: 0);
   int _currentPage = 0;
 
-  PageController salesPageController = PageController(initialPage: 0);
+  late UserModel currentUser;
 
   @override
   void onReady() {

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:front_end/utils/colors.dart';
 import 'package:get/get.dart';
 
-void customSnackBar(String msg) {
+void customSnackBar(String title,String msg) {
   return Get.snackbar(
     '',
     '',
-    titleText: const Text(
-      'Something is wrong',
-      style: TextStyle(
+    titleText:  Text(
+      title,
+      style: const TextStyle(
           color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
     ),
     messageText: Text(

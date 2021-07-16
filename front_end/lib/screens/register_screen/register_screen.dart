@@ -89,8 +89,8 @@ class RegisterScreen extends StatelessWidget {
                   },
                 ),
                 registerScreenController.currentTab.value == 1
-                    ?  LoginView()
-                    :  SignupView(),
+                    ? LoginView()
+                    : SignupView(),
               ],
             ),
           ),

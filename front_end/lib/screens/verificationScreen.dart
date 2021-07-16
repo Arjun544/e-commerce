@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/controllers/register_screen_controller.dart';
+import 'package:front_end/widgets/custom_snackbar.dart';
 import '../utils/colors.dart';
 import '../widgets/custom_button.dart';
 import 'package:get/get.dart';
@@ -7,7 +12,8 @@ import 'package:lottie/lottie.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 
 class VerificationScreen extends StatelessWidget {
-  final TextEditingController pinController = TextEditingController();
+  final RegisterScreenController controller =
+      Get.put(RegisterScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +47,10 @@ class VerificationScreen extends StatelessWidget {
             Column(
               children: [
                 Lottie.asset('assets/email.json', height: Get.height * 0.25),
-                const Text(
-                  'Enter the verification code, We just sent to your email address',
+                Text(
+                  'Enter the verification code, We just sent to ${controller.emailController.text}',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                     color: Colors.grey,
@@ -57,7 +63,9 @@ class VerificationScreen extends StatelessWidget {
               child: PinPut(
                 fieldsCount: 6,
                 animationDuration: const Duration(milliseconds: 200),
-                onSubmit: (String pin) {},
+                onSubmit: (String pin) {
+                  controller.pinController.text = pin;
+                },
                 checkClipboard: true,
                 obscureText: '*',
                 pinAnimationType: PinAnimationType.slide,
@@ -65,8 +73,7 @@ class VerificationScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
                 // focusNode: _pinPutFocusNode,
-                controller: pinController,
-
+                controller: controller.pinController,
                 submittedFieldDecoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
                   border: Border.all(
@@ -106,7 +113,18 @@ class VerificationScreen extends StatelessWidget {
                   width: Get.width * 0.8,
                   text: 'Submit',
                   color: darkBlue,
-                  onPressed: (){},
+                  onPressed: () async {
+                    // if (controller.pinController.text.length <= 6) {
+                    //   await EasyLoading.showToast(
+                    //     'All fields are required',
+                    //     toastPosition: EasyLoadingToastPosition.top,
+                    //     maskType: EasyLoadingMaskType.clear,
+                    //   );
+                    // }
+                    // {
+                      await controller.VerifyEmail();
+                    }
+                  // },
                 ),
               ],
             ),

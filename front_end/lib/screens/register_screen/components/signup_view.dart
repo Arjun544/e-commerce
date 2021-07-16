@@ -80,6 +80,8 @@ class SignupView extends StatelessWidget {
             color: darkBlue,
             onPressed: () async {
               await controller.signUp();
+              controller.emailController.clear();
+              controller.passController.clear();
             },
           ),
         ],
