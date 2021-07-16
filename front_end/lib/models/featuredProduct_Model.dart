@@ -1,36 +1,17 @@
 // To parse this JSON data, do
 //
 //     final featuredProductModel = featuredProductModelFromJson(jsonString);
-
 import 'dart:convert';
 
-FeaturedProductModel featuredProductModelFromJson(String str) =>
-    FeaturedProductModel.fromJson(json.decode(str));
+List<FeaturedProductModel> featuredProductModelFromJson(String str) =>
+    List<FeaturedProductModel>.from(
+        json.decode(str).map((x) => FeaturedProductModel.fromJson(x)));
 
-String featuredProductModelToJson(FeaturedProductModel data) =>
-    json.encode(data.toJson());
+String featuredProductModelToJson(List<FeaturedProductModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class FeaturedProductModel {
   FeaturedProductModel({
-    required this.featuredProducts,
-  });
-
-  List<FeaturedProduct> featuredProducts;
-
-  factory FeaturedProductModel.fromJson(Map<String, dynamic> json) =>
-      FeaturedProductModel(
-        featuredProducts: List<FeaturedProduct>.from(
-            json['featuredProducts'].map((x) => FeaturedProduct.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        'featuredProducts':
-            List<dynamic>.from(featuredProducts.map((x) => x.toJson())),
-      };
-}
-
-class FeaturedProduct {
-  FeaturedProduct({
     required this.fullDescription,
     required this.image,
     required this.images,
@@ -48,19 +29,18 @@ class FeaturedProduct {
     required this.countInStock,
     required this.dateCreated,
     required this.v,
-    required this.saleDiscount,
-    required this.featuredProductId,
+    required this.featuredProductModelId,
   });
 
   String fullDescription;
   String image;
-  List<String> images;
+  List<dynamic> images;
   int price;
   bool onSale;
   int totalPrice;
   int discount;
   int totalReviews;
-  List<Review> reviews;
+  List<dynamic> reviews;
   bool isFeatured;
   String id;
   String name;
@@ -69,21 +49,19 @@ class FeaturedProduct {
   int countInStock;
   DateTime dateCreated;
   int v;
-  int? saleDiscount;
-  String featuredProductId;
+  String featuredProductModelId;
 
-  factory FeaturedProduct.fromJson(Map<String, dynamic> json) =>
-      FeaturedProduct(
+  factory FeaturedProductModel.fromJson(Map<String, dynamic> json) =>
+      FeaturedProductModel(
         fullDescription: json['fullDescription'],
         image: json['image'],
-        images: List<String>.from(json['images'].map((x) => x)),
+        images: List<dynamic>.from(json['images'].map((x) => x)),
         price: json['price'],
         onSale: json['onSale'],
         totalPrice: json['totalPrice'],
         discount: json['discount'],
         totalReviews: json['totalReviews'],
-        reviews:
-            List<Review>.from(json['reviews'].map((x) => Review.fromJson(x))),
+        reviews: List<dynamic>.from(json['reviews'].map((x) => x)),
         isFeatured: json['isFeatured'],
         id: json['_id'],
         name: json['name'],
@@ -92,9 +70,7 @@ class FeaturedProduct {
         countInStock: json['countInStock'],
         dateCreated: DateTime.parse(json['dateCreated']),
         v: json['__v'],
-        saleDiscount:
-            json['saleDiscount'] ?? 0,
-        featuredProductId: json['id'],
+        featuredProductModelId: json['id'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -106,7 +82,7 @@ class FeaturedProduct {
         'totalPrice': totalPrice,
         'discount': discount,
         'totalReviews': totalReviews,
-        'reviews': List<dynamic>.from(reviews.map((x) => x.toJson())),
+        'reviews': List<dynamic>.from(reviews.map((x) => x)),
         'isFeatured': isFeatured,
         '_id': id,
         'name': name,
@@ -115,51 +91,6 @@ class FeaturedProduct {
         'countInStock': countInStock,
         'dateCreated': dateCreated.toIso8601String(),
         '__v': v,
-        'saleDiscount': saleDiscount,
-        'id': featuredProductId,
-      };
-}
-
-class Review {
-  Review({
-    required this.user,
-    required this.review,
-    required this.addedAt,
-  });
-
-  User? user;
-  String review;
-  int addedAt;
-
-  factory Review.fromJson(Map<String, dynamic> json) => Review(
-        user: json['user'] == null ? null : User.fromJson(json['user']),
-        review: json['review'],
-        addedAt: json['addedAt'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        'user': user == null ? null : User().toJson(),
-        'review': review,
-        'addedAt': addedAt,
-      };
-}
-
-class User {
-  User({
-     this.id,
-     this.username,
-  });
-
-  String? id;
-  String? username;
-
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json['_id'],
-        username: json['username'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        '_id': id,
-        'username': username,
+        'id': featuredProductModelId,
       };
 }

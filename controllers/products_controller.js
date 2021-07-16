@@ -185,12 +185,12 @@ exports.sorting = async (req, res) => {
 };
 
 exports.featuredProducts = async (req, res) => {
-  const products = await Product.find({ isFeatured: true });
-
-  if (!products) {
-    res.status(500).json({ success: false });
+  try {
+    const products = await Product.find({ isFeatured: true });
+    res.send(products);
+  } catch (error) {
+    res.status(500).json({ error: true, message: "Can't get products" });
   }
-  res.send(products);
 };
 
 exports.updateProduct = async (req, res) => {

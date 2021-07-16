@@ -68,9 +68,7 @@ class FeaturedSection extends StatelessWidget {
             );
           },
           staggeredTileBuilder: (index) {
-            log(
-              homeScreenController.featuredProducts[index].featuredProducts.length.toString(),
-            );
+            
             return StaggeredTile.count(1, index.isEven ? 1.2 : 1.3);
           }),
     );
@@ -95,7 +93,7 @@ class BuildItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             image: DecorationImage(
               image:
-                  NetworkImage(products[index].featuredProducts[index].image),
+                  NetworkImage(products[index].image),
             ),
           ),
         ),
@@ -107,12 +105,12 @@ class BuildItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    products[index].featuredProducts[index].name,
+                    products[index].name,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   Text(
-                    '\$ ${products[index].featuredProducts[index].price}',
+                    '\$ ${products[index].price}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
