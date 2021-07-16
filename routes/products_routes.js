@@ -55,7 +55,7 @@ router.patch(
   multipleImages
 );
 router.get("/sorting", cleanBody, sorting);
-router.get("/featured/", cleanBody, featuredProducts);
+router.get("/featured", cleanBody, featuredProducts);
 router.get("/:id", cleanBody, getProductById);
 router.patch("/update/:id", cleanBody, updateProduct);
 router.delete("/delete/:id", cleanBody, deleteProduct);

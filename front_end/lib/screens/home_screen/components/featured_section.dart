@@ -110,7 +110,7 @@ class BuildItem extends StatelessWidget {
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   Text(
-                    '\$ ${products[index].price}',
+                    '\$ ${products[index].price.toString()}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
