@@ -53,7 +53,13 @@ exports.getCart = async (req, res) => {
 
     const cartList = await Cart.find({ user: req.params.id })
       .populate("cartItems")
-      .populate("product")
+      .populate({
+        path: "cartItems",
+        populate: {
+          path: "product",
+          model: "Product",
+        },
+      })
       .sort({ dateOrdered: -1 });
 
     // Calculating total grand of cart items
