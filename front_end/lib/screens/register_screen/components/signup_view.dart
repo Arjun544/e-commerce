@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../../../controllers/register_screen_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
 import 'package:get/get.dart';
 import '../../../widgets/email_textField.dart';
 import '../../../widgets/pass_textField.dart';
-import '../../verificationScreen.dart';
 
 class SignupView extends StatelessWidget {
   final RegisterScreenController controller =

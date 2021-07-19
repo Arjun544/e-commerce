@@ -4,11 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/screens/home_screen/home_screen.dart';
-import 'package:front_end/utils/constants.dart';
+import '../screens/home_screen/home_screen.dart';
+import '../utils/constants.dart';
 import '../screens/register_screen/register_screen.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../screens/verificationScreen.dart';
 

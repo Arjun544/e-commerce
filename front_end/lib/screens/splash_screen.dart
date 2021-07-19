@@ -1,11 +1,12 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:front_end/screens/home_screen/home_screen.dart';
-import 'package:get_storage/get_storage.dart';
-import '../utils/colors.dart';
 import 'dart:math' as math;
 
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:front_end/screens/root_screen.dart';
+import 'package:get_storage/get_storage.dart';
+
+import '../utils/colors.dart';
 import 'register_screen/register_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -34,10 +35,9 @@ class _SplashScreenState extends State<SplashScreen>
           if (status == AnimationStatus.completed) {
             if (isLogin == true) {
               Navigator.of(context).pushReplacement(
-                ThisIsFadeRoute(route: HomeScreen(), page: HomeScreen()),
+                ThisIsFadeRoute(route: RootScreen(), page: RootScreen()),
               );
-            }
-           else {
+            } else {
               Navigator.of(context).pushReplacement(
                 ThisIsFadeRoute(
                     route: RegisterScreen(), page: RegisterScreen()),

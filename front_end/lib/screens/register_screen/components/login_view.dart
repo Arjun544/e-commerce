@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/controllers/register_screen_controller.dart';
+import '../../../controllers/register_screen_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/social_btn.dart';

@@ -4,9 +4,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/controllers/register_screen_controller.dart';
-import 'package:front_end/models/featuredProduct_Model.dart';
-import 'package:front_end/utils/constants.dart';
+import 'register_screen_controller.dart';
+import '../models/product_Model.dart';
+import '../utils/constants.dart';
 import '../models/userModel.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +19,8 @@ class HomeScreenController extends GetxController {
   RxBool isLogIn = false.obs;
 
   Rx<UserModel>? currentUser = UserModel().obs;
-  var featuredProducts = <FeaturedProductModel>[].obs;
+  var featuredProducts = <ProductModel>[].obs;
+  var newArrivalProducts = <ProductModel>[].obs;
 
   @override
   void onReady() async {
@@ -27,10 +28,10 @@ class HomeScreenController extends GetxController {
     if (isLogIn.value == true) {
       await getCurrentUser();
     }
-    var products = await getFeaturedProducts();
-    if (products != null) {
-      featuredProducts.add(products);
-    }
+    await getData();
+    // featuredProducts.value = await getFeaturedProducts();
+    // newArrivalProducts.value = await getnewArrivalsProducts();
+
     Timer.periodic(const Duration(seconds: 4), (Timer timer) {
       if (_currentPage < 2) {
         _currentPage++;
@@ -76,30 +77,54 @@ class HomeScreenController extends GetxController {
     }
   }
 
-  Future<FeaturedProductModel?> getFeaturedProducts() async {
+  Future getData() async {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
 
-    // try {
-      var response = await dio.get(
-        baseUrl + 'products/featured',
+    try {
+      var arrivalResponse = await dio.get(
+        baseUrl + 'products/newArrival',
+        options: Options(
+          responseType: ResponseType.plain,
+        ),
       );
-      if (response.data['error'] == true) {
-        // ignore: unawaited_futures
-        EasyLoading.showToast(
-          response.data['message'],
-          toastPosition: EasyLoadingToastPosition.top,
-          maskType: EasyLoadingMaskType.clear,
-        );
-      } else {
-        log(response.data.toString());
-        await EasyLoading.dismiss();
-        return FeaturedProductModel.fromJson(response.data);
-      }
-    // } catch (e) {
-    //   Get.snackbar('Something is wrong', e.toString(),
-    //       snackPosition: SnackPosition.TOP);
-    //   print(e);
-    // }
+      var featuredResponse = await dio.get(
+        baseUrl + 'products/featured',
+        options: Options(
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      newArrivalProducts.value =
+          featuredProductModelFromJson(arrivalResponse.data.toString());
+      featuredProducts.value =
+          featuredProductModelFromJson(featuredResponse.data.toString());
+      await EasyLoading.dismiss();
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
+    }
+  }
+
+  Future<List<ProductModel>> getnewArrivalsProducts() async {
+    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+
+    try {
+      var response = await dio.get(
+        baseUrl + 'products/newArrival',
+        options: Options(
+          responseType: ResponseType.plain,
+        ),
+      );
+      log(response.data.toString());
+      await EasyLoading.dismiss();
+      return featuredProductModelFromJson(response.data.toString());
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
+      return [];
+    }
   }
 
   @override

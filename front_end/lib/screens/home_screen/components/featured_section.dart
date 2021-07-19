@@ -1,21 +1,24 @@
-import 'dart:developer';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:front_end/controllers/home_screen_controller.dart';
-import 'package:front_end/models/featuredProduct_Model.dart';
-import '../../detail_screen/detail_screen.dart';
-import '../../../utils/colors.dart';
+import 'package:front_end/controllers/cart_screen_controller.dart';
+import '../../../controllers/home_screen_controller.dart';
+import '../../../models/product_Model.dart';
 import 'package:get/get.dart';
+
+import '../../../utils/colors.dart';
+import '../../detail_screen/detail_screen.dart';
 
 class FeaturedSection extends StatelessWidget {
   final HomeScreenController homeScreenController;
+  final CartScreenController cartScreenController;
 
-  const FeaturedSection({required this.homeScreenController});
+  FeaturedSection(
+      {required this.homeScreenController, required this.cartScreenController});
 
   @override
   Widget build(BuildContext context) {
-    
     return Obx(
       () => StaggeredGridView.countBuilder(
           shrinkWrap: true,
@@ -48,27 +51,69 @@ class FeaturedSection extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  width: 40,
-                  height: 30,
-                  decoration: const BoxDecoration(
-                    color: customYellow,
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(20),
-                      topLeft: Radius.circular(15),
-                    ),
-                  ),
-                  child: const Icon(
-                    Icons.add_rounded,
-                    color: Colors.white,
-                    size: 20,
+                Obx(
+                  () => Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: cartScreenController.cartItemIds.contains(
+                                homeScreenController.featuredProducts[index].id)
+                            ? () {
+                                cartScreenController.cartItemIds.remove(
+                                    homeScreenController
+                                        .featuredProducts[index].id);
+                                cartScreenController.cartList.remove(
+                                    homeScreenController
+                                        .featuredProducts[index]);
+
+                                cartScreenController.updateTotalPrice(
+                                    homeScreenController
+                                        .featuredProducts[index].price);
+                              }
+                            : () {
+                                cartScreenController.cartItemIds.add(
+                                    homeScreenController
+                                        .featuredProducts[index].id);
+                                cartScreenController.cartList.insert(
+                                    0,
+                                    homeScreenController
+                                        .featuredProducts[index]);
+                                        cartScreenController.calculateTotalPrice(
+                                    homeScreenController
+                                        .featuredProducts[index].price);
+                              },
+                        child: Container(
+                          width: 40,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: cartScreenController.cartItemIds.contains(
+                                    homeScreenController
+                                        .featuredProducts[index].id)
+                                ? Colors.redAccent
+                                : customYellow,
+                            borderRadius: const BorderRadius.only(
+                              bottomRight: Radius.circular(20),
+                              topLeft: Radius.circular(15),
+                            ),
+                          ),
+                          child: Icon(
+                            cartScreenController.cartItemIds.contains(
+                                    homeScreenController
+                                        .featuredProducts[index].id)
+                                ? Icons.remove_rounded
+                                : Icons.add_rounded,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             );
           },
           staggeredTileBuilder: (index) {
-            
             return StaggeredTile.count(1, index.isEven ? 1.2 : 1.3);
           }),
     );
@@ -76,7 +121,7 @@ class FeaturedSection extends StatelessWidget {
 }
 
 class BuildItem extends StatelessWidget {
-  final List<FeaturedProductModel> products;
+  final List<ProductModel> products;
   final int index;
 
   const BuildItem({required this.index, required this.products});
@@ -91,10 +136,9 @@ class BuildItem extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(30),
-            image: DecorationImage(
-              image:
-                  NetworkImage(products[index].image),
-            ),
+            // image: DecorationImage(
+            //   image: NetworkImage(products[index].image.toString()),
+            // ),
           ),
         ),
         Padding(

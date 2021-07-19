@@ -1,10 +1,7 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/controllers/register_screen_controller.dart';
-import 'package:front_end/widgets/custom_snackbar.dart';
+import '../controllers/register_screen_controller.dart';
 import '../utils/colors.dart';
 import '../widgets/custom_button.dart';
 import 'package:get/get.dart';

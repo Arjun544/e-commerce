@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/controllers/cart_screen_controller.dart';
 import 'cart_screen.dart';
 import '../controllers/root_screen_controller.dart';
 import 'favourite_screen.dart';
@@ -14,6 +15,8 @@ import 'home_screen/components/custom_bar.dart';
 class RootScreen extends StatelessWidget {
   final RootScreenController rootScreenController =
       Get.put(RootScreenController());
+  final CartScreenController cartScreenController =
+      Get.put(CartScreenController());
 
   final List<Widget> children = [
     HomeScreen(),
@@ -31,22 +34,24 @@ class RootScreen extends StatelessWidget {
           backgroundColor: darkBlue,
           onPressed: () {
             Get.to(
-              () => const CartScreen(),
+              () => CartScreen(),
             );
           },
-          child: Badge(
-            badgeContent: const Text(
-              '2',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                  fontSize: 12),
-            ),
-            badgeColor: Colors.white,
-            child: SvgPicture.asset(
-              'assets/images/Bag.svg',
-              height: 25,
-              color: Colors.white,
+          child: Obx(
+            () => Badge(
+              badgeContent: Text(
+                cartScreenController.cartList.length.toString(),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                    fontSize: 12),
+              ),
+              badgeColor: Colors.white,
+              child: SvgPicture.asset(
+                'assets/images/Bag.svg',
+                height: 25,
+                color: Colors.white,
+              ),
             ),
           ),
         ),

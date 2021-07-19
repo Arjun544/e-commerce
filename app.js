@@ -6,6 +6,7 @@ const userRoutes = require("./routes/user_routes");
 const categoriesRoutes = require("./routes/categories_routes");
 const productsRoutes = require("./routes/products_routes");
 const ordersRoutes = require("./routes/orders_routes");
+const cartRoutes = require("./routes/cart_router");
 const connectDB = require("./config/db_config");
 const isAuthenticated = require("./middlewares/isAuthenticated");
 const authError = require("./middlewares/authError");
@@ -28,6 +29,7 @@ app.use("/api/users/", userRoutes);
 app.use("/api/categories/", categoriesRoutes);
 app.use("/api/products/", productsRoutes);
 app.use("/api/orders/", ordersRoutes);
+app.use("/api/cart/", cartRoutes);
 
 //Listening to port
 app.listen(PORT, console.log(`Listening on port ${PORT}.`));

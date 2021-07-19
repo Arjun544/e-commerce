@@ -3,19 +3,20 @@
 //     final featuredProductModel = featuredProductModelFromJson(jsonString);
 import 'dart:convert';
 
-List<FeaturedProductModel> featuredProductModelFromJson(String str) =>
-    List<FeaturedProductModel>.from(
-        json.decode(str).map((x) => FeaturedProductModel.fromJson(x)));
+List<ProductModel> featuredProductModelFromJson(String str) =>
+    List<ProductModel>.from(
+        json.decode(str).map((x) => ProductModel.fromJson(x)));
 
-String featuredProductModelToJson(List<FeaturedProductModel> data) =>
+String featuredProductModelToJson(List<ProductModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class FeaturedProductModel {
-  FeaturedProductModel({
+class ProductModel {
+  ProductModel({
     required this.fullDescription,
     required this.image,
     required this.images,
     required this.price,
+     this.quantity = 1,
     required this.onSale,
     required this.totalPrice,
     required this.discount,
@@ -34,13 +35,14 @@ class FeaturedProductModel {
 
   String fullDescription;
   String image;
-  List<dynamic> images;
+  List<String> images;
   int price;
+  int? quantity;
   bool onSale;
   int totalPrice;
   int discount;
   int totalReviews;
-  List<dynamic> reviews;
+  List<Review> reviews;
   bool isFeatured;
   String id;
   String name;
@@ -51,17 +53,18 @@ class FeaturedProductModel {
   int v;
   String featuredProductModelId;
 
-  factory FeaturedProductModel.fromJson(Map<String, dynamic> json) =>
-      FeaturedProductModel(
+  factory ProductModel.fromJson(Map<String, dynamic> json) =>
+      ProductModel(
         fullDescription: json['fullDescription'],
         image: json['image'],
-        images: List<dynamic>.from(json['images'].map((x) => x)),
+        images: List<String>.from(json['images'].map((x) => x)),
         price: json['price'],
         onSale: json['onSale'],
         totalPrice: json['totalPrice'],
         discount: json['discount'],
         totalReviews: json['totalReviews'],
-        reviews: List<dynamic>.from(json['reviews'].map((x) => x)),
+        reviews:
+            List<Review>.from(json['reviews'].map((x) => Review.fromJson(x))),
         isFeatured: json['isFeatured'],
         id: json['_id'],
         name: json['name'],
@@ -82,7 +85,7 @@ class FeaturedProductModel {
         'totalPrice': totalPrice,
         'discount': discount,
         'totalReviews': totalReviews,
-        'reviews': List<dynamic>.from(reviews.map((x) => x)),
+        'reviews': List<dynamic>.from(reviews.map((x) => x.toJson())),
         'isFeatured': isFeatured,
         '_id': id,
         'name': name,
@@ -92,5 +95,49 @@ class FeaturedProductModel {
         'dateCreated': dateCreated.toIso8601String(),
         '__v': v,
         'id': featuredProductModelId,
+      };
+}
+
+class Review {
+  Review({
+    required this.user,
+    required this.review,
+    required this.addedAt,
+  });
+
+  User user;
+  String review;
+  int addedAt;
+
+  factory Review.fromJson(Map<String, dynamic> json) => Review(
+        user: User.fromJson(json['user']),
+        review: json['review'],
+        addedAt: json['addedAt'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'user': user.toJson(),
+        'review': review,
+        'addedAt': addedAt,
+      };
+}
+
+class User {
+  User({
+    required this.id,
+    required this.username,
+  });
+
+  String id;
+  String username;
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json['_id'],
+        username: json['username'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        '_id': id,
+        'username': username,
       };
 }

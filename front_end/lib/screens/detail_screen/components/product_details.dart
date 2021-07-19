@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../controllers/detail_screen_controller.dart';
-import '../../home_screen/components/featured_section.dart';
 import '../../../widgets/customTIle.dart';
 import 'package:get/get.dart';
 

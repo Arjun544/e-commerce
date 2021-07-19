@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:front_end/controllers/cart_screen_controller.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/home_screen_controller.dart';
@@ -12,6 +15,8 @@ import 'components/top_bar.dart';
 class HomeScreen extends StatelessWidget {
   final HomeScreenController homeScreenController =
       Get.put(HomeScreenController());
+  final CartScreenController cartScreenController =
+      Get.put(CartScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -44,19 +49,26 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       const Text(
                         'New Arrivals',
-                        style:  TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
-                      const SizedBox(width: 10,),
+                      const SizedBox(
+                        width: 10,
+                      ),
                       Text(
-                        homeScreenController.currentUser?.value.data?.username?? 'Not logged in',
+                        homeScreenController
+                                .currentUser?.value.data?.username ??
+                            'Not logged in',
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                     ],
                   )),
             ),
-            const ArrivalsSection(),
+            ArrivalsSection(
+              homeScreenController: homeScreenController,
+              cartScreenController: cartScreenController,
+            ),
             const Padding(
               padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
               child: Text(
@@ -64,7 +76,10 @@ class HomeScreen extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ),
-             FeaturedSection(homeScreenController: homeScreenController,),
+            FeaturedSection(
+              homeScreenController: homeScreenController,
+              cartScreenController: cartScreenController,
+            ),
           ],
         ),
       ],
