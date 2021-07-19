@@ -129,7 +129,7 @@ exports.NewArrivalProducts = async (req, res) => {
   if (!products) {
     res.status(500).json({ success: false });
   }
-  res.send(products);
+  res.send({products});
 };
 
 exports.filterByPrice = async (req, res) => {
@@ -215,7 +215,7 @@ exports.addToFavourite = async (req, res) => {
 exports.featuredProducts = async (req, res) => {
   try {
     const products = await Product.find({ isFeatured: true });
-    res.send(products);
+    res.send({ products });
   } catch (error) {
     res.status(500).json({ error: true, message: "Can't get products" });
   }
@@ -360,8 +360,8 @@ exports.multipleImages = async (req, res) => {
     return res.status(400).send("Invalid Product Id");
   }
 
-   const uploader = async (path) => await cloudinaryFile.uploads(path, 'Images');
-  
+  const uploader = async (path) => await cloudinaryFile.uploads(path, "Images");
+
   // Upload image to cloudinary
   const urls = [];
   const files = req.files;

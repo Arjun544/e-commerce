@@ -19,8 +19,10 @@ class HomeScreenController extends GetxController {
   RxBool isLogIn = false.obs;
 
   Rx<UserModel>? currentUser = UserModel().obs;
-  var featuredProducts = <ProductModel>[].obs;
-  var newArrivalProducts = <ProductModel>[].obs;
+  StreamController<ProductModel> featuredProductsStreamController =
+      StreamController<ProductModel>();
+  StreamController<ProductModel> arrivalProductsStreamController =
+      StreamController<ProductModel>();
 
   @override
   void onReady() async {
@@ -94,10 +96,9 @@ class HomeScreenController extends GetxController {
         ),
       );
 
-      newArrivalProducts.value =
-          featuredProductModelFromJson(arrivalResponse.data.toString());
-      featuredProducts.value =
-          featuredProductModelFromJson(featuredResponse.data.toString());
+      arrivalProductsStreamController.add(arrivalResponse.data);
+
+      featuredProductsStreamController.add(featuredResponse.data);
       await EasyLoading.dismiss();
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
@@ -118,7 +119,7 @@ class HomeScreenController extends GetxController {
       );
       log(response.data.toString());
       await EasyLoading.dismiss();
-      return featuredProductModelFromJson(response.data.toString());
+      return productModelFromJson(response.data.toString());
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);

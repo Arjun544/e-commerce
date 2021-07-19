@@ -3,7 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/screens/root_screen.dart';
+import 'root_screen.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../utils/colors.dart';

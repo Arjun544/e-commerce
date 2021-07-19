@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
-import 'package:get_storage/get_storage.dart';
-import 'package:hive/hive.dart';
-import 'screens/splash_screen.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+import 'screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDir.path);
   await GetStorage.init();
   runApp(MyApp());
 }

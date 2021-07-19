@@ -1,12 +1,11 @@
-import 'dart:async';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:front_end/controllers/cart_screen_controller.dart';
-import '../../../controllers/home_screen_controller.dart';
-import '../../../models/product_Model.dart';
 import 'package:get/get.dart';
 
+import '../../../controllers/cart_screen_controller.dart';
+import '../../../controllers/home_screen_controller.dart';
+import '../../../models/product_Model.dart';
 import '../../../utils/colors.dart';
 import '../../detail_screen/detail_screen.dart';
 
@@ -51,64 +50,29 @@ class FeaturedSection extends StatelessWidget {
                     ),
                   ),
                 ),
-                Obx(
-                  () => Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: cartScreenController.cartItemIds.contains(
-                                homeScreenController.featuredProducts[index].id)
-                            ? () {
-                                cartScreenController.cartItemIds.remove(
-                                    homeScreenController
-                                        .featuredProducts[index].id);
-                                cartScreenController.cartList.remove(
-                                    homeScreenController
-                                        .featuredProducts[index]);
-
-                                cartScreenController.updateTotalPrice(
-                                    homeScreenController
-                                        .featuredProducts[index].price);
-                              }
-                            : () {
-                                cartScreenController.cartItemIds.add(
-                                    homeScreenController
-                                        .featuredProducts[index].id);
-                                cartScreenController.cartList.insert(
-                                    0,
-                                    homeScreenController
-                                        .featuredProducts[index]);
-                                        cartScreenController.calculateTotalPrice(
-                                    homeScreenController
-                                        .featuredProducts[index].price);
-                              },
-                        child: Container(
-                          width: 40,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: cartScreenController.cartItemIds.contains(
-                                    homeScreenController
-                                        .featuredProducts[index].id)
-                                ? Colors.redAccent
-                                : customYellow,
-                            borderRadius: const BorderRadius.only(
-                              bottomRight: Radius.circular(20),
-                              topLeft: Radius.circular(15),
-                            ),
-                          ),
-                          child: Icon(
-                            cartScreenController.cartItemIds.contains(
-                                    homeScreenController
-                                        .featuredProducts[index].id)
-                                ? Icons.remove_rounded
-                                : Icons.add_rounded,
-                            color: Colors.white,
-                            size: 20,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        width: 40,
+                        height: 30,
+                        decoration: const BoxDecoration(
+                          color: customYellow,
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(20),
+                            topLeft: Radius.circular(15),
                           ),
                         ),
+                        child: const Icon(
+                          Icons.add_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             );
@@ -136,9 +100,11 @@ class BuildItem extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(30),
-            // image: DecorationImage(
-            //   image: NetworkImage(products[index].image.toString()),
-            // ),
+          ),
+          child: CachedNetworkImage(
+            imageUrl: products[index].image.toString(),
+            fit: BoxFit.cover,
+            width: Get.width * 0.5,
           ),
         ),
         Padding(

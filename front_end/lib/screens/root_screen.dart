@@ -1,16 +1,15 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/controllers/cart_screen_controller.dart';
-import 'cart_screen.dart';
-import '../controllers/root_screen_controller.dart';
-import 'favourite_screen.dart';
-import 'home_screen/home_screen.dart';
-import 'notifications_screen.dart';
-import '../utils/colors.dart';
+import '../controllers/cart_screen_controller.dart';
 import 'package:get/get.dart';
 
+import '../controllers/root_screen_controller.dart';
+import '../utils/colors.dart';
+import 'favourite_screen.dart';
 import 'home_screen/components/custom_bar.dart';
+import 'home_screen/home_screen.dart';
+import 'notifications_screen.dart';
 
 class RootScreen extends StatelessWidget {
   final RootScreenController rootScreenController =
@@ -33,15 +32,14 @@ class RootScreen extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           backgroundColor: darkBlue,
           onPressed: () {
-            Get.to(
-              () => CartScreen(),
-            );
+            // Get.to(
+            //   () => CartScreen(),
+            // );
           },
-          child: Obx(
-            () => Badge(
-              badgeContent: Text(
-                cartScreenController.cartList.length.toString(),
-                style: const TextStyle(
+          child: Badge(
+              badgeContent: const Text(
+                '2',
+                style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.green,
                     fontSize: 12),
@@ -53,7 +51,7 @@ class RootScreen extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-          ),
+          
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(bottom: 15, right: 60, left: 60),
