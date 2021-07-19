@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:front_end/controllers/root_screen_controller.dart';
 import '../../controllers/cart_screen_controller.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +16,9 @@ class HomeScreen extends StatelessWidget {
       Get.put(HomeScreenController());
   final CartScreenController cartScreenController =
       Get.put(CartScreenController());
+
+  final RootScreenController rootScreenController =
+      Get.put(RootScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                         width: 10,
                       ),
                       Text(
-                        homeScreenController
+                        rootScreenController
                                 .currentUser?.value.data?.username ??
                             'Not logged in',
                         style: const TextStyle(

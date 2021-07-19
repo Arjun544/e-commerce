@@ -17,94 +17,92 @@ class ArrivalsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: Get.height * 0.22,
-      child: StreamBuilder(
-          stream: homeScreenController.arrivalProductsStreamController.stream,
-          builder: (context, AsyncSnapshot<ProductModel> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const SizedBox();
-            }
-           if(snapshot.hasData){
-             return ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: snapshot.data(),
-                  padding: const EdgeInsets.only(left: 15),
-                  itemBuilder: (context, index) {
-                    return index ==
-                            homeScreenController.newArrivalProducts.length - 1
-                        ? Container(
-                            width: 80,
-                            margin: const EdgeInsets.only(right: 10),
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: const Text(
-                              'See All',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 15),
-                            ),
-                          )
-                        : Stack(
-                            clipBehavior: Clip.hardEdge,
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              Container(
-                                width: Get.width * 0.5,
-                                margin: const EdgeInsets.only(right: 10),
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: darkBlue.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: BuildItem(
-                                  product: homeScreenController
-                                      .newArrivalProducts[index],
-                                ),
+    return StreamBuilder(
+        stream: homeScreenController.arrivalProductsStreamController.stream,
+        builder: (context, AsyncSnapshot<ProductModel> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SizedBox();
+          }
+
+          return Container(
+            height: Get.height * 0.22,
+            child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data!.products.length,
+                padding: const EdgeInsets.only(left: 15),
+                itemBuilder: (context, index) {
+                  Product product = snapshot.data!.products[index];
+                  return index == snapshot.data!.products.length - 1
+                      ? Container(
+                          width: 80,
+                          margin: const EdgeInsets.only(right: 10),
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: const Text(
+                            'See All',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
+                        )
+                      : Stack(
+                          clipBehavior: Clip.hardEdge,
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Container(
+                              width: Get.width * 0.5,
+                              margin: const EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: darkBlue.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(30),
                               ),
-                              Positioned(
-                                right: 10,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: Container(
-                                        width: 40,
-                                        height: 30,
-                                        decoration: const BoxDecoration(
-                                          color: customYellow,
-                                          borderRadius: BorderRadius.only(
-                                            bottomRight: Radius.circular(20),
-                                            topLeft: Radius.circular(15),
-                                          ),
-                                        ),
-                                        child: const Icon(
-                                          Icons.add_rounded,
-                                          color: Colors.white,
-                                          size: 20,
+                              child: BuildItem(
+                                product: product,
+                              ),
+                            ),
+                            Positioned(
+                              right: 10,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      width: 40,
+                                      height: 30,
+                                      decoration: const BoxDecoration(
+                                        color: customYellow,
+                                        borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(20),
+                                          topLeft: Radius.circular(15),
                                         ),
                                       ),
+                                      child: const Icon(
+                                        Icons.add_rounded,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          );
-                  });
-           } 
-          }),
-    );
+                            ),
+                          ],
+                        );
+                }),
+          );
+        });
   }
 }
 
 class BuildItem extends StatelessWidget {
-  final ProductModel product;
+  final Product product;
 
   const BuildItem({required this.product});
   @override

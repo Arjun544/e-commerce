@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/screens/register_screen/register_screen.dart';
 import '../controllers/cart_screen_controller.dart';
 import 'package:get/get.dart';
 
@@ -32,9 +33,11 @@ class RootScreen extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           backgroundColor: darkBlue,
           onPressed: () {
-            // Get.to(
-            //   () => CartScreen(),
-            // );
+           rootScreenController.isLogIn.value == true ? Get.to(
+              () => RegisterScreen(),
+            ); : Get.to(
+              () => CartScreen(),
+            );
           },
           child: Badge(
               badgeContent: const Text(

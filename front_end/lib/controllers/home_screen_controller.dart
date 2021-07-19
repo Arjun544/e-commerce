@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:rxdart/rxdart.dart' as rxDart;
 import 'register_screen_controller.dart';
 import '../models/product_Model.dart';
 import '../utils/constants.dart';
@@ -12,27 +13,18 @@ import 'package:get/get.dart';
 
 class HomeScreenController extends GetxController {
   PageController salesPageController = PageController(initialPage: 0);
-  final RegisterScreenController registerScreenController =
-      Get.put(RegisterScreenController());
 
   int _currentPage = 0;
-  RxBool isLogIn = false.obs;
 
-  Rx<UserModel>? currentUser = UserModel().obs;
-  StreamController<ProductModel> featuredProductsStreamController =
-      StreamController<ProductModel>();
-  StreamController<ProductModel> arrivalProductsStreamController =
-      StreamController<ProductModel>();
+  final StreamController<ProductModel> featuredProductsStreamController =
+      rxDart.BehaviorSubject();
+  final StreamController<ProductModel> arrivalProductsStreamController =
+      rxDart.BehaviorSubject();
 
   @override
   void onReady() async {
-    await getStorage.read('isLogin');
-    if (isLogIn.value == true) {
-      await getCurrentUser();
-    }
+    
     await getData();
-    // featuredProducts.value = await getFeaturedProducts();
-    // newArrivalProducts.value = await getnewArrivalsProducts();
 
     Timer.periodic(const Duration(seconds: 4), (Timer timer) {
       if (_currentPage < 2) {
@@ -52,31 +44,11 @@ class HomeScreenController extends GetxController {
     super.onReady();
   }
 
-  Future<UserModel?> getCurrentUser() async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
-
-    try {
-      var response = await dio.get(
-        baseUrl + 'users/${registerScreenController.currentUserId}',
-      );
-      if (response.data['error'] == true) {
-        // ignore: unawaited_futures
-        EasyLoading.showToast(
-          response.data['message'],
-          toastPosition: EasyLoadingToastPosition.top,
-          maskType: EasyLoadingMaskType.clear,
-        );
-      } else {
-        log(response.data.toString());
-        currentUser?.value = UserModel.fromJson(response.data);
-        log('cyrent user ${currentUser?.value.data?.username.toString()}');
-        await EasyLoading.dismiss();
-      }
-    } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
-      print(e);
-    }
+  @override
+  void onClose() {
+    arrivalProductsStreamController.close();
+    featuredProductsStreamController.close();
+    super.onClose();
   }
 
   Future getData() async {
@@ -96,35 +68,16 @@ class HomeScreenController extends GetxController {
         ),
       );
 
-      arrivalProductsStreamController.add(arrivalResponse.data);
+      arrivalProductsStreamController
+          .add(productModelFromJson(arrivalResponse.data));
 
-      featuredProductsStreamController.add(featuredResponse.data);
+      featuredProductsStreamController
+          .add(productModelFromJson(featuredResponse.data));
       await EasyLoading.dismiss();
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);
       print(e);
-    }
-  }
-
-  Future<List<ProductModel>> getnewArrivalsProducts() async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
-
-    try {
-      var response = await dio.get(
-        baseUrl + 'products/newArrival',
-        options: Options(
-          responseType: ResponseType.plain,
-        ),
-      );
-      log(response.data.toString());
-      await EasyLoading.dismiss();
-      return productModelFromJson(response.data.toString());
-    } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
-      print(e);
-      return [];
     }
   }
 

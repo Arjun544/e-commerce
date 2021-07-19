@@ -2,16 +2,33 @@
 //
 //     final productModel = productModelFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
-List<ProductModel> productModelFromJson(String str) => List<ProductModel>.from(
-    json.decode(str).map((x) => ProductModel.fromJson(x)));
+ProductModel productModelFromJson(String str) =>
+    ProductModel.fromJson(json.decode(str));
 
-String productModelToJson(List<ProductModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String productModelToJson(ProductModel data) => json.encode(data.toJson());
 
 class ProductModel {
   ProductModel({
+    required this.products,
+  });
+
+  List<Product> products;
+
+  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
+        products: List<Product>.from(
+            json['products'].map((x) => Product.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'products': List<dynamic>.from(products.map((x) => x.toJson())),
+      };
+}
+
+class Product {
+  Product({
     required this.fullDescription,
     required this.images,
     required this.price,
@@ -30,7 +47,7 @@ class ProductModel {
     required this.countInStock,
     required this.dateCreated,
     required this.v,
-    required this.productModelId,
+    required this.productId,
   });
 
   String fullDescription;
@@ -51,9 +68,9 @@ class ProductModel {
   int countInStock;
   DateTime dateCreated;
   int v;
-  String productModelId;
+  String productId;
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
         fullDescription: json['fullDescription'],
         images: List<Image>.from(json['images'].map((x) => Image.fromJson(x))),
         price: json['price'],
@@ -72,7 +89,7 @@ class ProductModel {
         countInStock: json['countInStock'],
         dateCreated: DateTime.parse(json['dateCreated']),
         v: json['__v'],
-        productModelId: json['id'],
+        productId: json['id'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -94,7 +111,7 @@ class ProductModel {
         'countInStock': countInStock,
         'dateCreated': dateCreated.toIso8601String(),
         '__v': v,
-        'id': productModelId,
+        'id': productId,
       };
 }
 
