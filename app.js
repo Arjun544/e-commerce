@@ -21,7 +21,6 @@ connectDB();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // To parse the incoming requests with JSON payloads
 app.use(isAuthenticated());
-app.use("/public/uploads", express.static(__dirname + "/public/uploads"));
 app.use(authError);
 
 // Api Routes

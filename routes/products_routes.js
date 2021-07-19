@@ -1,39 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const cleanBody = require("../middlewares/cleanBody");
-const multer = require("multer");
-
-const FILE_TYPE_MAP = {
-  "image/png": "png",
-  "image/jpeg": "jpeg",
-  "image/jpg": "jpg",
-};
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const isValid = FILE_TYPE_MAP[file.mimetype];
-    let uploadError = new Error("invalid image type");
-
-    if (isValid) {
-      uploadError = null;
-    }
-    cb(uploadError, "public/uploads");
-  },
-  filename: function (req, file, cb) {
-    const fileName = file.originalname.split(" ").join("-");
-    const extension = FILE_TYPE_MAP[file.mimetype];
-    cb(null, `${fileName}-${Date.now()}.${extension}`);
-  },
-});
-
-const uploadOptions = multer({ storage: storage });
+require("../config/cloudinary.config");
+const upload = require("../config/multer");
 
 const {
   addProduct,
   getProducts,
   getProductById,
   featuredProducts,
-  updateProduct,                   
+  updateProduct,
   count,
   deleteProduct,
   multipleImages,
@@ -41,17 +17,19 @@ const {
   filterByPrice,
   sorting,
   NewArrivalProducts,
+  addToFavourite,
 } = require("../controllers/products_controller");
 
-router.post("/add", uploadOptions.single("image"), cleanBody, addProduct);
+router.post("/add", upload.single("image"), cleanBody, addProduct);
 router.patch("/addReview/:id", cleanBody, addReview);
+router.patch("/addToFavourite/:id", cleanBody, addToFavourite);
 router.get("/get", cleanBody, getProducts);
 router.get("/newArrival", cleanBody, NewArrivalProducts);
 router.get("/count", cleanBody, count);
 router.get("/filterByPrice", cleanBody, filterByPrice);
 router.patch(
   "/multipleImages/:id",
-  uploadOptions.array("images", 10),
+  upload.array("images", 4),
   multipleImages
 );
 router.get("/sorting", cleanBody, sorting);

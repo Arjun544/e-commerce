@@ -15,13 +15,12 @@ const productSchema = mongoose.Schema({
   },
   image: {
     type: String,
-    default: "",
   },
-  images: [
-    {
-      type: String,
-    },
-  ],
+  images: {
+    type: Array,
+    default: [],
+  },
+
   price: {
     type: Number,
     default: 0,
@@ -41,6 +40,10 @@ const productSchema = mongoose.Schema({
   onSale: {
     type: Boolean,
     default: false,
+  },
+  favourites: {
+    type: Array,
+    default: [],
   },
   totalPrice: {
     type: Number,

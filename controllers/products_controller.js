@@ -2,6 +2,8 @@ const Product = require("../models/Product");
 const Category = require("../models/Category");
 const User = require("../models/User");
 const mongoose = require("mongoose");
+const cloudinary = require("cloudinary");
+const cloudinaryFile = require("../config/cloudinary.config");
 
 exports.addProduct = async (req, res) => {
   try {
@@ -32,19 +34,24 @@ exports.addProduct = async (req, res) => {
       });
     }
 
+    if (!req.file) {
+      return res.status(500).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
     const newCategory = await Category.findById(req.body.category);
     if (!newCategory) return res.status(400).send("Invalid Category");
 
-    const file = req.file;
-    if (!file) return res.status(400).send("No image in the request");
+    // Upload image to cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path);
 
-    const fileName = file.filename;
-    const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
-    let product = new Product({
+    const product = new Product({
       name: req.body.name,
       description: req.body.description,
       fullDescription: req.body.fullDescription,
-      image: `${basePath}${fileName}`, // "http://localhost:3000/public/upload/image-2323232"
+      image: result.secure_url,
       price: req.body.price,
       category: req.body.category,
       countInStock: req.body.countInStock,
@@ -52,9 +59,12 @@ exports.addProduct = async (req, res) => {
       isFeatured: req.body.isFeatured,
     });
 
-    product = await product.save();
+    await product.save();
 
-    res.send(product);
+    res.send({
+      success: true,
+      message: "Product has been added",
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -177,6 +187,24 @@ exports.sorting = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.addToFavourite = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product.favourites.includes(req.body.userId)) {
+      await product.updateOne({ $push: { favourites: req.body.userId } });
+      res.status(200).json("Add to favourite");
+    } else {
+      await product.updateOne({ $pull: { favourites: req.body.userId } });
+      res.status(200).json("Removed from favourites");
+    }
+  } catch (err) {
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -331,25 +359,30 @@ exports.multipleImages = async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.id)) {
     return res.status(400).send("Invalid Product Id");
   }
-  const files = req.files;
-  let imagesPaths = [];
-  const basePath = `${req.protocol}://${req.get("host")}/public/uploads/`;
 
-  if (files) {
-    files.map((file) => {
-      imagesPaths.push(`${basePath}${file.filename}`);
-    });
+   const uploader = async (path) => await cloudinaryFile.uploads(path, 'Images');
+  
+  // Upload image to cloudinary
+  const urls = [];
+  const files = req.files;
+  for (const file of files) {
+    const { path } = file;
+    const newPath = await uploader(path);
+    urls.push(newPath);
   }
 
   const product = await Product.findByIdAndUpdate(
     req.params.id,
     {
-      images: imagesPaths,
+      images: urls,
     },
     { new: true }
   );
 
   if (!product) return res.status(500).send("the gallery cannot be updated!");
 
-  res.send(product);
+  res.send({
+    success: true,
+    message: "Images has been added",
+  });
 };

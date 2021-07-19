@@ -9,7 +9,6 @@ function isAuthenticated() {
     isRevoked: isRevoked,
   }).unless({
     path: [
-      { url: /\/public\/uploads(.*)/, methods: ["GET", "OPTIONS"] },
       { url: /\/api\/products(.*)/, methods: ["GET", "OPTIONS", "PATCH"] },
       { url: /\/api\/categories(.*)/, methods: ["GET", "OPTIONS"] },
       { url: /\/api\/orders(.*)/, methods: ["GET", "OPTIONS", "POST"] },
