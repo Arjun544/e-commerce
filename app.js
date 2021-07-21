@@ -40,7 +40,7 @@ const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
 
 const io = require("socket.io")(server);
 
-io.once("connection", (socket) => {
+io.on("connection", (socket) => {
   console.log("socket server is connected");
   socket.on("productQuantity", (productId) => {
     console.log(productId);
@@ -49,5 +49,5 @@ io.once("connection", (socket) => {
 });
 
 eventEmitter.on("updatedQuantity", (data) => {
-  socket.to(`product_${data.id}`).emit('updatedQuantity', data);
+  io.to(`product_${data.id}`).emit('updatedQuantity', data);
 });
