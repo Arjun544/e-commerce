@@ -45,6 +45,10 @@ io.on("connection", (socket) => {
     console.log(productId);
     socket.join(productId);
   });
+
+  socket.on("cartTotal", () => {
+    console.log('socket on for total')
+  });
 });
 
 eventEmitter.on("updatedQuantity", (data) => {
