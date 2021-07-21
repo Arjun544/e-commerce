@@ -45,13 +45,16 @@ io.on("connection", (socket) => {
     console.log(productId);
     socket.join(productId);
   });
+
+  socket.on("updatedTotal", (data) => {
+    console.log(data);
+    eventEmitter.on("updatedTotal", (totalGrand) => {
+      console.log(totalGrand);
+      io.emit("updatedTotal", totalGrand.totalGrand);
+    });
+  });
 });
 
 eventEmitter.on("updatedQuantity", (data) => {
   io.to(`product_${data.id}`).emit("updatedQuantity", data.quantity);
-});
-
-eventEmitter.on("updatedTotal", (totalGrand) => {
-  console.log(totalGrand);
-  io.emit("updatedTotal", totalGrand.totalGrand);
 });

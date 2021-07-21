@@ -109,6 +109,7 @@ exports.incrementQuantity = async (req, res) => {
       .populate("product")
       .select("quantity")
       .sort({ dateOrdered: -1 });
+      
 
     if (!cartItem) {
       res.send({
@@ -122,7 +123,6 @@ exports.incrementQuantity = async (req, res) => {
         id: cartItem.product._id,
         quantity: cartItem.quantity,
       });
-
       res.send("Quantity has been incremented");
     }
   } catch (error) {
