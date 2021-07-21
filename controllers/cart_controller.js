@@ -113,6 +113,7 @@ exports.incrementQuantity = async (req, res) => {
         message: "Product not found in cart",
       });
     } else {
+      console.log(req.params.id);
       // emit event for upating new quantity
       const eventEmitter = req.app.get("eventEmitter");
       eventEmitter.emit("updatedQuantity", {
@@ -152,6 +153,7 @@ exports.decrementQuantity = async (req, res) => {
     } else {
       // emit event for upating new quantity
       const eventEmitter = req.app.get("eventEmitter");
+      console.log(req.params.id);
       eventEmitter.emit("updatedQuantity", {
         id: req.params.id,
         quantity: cartItem.quantity,
