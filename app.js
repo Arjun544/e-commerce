@@ -37,7 +37,7 @@ const io = require('socket.io')(server);
 
 io.on('onnection', (sokcet) => {
     console.log('socket server is connected');
-    // socket.on("test", (data) => {
-    //     console.log(data);
-    // });
+    socket.on("test", (data) => {
+        console.log(data);
+    });
 })
