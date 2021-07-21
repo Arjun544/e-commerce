@@ -81,7 +81,7 @@ exports.getCart = async (req, res) => {
     const totalGrand = totalPrices.reduce((a, b) => a + b, 0);
     // emit event for upating new quantity
     const eventEmitter = req.app.get("eventEmitter");
-    eventEmitter.emit("updatedTotal", {
+    eventEmitter.emit("totalGrand", {
       totalGrand: totalGrand,
     });
     res.send({

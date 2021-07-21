@@ -48,9 +48,9 @@ io.on("connection", (socket) => {
 
   socket.on("updatedTotal", (data) => {
     console.log(data);
-    eventEmitter.on("updatedTotal", (totalGrand) => {
+    eventEmitter.on("totalGrand", (totalGrand) => {
       console.log(totalGrand);
-      io.emit("updatedTotal", totalGrand.totalGrand);
+      io.emit("totalGrand", totalGrand.totalGrand);
     });
   });
 });
