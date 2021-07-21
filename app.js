@@ -56,5 +56,6 @@ eventEmitter.on("updatedQuantity", (data) => {
 });
 
 eventEmitter.on("updatedTotal", (totalGrand) => {
+  console.log(`total ${totalGrand}`)
   socket.emit("updatedTotal", totalGrand);
 });
