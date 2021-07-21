@@ -113,7 +113,10 @@ exports.incrementQuantity = async (req, res) => {
         message: "Product not found in cart",
       });
     } else {
-      res.send("Quantity has been Incremented");
+      res.send({
+        quantity: cartItem.quantity,
+        message: "Quantity has been incremented",
+      });
     }
   } catch (error) {
     console.log(error);
@@ -143,7 +146,10 @@ exports.decrementQuantity = async (req, res) => {
         message: "Product not found in cart",
       });
     } else {
-      res.send("Quantity has been decremented");
+      res.send({
+        quantity: cartItem.quantity,
+        message: "Quantity has been decremented",
+      });
     }
   } catch (error) {
     console.log(error);
