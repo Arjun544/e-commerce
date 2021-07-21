@@ -61,6 +61,31 @@ exports.getCart = async (req, res) => {
       })
       .sort({ dateOrdered: -1 });
 
+    res.send({
+      cartList: cartList,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.incrementQuantity = async (req, res) => {
+  try {
+    const cartList = await Cart.find({ user: req.body.userId })
+      .populate("cartItems")
+      .populate({
+        path: "cartItems",
+        populate: {
+          path: "product",
+          model: "Product",
+        },
+      })
+      .sort({ dateOrdered: -1 });
+
     // Calculating total grand of cart items
     const totalPrices = await Promise.all(
       cartList.map(async (item) => {
@@ -78,27 +103,8 @@ exports.getCart = async (req, res) => {
       })
     );
 
-    const totalGrand = totalPrices.reduce((a, b) => a + b, 0);
-    // emit event for upating new quantity
-    const eventEmitter = req.app.get("eventEmitter");
-    eventEmitter.emit("totalGrand", {
-      totalGrand: totalGrand,
-    });
-    res.send({
-      totalGrand: totalGrand,
-      cartList: cartList,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.json({
-      success: false,
-      message: "Something went wrong",
-    });
-  }
-};
+    totalGrand = totalPrices.reduce((a, b) => a + b, 0);
 
-exports.incrementQuantity = async (req, res) => {
-  try {
     const cartItem = await CartItem.findByIdAndUpdate(
       { _id: req.params.id },
       {
@@ -109,7 +115,6 @@ exports.incrementQuantity = async (req, res) => {
       .populate("product")
       .select("quantity")
       .sort({ dateOrdered: -1 });
-      
 
     if (!cartItem) {
       res.send({
@@ -119,11 +124,15 @@ exports.incrementQuantity = async (req, res) => {
     } else {
       // emit event for upating new quantity
       const eventEmitter = req.app.get("eventEmitter");
-      eventEmitter.emit("updatedQuantity", {
+      eventEmitter.emit("updatedCart", {
         id: cartItem.product._id,
         quantity: cartItem.quantity,
+        totalGrand: totalGrand,
       });
-      res.send("Quantity has been incremented");
+      res.send({
+        totalGrand: totalGrand,
+        message: "Quantity has been incremented",
+      });
     }
   } catch (error) {
     console.log(error);
@@ -136,6 +145,36 @@ exports.incrementQuantity = async (req, res) => {
 
 exports.decrementQuantity = async (req, res) => {
   try {
+    const cartList = await Cart.find({ user: req.body.userId })
+      .populate("cartItems")
+      .populate({
+        path: "cartItems",
+        populate: {
+          path: "product",
+          model: "Product",
+        },
+      })
+      .sort({ dateOrdered: -1 });
+
+    // Calculating total grand of cart items
+    const totalPrices = await Promise.all(
+      cartList.map(async (item) => {
+        const newCartItem = await CartItem.findById(
+          item.cartItems[0]._id
+        ).populate("product");
+        let totalPrice;
+        if (newCartItem.product.onSale === false) {
+          totalPrice = newCartItem.product.price * newCartItem.quantity;
+          return totalPrice;
+        } else {
+          totalPrice = newCartItem.product.totalPrice * newCartItem.quantity;
+          return totalPrice;
+        }
+      })
+    );
+
+    totalGrand = totalPrices.reduce((a, b) => a + b, 0);
+
     const cartItem = await CartItem.findByIdAndUpdate(
       { _id: req.params.id },
       {
@@ -155,12 +194,16 @@ exports.decrementQuantity = async (req, res) => {
     } else {
       // emit event for upating new quantity
       const eventEmitter = req.app.get("eventEmitter");
-      eventEmitter.emit("updatedQuantity", {
+      eventEmitter.emit("updatedCart", {
         id: cartItem.product._id,
         quantity: cartItem.quantity,
+        totalGrand: totalGrand,
       });
 
-      res.send("Quantity has been decremented");
+      res.send({
+        totalGrand: totalGrand,
+        message: "Quantity has been decremented",
+      });
     }
   } catch (error) {
     console.log(error);

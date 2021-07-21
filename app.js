@@ -41,22 +41,12 @@ const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
 const io = require("socket.io")(server);
 io.on("connection", (socket) => {
   console.log("socket server is connected");
-  socket.on("productQuantity", (productId) => {
+  socket.on("updatedCart", (productId) => {
     console.log(productId);
     socket.join(productId);
   });
-
-  socket.on("updatedTotal", (data) => {
-    console.log(data);
-    
-  });
 });
 
-eventEmitter.on("updatedQuantity", (data) => {
-  io.to(`product_${data.id}`).emit("updatedQuantity", data.quantity);
-});
-
-eventEmitter.on("totalGrand", (totalGrand) => {
-  console.log(totalGrand);
-  io.sockets.emit("totalGrand", totalGrand.totalGrand);
+eventEmitter.on("updatedCart", (data) => {
+  io.to(`product_${data.id}`).emit("updatedCart", data);
 });
