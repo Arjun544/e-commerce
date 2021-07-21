@@ -151,7 +151,7 @@ exports.decrementQuantity = async (req, res) => {
       });
     } else {
       // emit event for upating new quantity
-      console.log(req.params.id);
+      const eventEmitter = req.app.get("eventEmitter");
       eventEmitter.emit("updatedQuantity", {
         id: cartItem.product._id,
         quantity: cartItem.quantity,
