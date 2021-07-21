@@ -8,11 +8,9 @@ exports.addToCart = async (req, res) => {
       req.body.cartItems.map(async (cartItem) => {
         let newCartItem = new CartItem({
           product: cartItem.product,
-          userId: req.body.user,
         });
 
         newCartItem = await newCartItem.save();
-
         return newCartItem._id;
       })
     ).catch(function (error) {
