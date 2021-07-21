@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const Emitter = require("events");
 
 //imports
 const userRoutes = require("./routes/user_routes");
@@ -17,6 +18,10 @@ require("dotenv").config();
 // Db Connection
 connectDB();
 
+// Event Emitter
+const eventEmitter = new Emitter();
+app.set("eventEmitter", eventEmitter);
+
 //Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // To parse the incoming requests with JSON payloads
@@ -33,11 +38,16 @@ app.use("/api/cart/", cartRoutes);
 //Listening to port
 const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
 
-const io = require('socket.io')(server);
+const io = require("socket.io")(server);
 
-io.on('onnection', (sokcet) => {
-    console.log('socket server is connected');
-    socket.on("test", (data) => {
-        console.log(data);
-    });
-})
+io.once("connection", (socket) => {
+  console.log("socket server is connected");
+  socket.on("productQuantity", (productId) => {
+    console.log(productId);
+    socket.join(productId);
+  });
+});
+
+eventEmitter.on("updatedQuantity", (data) => {
+  socket.to(`product_${data.id}`).emit('updatedQuantity', data);
+});

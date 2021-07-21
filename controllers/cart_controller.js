@@ -113,10 +113,14 @@ exports.incrementQuantity = async (req, res) => {
         message: "Product not found in cart",
       });
     } else {
-      res.send({
+      // emit event for upating new quantity
+      const eventEmitter = req.app.get("eventEmitter");
+      eventEmitter.emit("updatedQuantity", {
+        id: req.params.id,
         quantity: cartItem.quantity,
-        message: "Quantity has been incremented",
       });
+
+      res.send("Quantity has been incremented");
     }
   } catch (error) {
     console.log(error);
@@ -146,10 +150,14 @@ exports.decrementQuantity = async (req, res) => {
         message: "Product not found in cart",
       });
     } else {
-      res.send({
+      // emit event for upating new quantity
+      const eventEmitter = req.app.get("eventEmitter");
+      eventEmitter.emit("updatedQuantity", {
+        id: req.params.id,
         quantity: cartItem.quantity,
-        message: "Quantity has been decremented",
       });
+
+      res.send("Quantity has been decremented");
     }
   } catch (error) {
     console.log(error);
