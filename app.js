@@ -49,5 +49,5 @@ io.on("connection", (socket) => {
 });
 
 eventEmitter.on("updatedQuantity", (data) => {
-  io.to(`product_${data.id}`).emit('updatedQuantity', data);
+  io.to(`product_${data.id}`).emit("updatedQuantity", data.quantity);
 });
