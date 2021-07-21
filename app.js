@@ -31,4 +31,13 @@ app.use("/api/orders/", ordersRoutes);
 app.use("/api/cart/", cartRoutes);
 
 //Listening to port
-app.listen(PORT, console.log(`Listening on port ${PORT}.`));
+const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
+
+const io = require('socket.io')(server);
+
+io.on('onnection', (sokcet) => {
+    console.log('socket server is connected');
+    // socket.on("test", (data) => {
+    //     console.log(data);
+    // });
+})
