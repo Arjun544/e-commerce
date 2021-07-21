@@ -39,10 +39,8 @@ app.use("/api/cart/", cartRoutes);
 const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
 
 const io = require("socket.io")(server);
-let socket = null;
 io.on("connection", (socket) => {
   console.log("socket server is connected");
-  socket = socket;
   socket.on("productQuantity", (productId) => {
     console.log(productId);
     socket.join(productId);
