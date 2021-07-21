@@ -45,10 +45,6 @@ io.on("connection", (socket) => {
     console.log(productId);
     socket.join(productId);
   });
-
-  socket.on("cartTotal", () => {
-    console.log('socket on for total')
-  });
 });
 
 eventEmitter.on("updatedQuantity", (data) => {
@@ -56,5 +52,6 @@ eventEmitter.on("updatedQuantity", (data) => {
 });
 
 eventEmitter.on("updatedTotal", (totalGrand) => {
+  console.log(totalGrand);
   io.emit("updatedTotal", totalGrand.totalGrand);
 });
