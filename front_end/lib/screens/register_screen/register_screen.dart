@@ -14,7 +14,7 @@ import 'components/login_view.dart';
 
 class RegisterScreen extends StatelessWidget {
   final RegisterScreenController registerScreenController =
-      Get.put(RegisterScreenController());
+      Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,22 +25,24 @@ class RegisterScreen extends StatelessWidget {
           Stack(
             alignment: Alignment.center,
             children: [
-              Positioned(
-                top: 30,
-                left: 0,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.close_rounded,
-                    size: 30,
-                  ),
-                ),
-              ),
               Container(
                 width: 500,
                 child: Lottie.asset(
                   'assets/elements.json',
                   height: 200,
+                ),
+              ),
+              Positioned(
+                top: 30,
+                left: 0,
+                child: IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: const Icon(
+                    Icons.close_rounded,
+                    size: 30,
+                  ),
                 ),
               ),
               Transform(

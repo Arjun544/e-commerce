@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -60,7 +62,12 @@ class FeaturedSection extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () async {
+                            log(cartScreenController.userId.value);
+                            await cartScreenController.addToCart(
+                                productId: product.id,
+                                userId: cartScreenController.userId.value);
+                          },
                           child: Container(
                             width: 40,
                             height: 30,

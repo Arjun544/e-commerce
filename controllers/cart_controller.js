@@ -75,6 +75,17 @@ exports.getCart = async (req, res) => {
 
 exports.incrementQuantity = async (req, res) => {
   try {
+    const cartItem = await CartItem.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $inc: { quantity: 1 },
+      },
+      { new: true }
+    )
+      .populate("product")
+      .select("quantity")
+      .sort({ dateOrdered: -1 });
+
     const cartList = await Cart.find({ user: req.body.userId })
       .populate("cartItems")
       .populate({
@@ -102,19 +113,7 @@ exports.incrementQuantity = async (req, res) => {
         }
       })
     );
-
-    totalGrand = totalPrices.reduce((a, b) => a + b, 0);
-
-    const cartItem = await CartItem.findByIdAndUpdate(
-      { _id: req.params.id },
-      {
-        $inc: { quantity: 1 },
-      },
-      { new: true }
-    )
-      .populate("product")
-      .select("quantity")
-      .sort({ dateOrdered: -1 });
+    const totalGrand = totalPrices.reduce((a, b) => a + b, 0);
 
     if (!cartItem) {
       res.send({
@@ -145,6 +144,17 @@ exports.incrementQuantity = async (req, res) => {
 
 exports.decrementQuantity = async (req, res) => {
   try {
+    const cartItem = await CartItem.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $inc: { quantity: -1 },
+      },
+      { new: true }
+    )
+      .populate("product")
+      .select("quantity")
+      .sort({ dateOrdered: -1 });
+
     const cartList = await Cart.find({ user: req.body.userId })
       .populate("cartItems")
       .populate({
@@ -173,18 +183,7 @@ exports.decrementQuantity = async (req, res) => {
       })
     );
 
-    totalGrand = totalPrices.reduce((a, b) => a - b, 0);
-
-    const cartItem = await CartItem.findByIdAndUpdate(
-      { _id: req.params.id },
-      {
-        $inc: { quantity: -1 },
-      },
-      { new: true }
-    )
-      .populate("product")
-      .select("quantity")
-      .sort({ dateOrdered: -1 });
+    const totalGrand = totalPrices.reduce((a, b) => a + b, 0);
 
     if (!cartItem) {
       res.send({

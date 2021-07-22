@@ -2,7 +2,10 @@
     package="com.example.front_end">
    <application
         android:label="front_end"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
+        >
+        
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

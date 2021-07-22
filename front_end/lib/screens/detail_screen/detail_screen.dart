@@ -13,7 +13,7 @@ import 'components/top_header.dart';
 
 class DetailScreen extends StatelessWidget {
   final DetailScreenController detailScreenController =
-      Get.put(DetailScreenController());
+      Get.find();
 
   @override
   Widget build(BuildContext context) {

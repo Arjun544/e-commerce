@@ -8,7 +8,7 @@ import '../../../widgets/pass_textField.dart';
 
 class SignupView extends StatelessWidget {
   final RegisterScreenController controller =
-      Get.put(RegisterScreenController());
+      Get.find();
 
   @override
   Widget build(BuildContext context) {

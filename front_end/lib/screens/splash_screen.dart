@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/utils/constants.dart';
 import 'root_screen.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -21,28 +22,22 @@ class _SplashScreenState extends State<SplashScreen>
 
   double _opacity = 0;
   bool _value = true;
-  bool isLogin = false;
 
   @override
   void initState() {
     super.initState();
-    isLogin = GetStorage().read('isLogin');
     scaleController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
     )..addStatusListener(
         (status) {
           if (status == AnimationStatus.completed) {
-            if (isLogin == true) {
-              Navigator.of(context).pushReplacement(
-                ThisIsFadeRoute(route: RootScreen(), page: RootScreen()),
-              );
-            } else {
+          
               Navigator.of(context).pushReplacement(
                 ThisIsFadeRoute(
-                    route: RegisterScreen(), page: RegisterScreen()),
+                    route: RootScreen(), page: RootScreen()),
               );
-            }
+            
 
             Timer(
               const Duration(milliseconds: 300),

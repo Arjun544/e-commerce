@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:front_end/controllers/register_screen_controller.dart';
 import 'package:front_end/controllers/root_screen_controller.dart';
+import 'package:front_end/models/userModel.dart';
+import 'package:front_end/utils/constants.dart';
 import '../../controllers/cart_screen_controller.dart';
 import 'package:get/get.dart';
 
@@ -12,13 +17,12 @@ import 'components/sales_section.dart';
 import 'components/top_bar.dart';
 
 class HomeScreen extends StatelessWidget {
-  final HomeScreenController homeScreenController =
-      Get.put(HomeScreenController());
-  final CartScreenController cartScreenController =
-      Get.put(CartScreenController());
+  final HomeScreenController homeScreenController = Get.find();
+  final CartScreenController cartScreenController = Get.find();
 
-  final RootScreenController rootScreenController =
-      Get.put(RootScreenController());
+  final RootScreenController rootScreenController = Get.find();
+
+  final RegisterScreenController registerScreenController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -47,25 +51,44 @@ class HomeScreen extends StatelessWidget {
             const CategoriesSection(),
             Padding(
               padding: const EdgeInsets.only(top: 15, left: 15, bottom: 10),
-              child: Obx(() => Row(
-                    children: [
-                      const Text(
-                        'New Arrivals',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        rootScreenController
-                                .currentUser?.value.data?.username ??
-                            'Not logged in',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                    ],
-                  )),
+              child: Row(
+                children: [
+                  const Text(
+                    'New Arrivals',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  getStorage.read('isLogin') == true
+                      ? StreamBuilder(
+                          stream:
+                              rootScreenController.currentUserController.stream,
+                          builder:
+                              (context, AsyncSnapshot<UserModel> snapshot) {
+                            log(snapshot.data!.data.toString());
+                            cartScreenController.userId.value =
+                                snapshot.data!.data!.id;
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const SizedBox();
+                            }
+                            return Text(
+                              snapshot.data!.data!.username,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            );
+                          })
+                      : const SizedBox.shrink(),
+                  Text(
+                    getStorage.read('isLogin') == true
+                        ? ' Logout'
+                        : ' Not logged in',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ],
+              ),
             ),
             ArrivalsSection(
               homeScreenController: homeScreenController,

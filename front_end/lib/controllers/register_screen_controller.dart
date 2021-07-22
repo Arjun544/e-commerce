@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:front_end/controllers/root_screen_controller.dart';
+import 'package:front_end/screens/root_screen.dart';
 import '../screens/home_screen/home_screen.dart';
 import '../utils/constants.dart';
 import '../screens/register_screen/register_screen.dart';
@@ -17,7 +19,7 @@ class RegisterScreenController extends GetxController {
   final TextEditingController passController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
-  String currentUserId = '';
+  RxString currentUserId = ''.obs;
   RxInt currentTab = 1.obs;
   RxBool isPasswordHide = true.obs;
 
@@ -139,9 +141,9 @@ class RegisterScreenController extends GetxController {
 
         // Save login status
         await getStorage.write('isLogin', true);
-        currentUserId = response.data['userId'].toString();
+        currentUserId.value = response.data['userId'].toString();
         await EasyLoading.dismiss();
-        await Get.offAll(() => HomeScreen());
+        await Get.offAll(() => RootScreen());
       }
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
