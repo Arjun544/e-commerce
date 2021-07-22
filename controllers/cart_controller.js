@@ -75,6 +75,12 @@ exports.getCart = async (req, res) => {
 
 exports.incrementQuantity = async (req, res) => {
   try {
+    if (!req.body.userId) {
+        res.send({
+          error: true,
+          message: "Please provide all fields",
+        });
+    }
     const cartItem = await CartItem.findByIdAndUpdate(
       { _id: req.params.id },
       {
@@ -144,6 +150,13 @@ exports.incrementQuantity = async (req, res) => {
 
 exports.decrementQuantity = async (req, res) => {
   try {
+    if (!req.body.userId) {
+      res.send({
+        error: true,
+        message: "Please provide all fields",
+      });
+    }
+    
     const cartItem = await CartItem.findByIdAndUpdate(
       { _id: req.params.id },
       {
