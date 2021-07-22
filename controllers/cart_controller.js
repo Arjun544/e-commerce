@@ -173,7 +173,7 @@ exports.decrementQuantity = async (req, res) => {
       })
     );
 
-    totalGrand = totalPrices.reduce((a, b) => a + b, 0);
+    totalGrand = totalPrices.reduce((a, b) => a - b, 0);
 
     const cartItem = await CartItem.findByIdAndUpdate(
       { _id: req.params.id },
