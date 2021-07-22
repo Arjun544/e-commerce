@@ -8,9 +8,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 class CartScreenController extends GetxController {
-  final StreamController<CartModel> cartStreamController = BehaviorSubject();
-  final StreamController<int> incrementController = BehaviorSubject();
-  final StreamController<int> decrementController = BehaviorSubject();
+  RxList<CartList> cartList = <CartList>[].obs;
+
   late Socket socket;
   RxString userId = ''.obs;
   RxInt grandPrice = 0.obs;
@@ -37,10 +36,11 @@ class CartScreenController extends GetxController {
         userId: userId,
       );
 
-  Future getCart({required String userId}) async => await ApiCart().getCart(
-        userId: userId,
-        cartController: cartStreamController,
-      );
+  void getCart() async {
+    var cart = await ApiCart().getCart(userId: userId.value);
+    cartList.value = cart.cartList;
+    log(cartList.toString());
+  }
 
   Future incrementQuantity({required String productId}) async =>
       await ApiCart().incrementQuantity(

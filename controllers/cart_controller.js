@@ -156,7 +156,7 @@ exports.decrementQuantity = async (req, res) => {
         message: "Please provide all fields",
       });
     }
-    
+
     const cartItem = await CartItem.findByIdAndUpdate(
       { _id: req.params.id },
       {

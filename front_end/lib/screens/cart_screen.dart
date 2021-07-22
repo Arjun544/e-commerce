@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:front_end/models/cart_model.dart';
 import 'package:get/get.dart';
@@ -22,12 +23,11 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      cartScreenController.getCart(userId: cartScreenController.userId.value);
+    super.initState();
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      cartScreenController.getCart();
       cartScreenController.cartSocketInit();
     });
-
-    super.initState();
   }
 
   @override
@@ -74,51 +74,40 @@ class _CartScreenState extends State<CartScreen> {
                   ],
                 ),
               ),
+              // cartScreenController.cartList.isEmpty
+              //     ? Padding(
+              //         padding: const EdgeInsets.only(top: 80),
+              //         child: Column(
+              //           children: [
+              //             Lottie.asset('assets/empty.json',
+              //                 height: Get.height * 0.3),
+              //             const Text(
+              //               'Nothing in cart',
+              //               style: TextStyle(
+              //                   fontWeight: FontWeight.bold,
+              //                   fontSize: 20,
+              //                   color: Colors.black45),
+              //             ),
+              //           ],
+              //         ),
+              //       )
+              //     :
               Expanded(
-                child: StreamBuilder(
-                    stream: cartScreenController.cartStreamController.stream,
-                    builder: (context, AsyncSnapshot<CartModel> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const SizedBox();
-                      }
-                      return snapshot.data!.cartList.isEmpty
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 80),
-                              child: Column(
-                                children: [
-                                  Lottie.asset('assets/empty.json',
-                                      height: Get.height * 0.3),
-                                  const Text(
-                                    'Nothing in cart',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.black45),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount: snapshot.data!.cartList.length,
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, bottom: 80),
-                              itemBuilder: (context, index) {
-                                cartScreenController.socket.on('updatedCart',
-                                    (data) {
-                                  cartScreenController.grandPrice.value =
-                                      data['totalGrand'];
-                                });
-                                List<CartItem> product =
-                                    snapshot.data!.cartList[index].cartItems;
-
-                                return CartWidget(
-                                  cartScreenController: cartScreenController,
-                                  products: product,
-                                );
-                              });
-                    }),
+                child: Obx(
+                  () => ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: cartScreenController.cartList.length,
+                      padding: const EdgeInsets.only(
+                          right: 15, left: 15, bottom: 80),
+                      itemBuilder: (context, index) {
+                        return CartWidget(
+                          cartScreenController: cartScreenController,
+                          products:
+                              cartScreenController.cartList[index].cartItems,
+                        );
+                      }),
+                ),
               ),
             ],
           ),
@@ -133,13 +122,15 @@ class _CartScreenState extends State<CartScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(() => Text(
-                      '${cartScreenController.grandPrice.value.toString()}',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.white),
-                    )),
+                Obx(
+                  () => Text(
+                    '${cartScreenController.grandPrice.value.toString()}',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.white),
+                  ),
+                ),
                 SocialButton(
                   height: 45,
                   width: Get.width * 0.4,

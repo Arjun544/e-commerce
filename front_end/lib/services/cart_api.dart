@@ -32,26 +32,26 @@ class ApiCart {
     }
   }
 
-  Future getCart({
+  Future<CartModel> getCart({
     required String userId,
-    required StreamController cartController,
   }) async {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
 
-    // try {
-    var response = await dio.get(
-      baseUrl + 'cart/getCart/$userId',
-      options: Options(
-        responseType: ResponseType.plain,
-      ),
-    );
-    cartController.add(cartModelFromJson(response.data));
-    await EasyLoading.dismiss();
-    // } catch (e) {
-    //   Get.snackbar('Something is wrong', e.toString(),
-    //       snackPosition: SnackPosition.TOP);
-    //   print(e);
-    // }
+    try {
+      var response = await dio.get(
+        baseUrl + 'cart/getCart/$userId',
+        options: Options(
+          responseType: ResponseType.plain,
+        ),
+      );
+      await EasyLoading.dismiss();
+      return cartModelFromJson(response.data);
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
+      throw Exception('Something is wrong');
+    }
   }
 
   Future incrementQuantity({
