@@ -153,7 +153,7 @@ exports.updateQuantity = async (req, res) => {
         quantity: cartItem.quantity,
         totalGrand: totalGrand,
       });
-      res.send({
+     return res.send({
         totalGrand: totalGrand,
         message: "Quantity has been incremented",
       });
