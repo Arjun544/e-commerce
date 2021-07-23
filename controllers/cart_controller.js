@@ -103,7 +103,7 @@ exports.updateQuantity = async (req, res) => {
     const cartItem = await CartItem.findByIdAndUpdate(
       { _id: req.params.id },
       {
-        quantity: newQuantity,
+        quantity: req.body.newQuantity,
       },
       { new: true }
     )
