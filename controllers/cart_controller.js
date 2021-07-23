@@ -79,7 +79,7 @@ exports.getCart = async (req, res) => {
     );
     const totalGrand = totalPrices.reduce((a, b) => a + b, 0);
 
-    const cartList = await Cart.find({ user: req.params.id })
+    const cart = await Cart.find({ user: req.params.id })
       .populate("cartItems")
       .populate({
         path: "cartItems",
@@ -92,7 +92,7 @@ exports.getCart = async (req, res) => {
 
     res.send({
       totalGrand: totalGrand,
-      cartList: cartList,
+      cartList: cart,
     });
   } catch (error) {
     console.log(error);
@@ -256,42 +256,42 @@ exports.updateQuantity = async (req, res) => {
 //   }
 // };
 
-// exports.deleteFromCart = (req, res) => {
-//   Cart.findByIdAndRemove(req.params.id)
-//     .then(async (item) => {
-//       if (item) {
-//         await item.cartItems.map(async (cartItem) => {
-//           await CartItem.findByIdAndRemove(cartItem);
-//         });
-//         return res.json("Product is removed");
-//       } else {
-//         return res
-//           .status(404)
-//           .json({ error: true, message: "Product not found!" });
-//       }
-//     })
-//     .catch((err) => {
-//       return res.status(500).json({ error: true, message: err });
-//     });
-// };
+exports.deleteFromCart = (req, res) => {
+  Cart.findByIdAndRemove(req.params.id)
+    .then(async (item) => {
+      if (item) {
+        await item.cartItems.map(async (cartItem) => {
+          await CartItem.findByIdAndRemove(cartItem);
+        });
+        return res.json("Product is removed");
+      } else {
+        return res
+          .status(404)
+          .json({ error: true, message: "Product not found!" });
+      }
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: true, message: err });
+    });
+};
 
-// exports.clearCart = async (req, res) => {
-//   try {
-//     const cart = await Cart.deleteMany({
-//       user: req.params.userId,
-//     });
-//     const cartItems = await CartItem.deleteMany({
-//       userId: req.params.userId,
-//     });
-//     if (!cart && !cartItems) {
-//       res.send({
-//         error: true,
-//         message: "Cart not found for user",
-//       });
-//     } else {
-//       res.send("Cart cleared");
-//     }
-//   } catch (error) {
-//     return res.status(500).json({ error: true, message: error });
-//   }
-// };
+exports.clearCart = async (req, res) => {
+  try {
+    const cart = await Cart.deleteMany({
+      user: req.params.userId,
+    });
+    const cartItems = await CartItem.deleteMany({
+      userId: req.params.userId,
+    });
+    if (!cart && !cartItems) {
+      res.send({
+        error: true,
+        message: "Cart not found for user",
+      });
+    } else {
+      res.send("Cart cleared");
+    }
+  } catch (error) {
+    return res.status(500).json({ error: true, message: error });
+  }
+};
