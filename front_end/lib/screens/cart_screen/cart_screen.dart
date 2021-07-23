@@ -1,16 +1,19 @@
 import 'dart:developer';
 
+import 'package:awesome_dropdown/awesome_dropdown.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:front_end/models/cart_model.dart';
+import 'package:front_end/screens/cart_screen/components/drop_menu.dart';
+import 'package:front_end/screens/cart_screen/components/grand_total.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
-import '../controllers/cart_screen_controller.dart';
-import '../utils/colors.dart';
-import '../widgets/social_btn.dart';
+import '../../controllers/cart_screen_controller.dart';
+import '../../utils/colors.dart';
+import '../../widgets/social_btn.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -97,14 +100,14 @@ class _CartScreenState extends State<CartScreen> {
                   () => ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
-                      itemCount: cartScreenController.cartList.length,
+                      itemCount: cartScreenController.cartProducts.length,
                       padding: const EdgeInsets.only(
                           right: 15, left: 15, bottom: 80),
                       itemBuilder: (context, index) {
                         return CartWidget(
                           cartScreenController: cartScreenController,
-                          products:
-                              cartScreenController.cartList[index].cartItems,
+                          products: cartScreenController
+                              .cartProducts[index].cartItems,
                         );
                       }),
                 ),
@@ -122,14 +125,8 @@ class _CartScreenState extends State<CartScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(
-                  () => Text(
-                    '${cartScreenController.grandPrice.value.toString()}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.white),
-                  ),
+                TotalGrand(
+                  cartScreenController: cartScreenController,
                 ),
                 SocialButton(
                   height: 45,
@@ -210,8 +207,18 @@ class CartWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    ItemQuantityCounter(
-                      product: item,
+                    Container(
+                      width: 60,
+                      height: 40,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: DropDown(
+                        cartScreenController: cartScreenController,
+                        item: item,
+                      ),
                     ),
                   ],
                 ),
@@ -225,70 +232,70 @@ class CartWidget extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class ItemQuantityCounter extends StatelessWidget {
-  final CartItem product;
+// class ItemQuantityCounter extends StatelessWidget {
+//   final CartItem product;
 
-  ItemQuantityCounter({required this.product});
-  final CartScreenController cartScreenController =
-      Get.put(CartScreenController());
-  @override
-  Widget build(BuildContext context) {
-    cartScreenController.productQuantity.value = product.quantity;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        GestureDetector(
-          onTap: () async {
-            await cartScreenController.decrementQuantity(productId: product.id);
-            cartScreenController.socket.on('updatedCart', (data) {
-              cartScreenController.productQuantity.value = data['quantity'];
-              cartScreenController.grandPrice.value = data['totalGrand'];
-            });
-          },
-          child: Container(
-            height: 25,
-            width: 25,
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.remove_rounded,
-              size: 20,
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Obx(() => Text(
-              cartScreenController.productQuantity.value.toString(),
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-            )),
-        const SizedBox(
-          height: 5,
-        ),
-        GestureDetector(
-          onTap: () async {
-            await cartScreenController.incrementQuantity(productId: product.id);
-            cartScreenController.socket.on('updatedCart', (data) {
-              cartScreenController.productQuantity.value = data['quantity'];
-              cartScreenController.grandPrice.value = data['totalGrand'];
-            });
-          },
-          child: Container(
-            height: 25,
-            width: 25,
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: customYellow,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.add_rounded, size: 20),
-          ),
-        ),
-      ],
-    );
-  }
-}
+//   ItemQuantityCounter({required this.product});
+//   final CartScreenController cartScreenController =
+//       Get.put(CartScreenController());
+//   @override
+//   Widget build(BuildContext context) {
+//     cartScreenController.productQuantity.value = product.quantity;
+//     return Column(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       children: [
+//         GestureDetector(
+//           onTap: () async {
+//             await cartScreenController.decrementQuantity(productId: product.id);
+//             cartScreenController.socket.on('updatedCart', (data) {
+//               cartScreenController.productQuantity.value = data['quantity'];
+//               cartScreenController.grandPrice.value = data['totalGrand'];
+//             });
+//           },
+//           child: Container(
+//             height: 25,
+//             width: 25,
+//             alignment: Alignment.center,
+//             decoration: const BoxDecoration(
+//               color: Colors.white,
+//               shape: BoxShape.circle,
+//             ),
+//             child: const Icon(
+//               Icons.remove_rounded,
+//               size: 20,
+//             ),
+//           ),
+//         ),
+//         const SizedBox(
+//           height: 5,
+//         ),
+//         Obx(() => Text(
+//               cartScreenController.productQuantity.value.toString(),
+//               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+//             )),
+//         const SizedBox(
+//           height: 5,
+//         ),
+//         GestureDetector(
+//           onTap: () async {
+//             await cartScreenController.incrementQuantity(productId: product.id);
+//             cartScreenController.socket.on('updatedCart', (data) {
+//               cartScreenController.productQuantity.value = data['quantity'];
+//               cartScreenController.grandPrice.value = data['totalGrand'];
+//             });
+//           },
+//           child: Container(
+//             height: 25,
+//             width: 25,
+//             alignment: Alignment.center,
+//             decoration: const BoxDecoration(
+//               color: customYellow,
+//               shape: BoxShape.circle,
+//             ),
+//             child: const Icon(Icons.add_rounded, size: 20),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }

@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 
 import '../controllers/root_screen_controller.dart';
 import '../utils/colors.dart';
-import 'cart_screen.dart';
+import 'cart_screen/cart_screen.dart';
 import 'favourite_screen.dart';
 import 'home_screen/components/custom_bar.dart';
 import 'home_screen/home_screen.dart';

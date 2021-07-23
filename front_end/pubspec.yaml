@@ -40,6 +40,7 @@ dependencies:
   flutter_easyloading: ^3.0.0
   cached_network_image: ^3.1.0
   socket_io_client: ^1.0.1
+  awesome_dropdown: ^0.0.4
 
 dev_dependencies:
   flutter_test:

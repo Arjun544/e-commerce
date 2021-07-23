@@ -21,9 +21,9 @@ class RootScreenController extends GetxController {
 
   @override
   void onInit() async {
-    if (getStorage.read('isLogin') == true) {
-      await getCurrentUser();
-    }
+    // if (getStorage.read('isLogin') == true) {
+    //   await getCurrentUser();
+    // }
     super.onInit();
   }
 
@@ -32,7 +32,7 @@ class RootScreenController extends GetxController {
   }
 
   Future<UserModel?> getCurrentUser() async {
-
+    log('error in current user');
     try {
       var response = await dio.get(
         baseUrl + 'users/60f32dd949b3d700150f5899',
@@ -40,11 +40,9 @@ class RootScreenController extends GetxController {
           responseType: ResponseType.plain,
         ),
       );
-      
-        currentUserController.add(userModelFromJson(response.data));
-        log('current user ${response.data.toString()}');
-       
-      
+
+      currentUserController.add(userModelFromJson(response.data));
+      log('current user ${response.data.toString()}');
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);

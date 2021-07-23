@@ -1,19 +1,18 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:front_end/models/cart_model.dart';
-import 'package:front_end/services/cart_api.dart';
 import 'package:get/get.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
+import '../models/cart_model.dart';
+import '../services/cart_api.dart';
+
 class CartScreenController extends GetxController {
-  RxList<CartList> cartList = <CartList>[].obs;
+  RxList<CartList> cartProducts = <CartList>[].obs;
+   RxInt cartTotal = 0.obs;
 
   late Socket socket;
-  RxString userId = ''.obs;
-  RxInt grandPrice = 0.obs;
-  RxInt productQuantity = 0.obs;
+  RxString userId = '60f32dd949b3d700150f5899'.obs;
 
   void cartSocketInit() {
     socket = io(
@@ -38,19 +37,22 @@ class CartScreenController extends GetxController {
 
   void getCart() async {
     var cart = await ApiCart().getCart(userId: userId.value);
-    cartList.value = cart.cartList;
-    log(cartList.toString());
+    cartTotal.value = cart.totalGrand!;
+    cartProducts.value = cart.cartList!;
+    log(cartProducts.toString());
   }
 
-  Future incrementQuantity({required String productId}) async =>
-      await ApiCart().incrementQuantity(
+  Future updateQuantity(
+          {required String productId, required int newQuantity}) async =>
+      await ApiCart().updateQuantity(
         productId: productId,
         userId: userId.value,
+        newQuantity: newQuantity,
       );
 
-  Future decrementQuantity({required String productId}) async =>
-      await ApiCart().decrementQuantity(
-        productId: productId,
-        userId: userId.value,
-      );
+  // Future decrementQuantity({required String productId}) async =>
+  //     await ApiCart().decrementQuantity(
+  //       productId: productId,
+  //       userId: userId.value,
+  //     );
 }

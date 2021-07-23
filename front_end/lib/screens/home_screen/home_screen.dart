@@ -49,45 +49,11 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const CategoriesSection(),
-            Padding(
-              padding: const EdgeInsets.only(top: 15, left: 15, bottom: 10),
-              child: Row(
-                children: [
-                  const Text(
-                    'New Arrivals',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  getStorage.read('isLogin') == true
-                      ? StreamBuilder(
-                          stream:
-                              rootScreenController.currentUserController.stream,
-                          builder:
-                              (context, AsyncSnapshot<UserModel> snapshot) {
-                            log(snapshot.data!.data.toString());
-                            cartScreenController.userId.value =
-                                snapshot.data!.data!.id;
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const SizedBox();
-                            }
-                            return Text(
-                              snapshot.data!.data!.username,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            );
-                          })
-                      : const SizedBox.shrink(),
-                  Text(
-                    getStorage.read('isLogin') == true
-                        ? ' Logout'
-                        : ' Not logged in',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                ],
+            const Padding(
+              padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
+              child: Text(
+                'New Arrivals',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ),
             ArrivalsSection(

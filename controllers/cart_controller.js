@@ -154,8 +154,7 @@ exports.updateQuantity = async (req, res) => {
         totalGrand: totalGrand,
       });
      return res.send({
-        totalGrand: totalGrand,
-        message: "Quantity has been incremented",
+        message: "Quantity has been updated",
       });
     }
   } catch (error) {
@@ -166,84 +165,6 @@ exports.updateQuantity = async (req, res) => {
     });
   }
 };
-
-// exports.decrementQuantity = async (req, res) => {
-//   try {
-//     if (!req.body.userId) {
-//       res.send({
-//         error: true,
-//         message: "Please provide all fields",
-//       });
-//     }
-
-//     const cartItem = await CartItem.findByIdAndUpdate(
-//       { _id: req.params.id },
-//       {
-//         $inc: { quantity: -1 },
-//       },
-//       { new: true }
-//     )
-//       .populate("product")
-//       .select("quantity")
-//       .sort({ dateOrdered: -1 });
-
-//     const cartList = await Cart.find({ user: req.body.userId })
-//       .populate("cartItems")
-//       .populate({
-//         path: "cartItems",
-//         populate: {
-//           path: "product",
-//           model: "Product",
-//         },
-//       })
-//       .sort({ dateOrdered: -1 });
-
-//     // Calculating total grand of cart items
-//     const totalPrices = await Promise.all(
-//       cartList.map(async (item) => {
-//         const newCartItem = await CartItem.findById(
-//           item.cartItems[0]._id
-//         ).populate("product");
-//         let totalPrice;
-//         if (newCartItem.product.onSale === false) {
-//           totalPrice = newCartItem.product.price * newCartItem.quantity;
-//           return totalPrice;
-//         } else {
-//           totalPrice = newCartItem.product.totalPrice * newCartItem.quantity;
-//           return totalPrice;
-//         }
-//       })
-//     );
-
-//     const totalGrand = totalPrices.reduce((a, b) => a + b, 0);
-
-//     if (!cartItem) {
-//       res.send({
-//         error: true,
-//         message: "Product not found in cart",
-//       });
-//     } else {
-//       // emit event for upating new quantity
-//       const eventEmitter = req.app.get("eventEmitter");
-//       eventEmitter.emit("updatedCart", {
-//         id: cartItem.product._id,
-//         quantity: cartItem.quantity,
-//         totalGrand: totalGrand,
-//       });
-
-//       res.send({
-//         totalGrand: totalGrand,
-//         message: "Quantity has been decremented",
-//       });
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     return res.json({
-//       success: false,
-//       message: "Something went wrong",
-//     });
-//   }
-// };
 
 exports.deleteFromCart = (req, res) => {
   Cart.findByIdAndRemove(req.params.id)

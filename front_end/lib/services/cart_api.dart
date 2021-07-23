@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -44,6 +45,7 @@ class ApiCart {
           responseType: ResponseType.plain,
         ),
       );
+      log('error in get cart');
       await EasyLoading.dismiss();
       return cartModelFromJson(response.data);
     } catch (e) {
@@ -54,15 +56,18 @@ class ApiCart {
     }
   }
 
-  Future incrementQuantity({
+  Future updateQuantity({
     required String productId,
     required String userId,
+    required int newQuantity,
   }) async {
     try {
       var response =
           await dio.patch(baseUrl + 'cart/incrementQuantity/$productId', data: {
         'userId': userId,
+        'newQuantity': newQuantity,
       });
+      log('error in cart quantity');
       await EasyLoading.showToast(
         response.data['message'],
         toastPosition: EasyLoadingToastPosition.top,
@@ -75,24 +80,47 @@ class ApiCart {
     }
   }
 
-  Future decrementQuantity({
-    required String productId,
-    required String userId,
-  }) async {
-    try {
-      var response =
-          await dio.patch(baseUrl + 'cart/decrementQuantity/$productId', data: {
-        'userId': userId,
-      });
-      await EasyLoading.showToast(
-        response.data['message'],
-        toastPosition: EasyLoadingToastPosition.top,
-        maskType: EasyLoadingMaskType.clear,
-      );
-    } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
-      print(e);
-    }
-  }
+  // Future incrementQuantity({
+  //   required String productId,
+  //   required String userId,
+  // }) async {
+  //   try {
+  //     var response =
+  //         await dio.patch(baseUrl + 'cart/incrementQuantity/$productId', data: {
+  //       'userId': userId,
+  //     });
+  //     log('error in cart quantity');
+  //     await EasyLoading.showToast(
+  //       response.data['message'],
+  //       toastPosition: EasyLoadingToastPosition.top,
+  //       maskType: EasyLoadingMaskType.clear,
+  //     );
+  //   } catch (e) {
+  //     Get.snackbar('Something is wrong', e.toString(),
+  //         snackPosition: SnackPosition.TOP);
+  //     print(e);
+  //   }
+  // }
+
+  // Future decrementQuantity({
+  //   required String productId,
+  //   required String userId,
+  // }) async {
+  //   try {
+  //     var response =
+  //         await dio.patch(baseUrl + 'cart/decrementQuantity/$productId', data: {
+  //       'userId': userId,
+  //     });
+  //     await EasyLoading.showToast(
+  //       response.data['message'],
+  //       toastPosition: EasyLoadingToastPosition.top,
+  //       maskType: EasyLoadingMaskType.clear,
+  //     );
+  //   } catch (e) {
+  //     Get.snackbar('Something is wrong', e.toString(),
+  //         snackPosition: SnackPosition.TOP);
+  //     print(e);
+  //   }
+  // }
+
 }
