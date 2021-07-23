@@ -50,7 +50,7 @@ exports.getCart = async (req, res) => {
       return res.status(400).send("Invalid user id");
     }
 
-    const cartList = await Cart.find({ user: req.body.userId })
+    const cartList = await Cart.find({ user: req.params.id })
       .populate("cartItems")
       .populate({
         path: "cartItems",
@@ -79,20 +79,9 @@ exports.getCart = async (req, res) => {
     );
     const totalGrand = totalPrices.reduce((a, b) => a + b, 0);
 
-    const cart = await Cart.find({ user: req.params.id })
-      .populate("cartItems")
-      .populate({
-        path: "cartItems",
-        populate: {
-          path: "product",
-          model: "Product",
-        },
-      })
-      .sort({ dateOrdered: -1 });
-
     res.send({
       totalGrand: totalGrand,
-      cartList: cart,
+      cartList: cartList,
     });
   } catch (error) {
     console.log(error);
