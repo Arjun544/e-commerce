@@ -5,9 +5,9 @@ const mongoose = require("mongoose");
 exports.addToCart = async (req, res) => {
   try {
     const cartItemsIds = Promise.all(
-      req.body.cartItems.map(async (cartItem) => {
+      req.body.cartItem.map(async (cartItem) => {
         let newCartItem = new CartItem({
-          product: cartItem.product,
+          product: cartItem.productId,
           userId: req.body.user,
         });
 
@@ -33,7 +33,7 @@ exports.addToCart = async (req, res) => {
 
     res.json({
       success: true,
-      cart: cart,
+      message: 'Added to cart',
     });
   } catch (error) {
     console.log(error);
