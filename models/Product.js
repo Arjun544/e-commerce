@@ -7,7 +7,7 @@ const productSchema = mongoose.Schema({
     required: true,
   },
   quantity: {
-    type: number,
+    type: Number,
     default: 1,
   },
   description: {
