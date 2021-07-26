@@ -308,9 +308,7 @@ exports.getWishlist = async (req, res) => {
     const products = await Product.find({ _id: { $in: ids } });
 
     if (!products) {
-      return res
-        .status(400)
-        .send({ error: true, message: "Nothing in wishlist"});
+      return res.status(400).send("Nothing in wishlist");
     } else {
       return res.status(200).json(products);
     }
