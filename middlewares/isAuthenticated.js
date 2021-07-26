@@ -13,7 +13,10 @@ function isAuthenticated() {
       { url: /\/api\/categories(.*)/, methods: ["GET", "OPTIONS"] },
       { url: /\/api\/orders(.*)/, methods: ["GET", "OPTIONS", "POST"] },
       { url: /\/api\/users(.*)/, methods: ["GET", "OPTIONS"] },
-      { url: /\/api\/cart(.*)/, methods: ["GET", "OPTIONS", "PATCH", "POST", "DELETE"] },
+      {
+        url: /\/api\/cart(.*)/,
+        methods: ["GET", "OPTIONS", "PATCH", "POST", "DELETE"],
+      },
       "/api/users/login",
       "/api/users/register",
       "/api/users/activate",
