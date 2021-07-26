@@ -21,6 +21,7 @@ const {
 } = require("../controllers/products_controller");
 
 router.post("/add", upload.single("image"), cleanBody, addProduct);
+router.post("/wishlist", cleanBody, getWishlist);
 router.patch("/addReview/:id", cleanBody, addReview);
 router.get("/get", cleanBody, getProducts);
 router.get("/newArrival", cleanBody, NewArrivalProducts);
@@ -31,7 +32,7 @@ router.get("/sorting", cleanBody, sorting);
 router.get("/featured", cleanBody, featuredProducts);
 router.post("/wishlist/ids:", cleanBody, getWishlist);
 router.get("/:id", cleanBody, getProductById);
-router.get("/wishlist/:ids", cleanBody, getWishlist);
+
 router.patch("/update/:id", cleanBody, updateProduct);
 router.delete("/delete/:id", cleanBody, deleteProduct);
 
