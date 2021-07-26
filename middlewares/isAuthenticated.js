@@ -9,7 +9,10 @@ function isAuthenticated() {
     isRevoked: isRevoked,
   }).unless({
     path: [
-      { url: /\/api\/products(.*)/, methods: ["GET", "OPTIONS", "PATCH"] },
+      {
+        url: /\/api\/products(.*)/,
+        methods: ["GET", "OPTIONS", "PATCH", "POST"],
+      },
       { url: /\/api\/categories(.*)/, methods: ["GET", "OPTIONS"] },
       { url: /\/api\/orders(.*)/, methods: ["GET", "OPTIONS", "POST"] },
       { url: /\/api\/users(.*)/, methods: ["GET", "OPTIONS"] },
