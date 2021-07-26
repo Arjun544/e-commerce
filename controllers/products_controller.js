@@ -304,7 +304,7 @@ exports.addReview = async (req, res) => {
 
 exports.getWishlist = async (req, res) => {
   try {
-    const ids = req.body.ids;
+    const ids = req.params.ids;
     const products = await Product.find({ _id: { $in: ids } });
 
     if (!products) {
