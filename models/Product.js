@@ -1,9 +1,14 @@
+const { number } = require("joi");
 const mongoose = require("mongoose");
 
 const productSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
+  },
+  quantity: {
+    type: number,
+    default: 1,
   },
   description: {
     type: String,
