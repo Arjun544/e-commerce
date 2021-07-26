@@ -41,10 +41,6 @@ const productSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  favourites: {
-    type: Array,
-    default: [],
-  },
   totalPrice: {
     type: Number,
     default: 0,

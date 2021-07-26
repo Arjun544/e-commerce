@@ -129,7 +129,7 @@ exports.NewArrivalProducts = async (req, res) => {
   if (!products) {
     res.status(500).json({ success: false });
   }
-  res.send({products});
+  res.send({ products });
 };
 
 exports.filterByPrice = async (req, res) => {
@@ -187,24 +187,6 @@ exports.sorting = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({
-      success: false,
-      message: "Something went wrong",
-    });
-  }
-};
-
-exports.addToFavourite = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product.favourites.includes(req.body.userId)) {
-      await product.updateOne({ $push: { favourites: req.body.userId } });
-      res.status(200).json("Added to wishlist");
-    } else {
-      await product.updateOne({ $pull: { favourites: req.body.userId } });
-      res.status(200).json("Removed from wishlist");
-    }
-  } catch (err) {
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -316,6 +298,24 @@ exports.addReview = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
+    });
+  }
+};
+
+exports.getWishlist = async (req, res) => {
+  try {
+    const ids = req.body.ids;
+    const products = await Product.find({ _id: { $in: ids } });
+
+    if (!products) {
+      return res.status(400).send("Nothing in wishlist");
+    } else {
+      return res.status(200).json(products);
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
     });
   }
 };
