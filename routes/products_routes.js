@@ -22,7 +22,7 @@ const {
 
 router.post("/add", upload.single("image"), cleanBody, addProduct);
 router.patch("/addReview/:id", cleanBody, addReview);
-router.get("/wishlist", cleanBody, getWishlist);
+
 router.get("/get", cleanBody, getProducts);
 router.get("/newArrival", cleanBody, NewArrivalProducts);
 router.get("/count", cleanBody, count);
@@ -30,6 +30,7 @@ router.get("/filterByPrice", cleanBody, filterByPrice);
 router.patch("/multipleImages/:id", upload.array("images", 4), multipleImages);
 router.get("/sorting", cleanBody, sorting);
 router.get("/featured", cleanBody, featuredProducts);
+router.get("/wishlist/ids:", cleanBody, getWishlist);
 router.get("/:id", cleanBody, getProductById);
 router.patch("/update/:id", cleanBody, updateProduct);
 router.delete("/delete/:id", cleanBody, deleteProduct);
