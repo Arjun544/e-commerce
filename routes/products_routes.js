@@ -30,7 +30,7 @@ router.get("/filterByPrice", cleanBody, filterByPrice);
 router.patch("/multipleImages/:id", upload.array("images", 4), multipleImages);
 router.get("/sorting", cleanBody, sorting);
 router.get("/featured", cleanBody, featuredProducts);
-router.post("/wishlist/ids:", cleanBody, getWishlist);
+router.get("/wishlist/ids:", cleanBody, getWishlist);
 router.get("/:id", cleanBody, getProductById);
 
 router.patch("/update/:id", cleanBody, updateProduct);

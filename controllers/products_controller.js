@@ -304,13 +304,13 @@ exports.addReview = async (req, res) => {
 
 exports.getWishlist = async (req, res) => {
   try {
-    const ids = req.body.ids;
+    const ids = req.params.ids;
     const products = await Product.find({ _id: { $in: ids } });
 
     if (!products) {
       return res.status(400).send("Nothing in wishlist");
     } else {
-      return res.status(200).json(products);
+      return res.status(200).json({products});
     }
   } catch (error) {
     return res.status(500).json({
