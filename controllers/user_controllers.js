@@ -2,6 +2,7 @@ const Joi = require("joi");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const Product = require("../models/Product");
 const { sendEmail } = require("../helpers/mailer");
 
 const userSchema = Joi.object().keys({
@@ -383,6 +384,51 @@ exports.deleteUserById = async (req, res) => {
         success: true,
         message: "Deleted user",
       });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+exports.getWishlist = async (req, res) => {
+  try {
+    const ids = req.body.ids;
+    const products = await Product.find({ _id: { $in: ids } });
+
+    if (!products) {
+      return res.status(400).send("Nothing in wishlist");
+    } else {
+      return res.status(200).json({ products });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+exports.clearWishlist = async (req, res) => {
+  try {
+    if (!req.params.userId) {
+      return res.status(400).send("User id is required");
+    }
+    const user = await User.findByIdAndUpdate(
+      { _id: req.params.userId },
+      {
+        $push: {
+          wishlist: [],
+        },
+      }
+    );
+
+    if (!user) {
+      return res.status(400).send("User not found");
+    } else {
+      return res.status(200).json("Wishlist is cleared");
     }
   } catch (error) {
     return res.status(500).json({

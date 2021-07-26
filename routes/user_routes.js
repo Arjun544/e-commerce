@@ -12,10 +12,13 @@ const {
   deleteUserById,
   updateUser,
   count,
+  getWishlist,
+  clearWishlist,
 } = require("../controllers/user_controllers");
 
 router.post("/login", cleanBody, logIn);
 router.post("/register", cleanBody, register);
+router.post("/wishlist", cleanBody, getWishlist);
 router.patch("/activate", cleanBody, activate);
 router.patch("/forgotPassword", cleanBody, forgotPassword);
 router.patch("/resetPassword", cleanBody, resetPassword);
@@ -23,6 +26,7 @@ router.get("/allUsers", cleanBody, getAllUsers);
 router.get("/count", cleanBody, count);
 router.get("/:id", cleanBody, getUserById);
 router.patch("/update/:id", cleanBody, updateUser);
+router.patch("/wishlist/:userId", cleanBody, clearWishlist);
 router.delete("/delete/:id", cleanBody, deleteUserById);
 
 module.exports = router;

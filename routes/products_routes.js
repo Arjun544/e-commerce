@@ -17,11 +17,9 @@ const {
   filterByPrice,
   sorting,
   NewArrivalProducts,
-  getWishlist,
 } = require("../controllers/products_controller");
 
 router.post("/add", upload.single("image"), cleanBody, addProduct);
-router.post("/wishlist", cleanBody, getWishlist);
 router.patch("/addReview/:id", cleanBody, addReview);
 router.get("/get", cleanBody, getProducts);
 router.get("/newArrival", cleanBody, NewArrivalProducts);

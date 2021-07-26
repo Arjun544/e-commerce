@@ -11,11 +11,14 @@ function isAuthenticated() {
     path: [
       {
         url: /\/api\/products(.*)/,
-        methods: ["GET", "OPTIONS", "PATCH", "POST"],
+        methods: ["GET", "OPTIONS", "PATCH"],
       },
       { url: /\/api\/categories(.*)/, methods: ["GET", "OPTIONS"] },
       { url: /\/api\/orders(.*)/, methods: ["GET", "OPTIONS", "POST"] },
-      { url: /\/api\/users(.*)/, methods: ["GET", "OPTIONS"] },
+      {
+        url: /\/api\/users(.*)/,
+        methods: ["GET", "OPTIONS", "PATCH", "POST"],
+      },
       {
         url: /\/api\/cart(.*)/,
         methods: ["GET", "OPTIONS", "PATCH", "POST", "DELETE"],
