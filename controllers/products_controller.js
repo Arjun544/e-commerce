@@ -199,10 +199,10 @@ exports.addToFavourite = async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (!product.favourites.includes(req.body.userId)) {
       await product.updateOne({ $push: { favourites: req.body.userId } });
-      res.status(200).json("Add to favourite");
+      res.status(200).json("Added to wishlist");
     } else {
       await product.updateOne({ $pull: { favourites: req.body.userId } });
-      res.status(200).json("Removed from favourites");
+      res.status(200).json("Removed from wishlist");
     }
   } catch (err) {
     return res.status(500).json({
