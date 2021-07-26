@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/models/product_Model.dart';
-import 'package:front_end/utils/constants.dart';
+import '../models/product_Model.dart';
+import '../utils/constants.dart';
 import 'package:get/get.dart';
 
 class ApiProduct {

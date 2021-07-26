@@ -4,14 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/controllers/root_screen_controller.dart';
-import 'package:front_end/screens/root_screen.dart';
-import '../screens/home_screen/home_screen.dart';
-import '../utils/constants.dart';
-import '../screens/register_screen/register_screen.dart';
 import 'package:get/get.dart';
 
+import '../screens/register_screen/register_screen.dart';
+import '../screens/root_screen.dart';
 import '../screens/verificationScreen.dart';
+import '../utils/constants.dart';
 
 class RegisterScreenController extends GetxController {
   final TextEditingController usernameController = TextEditingController();

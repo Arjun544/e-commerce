@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/controllers/cart_screen_controller.dart';
+import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
+
 import '../models/userModel.dart';
 import '../utils/constants.dart';
-import 'package:get/get.dart';
-
 import 'register_screen_controller.dart';
 
 class RootScreenController extends GetxController {

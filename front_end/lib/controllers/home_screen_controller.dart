@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../services/product_api.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../models/product_Model.dart';
+import '../services/product_api.dart';
 
 class HomeScreenController extends GetxController {
-  PageController salesPageController = PageController(initialPage: 0);
-
+  final PageController salesPageController = PageController(initialPage: 0);
+  List<String> favListIds = [];
   int _currentPage = 0;
 
   final StreamController<ProductModel> featuredProductsStreamController =
@@ -27,7 +27,9 @@ class HomeScreenController extends GetxController {
       } else {
         _currentPage = 0;
       }
-      if (salesPageController.hasClients) {
+      if (salesPageController.hasClients ||
+          // ignore: invalid_use_of_protected_member
+          salesPageController.positions.length > 1) {
         salesPageController.animateToPage(
           _currentPage,
           duration: const Duration(milliseconds: 350),
@@ -43,6 +45,7 @@ class HomeScreenController extends GetxController {
   void onClose() {
     arrivalProductsStreamController.close();
     featuredProductsStreamController.close();
+    salesPageController.dispose();
     super.onClose();
   }
 
@@ -50,6 +53,7 @@ class HomeScreenController extends GetxController {
         arrivalController: arrivalProductsStreamController,
         featuredController: featuredProductsStreamController,
       );
+
 
   @override
   void dispose() {

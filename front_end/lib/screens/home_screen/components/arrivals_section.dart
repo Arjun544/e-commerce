@@ -1,11 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+
 import '../../../controllers/cart_screen_controller.dart';
 import '../../../controllers/home_screen_controller.dart';
 import '../../../models/product_Model.dart';
-import 'package:get/get.dart';
-
 import '../../../utils/colors.dart';
 
 class ArrivalsSection extends StatelessWidget {
@@ -50,50 +49,17 @@ class ArrivalsSection extends StatelessWidget {
                                 fontWeight: FontWeight.bold, fontSize: 15),
                           ),
                         )
-                      : Stack(
-                          clipBehavior: Clip.hardEdge,
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            Container(
-                              width: Get.width * 0.5,
-                              margin: const EdgeInsets.only(right: 10),
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                color: darkBlue.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: BuildItem(
-                                product: product,
-                              ),
-                            ),
-                            Positioned(
-                              right: 10,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Container(
-                                      width: 40,
-                                      height: 30,
-                                      decoration: const BoxDecoration(
-                                        color: customYellow,
-                                        borderRadius: BorderRadius.only(
-                                          bottomRight: Radius.circular(20),
-                                          topLeft: Radius.circular(15),
-                                        ),
-                                      ),
-                                      child: const Icon(
-                                        Icons.add_rounded,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                      : Container(
+                          width: Get.width * 0.5,
+                          margin: const EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: darkBlue.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: BuildItem(
+                            product: product,
+                          ),
                         );
                 }),
           );

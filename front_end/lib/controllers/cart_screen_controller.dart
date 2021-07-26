@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 import '../models/cart_model.dart';
@@ -9,7 +10,8 @@ import '../services/cart_api.dart';
 
 class CartScreenController extends GetxController {
   RxList<CartList> cartProducts = <CartList>[].obs;
-   RxInt cartTotal = 0.obs;
+  StreamController cartTotal = BehaviorSubject();
+  List<String> cartProductsIds = [];
 
   late Socket socket;
   RxString userId = '60f32dd949b3d700150f5899'.obs;
@@ -29,15 +31,15 @@ class CartScreenController extends GetxController {
     print(socket.connected);
   }
 
-  Future addToCart({required String productId, required String userId}) async =>
+  Future addToCart({required String productId}) async =>
       await ApiCart().addToCart(
         productId: productId,
-        userId: userId,
+        userId: userId.value,
       );
 
   void getCart() async {
     var cart = await ApiCart().getCart(userId: userId.value);
-    cartTotal.value = cart.totalGrand!;
+    cartTotal.add(cart.totalGrand);
     cartProducts.value = cart.cartList!;
     log(cartProducts.toString());
   }
@@ -50,9 +52,12 @@ class CartScreenController extends GetxController {
         newQuantity: newQuantity,
       );
 
-  // Future decrementQuantity({required String productId}) async =>
-  //     await ApiCart().decrementQuantity(
-  //       productId: productId,
-  //       userId: userId.value,
-  //     );
+  Future deleteItem({required String id}) async =>
+      await ApiCart().removeItemFromCart(
+        id: id,
+      );
+
+  Future clearCart({required String userId}) async => await ApiCart().clearCart(
+        userId: userId,
+      );
 }

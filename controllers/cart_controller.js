@@ -33,7 +33,7 @@ exports.addToCart = async (req, res) => {
 
     res.json({
       success: true,
-      message: 'Added to cart',
+      message: "Added to cart",
     });
   } catch (error) {
     console.log(error);
@@ -47,7 +47,7 @@ exports.addToCart = async (req, res) => {
 exports.getCart = async (req, res) => {
   try {
     if (!mongoose.isValidObjectId(req.params.id)) {
-      return res.status(400).send("Invalid user id");
+      return res.status(400).send("Invalid cart id");
     }
 
     const cartList = await Cart.find({ user: req.params.id })
@@ -153,7 +153,7 @@ exports.updateQuantity = async (req, res) => {
         quantity: cartItem.quantity,
         totalGrand: totalGrand,
       });
-     return res.send({
+      return res.send({
         message: "Quantity has been updated",
       });
     }

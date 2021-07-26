@@ -62,9 +62,10 @@ class CustomTile extends StatelessWidget {
                         Text(
                           title,
                           style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Icon(
                           isTapped
@@ -89,8 +90,8 @@ class CustomTile extends StatelessWidget {
                             title,
                             style: const TextStyle(
                                 color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
                           ),
                           Icon(
                             isTapped

@@ -1,14 +1,11 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:front_end/controllers/register_screen_controller.dart';
-import 'package:front_end/controllers/root_screen_controller.dart';
-import 'package:front_end/models/userModel.dart';
-import 'package:front_end/utils/constants.dart';
-import '../../controllers/cart_screen_controller.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/cart_screen_controller.dart';
 import '../../controllers/home_screen_controller.dart';
+import '../../controllers/register_screen_controller.dart';
+import '../../controllers/root_screen_controller.dart';
 import '../../widgets/draggable_home.dart';
 import 'components/arrivals_section.dart';
 import 'components/categories_section.dart';

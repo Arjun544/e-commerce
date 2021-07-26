@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
-import '../../../controllers/home_screen_controller.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../controllers/home_screen_controller.dart';
 import '../../../utils/colors.dart';
 
 class SalesSection extends StatelessWidget {

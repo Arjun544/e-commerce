@@ -3,8 +3,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/models/cart_model.dart';
-import 'package:front_end/utils/constants.dart';
+import '../models/cart_model.dart';
+import '../utils/constants.dart';
 import 'package:get/get.dart';
 
 class ApiCart {
@@ -16,7 +16,11 @@ class ApiCart {
 
     try {
       await dio.post(baseUrl + 'cart/addToCart', data: {
-        'product': productId,
+        'cartItem': [
+          {
+            'productId': productId,
+          }
+        ],
         'user': userId,
       });
 
@@ -63,11 +67,10 @@ class ApiCart {
   }) async {
     try {
       var response =
-          await dio.patch(baseUrl + 'cart/incrementQuantity/$productId', data: {
+          await dio.patch(baseUrl + 'cart/updateQuantity/$productId', data: {
         'userId': userId,
         'newQuantity': newQuantity,
       });
-      log('error in cart quantity');
       await EasyLoading.showToast(
         response.data['message'],
         toastPosition: EasyLoadingToastPosition.top,
@@ -80,47 +83,39 @@ class ApiCart {
     }
   }
 
-  // Future incrementQuantity({
-  //   required String productId,
-  //   required String userId,
-  // }) async {
-  //   try {
-  //     var response =
-  //         await dio.patch(baseUrl + 'cart/incrementQuantity/$productId', data: {
-  //       'userId': userId,
-  //     });
-  //     log('error in cart quantity');
-  //     await EasyLoading.showToast(
-  //       response.data['message'],
-  //       toastPosition: EasyLoadingToastPosition.top,
-  //       maskType: EasyLoadingMaskType.clear,
-  //     );
-  //   } catch (e) {
-  //     Get.snackbar('Something is wrong', e.toString(),
-  //         snackPosition: SnackPosition.TOP);
-  //     print(e);
-  //   }
-  // }
+  Future removeItemFromCart({
+    required String id,
+  }) async {
+    try {
+      var response = await dio.delete(baseUrl + 'cart/$id');
 
-  // Future decrementQuantity({
-  //   required String productId,
-  //   required String userId,
-  // }) async {
-  //   try {
-  //     var response =
-  //         await dio.patch(baseUrl + 'cart/decrementQuantity/$productId', data: {
-  //       'userId': userId,
-  //     });
-  //     await EasyLoading.showToast(
-  //       response.data['message'],
-  //       toastPosition: EasyLoadingToastPosition.top,
-  //       maskType: EasyLoadingMaskType.clear,
-  //     );
-  //   } catch (e) {
-  //     Get.snackbar('Something is wrong', e.toString(),
-  //         snackPosition: SnackPosition.TOP);
-  //     print(e);
-  //   }
-  // }
+      await EasyLoading.showToast(
+        response.data,
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
+    }
+  }
 
+  Future clearCart({
+    required String userId,
+  }) async {
+    try {
+      var response = await dio.delete(baseUrl + 'cart/clear/$userId');
+
+      await EasyLoading.showToast(
+        response.data,
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
+    }
+  }
 }

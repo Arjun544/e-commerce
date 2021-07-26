@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/models/product_Model.dart';
 import '../../../controllers/detail_screen_controller.dart';
 import '../../../widgets/customTIle.dart';
 import 'package:get/get.dart';
 
 class ProductDetails extends StatelessWidget {
+  final Product product;
   final DetailScreenController controller;
 
-  ProductDetails({required this.controller});
+  ProductDetails({required this.controller, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -17,35 +19,36 @@ class ProductDetails extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Name',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              Text(
+                product.name,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               const SizedBox(height: 5),
-              const Text(
-                r'$60',
-                style: TextStyle(
+              Text(
+                '\$ ${product.price.toString()}',
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 15,
                   color: Colors.black54,
                 ),
               ),
-              const SizedBox(height: 5),
-              const Text(
-                'Descrption about product is here',
+              const SizedBox(height: 10),
+              Text(
+                product.description,
                 maxLines: 2,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               const SizedBox(
                 height: 20,
               ),
               Obx(() => CustomTile(
-                    title: 'Full decription',
+                    title: 'Full Description',
                     isTapped: controller.isTileTappedOne.value,
                     isExpanded: controller.isTileExpandedOne.value,
                     updateTileStatus: controller.updateTileStatusOne,
-                    desc:
-                        'Eu consequat amet eiusmod pariatur veniam. In ex sint officia esse mollit culpa velit. In consectetur Lorem proident et ullamco.',
+                    desc: product.fullDescription,
                   )),
               const SizedBox(
                 height: 20,
@@ -55,8 +58,7 @@ class ProductDetails extends StatelessWidget {
                     isTapped: controller.isTileTappedTwo.value,
                     isExpanded: controller.isTileExpandedTwo.value,
                     updateTileStatus: controller.updateTileStatusTwo,
-                    desc:
-                        'Eu consequat amet eiusmod pariatur veniam. In ex sint officia esse mollit culpa velit. In consectetur Lorem proident et ullamco.',
+                    desc: product.reviews[0]['review'],
                   )),
               const SizedBox(
                 height: 20,
