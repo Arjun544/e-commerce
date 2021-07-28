@@ -11,6 +11,10 @@ const userSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
+    profile: {
+      type: String,
+      default: "",
+    },
     phone: {
       type: String,
     },
@@ -100,4 +104,3 @@ module.exports.comparePasswords = async (inputPassword, hashedPassword) => {
     throw new Error("Comparison failed", error);
   }
 };
-

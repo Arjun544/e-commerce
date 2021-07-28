@@ -17,6 +17,7 @@ const {
   filterByPrice,
   sorting,
   NewArrivalProducts,
+  getProductsByCategory,
 } = require("../controllers/products_controller");
 
 router.post("/add", upload.single("image"), cleanBody, addProduct);
@@ -28,9 +29,8 @@ router.get("/filterByPrice", cleanBody, filterByPrice);
 router.patch("/multipleImages/:id", upload.array("images", 4), multipleImages);
 router.get("/sorting", cleanBody, sorting);
 router.get("/featured", cleanBody, featuredProducts);
-
 router.get("/:id", cleanBody, getProductById);
-
+router.get("/byCategory/:category", cleanBody, getProductsByCategory);
 router.patch("/update/:id", cleanBody, updateProduct);
 router.delete("/delete/:id", cleanBody, deleteProduct);
 

@@ -120,11 +120,39 @@ exports.getProductById = async (req, res) => {
   }
 };
 
+exports.getProductsByCategory = async (req, res) => {
+  try {
+    const product = await Product.find({
+      category: req.params.category,
+    }).populate("category");
+
+    if (!product) {
+      res.json({
+        error: true,
+        message: "Mo products found",
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        products: product,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
 exports.NewArrivalProducts = async (req, res) => {
   // Getting new arrivals in last 2 days
   var start = new Date(new Date().getTime() - 48 * 60 * 60 * 1000);
 
-  const products = await Product.find({ dateCreated: { $gte: start } });
+  const products = await Product.find({
+    dateCreated: { $gte: start },
+  }).populate("category");
 
   if (!products) {
     res.status(500).json({ success: false });
@@ -196,7 +224,9 @@ exports.sorting = async (req, res) => {
 
 exports.featuredProducts = async (req, res) => {
   try {
-    const products = await Product.find({ isFeatured: true });
+    const products = await Product.find({ isFeatured: true }).populate(
+      "category"
+    );
     res.send({ products });
   } catch (error) {
     res.status(500).json({ error: true, message: "Can't get products" });
@@ -268,7 +298,7 @@ exports.addReview = async (req, res) => {
       return res.status(400).send("Invalid product id");
     }
 
-    const { userId, review } = req.body;
+    const { userId, review, number } = req.body;
     if (!userId) {
       res.json("All fields arer required");
     } else if (review.length < 3) {
@@ -282,7 +312,12 @@ exports.addReview = async (req, res) => {
       {
         $inc: { totalReviews: 1 },
         $push: {
-          reviews: { user: userById, review: review, addedAt: Date.now() },
+          reviews: {
+            user: userById,
+            review: review,
+            number: number,
+            addedAt: Date.now(),
+          },
         },
       },
 
@@ -301,8 +336,6 @@ exports.addReview = async (req, res) => {
     });
   }
 };
-
-
 
 exports.count = async (req, res) => {
   const productCount = await Product.countDocuments((count) => count);
