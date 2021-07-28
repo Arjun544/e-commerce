@@ -1,6 +1,7 @@
 const Product = require("../models/Product");
 const Category = require("../models/Category");
 const User = require("../models/User");
+const Review = require("../models/Review");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
 const cloudinaryFile = require("../config/cloudinary.config");
@@ -307,17 +308,19 @@ exports.addReview = async (req, res) => {
 
     const userById = await User.findById(userId).select("profile username");
 
+    const newReview = new Review({
+      user: userById,
+      review: review,
+      number: number,
+      addedAt: Date.now(),
+    });
+
     await Product.findByIdAndUpdate(
       req.params.id,
       {
         $inc: { totalReviews: 1 },
         $push: {
-          reviews: {
-            user: userById,
-            review: review,
-            number: number,
-            addedAt: Date.now(),
-          },
+          reviews: newReview,
         },
       },
 
