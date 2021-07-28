@@ -305,7 +305,7 @@ exports.addReview = async (req, res) => {
       res.json("Review length can't be less than 3");
     }
 
-    const userById = await User.findById(userId).select("username");
+    const userById = await User.findById(userId).select("profile username");
 
     await Product.findByIdAndUpdate(
       req.params.id,
