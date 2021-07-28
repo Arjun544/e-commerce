@@ -309,9 +309,6 @@ exports.addReview = async (req, res) => {
     const userById = await User.findById(userId).select("profile username");
 
     const newReview = new Review({
-      user: userById,
-      review: review,
-      number: number,
       addedAt: Date.now(),
     });
 
@@ -320,7 +317,12 @@ exports.addReview = async (req, res) => {
       {
         $inc: { totalReviews: 1 },
         $push: {
-          reviews: newReview,
+          reviews: {
+            user: userById,
+            review: review,
+            number: number,
+            addedAt: newReview,
+          },
         },
       },
 
