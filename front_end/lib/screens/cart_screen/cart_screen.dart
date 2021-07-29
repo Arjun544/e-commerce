@@ -1,9 +1,11 @@
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
-import 'package:front_end/utils/constants.dart';
+import '../../utils/constants.dart';
 import '../../controllers/home_screen_controller.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -34,177 +36,173 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(
-        () => Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      right: 15, left: 15, top: 50, bottom: 20),
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    right: 15, left: 15, top: 50, bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () => Get.back(closeOverlays: true),
+                      child: SvgPicture.asset(
+                        'assets/images/Arrow - Left.svg',
+                        height: 25,
+                        color: darkBlue.withOpacity(0.7),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        'My Cart',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
+                    cartScreenController.cartProducts.isEmpty
+                        ? const SizedBox(
+                            width: 15,
+                          )
+                        : GestureDetector(
+                            onTap: () async {
+                              await cartScreenController.clearCart(
+                                  userId:
+                                      cartScreenController.currentUserId.value);
+                              setState(() {
+                                cartScreenController.getCart();
+                              });
+                            },
+                            child: const Text(
+                              'Clear',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+              ),
+              cartScreenController.cartProducts.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 80),
+                      child: Column(
+                        children: [
+                          Lottie.asset('assets/empty.json',
+                              height: Get.height * 0.3),
+                          const Text(
+                            'Nothing in cart',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black45),
+                          ),
+                        ],
+                      ),
+                    )
+                  : Expanded(
+                      child: Obx(
+                        () => ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: cartScreenController.cartProducts.length,
+                            padding: const EdgeInsets.only(
+                                right: 15, left: 15, bottom: 80),
+                            itemBuilder: (context, index) {
+                              return SwipeActionCell(
+                                key: ValueKey(
+                                    cartScreenController.cartProducts[index]),
+                                performsFirstActionWithFullSwipe: true,
+                                trailingActions: <SwipeAction>[
+                                  SwipeAction(
+                                    title: 'Remove',
+                                    widthSpace: 100,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                    onTap: (CompletionHandler handler) async {
+                                      handler(false);
+
+                                      await cartScreenController.deleteItem(
+                                        id: cartScreenController
+                                            .cartProducts[index].id,
+                                      );
+                                      await firebaseFirestore
+                                          .collection('carts')
+                                          .doc(cartScreenController
+                                              .currentUserId.value)
+                                          .update({
+                                        'productIds': FieldValue.arrayRemove([
+                                          cartScreenController.productIds[index]
+                                        ])
+                                      });
+                                      setState(() {
+                                        cartScreenController.getCart();
+                                      });
+                                    },
+                                    color: Colors.red,
+                                    backgroundRadius: 20,
+                                  ),
+                                ],
+                                child: CartWidget(
+                                  cartScreenController: cartScreenController,
+                                  products: cartScreenController
+                                      .cartProducts[index].cartItems,
+                                ),
+                              );
+                            }),
+                      ),
+                    ),
+            ],
+          ),
+          cartScreenController.cartProducts.isEmpty
+              ? const SizedBox.shrink()
+              : Container(
+                  height: 70,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  margin:
+                      const EdgeInsets.only(right: 20, left: 20, bottom: 10),
+                  decoration: BoxDecoration(
+                    color: darkBlue,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () => Get.back(closeOverlays: true),
-                        child: SvgPicture.asset(
-                          'assets/images/Arrow - Left.svg',
-                          height: 25,
-                          color: darkBlue.withOpacity(0.7),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          'My Cart',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                      ),
-                      cartScreenController.cartProducts.isEmpty
-                          ? const SizedBox(
-                              width: 15,
-                            )
-                          : GestureDetector(
-                              onTap: () async {
-                                await cartScreenController.clearCart(
-                                    userId: cartScreenController.userId.value);
-                                cartScreenController.cartProductsIds.clear();
-                                await sharedPreferences
-                                    .remove('cartProductsIds');
-                                setState(() {
-                                  cartScreenController.getCart();
-                                });
-                              },
-                              child: const Text(
-                                'Clear',
-                                style: TextStyle(
+                      StreamBuilder(
+                          stream: cartScreenController.cartTotal.stream,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const SizedBox();
+                            }
+                            return Text(
+                              '${snapshot.data.toString()}',
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.redAccent,
-                                ),
-                              ),
-                            ),
+                                  fontSize: 20,
+                                  color: Colors.white),
+                            );
+                          }),
+                      SocialButton(
+                        height: 45,
+                        width: Get.width * 0.4,
+                        text: 'Continue',
+                        icon: 'assets/images/Logout.svg',
+                        color: Colors.grey.withOpacity(0.5),
+                        iconColor: Colors.white,
+                      ),
                     ],
                   ),
                 ),
-                cartScreenController.cartProducts.isEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 80),
-                        child: Column(
-                          children: [
-                            Lottie.asset('assets/empty.json',
-                                height: Get.height * 0.3),
-                            const Text(
-                              'Nothing in cart',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black45),
-                            ),
-                          ],
-                        ),
-                      )
-                    : Expanded(
-                        child: Obx(
-                          () => ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              itemCount:
-                                  cartScreenController.cartProducts.length,
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, bottom: 80),
-                              itemBuilder: (context, index) {
-                                return SwipeActionCell(
-                                  key: ValueKey(
-                                      cartScreenController.cartProducts[index]),
-                                  performsFirstActionWithFullSwipe: true,
-                                  trailingActions: <SwipeAction>[
-                                    SwipeAction(
-                                      title: 'Remove',
-                                      widthSpace: 100,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                      ),
-                                      onTap: (CompletionHandler handler) async {
-                                        handler(false);
-                                        await cartScreenController.deleteItem(
-                                          id: cartScreenController
-                                              .cartProducts[index].id,
-                                        );
-                                        cartScreenController.cartProductsIds
-                                            .remove(cartScreenController
-                                                .cartProducts[index]
-                                                .cartItems[index]
-                                                .id);
-                                        await sharedPreferences.setStringList(
-                                            'cartProductsIds',
-                                            cartScreenController
-                                                .cartProductsIds);
-                                        setState(() {
-                                          cartScreenController.getCart();
-                                        });
-                                      },
-                                      color: Colors.red,
-                                      backgroundRadius: 20,
-                                    ),
-                                  ],
-                                  child: CartWidget(
-                                    cartScreenController: cartScreenController,
-                                    products: cartScreenController
-                                        .cartProducts[index].cartItems,
-                                  ),
-                                );
-                              }),
-                        ),
-                      ),
-              ],
-            ),
-            cartScreenController.cartProducts.isEmpty
-                ? const SizedBox.shrink()
-                : Container(
-                    height: 70,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    margin:
-                        const EdgeInsets.only(right: 20, left: 20, bottom: 10),
-                    decoration: BoxDecoration(
-                      color: darkBlue,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        StreamBuilder(
-                            stream: cartScreenController.cartTotal.stream,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const SizedBox();
-                              }
-                              return Text(
-                                '${snapshot.data.toString()}',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.white),
-                              );
-                            }),
-                        SocialButton(
-                          height: 45,
-                          width: Get.width * 0.4,
-                          text: 'Continue',
-                          icon: 'assets/images/Logout.svg',
-                          color: Colors.grey.withOpacity(0.5),
-                          iconColor: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -236,6 +234,7 @@ class _CartWidgetState extends State<CartWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: widget.products.map((item) {
+          widget.cartScreenController.productIds.add(item.product.id);
           widget.cartScreenController.socket
               .emit('updatedCart', 'product_${item.product.id}');
           return Expanded(
@@ -330,72 +329,3 @@ class _CartWidgetState extends State<CartWidget> {
     );
   }
 }
-
-// ignore: must_be_immutable
-// class ItemQuantityCounter extends StatelessWidget {
-//   final CartItem product;
-
-//   ItemQuantityCounter({required this.product});
-//   final CartScreenController cartScreenController =
-//       Get.put(CartScreenController());
-//   @override
-//   Widget build(BuildContext context) {
-//     cartScreenController.productQuantity.value = product.quantity;
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         GestureDetector(
-//           onTap: () async {
-//             await cartScreenController.decrementQuantity(productId: product.id);
-//             cartScreenController.socket.on('updatedCart', (data) {
-//               cartScreenController.productQuantity.value = data['quantity'];
-//               cartScreenController.grandPrice.value = data['totalGrand'];
-//             });
-//           },
-//           child: Container(
-//             height: 25,
-//             width: 25,
-//             alignment: Alignment.center,
-//             decoration: const BoxDecoration(
-//               color: Colors.white,
-//               shape: BoxShape.circle,
-//             ),
-//             child: const Icon(
-//               Icons.remove_rounded,
-//               size: 20,
-//             ),
-//           ),
-//         ),
-//         const SizedBox(
-//           height: 5,
-//         ),
-//         Obx(() => Text(
-//               cartScreenController.productQuantity.value.toString(),
-//               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-//             )),
-//         const SizedBox(
-//           height: 5,
-//         ),
-//         GestureDetector(
-//           onTap: () async {
-//             await cartScreenController.incrementQuantity(productId: product.id);
-//             cartScreenController.socket.on('updatedCart', (data) {
-//               cartScreenController.productQuantity.value = data['quantity'];
-//               cartScreenController.grandPrice.value = data['totalGrand'];
-//             });
-//           },
-//           child: Container(
-//             height: 25,
-//             width: 25,
-//             alignment: Alignment.center,
-//             decoration: const BoxDecoration(
-//               color: customYellow,
-//               shape: BoxShape.circle,
-//             ),
-//             child: const Icon(Icons.add_rounded, size: 20),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }

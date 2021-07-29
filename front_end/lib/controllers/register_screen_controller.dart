@@ -17,9 +17,9 @@ class RegisterScreenController extends GetxController {
   final TextEditingController passController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
-  RxString currentUserId = ''.obs;
   RxInt currentTab = 1.obs;
   RxBool isPasswordHide = true.obs;
+  RxString userId = ''.obs;
 
   void togglePassword() {
     isPasswordHide.value = !isPasswordHide.value;
@@ -134,12 +134,12 @@ class RegisterScreenController extends GetxController {
           maskType: EasyLoadingMaskType.clear,
         );
       } else {
+        userId.value = response.data['userId'];
         // Saving jwt token in local storage
         await getStorage.write('token', response.data['token']);
 
         // Save login status
         await getStorage.write('isLogin', true);
-        currentUserId.value = response.data['userId'].toString();
         await EasyLoading.dismiss();
         await Get.offAll(() => RootScreen());
       }

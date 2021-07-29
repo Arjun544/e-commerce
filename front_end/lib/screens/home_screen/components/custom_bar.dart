@@ -17,7 +17,6 @@ class CustomBar extends StatelessWidget {
       () => CustomNavigationBar(
         iconSize: 30.0,
         backgroundColor: darkBlue,
-
         isFloating: true,
         elevation: 2,
         strokeColor: Colors.white,

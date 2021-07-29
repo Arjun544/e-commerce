@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/models/product_Model.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../../models/product_Model.dart';
+import '../../../utils/colors.dart';
 import '../../../controllers/detail_screen_controller.dart';
-import '../../../widgets/customTIle.dart';
 import 'package:get/get.dart';
+
+import 'reviews_section.dart';
 
 class ProductDetails extends StatelessWidget {
   final Product product;
@@ -14,64 +18,146 @@ class ProductDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                product.name,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 10),
+            Text(
+              product.name,
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              '\$ ${product.price.toString()}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                color: Colors.black54,
               ),
-              const SizedBox(height: 5),
-              Text(
-                '\$ ${product.price.toString()}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: Colors.black54,
-                ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              product.description,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style:
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(height: 20),
+            Obx(
+              () => ListView.builder(
+                key: Key('builder ${controller.selected.value.toString()}'),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  // Calculating average of ratings
+
+                  controller.averageRating = product.reviews
+                          .map((m) => double.parse(m.number))
+                          .reduce((a, b) => a + b) /
+                      product.reviews.length;
+                  return Container(
+                    margin: index == 0 || index == 1
+                        ? const EdgeInsets.only(bottom: 20)
+                        : const EdgeInsets.only(bottom: 0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ExpansionTile(
+                      key: Key(index.toString()),
+                      expandedAlignment: Alignment.topLeft,
+                      initiallyExpanded: controller.firstTap.value
+                          ? index == controller.selected.value
+                          : false,
+                      title: Text(
+                        index == 0
+                            ? 'Full description'
+                            : index == 1
+                                ? 'Rating'
+                                : 'Reviews ( ${product.totalReviews} )',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      onExpansionChanged: (newState) {
+                        controller.firstTap.value = true;
+                        if (newState) {
+                          const Duration(seconds: 2000);
+                          controller.selected.value = index;
+                        } else {
+                          controller.selected.value = -1;
+                        }
+                      },
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: index == 0
+                              ? Text(
+                                  product.fullDescription,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : index == 1
+                                  ? Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 20),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            controller.averageRating
+                                                    .toString() +
+                                                ' / 5',
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          RatingBar.builder(
+                                            initialRating:
+                                                controller.averageRating,
+                                            updateOnDrag: false,
+                                            ignoreGestures: true,
+                                            itemSize: 25,
+                                            minRating: 1,
+                                            maxRating: 5,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            itemPadding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 2.0),
+                                            itemBuilder: (context, _) =>
+                                                SvgPicture.asset(
+                                              'assets/images/Star.svg',
+                                              height: 20,
+                                              color: customYellow,
+                                            ),
+                                            onRatingUpdate: (rating) {
+                                              print(rating);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : ReviewsSection(
+                                      reviews: product.reviews,
+                                      totalReviews: product.totalReviews,
+                                    ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-              const SizedBox(height: 10),
-              Text(
-                product.description,
-                maxLines: 2,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Obx(() => CustomTile(
-                    title: 'Full Description',
-                    isTapped: controller.isTileTappedOne.value,
-                    isExpanded: controller.isTileExpandedOne.value,
-                    updateTileStatus: controller.updateTileStatusOne,
-                    desc: product.fullDescription,
-                  )),
-              const SizedBox(
-                height: 20,
-              ),
-              Obx(() => CustomTile(
-                    title: 'Reviews',
-                    isTapped: controller.isTileTappedTwo.value,
-                    isExpanded: controller.isTileExpandedTwo.value,
-                    updateTileStatus: controller.updateTileStatusTwo,
-                    desc: product.reviews[0]['review'],
-                  )),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                'Similar Products',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-        const SizedBox(height: 10),
-        // const FeaturedSection(),
       ],
     );
   }

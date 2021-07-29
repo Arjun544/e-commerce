@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/controllers/home_screen_controller.dart';
-import 'package:front_end/controllers/wishlist_controller.dart';
-import 'package:front_end/utils/constants.dart';
+import '../../../controllers/home_screen_controller.dart';
+import '../../../controllers/wishlist_controller.dart';
+import '../../../utils/constants.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';

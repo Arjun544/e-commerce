@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../models/category_model.dart';
 import 'package:get/get.dart';
+
+import '../../../models/category_model.dart';
 
 class CategoriesSection extends StatelessWidget {
   const CategoriesSection({Key? key}) : super(key: key);

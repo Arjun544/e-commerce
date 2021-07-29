@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "525290548335",
+    "project_id": "sellcorner-d036f",
+    "storage_bucket": "sellcorner-d036f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525290548335:android:6b3aa5accd5138edf0f19a",
+        "android_client_info": {
+          "package_name": "com.example.front_end"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525290548335-rlri6pnemqv3srcfh1d2br48mlp1vm3c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7NGiZUpBhau2xN2uz7IzbOYxnjqGD4aE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525290548335-rlri6pnemqv3srcfh1d2br48mlp1vm3c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '../widgets/customDialogue.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -27,8 +28,9 @@ class _WishlistScreenState extends State<WishlistScreen> {
   @override
   void initState() {
     super.initState();
-    log(wishListController.ids.toString());
-    if (wishListController.ids.isNotEmpty) wishListController.getWishlist();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (wishListController.ids.isNotEmpty) wishListController.getWishlist();
+    });
   }
 
   @override
@@ -53,14 +55,18 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         width: 15,
                       )
                     : GestureDetector(
-                        onTap: () async {
-                          await wishListController.clearWishlist();
-                          wishListController.ids.clear();
-                          await sharedPreferences.remove('favListIds');
-                          setState(() {
-                            wishListController.getWishlist();
-                          });
-                        },
+                        onTap: getStorage.read('isLogin') == true
+                            ? () async {
+                                await wishListController.clearWishlist();
+                                wishListController.ids.clear();
+                                await sharedPreferences.remove('favListIds');
+                                setState(() {
+                                  wishListController.getWishlist();
+                                });
+                              }
+                            : () {
+                                customDialogue(context);
+                              },
                         child: const Text(
                           'Clear',
                           style: TextStyle(
@@ -148,22 +154,32 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                         ),
                                       ),
                                       IconButton(
-                                        onPressed: () async {
-                                          log(homeScreenController.favListIds
-                                              .toString());
-                                          homeScreenController.favListIds
-                                              .remove(product.id);
-                                          log(homeScreenController.favListIds
-                                              .toString());
-                                          wishListController.ids
-                                              .remove(product.id);
-                                          await sharedPreferences.setStringList(
-                                              'favListIds',
-                                              homeScreenController.favListIds);
-                                          setState(() {
-                                            wishListController.getWishlist();
-                                          });
-                                        },
+                                        onPressed: getStorage.read('isLogin') ==
+                                                true
+                                            ? () async {
+                                                log(homeScreenController
+                                                    .favListIds
+                                                    .toString());
+                                                homeScreenController.favListIds
+                                                    .remove(product.id);
+                                                log(homeScreenController
+                                                    .favListIds
+                                                    .toString());
+                                                wishListController.ids
+                                                    .remove(product.id);
+                                                await sharedPreferences
+                                                    .setStringList(
+                                                        'favListIds',
+                                                        homeScreenController
+                                                            .favListIds);
+                                                setState(() {
+                                                  wishListController
+                                                      .getWishlist();
+                                                });
+                                              }
+                                            : () {
+                                                customDialogue(context);
+                                              },
                                         icon: Icon(
                                           Icons.delete_rounded,
                                           size: 20,
@@ -178,8 +194,10 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               staggeredTileBuilder: (index) {
                                 return StaggeredTile.count(
                                     1, index.isEven ? 1.4 : 1.5);
-                              });
-                    }),
+                              },
+                            );
+                    },
+                  ),
           ],
         ),
       ),
@@ -211,6 +229,8 @@ class BuildItem extends StatelessWidget {
             children: [
               Text(
                 product.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),

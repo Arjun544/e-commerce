@@ -36,6 +36,7 @@ class Data {
     required this.zip,
     required this.city,
     required this.country,
+    required this.profile,
     required this.active,
     required this.id,
     required this.username,
@@ -50,6 +51,7 @@ class Data {
   String street;
   String apartment;
   String zip;
+  String profile;
   String city;
   String country;
   bool active;
@@ -66,6 +68,7 @@ class Data {
         street: json['street'],
         apartment: json['apartment'],
         zip: json['zip'],
+        profile: json['profile'],
         city: json['city'],
         country: json['country'],
         active: json['active'],
@@ -83,6 +86,7 @@ class Data {
         'street': street,
         'apartment': apartment,
         'zip': zip,
+        'profile': profile,
         'city': city,
         'country': country,
         'active': active,

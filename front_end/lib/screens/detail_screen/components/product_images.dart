@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:front_end/models/product_Model.dart' as model;
+import '../../../models/product_Model.dart' as model;
 import '../../../controllers/detail_screen_controller.dart';
 import 'package:get/get.dart';
 

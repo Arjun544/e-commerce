@@ -1,11 +1,15 @@
 import 'package:badges/badges.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/controllers/cart_screen_controller.dart';
-import 'package:front_end/models/product_Model.dart';
-import 'package:front_end/utils/constants.dart';
+import '../../controllers/home_screen_controller.dart';
+import 'components/similar_scetion.dart';
+import '../../controllers/cart_screen_controller.dart';
+import '../../models/product_Model.dart';
+import '../cart_screen/cart_screen.dart';
+import '../register_screen/register_screen.dart';
+import '../../utils/constants.dart';
 import 'package:get/get.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 import '../../controllers/detail_screen_controller.dart';
 import '../../utils/colors.dart';
@@ -22,6 +26,7 @@ class DetailScreen extends StatelessWidget {
 
   final DetailScreenController detailScreenController = Get.find();
   final CartScreenController cartScreenController = Get.find();
+  final HomeScreenController homeScreenController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -49,61 +54,150 @@ class DetailScreen extends StatelessWidget {
         ),
       ),
       body: [
-        ProductDetails(
-          controller: detailScreenController,
-          product: product,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ProductDetails(
+                controller: detailScreenController,
+                product: product,
+              ),
+              const SizedBox(height: 15),
+              const Text(
+                'Similar Products',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SimilarSection(
+                categoryId: product.category.id,
+                currentId: product.id,
+                homeScreenController: homeScreenController,
+                detailScreenController: detailScreenController,
+              ),
+            ],
+          ),
         ),
       ],
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                color: customYellow,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Badge(
-                badgeContent: PreferenceBuilder<List<String>>(
-                    preference: sharedPreferences
-                        .getStringList('cartProductsIds', defaultValue: []),
-                    builder: (context, snapshot) {
-                      return Text(
-                        snapshot.length.toString(),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                            fontSize: 12),
+        child: getStorage.read('isLogin') == true
+            ? StreamBuilder<DocumentSnapshot>(
+                stream: firebaseFirestore
+                    .collection('carts')
+                    .doc(cartScreenController.currentUserId.value)
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  var data;
+                  if (snapshot.data!.data() != null) {
+                    data = snapshot.data!.data();
+                  }
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          getStorage.read('isLogin') == false
+                              ? Get.to(
+                                  () => RegisterScreen(),
+                                )
+                              : await Get.to(
+                                  () => CartScreen(),
+                                );
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: customYellow,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Badge(
+                            badgeContent: Text(
+                              data['productIds'] == null
+                                  ? '0'
+                                  : data['productIds'].length.toString(),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                  fontSize: 12),
+                            ),
+                            badgeColor: Colors.white,
+                            position: BadgePosition.topEnd(top: 5, end: 5),
+                            child: SvgPicture.asset(
+                              'assets/images/Bag.svg',
+                              height: 30,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      data['productIds'].contains(product.id)
+                          ? CustomButton(
+                              height: 50,
+                              width: Get.width * 0.5,
+                              text: 'Added',
+                              color: darkBlue,
+                              onPressed: () {},
+                            )
+                          : CustomButton(
+                              height: 50,
+                              width: Get.width * 0.5,
+                              text: 'Add to Cart',
+                              color: darkBlue,
+                              onPressed: () async {
+                                await cartScreenController.addToCart(
+                                  productId: product.id,
+                                );
+                              },
+                            ),
+                    ],
+                  );
+                })
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      await Get.to(
+                        () => RegisterScreen(),
                       );
-                    }),
-                badgeColor: Colors.white,
-                position: BadgePosition.topEnd(top: 5, end: 5),
-                child: SvgPicture.asset(
-                  'assets/images/Bag.svg',
-                  height: 30,
-                  color: Colors.white,
-                ),
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        color: customYellow,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Badge(
+                        badgeContent: const Text(
+                          '0',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                              fontSize: 12),
+                        ),
+                        badgeColor: Colors.white,
+                        position: BadgePosition.topEnd(top: 5, end: 5),
+                        child: SvgPicture.asset(
+                          'assets/images/Bag.svg',
+                          height: 30,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  CustomButton(
+                    height: 50,
+                    width: Get.width * 0.5,
+                    text: 'Add to Cart',
+                    color: darkBlue,
+                    onPressed: () async {
+                      await Get.to(() => RegisterScreen());
+                    },
+                  ),
+                ],
               ),
-            ),
-            CustomButton(
-              height: 50,
-              width: Get.width * 0.5,
-              text: 'Add to Cart',
-              color: darkBlue,
-              onPressed: () async {
-                await cartScreenController.addToCart(productId: product.id);
-                cartScreenController.cartProductsIds.add(product.id);
-                await sharedPreferences.setStringList(
-                  'cartProductsIds',
-                  cartScreenController.cartProductsIds,
-                );
-              },
-            ),
-          ],
-        ),
       ),
     );
   }

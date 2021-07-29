@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -49,7 +48,6 @@ class ApiCart {
           responseType: ResponseType.plain,
         ),
       );
-      log('error in get cart');
       await EasyLoading.dismiss();
       return cartModelFromJson(response.data);
     } catch (e) {

@@ -28,11 +28,11 @@ class ProductModel {
 
 class Product {
   Product({
+    required this.quantity,
     required this.fullDescription,
     required this.images,
     required this.price,
     required this.onSale,
-    required this.favourites,
     required this.totalPrice,
     required this.discount,
     required this.totalReviews,
@@ -49,42 +49,43 @@ class Product {
     required this.productId,
   });
 
+  int quantity;
   String fullDescription;
   List<Image> images;
   int price;
   bool onSale;
-  List<dynamic> favourites;
   int totalPrice;
   int discount;
   int totalReviews;
-  List<dynamic> reviews;
+  List<Review> reviews;
   bool isFeatured;
   String id;
   String name;
   String description;
   String image;
-  String category;
+  Category category;
   int countInStock;
   DateTime dateCreated;
   int v;
   String productId;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
+        quantity: json['quantity'],
         fullDescription: json['fullDescription'],
         images: List<Image>.from(json['images'].map((x) => Image.fromJson(x))),
         price: json['price'],
         onSale: json['onSale'],
-        favourites: List<dynamic>.from(json['favourites'].map((x) => x)),
         totalPrice: json['totalPrice'],
         discount: json['discount'],
         totalReviews: json['totalReviews'],
-        reviews: List<dynamic>.from(json['reviews'].map((x) => x)),
+        reviews:
+            List<Review>.from(json['reviews'].map((x) => Review.fromJson(x))),
         isFeatured: json['isFeatured'],
         id: json['_id'],
         name: json['name'],
         description: json['description'],
         image: json['image'],
-        category: json['category'],
+        category: Category.fromJson(json['category']),
         countInStock: json['countInStock'],
         dateCreated: DateTime.parse(json['dateCreated']),
         v: json['__v'],
@@ -92,25 +93,61 @@ class Product {
       );
 
   Map<String, dynamic> toJson() => {
+        'quantity': quantity,
         'fullDescription': fullDescription,
         'images': List<dynamic>.from(images.map((x) => x.toJson())),
         'price': price,
         'onSale': onSale,
-        'favourites': List<dynamic>.from(favourites.map((x) => x)),
         'totalPrice': totalPrice,
         'discount': discount,
         'totalReviews': totalReviews,
-        'reviews': List<dynamic>.from(reviews.map((x) => x)),
+        'reviews': List<dynamic>.from(reviews.map((x) => x.toJson())),
         'isFeatured': isFeatured,
         '_id': id,
         'name': name,
         'description': description,
         'image': image,
-        'category': category,
+        'category': category.toJson(),
         'countInStock': countInStock,
         'dateCreated': dateCreated.toIso8601String(),
         '__v': v,
         'id': productId,
+      };
+}
+
+class Category {
+  Category({
+    required this.id,
+    required this.name,
+    required this.icon,
+    required this.color,
+    required this.v,
+    required this.categoryId,
+  });
+
+  String id;
+  String name;
+  String icon;
+  String color;
+  int v;
+  String categoryId;
+
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
+        id: json['_id'],
+        name: json['name'],
+        icon: json['icon'],
+        color: json['color'],
+        v: json['__v'],
+        categoryId: json['id'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        '_id': id,
+        'name': name,
+        'icon': icon,
+        'color': color,
+        '__v': v,
+        'id': categoryId,
       };
 }
 
@@ -127,5 +164,77 @@ class Image {
 
   Map<String, dynamic> toJson() => {
         'url': url,
+      };
+}
+
+class Review {
+  Review({
+    required this.user,
+    required this.review,
+    required this.number,
+    required this.addedAt,
+  });
+
+  User user;
+  String review;
+  String number;
+  AddedAt addedAt;
+
+  factory Review.fromJson(Map<String, dynamic> json) => Review(
+        user: User.fromJson(json['user']),
+        review: json['review'],
+        number: json['number'],
+        addedAt: AddedAt.fromJson(json['addedAt']),
+      );
+
+  Map<String, dynamic> toJson() => {
+        'user': user.toJson(),
+        'review': review,
+        'number': number,
+        'addedAt': addedAt.toJson(),
+      };
+}
+
+class AddedAt {
+  AddedAt({
+    required this.id,
+    required this.addedAt,
+  });
+
+  String id;
+  DateTime addedAt;
+
+  factory AddedAt.fromJson(Map<String, dynamic> json) => AddedAt(
+        id: json['_id'],
+        addedAt: DateTime.parse(json['addedAt']),
+      );
+
+  Map<String, dynamic> toJson() => {
+        '_id': id,
+        'addedAt': addedAt.toIso8601String(),
+      };
+}
+
+class User {
+  User({
+    required this.profile,
+    required this.id,
+    required this.username,
+  });
+
+  String profile;
+  String id;
+  String username;
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        profile: json['profile'],
+        id: json['_id'],
+        username: json['username'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'profile': profile,
+        '_id': id,
+        'username': username,
       };
 }
