@@ -2,6 +2,7 @@ const Product = require("../models/Product");
 const Category = require("../models/Category");
 const User = require("../models/User");
 const Review = require("../models/Review");
+var ObjectID = require("mongodb").ObjectID;
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
 const cloudinaryFile = require("../config/cloudinary.config");
@@ -123,19 +124,19 @@ exports.getProductById = async (req, res) => {
 
 exports.getProductsByCategory = async (req, res) => {
   try {
-    const product = await Product.find({
+    const products = await Product.find({
       category: req.params.category,
+      _id: { $ne: ObjectID(req.params.currentId) },
     }).populate("category");
 
-    if (!product) {
+    if (!products) {
       res.json({
         error: true,
         message: "Mo products found",
       });
     } else {
       res.status(200).json({
-        success: true,
-        products: product,
+        products: products,
       });
     }
   } catch (error) {
