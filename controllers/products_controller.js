@@ -9,7 +9,7 @@ const cloudinaryFile = require("../config/cloudinary.config");
 
 exports.searchProducts = async (req, res) => {
   try {
-    const products = await Product.fuzzySearch(req.params.query);
+    const products = await Product.fuzzySearch(req.params.query).populate('category');
     if (!products) {
       return res.json("No products found");
     } else {
