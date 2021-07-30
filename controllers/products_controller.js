@@ -9,18 +9,21 @@ const cloudinaryFile = require("../config/cloudinary.config");
 
 exports.searchProducts = async (req, res) => {
   try {
-    const products = await Product.fuzzySearch(req.params.query).populate('category');
+    const products = await Product.fuzzySearch(req.params.query).populate(
+      "category"
+    );
+
     if (!products) {
       return res.json("No products found");
     } else {
       return res.json({ products });
     }
   } catch (error) {
-     console.log(error);
-     return res.status(500).json({
-       success: false,
-       message: "Something went wrong",
-     });
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
   }
 };
 

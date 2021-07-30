@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -45,19 +46,41 @@ class ApiProduct {
   }) async {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
 
-    // try {
+    try {
+      var response = await dio.get(
+        baseUrl + 'products/byCategory/$categoryId/$currentId',
+        options: Options(
+          responseType: ResponseType.plain,
+        ),
+      );
+      controller.add(productModelFromJson(response.data));
+      await EasyLoading.dismiss();
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
+    }
+  }
+
+  Future searchProduct({
+    required String query,
+    required StreamController searchController,
+  }) async {
+    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+
+    try {
     var response = await dio.get(
-      baseUrl + 'products/byCategory/$categoryId/$currentId',
+      baseUrl + 'products/search/$query',
       options: Options(
         responseType: ResponseType.plain,
       ),
     );
-    controller.add(productModelFromJson(response.data));
+    searchController.add(productModelFromJson(response.data));
     await EasyLoading.dismiss();
-    // } catch (e) {
-    //   Get.snackbar('Something is wrong', e.toString(),
-    //       snackPosition: SnackPosition.TOP);
-    //   print(e);
-    // }
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
+    }
   }
 }

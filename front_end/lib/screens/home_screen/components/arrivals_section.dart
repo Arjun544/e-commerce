@@ -30,7 +30,7 @@ class ArrivalsSection extends StatelessWidget {
           }
 
           return Container(
-            height: Get.height * 0.22,
+            height: Get.height * 0.24,
             child: ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
@@ -62,11 +62,10 @@ class ArrivalsSection extends StatelessWidget {
                                 ));
                           },
                           child: Container(
-                            width: Get.width * 0.5,
+                            width: Get.width * 0.55,
                             margin: const EdgeInsets.only(right: 10),
-                            padding: const EdgeInsets.only(top: 10),
                             decoration: BoxDecoration(
-                              color: customGrey,
+                              color: Colors.grey.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: BuildItem(
@@ -93,15 +92,19 @@ class BuildItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Stack(
           alignment: Alignment.topRight,
           children: [
-            Center(
-              child: CachedNetworkImage(
-                imageUrl: product.image,
-                fit: BoxFit.cover,
-                width: Get.width * 0.25,
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Center(
+                child: CachedNetworkImage(
+                  imageUrl: product.image,
+                  fit: BoxFit.contain,
+                  width: Get.width * 0.25,
+                ),
               ),
             ),
             PreferenceBuilder<List<String>>(
@@ -111,7 +114,7 @@ class BuildItem extends StatelessWidget {
                   wishListController.ids = snapshot;
                   return LikeButton(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    padding: const EdgeInsets.only(right: 10, top: 5),
+                    padding: const EdgeInsets.only(right: 10),
                     size: 20,
                     isLiked: snapshot.contains(product.id) ? true : false,
                     circleColor: const CircleColor(
@@ -145,27 +148,53 @@ class BuildItem extends StatelessWidget {
                 }),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 15, top: 10),
-          child: Row(
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(13),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Text(
+                product.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    product.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
                   Text(
                     '\$ ${product.price.toString()}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 14,
+                      fontSize: 12,
                       color: Colors.black54,
                     ),
+                  ),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/Star.svg',
+                        height: 10,
+                        color: customYellow,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        4.4.toString(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

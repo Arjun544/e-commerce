@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:front_end/utils/colors.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
@@ -28,6 +29,18 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
         dividerColor: Colors.transparent,
+        textSelectionTheme: TextSelectionThemeData(
+          selectionHandleColor: customYellow,
+          selectionColor: customYellow.withOpacity(0.3), // Change bubble to red
+          cursorColor: Colors.black,
+        ),
+        textTheme: const TextTheme(
+          headline6: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+        ),
       ),
       initialBinding: ControllersBinding(),
       home: SplashScreen(),

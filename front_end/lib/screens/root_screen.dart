@@ -39,13 +39,14 @@ class _RootScreenState extends State<RootScreen> {
   @override
   void initState() {
     super.initState();
-
-    if (getStorage.read('isLogin') == true) {
-      getCurrentUser();
-      cartScreenController.currentUserId.value =
-          rootScreenController.currentUser.data!.id;
-      log(rootScreenController.currentUser.data!.username);
-    }
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (getStorage.read('isLogin') == true) {
+        getCurrentUser();
+        cartScreenController.currentUserId.value =
+            rootScreenController.currentUser.data!.id;
+        log(rootScreenController.currentUser.data!.username);
+      }
+    });
   }
 
   void getCurrentUser() async {

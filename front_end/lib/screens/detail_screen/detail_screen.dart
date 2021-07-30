@@ -24,7 +24,8 @@ class DetailScreen extends StatelessWidget {
 
   DetailScreen({required this.product});
 
-  final DetailScreenController detailScreenController = Get.find();
+  final DetailScreenController detailScreenController =
+      Get.put(DetailScreenController());
   final CartScreenController cartScreenController = Get.find();
   final HomeScreenController homeScreenController = Get.find();
 

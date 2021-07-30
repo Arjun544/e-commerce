@@ -33,7 +33,7 @@ class FeaturedSection extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 15,
               mainAxisSpacing: 15,
-              padding: const EdgeInsets.only(right: 10, left: 10, bottom: 70),
+              padding: const EdgeInsets.only(right: 12, left: 12, bottom: 70),
               itemCount: snapshot.data!.products.length,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
@@ -45,10 +45,11 @@ class FeaturedSection extends StatelessWidget {
                         ));
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      color: customGrey,
-                      borderRadius: BorderRadius.all(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.2),
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(20),
                       ),
                     ),
@@ -131,8 +132,12 @@ class BuildItem extends StatelessWidget {
                 }),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(13),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -141,15 +146,40 @@ class BuildItem extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
-              Text(
-                '\$ ${product.price.toString()}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.black54,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '\$ ${product.price.toString()}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/Star.svg',
+                        height: 10,
+                        color: customYellow,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        4.4.toString(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

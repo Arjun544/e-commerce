@@ -24,8 +24,7 @@ class ProductDetails extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               product.name,
-              style:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             const SizedBox(height: 5),
             Text(
@@ -41,8 +40,7 @@ class ProductDetails extends StatelessWidget {
               product.description,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
-              style:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 20),
             Obx(
@@ -55,10 +53,12 @@ class ProductDetails extends StatelessWidget {
                 itemBuilder: (context, index) {
                   // Calculating average of ratings
 
-                  controller.averageRating = product.reviews
-                          .map((m) => double.parse(m.number))
-                          .reduce((a, b) => a + b) /
-                      product.reviews.length;
+                  if (product.reviews.isNotEmpty) {
+                    controller.averageRating = product.reviews
+                            .map((m) => double.parse(m.number))
+                            .reduce((a, b) => a + b) /
+                        product.reviews.length;
+                  }
                   return Container(
                     margin: index == 0 || index == 1
                         ? const EdgeInsets.only(bottom: 20)
@@ -106,44 +106,53 @@ class ProductDetails extends StatelessWidget {
                                   ? Padding(
                                       padding:
                                           const EdgeInsets.only(bottom: 20),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(
-                                            controller.averageRating
-                                                    .toString() +
-                                                ' / 5',
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                      child: product.reviews.isEmpty
+                                          ? const Center(
+                                              child: Text(
+                                                'No Rating',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            )
+                                          : Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Text(
+                                                  controller.averageRating
+                                                          .toString() +
+                                                      ' / 5',
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                RatingBar.builder(
+                                                  initialRating:
+                                                      controller.averageRating,
+                                                  updateOnDrag: false,
+                                                  ignoreGestures: true,
+                                                  itemSize: 25,
+                                                  minRating: 1,
+                                                  maxRating: 5,
+                                                  direction: Axis.horizontal,
+                                                  allowHalfRating: true,
+                                                  itemCount: 5,
+                                                  itemPadding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 2.0),
+                                                  itemBuilder: (context, _) =>
+                                                      SvgPicture.asset(
+                                                    'assets/images/Star.svg',
+                                                    height: 20,
+                                                    color: customYellow,
+                                                  ),
+                                                  onRatingUpdate: (rating) {
+                                                    print(rating);
+                                                  },
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                          RatingBar.builder(
-                                            initialRating:
-                                                controller.averageRating,
-                                            updateOnDrag: false,
-                                            ignoreGestures: true,
-                                            itemSize: 25,
-                                            minRating: 1,
-                                            maxRating: 5,
-                                            direction: Axis.horizontal,
-                                            allowHalfRating: true,
-                                            itemCount: 5,
-                                            itemPadding:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 2.0),
-                                            itemBuilder: (context, _) =>
-                                                SvgPicture.asset(
-                                              'assets/images/Star.svg',
-                                              height: 20,
-                                              color: customYellow,
-                                            ),
-                                            onRatingUpdate: (rating) {
-                                              print(rating);
-                                            },
-                                          ),
-                                        ],
-                                      ),
                                     )
                                   : ReviewsSection(
                                       reviews: product.reviews,

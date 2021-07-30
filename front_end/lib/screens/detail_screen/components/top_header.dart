@@ -23,7 +23,7 @@ class TopHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: () => Get.to(() => RootScreen()),
+          onTap: () => Get.back(),
           child: SvgPicture.asset(
             'assets/images/Arrow - Left.svg',
             height: 25,

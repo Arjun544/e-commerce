@@ -59,6 +59,7 @@ class _SimilarSectionState extends State<SimilarSection> {
                 Product product = snapshot.data!.products[index];
                 return GestureDetector(
                   onTap: () {
+                    Get.back();
                     Get.to(
                       () => DetailScreen(
                         product: product,

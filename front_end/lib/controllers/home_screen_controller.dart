@@ -16,6 +16,8 @@ class HomeScreenController extends GetxController {
       BehaviorSubject();
   final StreamController<ProductModel> arrivalProductsStreamController =
       BehaviorSubject();
+  final StreamController<ProductModel> searchStreamController =
+      BehaviorSubject();
 
   @override
   void onReady() async {
@@ -54,6 +56,11 @@ class HomeScreenController extends GetxController {
         featuredController: featuredProductsStreamController,
       );
 
+  Future searchProduct({required String query}) async =>
+      await ApiProduct().searchProduct(
+        query: query,
+        searchController: searchStreamController,
+      );
 
   @override
   void dispose() {

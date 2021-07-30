@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'search_delegate.dart';
 import '../../../utils/colors.dart';
 
 class TopBar extends StatelessWidget {
@@ -17,10 +18,18 @@ class TopBar extends StatelessWidget {
         ),
         Row(
           children: [
-            SvgPicture.asset(
-              'assets/images/Search.svg',
-              height: 25,
-              color: Colors.grey.withOpacity(0.5),
+            InkWell(
+              onTap: (){
+                showSearch(
+                  context: context,
+                  delegate: CustomSearchDelegate(),
+                );
+              },
+              child: SvgPicture.asset(
+                'assets/images/Search.svg',
+                height: 25,
+                color: Colors.grey.withOpacity(0.5),
+              ),
             ),
             const SizedBox(width: 20),
             Container(
