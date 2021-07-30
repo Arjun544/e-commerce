@@ -7,6 +7,23 @@ const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
 const cloudinaryFile = require("../config/cloudinary.config");
 
+exports.searchProducts = async (req, res) => {
+  try {
+    const products = await Product.fuzzySearch(req.params.query);
+    if (!products) {
+      return res.json("No products found");
+    } else {
+      return res.json({ products });
+    }
+  } catch (error) {
+     console.log(error);
+     return res.status(500).json({
+       success: false,
+       message: "Something went wrong",
+     });
+  }
+};
+
 exports.addProduct = async (req, res) => {
   try {
     const {

@@ -1,5 +1,6 @@
 const { number } = require("joi");
 const mongoose = require("mongoose");
+const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
 
 const productSchema = mongoose.Schema({
   name: {
@@ -85,6 +86,10 @@ productSchema.virtual("id").get(function () {
 
 productSchema.set("toJSON", {
   virtuals: true,
+});
+
+productSchema.plugin(mongoose_fuzzy_searching, {
+  fields: ["name"],
 });
 
 module.exports = mongoose.model("Product", productSchema);
