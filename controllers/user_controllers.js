@@ -207,8 +207,7 @@ exports.forgotPassword = async (req, res) => {
     if (!user) {
       return res.send({
         success: true,
-        message:
-          "If that email address is in our database, we will send you an email to reset your password",
+        message: "User not found",
       });
     }
 
@@ -329,7 +328,7 @@ exports.getUserById = async (req, res) => {
     }
 
     const user = await User.findById(req.params.id).select(
-      "-resetPasswordToken -resetPasswordExpires -emailToken -emailTokenExpires -password"
+      "-resetPasswordToken -resetPasswordExpires -emailToken -emailTokenExpires -password -isAdmin -updatedAt -v -dataId -createdAt -__v"
     );
     if (!user || !user.active) {
       res.status(403).send({ success: false, msg: "User not found" });
@@ -389,6 +388,43 @@ exports.updateImage = async (req, res) => {
   if (!user) return res.status(400).send("User not found");
 
   res.send("Updated");
+};
+
+exports.addShippingAddress = async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send("Invalid user id");
+    }
+    const { address, city, country, type } = req.body;
+
+    if (!address || !city || !country || !type) {
+      return res.json({ error: true, message: "All fields are required" });
+    }
+
+    const addresses = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: {
+          ShippingAddress: {
+            address: address,
+            city: city,
+            country: country,
+            type: type,
+          },
+        },
+      },
+
+      { new: true }
+    );
+
+    return res.send({ addresses });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
 };
 
 // @desc    Delete post
