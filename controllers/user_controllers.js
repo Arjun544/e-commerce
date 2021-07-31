@@ -428,6 +428,44 @@ exports.addShippingAddress = async (req, res) => {
   }
 };
 
+exports.removeAddress = async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send("Invalid user id");
+    }
+    const { address, city, country, type, phone } = req.body;
+
+    if (!address || !city || !country || !type || !phone) {
+      return res.json({ error: true, message: "All fields are required" });
+    }
+
+    await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: {
+          ShippingAddress: {
+            address: address,
+            city: city,
+            country: country,
+            phone: phone,
+            type: type,
+          },
+        },
+      },
+
+      { new: true }
+    );
+
+    return res.send("Address has been removed");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
 // @desc    Delete post
 // @access  Public
 
