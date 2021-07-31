@@ -395,9 +395,9 @@ exports.addShippingAddress = async (req, res) => {
     if (!mongoose.isValidObjectId(req.params.id)) {
       return res.status(400).send("Invalid user id");
     }
-    const { address, city, country, type } = req.body;
+    const { address, city, country, type, phone } = req.body;
 
-    if (!address || !city || !country || !type) {
+    if (!address || !city || !country || !type || !phone) {
       return res.json({ error: true, message: "All fields are required" });
     }
 
@@ -409,6 +409,7 @@ exports.addShippingAddress = async (req, res) => {
             address: address,
             city: city,
             country: country,
+            phone: phone,
             type: type,
           },
         },
