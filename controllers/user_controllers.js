@@ -428,26 +428,6 @@ exports.addShippingAddress = async (req, res) => {
   }
 };
 
-exports.getShipAddress = async (req, res) => {
-  try {
-    if (!mongoose.isValidObjectId(req.params.id)) {
-      return res.status(400).send("Invalid user id");
-    }
-
-    const data = await User.findById(req.params.id).select("ShippingAddress");
-    if (!data) {
-      res.status(403).send({ success: false, msg: "No address found" });
-    } else {
-      return res.status(200).json(data);
-    }
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
-  }
-};
-
 // @desc    Delete post
 // @access  Public
 

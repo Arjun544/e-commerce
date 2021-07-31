@@ -17,7 +17,6 @@ const {
   getWishlist,
   clearWishlist,
   addShippingAddress,
-  getShipAddress,
   updateImage,
 } = require("../controllers/user_controllers");
 
@@ -36,7 +35,6 @@ router.patch(
 );
 router.get("/allUsers", cleanBody, getAllUsers);
 router.get("/count", cleanBody, count);
-router.get("/getShipAddress/:id", cleanBody, getShipAddress);
 router.get("/:id", cleanBody, getUserById);
 router.patch("/update/:id", cleanBody, updateUser);
 router.patch("/wishlist/:userId", cleanBody, clearWishlist);
