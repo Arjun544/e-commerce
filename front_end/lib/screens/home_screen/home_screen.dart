@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/cart_screen_controller.dart';
@@ -25,14 +26,20 @@ class HomeScreen extends StatelessWidget {
     return DraggableHome(
       curvedBodyRadius: 0,
       headerExpandedHeight: 0.3,
-      title: const TopBar(),
+      title: TopBar(
+        homeScreenController: homeScreenController,
+        rootScreenController: rootScreenController,
+      ),
       headerWidget: Container(
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.only(top: 45, right: 12, left: 10),
           child: Column(
             children: [
-              const TopBar(),
+              TopBar(
+                homeScreenController: homeScreenController,
+                rootScreenController: rootScreenController,
+              ),
               SalesSection(
                 controller: homeScreenController,
               ),
@@ -44,7 +51,35 @@ class HomeScreen extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CategoriesSection(),
+            Row(
+              children: [
+                Container(
+                  height: 50,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFFFB6F52),
+                        const Color(0xFFF7AF2E).withOpacity(0.6)
+                      ],
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(50),
+                      bottomRight: Radius.circular(50),
+                    ),
+                  ),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: SvgPicture.asset(
+                      'assets/images/Filter.svg',
+                      height: 22,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const Expanded(child: CategoriesSection()),
+              ],
+            ),
             const Padding(
               padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
               child: Text(

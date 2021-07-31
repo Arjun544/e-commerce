@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/controllers/home_screen_controller.dart';
-import 'package:front_end/utils/colors.dart';
+import '../../../controllers/home_screen_controller.dart';
+import '../../../utils/colors.dart';
 import '../../../models/product_Model.dart';
 import 'package:get/get.dart';
 

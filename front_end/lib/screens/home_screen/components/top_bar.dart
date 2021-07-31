@@ -1,10 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../controllers/home_screen_controller.dart';
+import '../../../controllers/root_screen_controller.dart';
+import '../../../models/userModel.dart';
+import '../../profile_screen/profile_screen.dart';
+import '../../../utils/constants.dart';
+import 'package:get/get.dart';
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'search_delegate.dart';
 import '../../../utils/colors.dart';
 
 class TopBar extends StatelessWidget {
-  const TopBar({Key? key}) : super(key: key);
+  final RootScreenController rootScreenController;
+  final HomeScreenController homeScreenController;
+  const TopBar(
+      {required this.rootScreenController, required this.homeScreenController});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +30,7 @@ class TopBar extends StatelessWidget {
         Row(
           children: [
             InkWell(
-              onTap: (){
+              onTap: () {
                 showSearch(
                   context: context,
                   delegate: CustomSearchDelegate(),
@@ -32,19 +43,74 @@ class TopBar extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 20),
-            Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                image: const DecorationImage(
-                  image: AssetImage('assets/arjun profile.jpg'),
-                ),
-              ),
-            ),
+            getStorage.read('isLogin') == true
+                ? StreamBuilder<UserModel>(
+                    stream:
+                        rootScreenController.currentUserStreamController.stream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircleAvatar(radius: 20);
+                      } else if (snapshot.data == null) {}
+                      UserModel? currentUser = snapshot.data;
+                      return InkWell(
+                        onTap: () {
+                          Get.to(
+                            () => ProfileScreen(),
+                          );
+                        },
+                        radius: 10,
+                        child: currentUser!.data!.profile != ''
+                            ? Container(
+                                height: 35,
+                                width: 35,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                        currentUser.data!.profile),
+                                  ),
+                                ),
+                              )
+                            : PreferenceBuilder<String>(
+                                preference: sharedPreferences.getString(
+                                    'user profile',
+                                    defaultValue:
+                                        'assets/avatars/avatar 9.png'),
+                                builder: (context, snapshot) {
+                                  return CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage: AssetImage(
+                                      snapshot,
+                                    ),
+                                  );
+                                }),
+                      );
+                    })
+                : barActions(),
           ],
         ),
       ],
     );
   }
+}
+
+Widget barActions() {
+  return InkWell(
+      onTap: () {
+        Get.to(
+          () => ProfileScreen(),
+        );
+      },
+      radius: 10,
+      child: PreferenceBuilder<String>(
+          preference: sharedPreferences.getString('user profile',
+              defaultValue: 'assets/avatars/avatar 9.png'),
+          builder: (context, snapshot) {
+            return CircleAvatar(
+              radius: 20,
+              backgroundImage: AssetImage(
+                snapshot,
+              ),
+            );
+          }));
 }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,7 +23,7 @@ class CategoriesSection extends StatelessWidget {
               margin: const EdgeInsets.only(right: 10),
               padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: categories[index].color,
+                color: Colors.grey.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Row(
@@ -30,7 +32,10 @@ class CategoriesSection extends StatelessWidget {
                     categories[index].icon,
                   ),
                   const SizedBox(width: 10),
-                  Text(categories[index].name),
+                  Text(
+                    categories[index].name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             );

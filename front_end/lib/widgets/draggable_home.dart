@@ -141,7 +141,6 @@ class _DraggableHomeState extends State<DraggableHome> {
       backgroundColor:
           widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       drawer: widget.drawer,
-      
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           if (notification.metrics.axis == Axis.vertical) {
@@ -188,11 +187,12 @@ class _DraggableHomeState extends State<DraggableHome> {
             var streams = (snapshot.data ?? [false, false]);
 
             return SliverAppBar(
+              leadingWidth: 0,
               leading: widget.alwaysShowLeadingAndAction
                   ? widget.leading
                   : !streams[0]
-                      ? const SizedBox()
-                      : widget.leading,
+                      ? const SizedBox.shrink()
+                      : const SizedBox.shrink(),
               actions: widget.alwaysShowLeadingAndAction
                   ? widget.actions
                   : !streams[0]

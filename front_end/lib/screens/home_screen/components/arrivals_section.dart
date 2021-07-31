@@ -1,17 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../controllers/wishlist_controller.dart';
-import '../../detail_screen/detail_screen.dart';
-import '../../../utils/constants.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 import '../../../controllers/cart_screen_controller.dart';
 import '../../../controllers/home_screen_controller.dart';
+import '../../../controllers/wishlist_controller.dart';
 import '../../../models/product_Model.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/constants.dart';
+import '../../detail_screen/detail_screen.dart';
 
 class ArrivalsSection extends StatelessWidget {
   final HomeScreenController homeScreenController;
@@ -90,6 +91,13 @@ class BuildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double averageRating = 0;
+    if (product.reviews.isNotEmpty) {
+      averageRating = product.reviews
+              .map((m) => double.parse(m.number))
+              .reduce((a, b) => a + b) /
+          product.reviews.length;
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -97,13 +105,19 @@ class BuildItem extends StatelessWidget {
         Stack(
           alignment: Alignment.topRight,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Center(
-                child: CachedNetworkImage(
-                  imageUrl: product.image,
-                  fit: BoxFit.contain,
-                  width: Get.width * 0.25,
+            Center(
+              child: Container(
+                height: 110,
+                width: 180,
+                margin: const EdgeInsets.only(top: 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                      product.image,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -114,7 +128,7 @@ class BuildItem extends StatelessWidget {
                   wishListController.ids = snapshot;
                   return LikeButton(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    padding: const EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(right: 15, top: 10),
                     size: 20,
                     isLiked: snapshot.contains(product.id) ? true : false,
                     circleColor: const CircleColor(
@@ -133,7 +147,7 @@ class BuildItem extends StatelessWidget {
                             )
                           : SvgPicture.asset(
                               'assets/images/Heart-Outline.svg',
-                              color: Colors.black,
+                              color: Colors.white,
                             );
                     },
                     onTap: (isLiked) async {
@@ -150,7 +164,7 @@ class BuildItem extends StatelessWidget {
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(13),
@@ -159,7 +173,7 @@ class BuildItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                product.name,
+                toBeginningOfSentenceCase(product.name) ?? '',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style:
@@ -187,7 +201,7 @@ class BuildItem extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        4.4.toString(),
+                        averageRating.toString(),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 12,

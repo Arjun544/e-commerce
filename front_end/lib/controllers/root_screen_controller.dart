@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../models/userModel.dart';
 import '../utils/constants.dart';
@@ -13,7 +15,8 @@ class RootScreenController extends GetxController {
 
   RxInt currentIndex = 0.obs;
 
-  late UserModel currentUser;
+  final StreamController<UserModel> currentUserStreamController =
+      BehaviorSubject();
 
   void updateIndex(int value) {
     currentIndex.value = value;
@@ -22,13 +25,13 @@ class RootScreenController extends GetxController {
   Future<UserModel?> getCurrentUser() async {
     try {
       var response = await dio.get(
-        baseUrl + 'users/${registerScreenController.userId.value}',
+        baseUrl + 'users/${getStorage.read('userId')}',
         options: Options(
           responseType: ResponseType.plain,
         ),
       );
-
-      return userModelFromJson(response.data);
+      log(response.data.toString());
+      currentUserStreamController.add(userModelFromJson(response.data));
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);

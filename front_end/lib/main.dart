@@ -1,13 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/utils/colors.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 import 'controllers_binding.dart';
 import 'screens/splash_screen.dart';
+import 'utils/colors.dart';
 import 'utils/constants.dart';
 
 void main() async {

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/screens/detail_screen/detail_screen.dart';
+import '../../detail_screen/detail_screen.dart';
 import '../../../models/product_Model.dart';
 import '../../../utils/colors.dart';
 import 'package:get/get.dart';

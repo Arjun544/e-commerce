@@ -1,11 +1,12 @@
 import 'dart:async';
 
-import 'cart_screen_controller.dart';
+import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../models/product_Model.dart';
 import '../services/wishlist_api.dart';
-import 'package:get/get.dart';
-import 'package:rxdart/rxdart.dart';
+import '../utils/constants.dart';
+import 'cart_screen_controller.dart';
 
 class WishListController extends GetxController {
   final CartScreenController cartScreenController = Get.find();
@@ -19,6 +20,6 @@ class WishListController extends GetxController {
 
   Future clearWishlist() async {
     await ApiWishList()
-        .clearWishlist(userId: cartScreenController.currentUserId.value);
+        .clearWishlist(userId: getStorage.read('userId'));
   }
 }

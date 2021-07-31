@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -24,7 +23,7 @@ class SalesSection extends StatelessWidget {
             children: [
               const SalesItem(),
               Positioned.fill(
-                bottom: 25,
+                bottom: 30,
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: SmoothPageIndicator(

@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+
 import '../models/cart_model.dart';
 import '../utils/constants.dart';
-import 'package:get/get.dart';
 
 class ApiCart {
   Future addToCart({

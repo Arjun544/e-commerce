@@ -16,7 +16,6 @@ class CartScreenController extends GetxController {
   List<String> productIds = [];
 
   late Socket socket;
-  RxString currentUserId = ''.obs;
 
   void cartSocketInit() {
     socket = io(
@@ -38,15 +37,18 @@ class CartScreenController extends GetxController {
     productIds.insert(0, productId);
     await ApiCart().addToCart(
       productId: productId,
-      userId: currentUserId.value,
+      userId: getStorage.read('userId'),
     );
-    await firebaseFirestore.collection('carts').doc(currentUserId.value).update({
+    await firebaseFirestore
+        .collection('carts')
+        .doc(getStorage.read('userId'))
+        .update({
       'productIds': FieldValue.arrayUnion([productId])
     });
   }
 
   void getCart() async {
-    var cart = await ApiCart().getCart(userId: currentUserId.value);
+    var cart = await ApiCart().getCart(userId: getStorage.read('userId'));
     cartTotal.add(cart.totalGrand);
     cartProducts.value = cart.cartList!;
     log(cartProducts.toString());
@@ -56,7 +58,7 @@ class CartScreenController extends GetxController {
           {required String productId, required int newQuantity}) async =>
       await ApiCart().updateQuantity(
         productId: productId,
-        userId: currentUserId.value,
+        userId: getStorage.read('userId'),
         newQuantity: newQuantity,
       );
 

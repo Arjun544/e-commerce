@@ -19,7 +19,6 @@ class RegisterScreenController extends GetxController {
   final TextEditingController pinController = TextEditingController();
   RxInt currentTab = 1.obs;
   RxBool isPasswordHide = true.obs;
-  RxString userId = ''.obs;
 
   void togglePassword() {
     isPasswordHide.value = !isPasswordHide.value;
@@ -134,7 +133,7 @@ class RegisterScreenController extends GetxController {
           maskType: EasyLoadingMaskType.clear,
         );
       } else {
-        userId.value = response.data['userId'];
+        await getStorage.write('userId', response.data['userId']);
         // Saving jwt token in local storage
         await getStorage.write('token', response.data['token']);
 

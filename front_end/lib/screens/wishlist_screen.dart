@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../widgets/customDialogue.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -12,6 +11,7 @@ import '../controllers/wishlist_controller.dart';
 import '../models/product_Model.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
+import '../widgets/customDialogue.dart';
 import 'detail_screen/detail_screen.dart';
 
 class WishlistScreen extends StatefulWidget {

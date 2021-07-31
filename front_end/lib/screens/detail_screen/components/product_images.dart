@@ -23,56 +23,65 @@ class ProductImages extends StatelessWidget {
             height: Get.height * 0.42,
             width: Get.width,
             alignment: Alignment.bottomCenter,
-            child: ClipRRect(
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              child: CachedNetworkImage(
-                imageUrl: images[controller.currentImage.value].url,
-                fit: BoxFit.fitWidth,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(
+                  images[controller.currentImage.value].url,
+                ),
               ),
             ),
           ),
         ),
-        Container(
-          width: Get.width,
-          alignment: Alignment.center,
-          height: 60,
-          margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: ListView.builder(
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(bottom: 5, top: 5, left: 5),
-            scrollDirection: Axis.horizontal,
-            itemCount: images.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  controller.currentImage.value = index;
-                },
-                child: Container(
-                  width: 50,
-                  margin: const EdgeInsets.only(right: 8),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      width: 2,
-                      color: Colors.white,
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: CachedNetworkImage(
-                      imageUrl: images[index].url,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+        images.isEmpty
+            ? const SizedBox.shrink()
+            : Container(
+                width: Get.width,
+                alignment: Alignment.center,
+                height: 60,
+                margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(15),
                 ),
-              );
-            },
-          ),
-        ),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(bottom: 5, top: 5, left: 5),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: images.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        controller.currentImage.value = index;
+                      },
+                      child: Obx(
+                        () => Container(
+                          width: 50,
+                          margin: const EdgeInsets.only(right: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: controller.currentImage.value == index
+                                ? Border.all(
+                                    width: 2,
+                                    color: Colors.white,
+                                  )
+                                : Border.all(
+                                    width: 0, color: Colors.transparent),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: CachedNetworkImage(
+                              imageUrl: images[index].url,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
       ],
     );
   }

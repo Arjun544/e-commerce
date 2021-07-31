@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
-import '../../utils/constants.dart';
-import '../../controllers/home_screen_controller.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../controllers/cart_screen_controller.dart';
+import '../../controllers/home_screen_controller.dart';
 import '../../models/cart_model.dart';
 import '../../utils/colors.dart';
+import '../../utils/constants.dart';
 import '../../widgets/social_btn.dart';
 
 class CartScreen extends StatefulWidget {
@@ -71,7 +71,7 @@ class _CartScreenState extends State<CartScreen> {
                             onTap: () async {
                               await cartScreenController.clearCart(
                                   userId:
-                                      cartScreenController.currentUserId.value);
+                                   getStorage.read('userId'));
                               setState(() {
                                 cartScreenController.getCart();
                               });
@@ -136,8 +136,7 @@ class _CartScreenState extends State<CartScreen> {
                                       );
                                       await firebaseFirestore
                                           .collection('carts')
-                                          .doc(cartScreenController
-                                              .currentUserId.value)
+                                          .doc(getStorage.read('userId'))
                                           .update({
                                         'productIds': FieldValue.arrayRemove([
                                           cartScreenController.productIds[index]

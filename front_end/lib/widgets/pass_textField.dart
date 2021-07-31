@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+
 import '../controllers/register_screen_controller.dart';
 import '../utils/colors.dart';
-import 'package:get/get.dart';
 
 class PassTextField extends StatelessWidget {
   final String text;
   final String icon;
   final TextEditingController controller;
-  final RegisterScreenController registerScreenController;
+  final RegisterScreenController? registerScreenController;
 
   PassTextField({
     Key? key,
     required this.text,
     required this.icon,
     required this.controller,
-    required this.registerScreenController,
+    this.registerScreenController,
   }) : super(key: key);
 
   @override
@@ -48,7 +49,9 @@ class PassTextField extends StatelessWidget {
               child: Obx(
                 () => TextField(
                   controller: controller,
-                  obscureText: registerScreenController.isPasswordHide.value ? true : false,
+                  obscureText: registerScreenController!.isPasswordHide.value
+                      ? true
+                      : false,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -64,11 +67,11 @@ class PassTextField extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                registerScreenController.togglePassword();
+                registerScreenController!.togglePassword();
               },
               child: Obx(
                 () => SvgPicture.asset(
-                  registerScreenController.isPasswordHide.value
+                  registerScreenController!.isPasswordHide.value
                       ? 'assets/images/Hide.svg'
                       : 'assets/images/Show.svg',
                   height: 25,

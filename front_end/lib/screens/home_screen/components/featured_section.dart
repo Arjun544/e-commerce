@@ -38,6 +38,7 @@ class FeaturedSection extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 Product product = snapshot.data!.products[index];
+
                 return GestureDetector(
                   onTap: () {
                     Get.to(() => DetailScreen(
@@ -45,8 +46,7 @@ class FeaturedSection extends StatelessWidget {
                         ));
                   },
                   child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 7, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 7),
                     decoration: BoxDecoration(
                       color: Colors.grey.withOpacity(0.2),
                       borderRadius: const BorderRadius.all(
@@ -77,6 +77,13 @@ class BuildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double averageRating = 0;
+    if (product.reviews.isNotEmpty) {
+      averageRating = product.reviews
+              .map((m) => double.parse(m.number))
+              .reduce((a, b) => a + b) /
+          product.reviews.length;
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -84,12 +91,19 @@ class BuildItem extends StatelessWidget {
         Stack(
           alignment: Alignment.topRight,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: CachedNetworkImage(
-                imageUrl: product.image.toString(),
-                fit: BoxFit.contain,
-                width: Get.width * 0.5,
+            Center(
+              child: Container(
+                height: 155,
+                width: 180,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                      product.image,
+                    ),
+                  ),
+                ),
               ),
             ),
             PreferenceBuilder<List<String>>(
@@ -99,6 +113,7 @@ class BuildItem extends StatelessWidget {
                   wishListController.ids = snapshot;
                   return LikeButton(
                     mainAxisAlignment: MainAxisAlignment.end,
+                    padding: const EdgeInsets.only(top: 10, right: 5),
                     size: 20,
                     isLiked: snapshot.contains(product.id) ? true : false,
                     circleColor: const CircleColor(
@@ -170,7 +185,7 @@ class BuildItem extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        4.4.toString(),
+                        averageRating.toString(),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 12,

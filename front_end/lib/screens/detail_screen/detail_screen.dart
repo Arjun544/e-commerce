@@ -85,7 +85,7 @@ class DetailScreen extends StatelessWidget {
             ? StreamBuilder<DocumentSnapshot>(
                 stream: firebaseFirestore
                     .collection('carts')
-                    .doc(cartScreenController.currentUserId.value)
+                    .doc(getStorage.read('userId'))
                     .snapshots(),
                 builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                   var data;

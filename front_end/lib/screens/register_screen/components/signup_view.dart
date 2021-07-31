@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import '../../../controllers/register_screen_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
-import 'package:get/get.dart';
 import '../../../widgets/email_textField.dart';
 import '../../../widgets/pass_textField.dart';
 

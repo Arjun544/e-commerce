@@ -8,7 +8,6 @@ import 'package:like_button/like_button.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 import '../../../utils/colors.dart';
-import '../../root_screen.dart';
 
 class TopHeader extends StatelessWidget {
   final String productId;

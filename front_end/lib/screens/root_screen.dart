@@ -1,22 +1,22 @@
-import 'dart:developer';
 
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../widgets/customDialogue.dart';
-import '../controllers/register_screen_controller.dart';
-import '../utils/constants.dart';
-import '../controllers/cart_screen_controller.dart';
 import 'package:get/get.dart';
 
+import '../controllers/cart_screen_controller.dart';
+import '../controllers/profile_screen_controller.dart';
+import '../controllers/register_screen_controller.dart';
 import '../controllers/root_screen_controller.dart';
 import '../utils/colors.dart';
+import '../utils/constants.dart';
+import '../widgets/customDialogue.dart';
 import 'cart_screen/cart_screen.dart';
-import 'wishlist_screen.dart';
 import 'home_screen/components/custom_bar.dart';
 import 'home_screen/home_screen.dart';
 import 'notifications_screen.dart';
+import 'wishlist_screen.dart';
 
 class RootScreen extends StatefulWidget {
   @override
@@ -25,10 +25,9 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> {
   final RootScreenController rootScreenController = Get.find();
-
   final CartScreenController cartScreenController = Get.find();
-
   final RegisterScreenController registerScreenController = Get.find();
+  final ProfileScreenController profileScreenController = Get.find();
 
   final List<Widget> children = [
     HomeScreen(),
@@ -39,19 +38,11 @@ class _RootScreenState extends State<RootScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
       if (getStorage.read('isLogin') == true) {
-        getCurrentUser();
-        cartScreenController.currentUserId.value =
-            rootScreenController.currentUser.data!.id;
-        log(rootScreenController.currentUser.data!.username);
+        await rootScreenController.getCurrentUser();
       }
     });
-  }
-
-  void getCurrentUser() async {
-    rootScreenController.currentUser =
-        (await rootScreenController.getCurrentUser())!;
   }
 
   @override
@@ -74,7 +65,7 @@ class _RootScreenState extends State<RootScreen> {
                 ? StreamBuilder<DocumentSnapshot>(
                     stream: firebaseFirestore
                         .collection('carts')
-                        .doc(cartScreenController.currentUserId.value)
+                        .doc(getStorage.read('userId'))
                         .snapshots(),
                     builder:
                         (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
