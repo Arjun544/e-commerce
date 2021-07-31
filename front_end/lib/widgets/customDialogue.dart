@@ -6,7 +6,7 @@ import 'package:lottie/lottie.dart';
 
 import 'custom_button.dart';
 
-void customDialogue(BuildContext context) {
+void AccessDialogue(BuildContext context) {
   showGeneralDialog(
     barrierLabel: 'Barrier',
     barrierDismissible: true,

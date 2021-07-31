@@ -1,7 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/utils/constants.dart';
+import 'package:front_end/widgets/customDialogue.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/home_screen_controller.dart';
@@ -16,9 +19,16 @@ import 'components/profile_tile.dart';
 import 'components/top_header.dart';
 import 'components/user_image.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   final RootScreenController rootScreenController = Get.find();
+
   final ProfileScreenController profileScreenController = Get.find();
+
   final HomeScreenController homeScreenController = Get.find();
 
   @override
@@ -67,14 +77,17 @@ class ProfileScreen extends StatelessWidget {
                       text: 'Edit Profile',
                       icon: 'assets/images/Profile.svg',
                       iconColor: Colors.green[300],
-                      onPressed: () {
-                        Get.to(
-                          () => EditProfile(
-                            currentUser: currentUser,
-                            profileScreenController: profileScreenController,
-                          ),
-                        );
-                      },
+                      onPressed: getStorage.read('isLogin') == true
+                          ? () {
+                              Get.to(
+                                () => EditProfile(
+                                  currentUser: currentUser,
+                                  profileScreenController:
+                                      profileScreenController,
+                                ),
+                              );
+                            }
+                          : () => AccessDialogue(context),
                     ),
                     ProfileTile(
                       text: 'Password Reset',
@@ -110,7 +123,14 @@ class ProfileScreen extends StatelessWidget {
                       text: 'Logout',
                       icon: 'assets/images/Logout.svg',
                       iconColor: Colors.red[400],
-                      onPressed: () {},
+                      onPressed: () async {
+                        await EasyLoading.show(
+                            status: 'logging out...', dismissOnTap: false);
+                        await getStorage.write('isLogin', false);
+                        await getStorage.remove('userId');
+                        await EasyLoading.dismiss();
+                        setState(() {});
+                      },
                     ),
                     const SizedBox(height: 20),
                     Container(

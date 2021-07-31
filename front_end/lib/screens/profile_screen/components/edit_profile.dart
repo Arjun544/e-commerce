@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../utils/constants.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/profile_screen_controller.dart';
@@ -27,27 +28,24 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   final nameController = TextEditingController();
-  final aparmentController = TextEditingController();
+  final cityController = TextEditingController();
   final streetController = TextEditingController();
   final zipController = TextEditingController();
-  String? country;
+  String country = 'Pakistan';
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      nameController.text =
-         widget.currentUser!.data!.username;
-      aparmentController.text =
-          widget.currentUser!.data!.apartment;
-      streetController.text =
-          widget.currentUser!.data!.street;
-      zipController.text =
-          widget.currentUser!.data!.zip;
+      nameController.text = widget.currentUser!.data!.username;
+      cityController.text = widget.currentUser!.data!.city;
+      streetController.text = widget.currentUser!.data!.street;
+      zipController.text = widget.currentUser!.data!.zip;
+      country = 'Pakistan';
 
       log('Before');
       log('name: ${nameController.text}');
-      log('aparment: ${aparmentController.text}');
+      log('city: ${cityController.text}');
       log('street: ${streetController.text}');
       log('code: ${zipController.text}');
       log('country: $country');
@@ -61,28 +59,24 @@ class _EditProfileState extends State<EditProfile> {
         const TopHeader(text: 'Edit Profile'),
         const SizedBox(height: 20),
         customField(
-          // text: profileScreenController.currentUser.data!.username,
           text: 'arjun',
           controller: nameController,
           icon: 'assets/images/Profile.svg',
         ),
         const SizedBox(height: 20),
         customField(
-          // text: profileScreenController.currentUser.data!.username,
-          text: 'Apartment',
-          controller: aparmentController,
+          text: 'Street',
+          controller: streetController,
           icon: 'assets/images/Home.svg',
         ),
         const SizedBox(height: 20),
         customField(
-          // text: profileScreenController.currentUser.data!.username,
-          text: 'Street',
-          controller: streetController,
+          text: 'City',
+          controller: cityController,
           icon: 'assets/images/Location.svg',
         ),
         const SizedBox(height: 20),
         customField(
-          // text: profileScreenController.currentUser.data!.username,
           text: 'Zip code',
           isNumerical: true,
           controller: zipController,
@@ -102,7 +96,6 @@ class _EditProfileState extends State<EditProfile> {
           child: CountryCodePicker(
             onChanged: (value) {
               country = value.name!;
-              log(country.toString());
             },
             initialSelection: 'PK',
             dialogTextStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -134,20 +127,15 @@ class _EditProfileState extends State<EditProfile> {
           text: 'Update',
           color: customYellow,
           onPressed: () async {
-            log('After');
-            log('name: ${nameController.text}');
-            log('aparment: ${aparmentController.text}');
-            log('street: ${streetController.text}');
-            log('code: ${zipController.text}');
-            log('country: $country');
-            // await widget.profileScreenController.updateProfile(
-            //   userId: widget.profileScreenController.currentUser.data!.id,
-            //   name: nameController.text,
-            //   apartment: aparmentController.text,
-            //   street: streetController.text,
-            //   zipCode: int.parse(zipController.text),
-            //   country: country,
-            // );
+            await widget.profileScreenController.updateProfile(
+              userId: getStorage.read('userId'),
+              name: nameController.text,
+              city: cityController.text,
+              street: streetController.text,
+              zipCode: int.parse(zipController.text),
+              country: country,
+            );
+            Get.back();
           },
         ),
       ],

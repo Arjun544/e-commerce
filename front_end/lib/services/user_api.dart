@@ -10,7 +10,7 @@ class ApiUser {
   Future updateProfile({
     required String userId,
     required String name,
-    required String apartment,
+    required String city,
     required String street,
     required int zipCode,
     required String country,
@@ -18,11 +18,11 @@ class ApiUser {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
 
     try {
-      await dio.post(
+      await dio.patch(
         baseUrl + 'users/update/$userId',
         data: {
           'name': name,
-          'apartment': apartment,
+          'city': city,
           'street': street,
           'zip': zipCode,
           'country': country,
@@ -32,13 +32,43 @@ class ApiUser {
         ),
       );
 
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Profile updated',
         toastPosition: EasyLoadingToastPosition.top,
         maskType: EasyLoadingMaskType.clear,
       );
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
+    }
+  }
+
+
+  Future updateImage({
+    required String userId,
+    required String image,
+  }) async {
+    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+
+    try {
+      await dio.patch(
+        baseUrl + 'users/update/$userId',
+        data: {
+          'profile': image,
+        },
+        options: Options(
+          responseType: ResponseType.plain,
+        ),
+      );
 
       await EasyLoading.dismiss();
+      await EasyLoading.showToast(
+        'Profile updated',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);

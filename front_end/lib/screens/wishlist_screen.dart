@@ -65,7 +65,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                 });
                               }
                             : () {
-                                customDialogue(context);
+                                AccessDialogue(context);
                               },
                         child: const Text(
                           'Clear',
@@ -178,7 +178,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                 });
                                               }
                                             : () {
-                                                customDialogue(context);
+                                                AccessDialogue(context);
                                               },
                                         icon: Icon(
                                           Icons.delete_rounded,

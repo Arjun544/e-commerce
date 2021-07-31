@@ -1,6 +1,8 @@
 const express = require("express");
 const cleanBody = require("../middlewares/cleanBody");
 const router = express.Router();
+const upload = require("../config/multer");
+
 const {
   register,
   logIn,
@@ -14,6 +16,7 @@ const {
   count,
   getWishlist,
   clearWishlist,
+  updateImage,
 } = require("../controllers/user_controllers");
 
 router.post("/login", cleanBody, logIn);
@@ -22,6 +25,7 @@ router.post("/wishlist", cleanBody, getWishlist);
 router.patch("/activate", cleanBody, activate);
 router.patch("/forgotPassword", cleanBody, forgotPassword);
 router.patch("/resetPassword", cleanBody, resetPassword);
+router.patch("/updateImage/:id", upload.single("image"), cleanBody, updateImage);
 router.get("/allUsers", cleanBody, getAllUsers);
 router.get("/count", cleanBody, count);
 router.get("/:id", cleanBody, getUserById);

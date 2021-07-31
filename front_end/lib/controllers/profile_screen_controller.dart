@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 
 import '../services/user_api.dart';
@@ -5,17 +7,19 @@ import '../services/user_api.dart';
 class ProfileScreenController extends GetxController {
   RxInt currentAvatar = 0.obs;
 
+  
+
   Future updateProfile(
           {required String userId,
           required String name,
-          required String apartment,
+          required String city,
           required String street,
           required int zipCode,
           required String country}) async =>
       await ApiUser().updateProfile(
           userId: userId,
           name: name,
-          apartment: apartment,
+          city: city,
           street: street,
           zipCode: zipCode,
           country: country);

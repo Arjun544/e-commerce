@@ -1,8 +1,15 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/screens/profile_screen/components/edit_image.dart';
 import 'package:get/get.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:front_end/widgets/customDialogue.dart';
 
 import '../../../controllers/profile_screen_controller.dart';
 import '../../../models/userModel.dart';
@@ -13,11 +20,20 @@ import '../../register_screen/register_screen.dart';
 import 'avatar_bottomSheet.dart';
 import 'avatars_dialogue.dart';
 
-class UserImage extends StatelessWidget {
+class UserImage extends StatefulWidget {
   final ProfileScreenController controller;
   final UserModel? currentUser;
-  const UserImage(
-      {required this.controller, required this.currentUser});
+  UserImage({required this.controller, required this.currentUser});
+
+  @override
+  _UserImageState createState() => _UserImageState();
+}
+
+class _UserImageState extends State<UserImage> {
+  final ImagePicker imagePicker = ImagePicker();
+
+  File? pickedImage;
+  bool isPicked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,24 +43,30 @@ class UserImage extends StatelessWidget {
           alignment: Alignment.bottomRight,
           children: [
             getStorage.read('isLogin') == true
-                ? currentUser!.data!.profile == ''
-                    ? PreferenceBuilder<String>(
-                        preference: sharedPreferences.getString('user profile',
-                            defaultValue: 'assets/avatars/avatar 9.png'),
-                        builder: (context, snapshot) {
-                          return CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage(
-                              snapshot,
-                            ),
-                          );
-                        })
-                    : Obx(
-                        () => CircleAvatar(
-                            backgroundImage: CachedNetworkImageProvider(
-                          currentUser!.data!.profile,
-                        )),
+                ? isPicked == true
+                    ? CircleAvatar(
+                        radius: 50,
+                        backgroundImage: FileImage(pickedImage!),
                       )
+                    : widget.currentUser!.data!.profile == ''
+                        ? PreferenceBuilder<String>(
+                            preference: sharedPreferences.getString(
+                                'user profile',
+                                defaultValue: 'assets/avatars/avatar 9.png'),
+                            builder: (context, snapshot) {
+                              return CircleAvatar(
+                                radius: 50,
+                                backgroundImage: AssetImage(
+                                  snapshot,
+                                ),
+                              );
+                            })
+                        : CircleAvatar(
+                            radius: 50,
+                            backgroundImage: CachedNetworkImageProvider(
+                              widget.currentUser!.data!.profile,
+                            ),
+                          )
                 : PreferenceBuilder<String>(
                     preference: sharedPreferences.getString('user profile',
                         defaultValue: 'assets/avatars/avatar 9.png'),
@@ -68,9 +90,43 @@ class UserImage extends StatelessWidget {
                 onPressed: () async {
                   await avatarBottomSheet(
                     onAvatarPressed: () {
-                      avatarsDialogue(context, controller);
+                      avatarsDialogue(context, widget.controller);
                     },
-                    ongalleryPressed: () {},
+                    onCameraPressed: getStorage.read('isLogin') == true
+                        ? () async {
+                            Get.back();
+                            XFile? image = await imagePicker.pickImage(
+                                source: ImageSource.camera,
+                                imageQuality: 50,
+                                preferredCameraDevice: CameraDevice.front);
+                            if (image != null) {
+                              setState(() {
+                                pickedImage = File(image.path);
+                                isPicked = true;
+                              });
+                            }
+                          }
+                        : () {
+                            AccessDialogue(context);
+                          },
+                    ongalleryPressed: getStorage.read('isLogin') == true
+                        ? () async {
+                            Get.back();
+                            XFile? image = await imagePicker.pickImage(
+                                source: ImageSource.gallery,
+                                imageQuality: 50,
+                                preferredCameraDevice: CameraDevice.front);
+                            if (image != null) {
+                              File editedImage = await editImage(image.path);
+                              setState(() {
+                                pickedImage = editedImage;
+                                isPicked = true;
+                              });
+                            }
+                          }
+                        : () {
+                            AccessDialogue(context);
+                          },
                   );
                 },
                 icon: SvgPicture.asset(
@@ -87,7 +143,7 @@ class UserImage extends StatelessWidget {
         ),
         getStorage.read('isLogin') == true
             ? Text(
-               currentUser!.data!.username,
+                widget.currentUser!.data!.username,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

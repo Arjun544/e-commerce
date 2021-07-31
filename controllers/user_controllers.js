@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const Product = require("../models/Product");
 const { sendEmail } = require("../helpers/mailer");
+const cloudinary = require("cloudinary");
 
 const userSchema = Joi.object().keys({
   username: Joi.string().required().min(2),
@@ -359,6 +360,29 @@ exports.updateUser = async (req, res) => {
   const user = await User.findByIdAndUpdate(
     req.params.id,
     { $set: req.body },
+    { new: true }
+  );
+
+  if (!user) return res.status(400).send("User not found");
+
+  res.send("Updated");
+};
+
+exports.updateImage = async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.id)) {
+    return res.status(400).send("Invalid user id");
+  }
+  // update only those value passed from req.body, but not password
+  if (!req.file) {
+    return res.send("ImageUrl is required");
+  }
+
+  // Upload image to cloudinary
+  const result = await cloudinary.uploader.upload(req.file.path);
+
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    { $set: { profile: result.secure_url } },
     { new: true }
   );
 

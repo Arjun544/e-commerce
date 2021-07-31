@@ -58,7 +58,7 @@ class _RootScreenState extends State<RootScreen> {
                 ? Get.to(
                     () => CartScreen(),
                   )
-                : customDialogue(context);
+                : AccessDialogue(context);
           },
           child: Badge(
             badgeContent: getStorage.read('isLogin') == true
