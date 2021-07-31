@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/screens/profile_screen/components/edit_image.dart';
 import 'package:get/get.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:front_end/widgets/customDialogue.dart';
+import '../../../widgets/customDialogue.dart';
 
 import '../../../controllers/profile_screen_controller.dart';
 import '../../../models/userModel.dart';
@@ -100,6 +100,11 @@ class _UserImageState extends State<UserImage> {
                                 imageQuality: 50,
                                 preferredCameraDevice: CameraDevice.front);
                             if (image != null) {
+                              await EasyLoading.show(
+                                  status: 'updating...', dismissOnTap: false);
+                              await EasyLoading.dismiss();
+                              await widget.controller
+                                  .updateImage(imageUrl: File(image.path));
                               setState(() {
                                 pickedImage = File(image.path);
                                 isPicked = true;
@@ -117,9 +122,10 @@ class _UserImageState extends State<UserImage> {
                                 imageQuality: 50,
                                 preferredCameraDevice: CameraDevice.front);
                             if (image != null) {
-                              File editedImage = await editImage(image.path);
+                              await widget.controller
+                                  .updateImage(imageUrl: File(image.path));
                               setState(() {
-                                pickedImage = editedImage;
+                                pickedImage = File(image.path);
                                 isPicked = true;
                               });
                             }

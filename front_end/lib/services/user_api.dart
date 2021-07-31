@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:front_end/utils/constants.dart';
 import 'package:get/get.dart';
-
-import '../utils/constants.dart';
 
 class ApiUser {
   Future updateProfile({
@@ -18,7 +19,7 @@ class ApiUser {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
 
     try {
-      await dio.patch(
+      await dio.Dio().patch(
         baseUrl + 'users/update/$userId',
         data: {
           'name': name,
@@ -45,19 +46,21 @@ class ApiUser {
     }
   }
 
-
   Future updateImage({
     required String userId,
-    required String image,
+    required File image,
   }) async {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    String fileName = image.path.split('/').last;
 
     try {
-      await dio.patch(
-        baseUrl + 'users/update/$userId',
-        data: {
-          'profile': image,
-        },
+      dio.FormData formData = dio.FormData.fromMap({
+        'image':
+            await dio.MultipartFile.fromFile(image.path, filename: fileName),
+      });
+      await dio.Dio().patch(
+        baseUrl + 'users/updateImage/$userId',
+        data: formData,
         options: Options(
           responseType: ResponseType.plain,
         ),

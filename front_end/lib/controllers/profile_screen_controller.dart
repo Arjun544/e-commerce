@@ -1,13 +1,12 @@
 import 'dart:io';
 
+import 'package:front_end/utils/constants.dart';
 import 'package:get/get.dart';
 
 import '../services/user_api.dart';
 
 class ProfileScreenController extends GetxController {
   RxInt currentAvatar = 0.obs;
-
-  
 
   Future updateProfile(
           {required String userId,
@@ -23,6 +22,9 @@ class ProfileScreenController extends GetxController {
           street: street,
           zipCode: zipCode,
           country: country);
+
+  Future updateImage({required File imageUrl}) async => await ApiUser()
+      .updateImage(userId: getStorage.read('userId'), image: imageUrl);
 
   List<String> avatars = [
     'assets/avatars/avatar 1.png',

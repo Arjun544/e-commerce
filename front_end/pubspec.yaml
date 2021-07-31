@@ -49,7 +49,6 @@ dependencies:
   intl: ^0.17.0
   country_code_picker: ^2.0.2
   image_picker: ^0.8.2
-  image_cropper: ^1.4.1
 
 dev_dependencies:
   flutter_test:
