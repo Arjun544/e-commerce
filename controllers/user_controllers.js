@@ -401,7 +401,7 @@ exports.addShippingAddress = async (req, res) => {
       return res.json({ error: true, message: "All fields are required" });
     }
 
-    const addresses = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       req.params.id,
       {
         $push: {
@@ -417,7 +417,7 @@ exports.addShippingAddress = async (req, res) => {
       { new: true }
     );
 
-    return res.send({ addresses });
+    return res.send('Address has been added');
   } catch (error) {
     console.log(error);
     return res.status(500).json({
