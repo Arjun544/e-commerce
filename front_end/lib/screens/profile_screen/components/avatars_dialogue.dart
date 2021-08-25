@@ -4,7 +4,8 @@ import '../../../utils/constants.dart';
 import 'package:get/get.dart';
 import '../../../controllers/profile_screen_controller.dart';
 
-void avatarsDialogue(BuildContext context, ProfileScreenController controller) {
+void avatarsDialogue(
+    BuildContext context, ProfileScreenController controller, bool setAvatar) {
   showGeneralDialog(
     barrierLabel: 'Barrier',
     barrierDismissible: true,
@@ -69,6 +70,7 @@ void avatarsDialogue(BuildContext context, ProfileScreenController controller) {
                                   'user profile',
                                   controller
                                       .avatars[controller.currentAvatar.value]);
+                              setAvatar = true;
                               Get.back();
                               Get.back();
                             },

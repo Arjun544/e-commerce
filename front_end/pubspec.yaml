@@ -49,7 +49,10 @@ dependencies:
   intl: ^0.17.0
   country_code_picker: ^2.0.2
   image_picker: ^0.8.2
-
+  dotted_border: ^2.0.0
+  group_button: ^3.0.1
+  intl_phone_number_input: ^0.7.0+2
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

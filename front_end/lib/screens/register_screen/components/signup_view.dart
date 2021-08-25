@@ -58,6 +58,7 @@ class SignupView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               PassTextField(
+                  width: Get.width * 0.85,
                 controller: controller.passController,
                 registerScreenController: controller,
                 text: 'Password',
@@ -65,6 +66,7 @@ class SignupView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               PassTextField(
+               width: Get.width * 0.85,
                 controller: controller.confirmPassController,
                 registerScreenController: controller,
                 text: 'Confirm Password',

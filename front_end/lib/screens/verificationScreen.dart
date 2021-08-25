@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import '../controllers/register_screen_controller.dart';
 import '../utils/colors.dart';
@@ -111,17 +111,17 @@ class VerificationScreen extends StatelessWidget {
                   text: 'Submit',
                   color: darkBlue,
                   onPressed: () async {
-                    // if (controller.pinController.text.length <= 6) {
-                    //   await EasyLoading.showToast(
-                    //     'All fields are required',
-                    //     toastPosition: EasyLoadingToastPosition.top,
-                    //     maskType: EasyLoadingMaskType.clear,
-                    //   );
-                    // }
-                    // {
+                    if (controller.pinController.text.length <= 6) {
+                      await EasyLoading.showToast(
+                        'All fields are required',
+                        toastPosition: EasyLoadingToastPosition.top,
+                        maskType: EasyLoadingMaskType.clear,
+                      );
+                    }
+                    {
                       await controller.VerifyEmail();
                     }
-                  // },
+                  },
                 ),
               ],
             ),

@@ -37,19 +37,25 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      nameController.text = widget.currentUser!.data!.username;
-      cityController.text = widget.currentUser!.data!.city;
-      streetController.text = widget.currentUser!.data!.street;
-      zipController.text = widget.currentUser!.data!.zip;
+      nameController.text = widget.currentUser!.data.username;
+      cityController.text = widget.currentUser!.data.city;
+      streetController.text = widget.currentUser!.data.street;
+      zipController.text = widget.currentUser!.data.zip;
       country = 'Pakistan';
-
-      log('Before');
-      log('name: ${nameController.text}');
-      log('city: ${cityController.text}');
-      log('street: ${streetController.text}');
-      log('code: ${zipController.text}');
-      log('country: $country');
     });
+  }
+
+  @override
+  void dispose() {
+    nameController.clear();
+    cityController.clear();
+    streetController.clear();
+    zipController.clear();
+    nameController.dispose();
+    cityController.dispose();
+    streetController.dispose();
+    zipController.dispose();
+    super.dispose();
   }
 
   @override

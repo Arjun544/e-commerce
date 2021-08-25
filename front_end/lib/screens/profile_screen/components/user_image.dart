@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -23,7 +24,7 @@ import 'avatars_dialogue.dart';
 class UserImage extends StatefulWidget {
   final ProfileScreenController controller;
   final UserModel? currentUser;
-  UserImage({required this.controller, required this.currentUser});
+  UserImage({required this.controller, this.currentUser});
 
   @override
   _UserImageState createState() => _UserImageState();
@@ -34,6 +35,7 @@ class _UserImageState extends State<UserImage> {
 
   File? pickedImage;
   bool isPicked = false;
+  bool setAvatar = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class _UserImageState extends State<UserImage> {
                         radius: 50,
                         backgroundImage: FileImage(pickedImage!),
                       )
-                    : widget.currentUser!.data!.profile == ''
+                    : setAvatar
                         ? PreferenceBuilder<String>(
                             preference: sharedPreferences.getString(
                                 'user profile',
@@ -61,12 +63,26 @@ class _UserImageState extends State<UserImage> {
                                 ),
                               );
                             })
-                        : CircleAvatar(
-                            radius: 50,
-                            backgroundImage: CachedNetworkImageProvider(
-                              widget.currentUser!.data!.profile,
-                            ),
-                          )
+                        : widget.currentUser!.data.profile == ''
+                            ? PreferenceBuilder<String>(
+                                preference: sharedPreferences.getString(
+                                    'user profile',
+                                    defaultValue:
+                                        'assets/avatars/avatar 9.png'),
+                                builder: (context, snapshot) {
+                                  return CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage: AssetImage(
+                                      snapshot,
+                                    ),
+                                  );
+                                })
+                            : CircleAvatar(
+                                radius: 50,
+                                backgroundImage: CachedNetworkImageProvider(
+                                  widget.currentUser!.data.profile,
+                                ),
+                              )
                 : PreferenceBuilder<String>(
                     preference: sharedPreferences.getString('user profile',
                         defaultValue: 'assets/avatars/avatar 9.png'),
@@ -90,7 +106,7 @@ class _UserImageState extends State<UserImage> {
                 onPressed: () async {
                   await avatarBottomSheet(
                     onAvatarPressed: () {
-                      avatarsDialogue(context, widget.controller);
+                      avatarsDialogue(context, widget.controller, setAvatar);
                     },
                     onCameraPressed: getStorage.read('isLogin') == true
                         ? () async {
@@ -108,6 +124,7 @@ class _UserImageState extends State<UserImage> {
                               setState(() {
                                 pickedImage = File(image.path);
                                 isPicked = true;
+                                setAvatar = false;
                               });
                             }
                           }
@@ -127,6 +144,7 @@ class _UserImageState extends State<UserImage> {
                               setState(() {
                                 pickedImage = File(image.path);
                                 isPicked = true;
+                                setAvatar = false;
                               });
                             }
                           }
@@ -149,7 +167,8 @@ class _UserImageState extends State<UserImage> {
         ),
         getStorage.read('isLogin') == true
             ? Text(
-                widget.currentUser!.data!.username,
+                toBeginningOfSentenceCase(widget.currentUser!.data.username) ??
+                    '',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

@@ -1,12 +1,18 @@
 import 'dart:io';
 
-import 'package:front_end/utils/constants.dart';
+import 'package:flutter/material.dart';
+
+import '../utils/constants.dart';
 import 'package:get/get.dart';
 
 import '../services/user_api.dart';
 
 class ProfileScreenController extends GetxController {
+  final TextEditingController newPassController = TextEditingController();
+  final TextEditingController confirmPassController = TextEditingController();
+  final TextEditingController pinController = TextEditingController();
   RxInt currentAvatar = 0.obs;
+  RxInt selectedShippingAddress = 0.obs;
 
   Future updateProfile(
           {required String userId,
@@ -25,6 +31,48 @@ class ProfileScreenController extends GetxController {
 
   Future updateImage({required File imageUrl}) async => await ApiUser()
       .updateImage(userId: getStorage.read('userId'), image: imageUrl);
+
+  Future forgetPassowrd({required String email}) async =>
+      await ApiUser().forgetPassword(email: email);
+
+  Future resetPassword(
+          {required String code,
+          required String newPassword,
+          required String confirmPassword}) async =>
+      await ApiUser().passwordReset(
+          code: code,
+          newPassword: newPassword,
+          confirmPassword: confirmPassword);
+
+  Future addAddress({
+    required String address,
+    required String city,
+    required String country,
+    required String phone,
+    required String type,
+  }) async =>
+      await ApiUser().addAddress(
+          userId: getStorage.read('userId'),
+          address: address,
+          city: city,
+          country: country,
+          phone: phone,
+          type: type);
+
+  Future removeAddress({
+    required String address,
+    required String city,
+    required String country,
+    required String phone,
+    required String type,
+  }) async =>
+      await ApiUser().removeAddress(
+          userId: getStorage.read('userId'),
+          address: address,
+          city: city,
+          country: country,
+          phone: phone,
+          type: type);
 
   List<String> avatars = [
     'assets/avatars/avatar 1.png',

@@ -8,6 +8,7 @@ import '../utils/colors.dart';
 class PassTextField extends StatelessWidget {
   final String text;
   final String icon;
+  final double width;
   final TextEditingController controller;
   final RegisterScreenController? registerScreenController;
 
@@ -15,6 +16,7 @@ class PassTextField extends StatelessWidget {
     Key? key,
     required this.text,
     required this.icon,
+    required this.width,
     required this.controller,
     this.registerScreenController,
   }) : super(key: key);
@@ -24,7 +26,7 @@ class PassTextField extends StatelessWidget {
     return Center(
       child: Container(
         height: 50,
-        width: Get.width * 0.85,
+        width: Get.width,
         padding: const EdgeInsets.only(left: 10, right: 10),
         decoration: BoxDecoration(
           color: customGrey,

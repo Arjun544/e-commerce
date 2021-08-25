@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,10 +24,13 @@ class TopBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SvgPicture.asset(
-          'assets/images/Category.svg',
-          height: 25,
-          color: darkBlue,
+        InkWell(
+          onTap: (){},
+          child: SvgPicture.asset(
+            'assets/images/Category.svg',
+            height: 25,
+            color: darkBlue,
+          ),
         ),
         Row(
           children: [
@@ -43,54 +48,58 @@ class TopBar extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 20),
-            StreamBuilder<UserModel>(
-                stream: rootScreenController.currentUserStreamController.stream,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircleAvatar(radius: 20);
-                  } else if (snapshot.data == null) {}
-                  UserModel? currentUser = snapshot.data;
-                  return InkWell(
-                    onTap: () {
-                      Get.to(
-                        () => ProfileScreen(),
+            getStorage.read('isLogin') == true
+                ? StreamBuilder<UserModel>(
+                    stream:
+                        rootScreenController.currentUserStreamController.stream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircleAvatar(radius: 20);
+                      } else if (snapshot.data == null) {}
+                      UserModel? currentUser = snapshot.data;
+                      return InkWell(
+                          onTap: () {
+                            Get.to(
+                              () => ProfileScreen(),
+                            );
+                          },
+                          radius: 10,
+                          child: currentUser!.data.profile != ''
+                              ? CircleAvatar(
+                                  radius: 20,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                      currentUser.data.profile),
+                                )
+                              : PreferenceBuilder<String>(
+                                  preference: sharedPreferences.getString(
+                                      'user profile',
+                                      defaultValue:
+                                          'assets/avatars/avatar 9.png'),
+                                  builder: (context, snapshot) {
+                                    return CircleAvatar(
+                                      radius: 20,
+                                      backgroundImage: AssetImage(
+                                        snapshot,
+                                      ),
+                                    );
+                                  }));
+                    })
+                : PreferenceBuilder<String>(
+                    preference: sharedPreferences.getString('user profile',
+                        defaultValue: 'assets/avatars/avatar 9.png'),
+                    builder: (context, snapshot) {
+                      return InkWell(
+                        onTap: () async {
+                          await Get.to(() => ProfileScreen());
+                        },
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundImage: AssetImage(
+                            snapshot,
+                          ),
+                        ),
                       );
-                    },
-                    radius: 10,
-                    child: getStorage.read('isLogin') == true
-                        ? currentUser!.data!.profile != ''
-                            ? CircleAvatar(
-                                radius: 20,
-                                backgroundImage: CachedNetworkImageProvider(
-                                    currentUser.data!.profile),
-                              )
-                            : PreferenceBuilder<String>(
-                                preference: sharedPreferences.getString(
-                                    'user profile',
-                                    defaultValue:
-                                        'assets/avatars/avatar 9.png'),
-                                builder: (context, snapshot) {
-                                  return CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage: AssetImage(
-                                      snapshot,
-                                    ),
-                                  );
-                                })
-                        : PreferenceBuilder<String>(
-                            preference: sharedPreferences.getString(
-                                'user profile',
-                                defaultValue: 'assets/avatars/avatar 9.png'),
-                            builder: (context, snapshot) {
-                              return CircleAvatar(
-                                radius: 20,
-                                backgroundImage: AssetImage(
-                                  snapshot,
-                                ),
-                              );
-                            }),
-                  );
-                }),
+                    }),
           ],
         ),
       ],

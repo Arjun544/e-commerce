@@ -406,6 +406,7 @@ exports.addShippingAddress = async (req, res) => {
       {
         $push: {
           ShippingAddress: {
+            id: mongoose.Types.ObjectId(),
             address: address,
             city: city,
             country: country,
@@ -428,27 +429,53 @@ exports.addShippingAddress = async (req, res) => {
   }
 };
 
+exports.editShippingAddress = async (req, res) => {
+  try {
+    const { id, address, city, country, type, phone } = req.body;
+
+    if (!id || !address || !city || !country || !type || !phone) {
+      return res.json({ error: true, message: "All fields are required" });
+    }
+
+    await User.findOneAndUpdate(
+      {
+        _id: req.params.id,
+        "ShippingAddress.id": id,
+      },
+      {
+        $set: {
+          "ShippingAddress.address": address,
+          "ShippingAddress.city": city,
+          "ShippingAddress.country": country,
+          "ShippingAddress.phone": phone,
+          "ShippingAddress.type": type,
+        },
+      }
+    );
+
+    return res.send("Address has been edited");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
 exports.removeAddress = async (req, res) => {
   try {
     if (!mongoose.isValidObjectId(req.params.id)) {
       return res.status(400).send("Invalid user id");
     }
-    const { address, city, country, type, phone } = req.body;
-
-    if (!address || !city || !country || !type || !phone) {
-      return res.json({ error: true, message: "All fields are required" });
-    }
+    const { id } = req.body;
 
     await User.findByIdAndUpdate(
       req.params.id,
       {
         $pull: {
           ShippingAddress: {
-            address: address,
-            city: city,
-            country: country,
-            phone: phone,
-            type: type,
+            id: mongoose.Types.ObjectId(id),
           },
         },
       },

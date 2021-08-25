@@ -2,6 +2,7 @@
 //
 //     final userModel = userModelFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
@@ -10,92 +11,118 @@ String userModelToJson(UserModel data) => json.encode(data.toJson());
 
 class UserModel {
   UserModel({
-     this.success,
-     this.data,
+    required this.success,
+    required this.data,
   });
 
-  bool? success;
-  Data? data;
+  bool success;
+  Data data;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         success: json['success'],
-        data: Data?.fromJson(json['data']),
+        data: Data.fromJson(json['data']),
       );
 
   Map<String, dynamic> toJson() => {
         'success': success,
-        'data': data?.toJson(),
+        'data': data.toJson(),
       };
 }
 
 class Data {
   Data({
-    required this.isAdmin,
+    required this.profile,
     required this.street,
-    required this.apartment,
+    required this.shippingAddress,
     required this.zip,
     required this.city,
     required this.country,
-    required this.profile,
     required this.active,
     required this.id,
+    required this.apartment,
     required this.username,
     required this.email,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.v,
     required this.dataId,
   });
 
-  bool isAdmin;
-  String street;
-  String apartment;
-  String zip;
   String profile;
+  String street;
+  List<ShipAddress> shippingAddress;
+  String zip;
   String city;
   String country;
   bool active;
   String id;
+  String apartment;
   String username;
   String email;
-  DateTime createdAt;
-  DateTime updatedAt;
-  int v;
   String dataId;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        isAdmin: json['isAdmin'],
-        street: json['street'],
-        apartment: json['apartment'],
-        zip: json['zip'],
         profile: json['profile'],
+        street: json['street'],
+        shippingAddress: List<ShipAddress>.from(
+            json['ShippingAddress'].map((x) => ShipAddress.fromJson(x))),
+        zip: json['zip'],
         city: json['city'],
         country: json['country'],
         active: json['active'],
         id: json['_id'],
+        apartment: json['apartment'],
         username: json['username'],
         email: json['email'],
-        createdAt: DateTime.parse(json['createdAt']),
-        updatedAt: DateTime.parse(json['updatedAt']),
-        v: json['__v'],
         dataId: json['id'],
       );
 
   Map<String, dynamic> toJson() => {
-        'isAdmin': isAdmin,
-        'street': street,
-        'apartment': apartment,
-        'zip': zip,
         'profile': profile,
+        'street': street,
+        'ShippingAddress':
+            List<dynamic>.from(shippingAddress.map((x) => x.toJson())),
+        'zip': zip,
         'city': city,
         'country': country,
         'active': active,
         '_id': id,
+        'apartment': apartment,
         'username': username,
         'email': email,
-        'createdAt': createdAt.toIso8601String(),
-        'updatedAt': updatedAt.toIso8601String(),
-        '__v': v,
         'id': dataId,
+      };
+}
+
+class ShipAddress {
+  ShipAddress({
+    required this.id,
+    required this.address,
+    required this.city,
+    required this.country,
+    required this.phone,
+    required this.type,
+  });
+
+  String id;
+  String address;
+  String city;
+  String country;
+  String phone;
+  String type;
+
+  factory ShipAddress.fromJson(Map<String, dynamic> json) => ShipAddress(
+        id: json['id'],
+        address: json['address'],
+        city: json['city'],
+        country: json['country'],
+        phone: json['phone'],
+        type: json['type'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'address': address,
+        'city': city,
+        'country': country,
+        'phone': phone,
+        'type': type,
       };
 }

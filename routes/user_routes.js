@@ -17,6 +17,7 @@ const {
   getWishlist,
   clearWishlist,
   addShippingAddress,
+  editShippingAddress,
   removeAddress,
   updateImage,
 } = require("../controllers/user_controllers");
@@ -28,6 +29,7 @@ router.patch("/activate", cleanBody, activate);
 router.patch("/forgotPassword", cleanBody, forgotPassword);
 router.patch("/resetPassword", cleanBody, resetPassword);
 router.patch("/addAddress/:id", cleanBody, addShippingAddress);
+router.patch("/editAddress/:id", cleanBody, editShippingAddress);
 router.patch("/removeAddress/:id", cleanBody, removeAddress);
 router.patch(
   "/updateImage/:id",
