@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../../widgets/featured_loader.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
@@ -45,7 +46,7 @@ class _SimilarSectionState extends State<SimilarSection> {
         stream: widget.detailScreenController.byCategoryController.stream,
         builder: (context, AsyncSnapshot<ProductModel> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SizedBox();
+            return const FeaturedLoader();
           }
           return StaggeredGridView.countBuilder(
               shrinkWrap: true,

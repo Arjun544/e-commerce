@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/utils/constants.dart';
+import '../utils/constants.dart';
 import 'package:get/get.dart';
 
 class ApiUser {

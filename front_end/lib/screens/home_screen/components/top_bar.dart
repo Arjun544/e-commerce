@@ -1,13 +1,12 @@
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/controllers/home_screen_controller.dart';
-import 'package:front_end/controllers/root_screen_controller.dart';
-import 'package:front_end/models/userModel.dart';
-import 'package:front_end/screens/profile_screen/profile_screen.dart';
-import 'package:front_end/utils/constants.dart';
+import '../../../controllers/home_screen_controller.dart';
+import '../../../controllers/root_screen_controller.dart';
+import '../../../models/userModel.dart';
+import '../../profile_screen/profile_screen.dart';
+import '../../../utils/constants.dart';
 import 'package:get/get.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'search_delegate.dart';

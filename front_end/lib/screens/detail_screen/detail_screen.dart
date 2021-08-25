@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../controllers/home_screen_controller.dart';
-import 'components/similar_scetion.dart';
+import 'components/similar_section.dart';
 import '../../controllers/cart_screen_controller.dart';
 import '../../models/product_Model.dart';
 import '../cart_screen/cart_screen.dart';
@@ -88,6 +88,9 @@ class DetailScreen extends StatelessWidget {
                     .doc(getStorage.read('userId'))
                     .snapshots(),
                 builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SizedBox.shrink();
+                  }
                   var data;
                   if (snapshot.data!.data() != null) {
                     data = snapshot.data!.data();

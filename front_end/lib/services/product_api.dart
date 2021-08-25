@@ -12,8 +12,6 @@ class ApiProduct {
     required StreamController arrivalController,
     required StreamController featuredController,
   }) async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
-
     try {
       var arrivalResponse = await dio.get(
         baseUrl + 'products/newArrival',
@@ -30,7 +28,6 @@ class ApiProduct {
       arrivalController.add(productModelFromJson(arrivalResponse.data));
 
       featuredController.add(productModelFromJson(featuredResponse.data));
-      await EasyLoading.dismiss();
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);
@@ -43,8 +40,6 @@ class ApiProduct {
     required String currentId,
     required StreamController controller,
   }) async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
-
     try {
       var response = await dio.get(
         baseUrl + 'products/byCategory/$categoryId/$currentId',
@@ -53,7 +48,6 @@ class ApiProduct {
         ),
       );
       controller.add(productModelFromJson(response.data));
-      await EasyLoading.dismiss();
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);
@@ -68,14 +62,14 @@ class ApiProduct {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
 
     try {
-    var response = await dio.get(
-      baseUrl + 'products/search/$query',
-      options: Options(
-        responseType: ResponseType.plain,
-      ),
-    );
-    searchController.add(productModelFromJson(response.data));
-    await EasyLoading.dismiss();
+      var response = await dio.get(
+        baseUrl + 'products/search/$query',
+        options: Options(
+          responseType: ResponseType.plain,
+        ),
+      );
+      searchController.add(productModelFromJson(response.data));
+      await EasyLoading.dismiss();
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);

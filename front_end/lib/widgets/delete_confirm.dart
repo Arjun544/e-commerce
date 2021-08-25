@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/register_screen/register_screen.dart';
-import '../utils/colors.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 
 import 'custom_button.dart';
 

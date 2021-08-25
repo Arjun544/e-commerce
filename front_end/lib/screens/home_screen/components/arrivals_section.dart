@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../widgets/arrival_loader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
@@ -27,7 +28,7 @@ class ArrivalsSection extends StatelessWidget {
         stream: homeScreenController.arrivalProductsStreamController.stream,
         builder: (context, AsyncSnapshot<ProductModel> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SizedBox();
+            return const ArrivalsLoader();
           }
 
           return Container(

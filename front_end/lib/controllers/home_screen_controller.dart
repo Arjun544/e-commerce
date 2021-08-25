@@ -11,6 +11,7 @@ class HomeScreenController extends GetxController {
   final PageController salesPageController = PageController(initialPage: 0);
   List<String> favListIds = [];
   int _currentPage = 0;
+  RxBool isLoading = false.obs;
 
   final StreamController<ProductModel> featuredProductsStreamController =
       BehaviorSubject();
