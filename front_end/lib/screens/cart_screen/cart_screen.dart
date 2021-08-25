@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +27,8 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     SchedulerBinding.instance!.addPostFrameCallback((_) {
-      cartScreenController.getCart();
       cartScreenController.cartSocketInit();
+      cartScreenController.getCart();
     });
   }
 
@@ -70,8 +69,7 @@ class _CartScreenState extends State<CartScreen> {
                         : GestureDetector(
                             onTap: () async {
                               await cartScreenController.clearCart(
-                                  userId:
-                                   getStorage.read('userId'));
+                                  userId: getStorage.read('userId'));
                               setState(() {
                                 cartScreenController.getCart();
                               });

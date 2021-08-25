@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -72,8 +73,9 @@ class _RootScreenState extends State<RootScreen> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const SizedBox.shrink();
                       }
+                      log(snapshot.data.toString());
                       return Text(
-                        snapshot.data!['productIds']?.length.toString() ?? '0',
+                        snapshot.data!['productIds'].length.toString(),
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.green,

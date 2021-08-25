@@ -26,7 +26,7 @@ class PassTextField extends StatelessWidget {
     return Center(
       child: Container(
         height: 50,
-        width: Get.width,
+        width: width,
         padding: const EdgeInsets.only(left: 10, right: 10),
         decoration: BoxDecoration(
           color: customGrey,

@@ -51,7 +51,6 @@ class CartScreenController extends GetxController {
     var cart = await ApiCart().getCart(userId: getStorage.read('userId'));
     cartTotal.add(cart.totalGrand);
     cartProducts.value = cart.cartList!;
-    log(cartProducts.toString());
   }
 
   Future updateQuantity(

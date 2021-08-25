@@ -37,7 +37,7 @@ class ApiCart {
     }
   }
 
-  Future<CartModel> getCart({
+  Future getCart({
     required String userId,
   }) async {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
@@ -55,7 +55,6 @@ class ApiCart {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);
       print(e);
-      throw Exception('Something is wrong');
     }
   }
 

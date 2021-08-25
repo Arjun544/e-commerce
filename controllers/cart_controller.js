@@ -61,18 +61,25 @@ exports.getCart = async (req, res) => {
       })
       .sort({ dateOrdered: -1 });
 
+    // cartList.map((item) => {
+    //   console.log(item.cartItems);
+    //  })
+    let finalProducts;
     // Calculating total grand of cart items
     const totalPrices = await Promise.all(
-      cartList.map(async (item) => {
-        const newCartItem = await CartItem.findById(
-          item.cartItems[0]._id
-        ).populate("product");
+      cartList.map((item) => {
+        const ItemsInCart = item.cartItems.map(async (it) => {
+          finalProducts = it;
+          await CartItem.findById(it._id).populate("product");
+        });
+        // console.log(ItemsInCart);
         let totalPrice;
-        if (newCartItem.product.onSale === false) {
-          totalPrice = newCartItem.product.price * newCartItem.quantity;
+        if (finalProducts.product.onSale === false) {
+          totalPrice = finalProducts.product.price * finalProducts.quantity;
           return totalPrice;
         } else {
-          totalPrice = newCartItem.product.totalPrice * newCartItem.quantity;
+          totalPrice =
+            finalProducts.product.totalPrice * finalProducts.quantity;
           return totalPrice;
         }
       })
