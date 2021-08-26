@@ -5,13 +5,13 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../controllers/root_screen_controller.dart';
+import '../controllers/detail_screen_controller.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DraggableHome extends StatefulWidget {
+class DraggableDetail extends StatefulWidget {
   @override
-  _DraggableHomeState createState() => _DraggableHomeState();
-  final RootScreenController controller;
+  _DraggableDetailState createState() => _DraggableDetailState();
+  final DetailScreenController controller;
 
   /// Leading: A widget to display before the toolbar's title.
   final Widget? leading;
@@ -82,7 +82,7 @@ class DraggableHome extends StatefulWidget {
   final FloatingActionButtonAnimator? floatingActionButtonAnimator;
 
   /// This will create DraggableHome.
-  const DraggableHome({
+  const DraggableDetail({
     Key? key,
     this.leading,
     required this.controller,
@@ -115,7 +115,7 @@ class DraggableHome extends StatefulWidget {
         super(key: key);
 }
 
-class _DraggableHomeState extends State<DraggableHome> {
+class _DraggableDetailState extends State<DraggableDetail> {
   final BehaviorSubject<bool> isFullyExpanded =
       BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> isFullyCollapsed =
@@ -149,22 +149,22 @@ class _DraggableHomeState extends State<DraggableHome> {
       drawer: widget.drawer,
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
-          widget.controller.hideBottomNavController.addListener(
+          widget.controller.hideAddCartController.addListener(
             () {
-              if (widget.controller.hideBottomNavController.position
+              if (widget.controller.hideAddCartController.position
                       .userScrollDirection ==
                   ScrollDirection.reverse) {
-                if (widget.controller.isBottomBarVisible.value) {
-                  widget.controller.updateBottomBarStatus(false);
-                  widget.controller.isBottomBarVisible.value = false;
+                if (widget.controller.isAddCartVisible.value) {
+                  widget.controller.updateAddCartStatus(false);
+                  widget.controller.isAddCartVisible.value = false;
                 }
               }
-              if (widget.controller.hideBottomNavController.position
+              if (widget.controller.hideAddCartController.position
                       .userScrollDirection ==
                   ScrollDirection.forward) {
-                if (!widget.controller.isBottomBarVisible.value) {
-                  widget.controller.updateBottomBarStatus(true);
-                  widget.controller.isBottomBarVisible.value = true;
+                if (!widget.controller.isAddCartVisible.value) {
+                  widget.controller.updateAddCartStatus(true);
+                  widget.controller.isAddCartVisible.value = true;
                 }
               }
             },
@@ -192,7 +192,7 @@ class _DraggableHomeState extends State<DraggableHome> {
           }
           return false;
         },
-        child: sliver(widget.controller.hideBottomNavController, context,
+        child: sliver(widget.controller.hideAddCartController, context,
             appBarHeight, fullyExpandedHeight, expandedHeight, topPadding),
       ),
       bottomSheet: widget.bottomSheet,

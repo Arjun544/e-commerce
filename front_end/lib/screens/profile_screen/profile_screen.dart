@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../widgets/draggable_scaffold.dart';
 import 'components/reset_password.dart';
 import 'components/shipping_address.dart';
 import '../../utils/constants.dart';
@@ -15,7 +16,6 @@ import '../../controllers/root_screen_controller.dart';
 import '../../models/userModel.dart';
 import '../../utils/colors.dart';
 import '../../widgets/custom_button.dart';
-import '../../widgets/draggable_home.dart';
 import 'components/edit_profile.dart';
 import 'components/profile_tile.dart';
 import 'components/top_header.dart';
@@ -35,7 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DraggableHome(
+    return DraggableScaffold(
       curvedBodyRadius: 0,
       headerExpandedHeight: 0.31,
       title: const TopHeader(

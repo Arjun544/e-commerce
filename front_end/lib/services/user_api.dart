@@ -16,7 +16,7 @@ class ApiUser {
     required int zipCode,
     required String country,
   }) async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    await EasyLoading.show(status: 'Updating...', dismissOnTap: false);
 
     try {
       await dio.Dio().patch(
@@ -50,7 +50,7 @@ class ApiUser {
     required String userId,
     required File image,
   }) async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
     String fileName = image.path.split('/').last;
 
     try {
@@ -85,7 +85,7 @@ class ApiUser {
   Future forgetPassword({
     required String email,
   }) async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
 
     try {
       var response = await dio.Dio().patch(
@@ -120,7 +120,7 @@ class ApiUser {
     required String newPassword,
     required String confirmPassword,
   }) async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
 
     try {
       dio.Response response = await dio.Dio().patch(
@@ -166,7 +166,7 @@ class ApiUser {
     required String phone,
     required String type,
   }) async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
 
     try {
       await dio.Dio().patch(
@@ -207,7 +207,7 @@ class ApiUser {
     required String phone,
     required String type,
   }) async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    await EasyLoading.show(status: 'Removing...', dismissOnTap: false);
 
     try {
       await dio.Dio().patch(
@@ -237,6 +237,7 @@ class ApiUser {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);
       print(e);
+      
     }
   }
 }

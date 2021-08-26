@@ -28,7 +28,8 @@ class ArrivalsSection extends StatelessWidget {
         stream: homeScreenController.arrivalProductsStreamController.stream,
         builder: (context, AsyncSnapshot<ProductModel> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const ArrivalsLoader();
+            return ArrivalsLoader(
+            );
           }
 
           return Container(

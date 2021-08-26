@@ -52,56 +52,74 @@ class _RootScreenState extends State<RootScreen> {
       () => Scaffold(
         extendBody: true,
         body: children[rootScreenController.currentIndex.value],
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: darkBlue,
-          onPressed: () async {
-            getStorage.read('isLogin') == true
-                ? Get.to(
-                    () => CartScreen(),
-                  )
-                : AccessDialogue(context);
-          },
-          child: Badge(
-            badgeContent: getStorage.read('isLogin') == true
-                ? StreamBuilder<DocumentSnapshot>(
-                    stream: firebaseFirestore
-                        .collection('carts')
-                        .doc(getStorage.read('userId'))
-                        .snapshots(),
-                    builder:
-                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const SizedBox.shrink();
-                      }
-                      log(snapshot.data.toString());
-                      return Text(
-                        snapshot.data!['productIds'].length.toString(),
-                        style: const TextStyle(
+        floatingActionButton: Obx(
+          () => AnimatedContainer(
+            duration: const Duration(milliseconds: 700),
+            height: rootScreenController.isBottomBarVisible.value
+                ? Get.height * 0.08
+                : 0.0,
+            child: FloatingActionButton(
+              backgroundColor: darkBlue,
+              onPressed: () async {
+                getStorage.read('isLogin') == true
+                    ? Get.to(
+                        () => CartScreen(),
+                      )
+                    : AccessDialogue(context);
+              },
+              child: Badge(
+                showBadge: rootScreenController.isBottomBarVisible.value
+                    ? true
+                    : false,
+                badgeContent: getStorage.read('isLogin') == true
+                    ? StreamBuilder<DocumentSnapshot>(
+                        stream: firebaseFirestore
+                            .collection('carts')
+                            .doc(getStorage.read('userId'))
+                            .snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const SizedBox.shrink();
+                          }
+                          log(snapshot.data.toString());
+                          return snapshot.data!.exists
+                              ? Text(
+                                  snapshot.data!['productIds'].length
+                                      .toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green,
+                                      fontSize: 12),
+                                )
+                              : const Text(
+                                  '0',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green,
+                                      fontSize: 12),
+                                );
+                        })
+                    : const Text(
+                        '0',
+                        style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.green,
                             fontSize: 12),
-                      );
-                    })
-                : const Text(
-                    '0',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                        fontSize: 12),
-                  ),
-            badgeColor: Colors.white,
-            child: SvgPicture.asset(
-              'assets/images/Bag.svg',
-              height: 25,
-              color: Colors.white,
+                      ),
+                badgeColor: Colors.white,
+                child: SvgPicture.asset(
+                  'assets/images/Bag.svg',
+                  height: 25,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 15, right: 60, left: 60),
-          child: CustomBar(
-            controller: rootScreenController,
-          ),
+        bottomNavigationBar: CustomBar(
+          controller: rootScreenController,
         ),
       ),
     );

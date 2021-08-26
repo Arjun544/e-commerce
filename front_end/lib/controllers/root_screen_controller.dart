@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -10,13 +11,19 @@ import '../utils/constants.dart';
 import 'register_screen_controller.dart';
 
 class RootScreenController extends GetxController {
+  ScrollController hideBottomNavController = ScrollController();
   final RegisterScreenController registerScreenController =
       Get.put(RegisterScreenController());
 
   RxInt currentIndex = 0.obs;
+  RxBool isBottomBarVisible = true.obs;
 
   final StreamController<UserModel> currentUserStreamController =
       BehaviorSubject();
+
+  void updateBottomBarStatus(val) {
+    isBottomBarVisible.value = val;
+  }
 
   void updateIndex(int value) {
     currentIndex.value = value;

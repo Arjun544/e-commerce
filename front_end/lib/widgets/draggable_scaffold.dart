@@ -8,10 +8,9 @@ import 'package:flutter/rendering.dart';
 import '../controllers/root_screen_controller.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DraggableHome extends StatefulWidget {
+class DraggableScaffold extends StatefulWidget {
   @override
-  _DraggableHomeState createState() => _DraggableHomeState();
-  final RootScreenController controller;
+  _DraggableScaffoldState createState() => _DraggableScaffoldState();
 
   /// Leading: A widget to display before the toolbar's title.
   final Widget? leading;
@@ -82,10 +81,9 @@ class DraggableHome extends StatefulWidget {
   final FloatingActionButtonAnimator? floatingActionButtonAnimator;
 
   /// This will create DraggableHome.
-  const DraggableHome({
+  const DraggableScaffold({
     Key? key,
     this.leading,
-    required this.controller,
     required this.title,
     this.centerTitle = true,
     this.actions,
@@ -115,7 +113,7 @@ class DraggableHome extends StatefulWidget {
         super(key: key);
 }
 
-class _DraggableHomeState extends State<DraggableHome> {
+class _DraggableScaffoldState extends State<DraggableScaffold> {
   final BehaviorSubject<bool> isFullyExpanded =
       BehaviorSubject<bool>.seeded(false);
   final BehaviorSubject<bool> isFullyCollapsed =
@@ -149,26 +147,6 @@ class _DraggableHomeState extends State<DraggableHome> {
       drawer: widget.drawer,
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
-          widget.controller.hideBottomNavController.addListener(
-            () {
-              if (widget.controller.hideBottomNavController.position
-                      .userScrollDirection ==
-                  ScrollDirection.reverse) {
-                if (widget.controller.isBottomBarVisible.value) {
-                  widget.controller.updateBottomBarStatus(false);
-                  widget.controller.isBottomBarVisible.value = false;
-                }
-              }
-              if (widget.controller.hideBottomNavController.position
-                      .userScrollDirection ==
-                  ScrollDirection.forward) {
-                if (!widget.controller.isBottomBarVisible.value) {
-                  widget.controller.updateBottomBarStatus(true);
-                  widget.controller.isBottomBarVisible.value = true;
-                }
-              }
-            },
-          );
           if (notification.metrics.axis == Axis.vertical) {
             // isFullyCollapsed
             if ((isFullyExpanded.value) &&
@@ -192,8 +170,8 @@ class _DraggableHomeState extends State<DraggableHome> {
           }
           return false;
         },
-        child: sliver(widget.controller.hideBottomNavController, context,
-            appBarHeight, fullyExpandedHeight, expandedHeight, topPadding),
+        child: sliver(context, appBarHeight, fullyExpandedHeight,
+            expandedHeight, topPadding),
       ),
       bottomSheet: widget.bottomSheet,
       bottomNavigationBar: widget.bottomNavigationBar,
@@ -204,7 +182,6 @@ class _DraggableHomeState extends State<DraggableHome> {
   }
 
   CustomScrollView sliver(
-    ScrollController scrollController,
     BuildContext context,
     double appBarHeight,
     double fullyExpandedHeight,
@@ -212,7 +189,6 @@ class _DraggableHomeState extends State<DraggableHome> {
     double topPadding,
   ) {
     return CustomScrollView(
-      controller: scrollController,
       physics: const BouncingScrollPhysics(),
       slivers: [
         StreamBuilder<List<bool>>(

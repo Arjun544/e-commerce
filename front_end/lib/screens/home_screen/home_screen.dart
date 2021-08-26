@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/screens/home_screen/components/filter_bottomSheet.dart';
+import 'package:front_end/utils/colors.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/cart_screen_controller.dart';
@@ -24,6 +26,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DraggableHome(
+      controller: rootScreenController,
       curvedBodyRadius: 0,
       headerExpandedHeight: 0.3,
       title: TopBar(
@@ -69,7 +72,10 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.bottomSheet(FilterBottomSheet(),
+                          isScrollControlled: true);
+                    },
                     icon: SvgPicture.asset(
                       'assets/images/Filter.svg',
                       height: 22,

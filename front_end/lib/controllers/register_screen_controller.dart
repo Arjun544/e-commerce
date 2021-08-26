@@ -25,7 +25,7 @@ class RegisterScreenController extends GetxController {
   }
 
   Future<void> signUp() async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    await EasyLoading.show(status: 'Signing up...', dismissOnTap: false);
     Map data = {
       'username': usernameController.text,
       'email': emailController.text,
@@ -64,7 +64,7 @@ class RegisterScreenController extends GetxController {
   }
 
   Future<void> VerifyEmail() async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    await EasyLoading.show(status: 'Verifying...', dismissOnTap: false);
     Map data = {
       'email': emailController.text,
       'code': pinController.text,
@@ -107,7 +107,7 @@ class RegisterScreenController extends GetxController {
   }
 
   Future<void> signIn() async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    await EasyLoading.show(status: 'Signing in...', dismissOnTap: false);
 
     Map data = {
       'email': emailController.text,

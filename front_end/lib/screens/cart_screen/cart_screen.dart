@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
+import 'package:front_end/widgets/cart_screen_loader.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -35,86 +36,93 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    right: 15, left: 15, top: 50, bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: StreamBuilder(
+          stream: cartScreenController.cartProductsStreamController.stream,
+          builder: (context, AsyncSnapshot<CartModel> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CartScreenLoader();
+            }
+            cartScreenController.cartProductsLength.value =
+                snapshot.data!.cartList.length;
+            cartScreenController.cartTotal.add(snapshot.data!.totalGrand);
+            return Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Column(
                   children: [
-                    GestureDetector(
-                      onTap: () => Get.back(closeOverlays: true),
-                      child: SvgPicture.asset(
-                        'assets/images/Arrow - Left.svg',
-                        height: 25,
-                        color: darkBlue.withOpacity(0.7),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        'My Cart',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    ),
-                    cartScreenController.cartProducts.isEmpty
-                        ? const SizedBox(
-                            width: 15,
-                          )
-                        : GestureDetector(
-                            onTap: () async {
-                              await cartScreenController.clearCart(
-                                  userId: getStorage.read('userId'));
-                              setState(() {
-                                cartScreenController.getCart();
-                              });
-                            },
-                            child: const Text(
-                              'Clear',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.redAccent,
-                              ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          right: 15, left: 15, top: 50, bottom: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () => Get.back(closeOverlays: true),
+                            child: SvgPicture.asset(
+                              'assets/images/Arrow - Left.svg',
+                              height: 25,
+                              color: darkBlue.withOpacity(0.7),
                             ),
                           ),
-                  ],
-                ),
-              ),
-              cartScreenController.cartProducts.isEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 80),
-                      child: Column(
-                        children: [
-                          Lottie.asset('assets/empty.json',
-                              height: Get.height * 0.3),
-                          const Text(
-                            'Nothing in cart',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.black45),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              'My Cart',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
                           ),
+                          snapshot.data!.cartList.isEmpty
+                              ? const SizedBox(
+                                  width: 15,
+                                )
+                              : GestureDetector(
+                                  onTap: () async {
+                                    await cartScreenController.clearCart(
+                                        userId: getStorage.read('userId'));
+
+                                    setState(() {
+                                      cartScreenController.getCart();
+                                    });
+                                  },
+                                  child: const Text(
+                                    'Clear',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.redAccent,
+                                    ),
+                                  ),
+                                ),
                         ],
                       ),
-                    )
-                  : Expanded(
-                      child: Obx(
-                        () => ListView.builder(
+                    ),
+                    snapshot.data!.cartList.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 80),
+                            child: Column(
+                              children: [
+                                Lottie.asset('assets/empty.json',
+                                    height: Get.height * 0.3),
+                                const Text(
+                                  'Nothing in cart',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.black45),
+                                ),
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            itemCount: cartScreenController.cartProducts.length,
+                            itemCount: snapshot.data!.cartList.length,
                             padding: const EdgeInsets.only(
                                 right: 15, left: 15, bottom: 80),
                             itemBuilder: (context, index) {
                               return SwipeActionCell(
-                                key: ValueKey(
-                                    cartScreenController.cartProducts[index]),
+                                key: ValueKey(snapshot.data!.cartList[index]),
                                 performsFirstActionWithFullSwipe: true,
                                 trailingActions: <SwipeAction>[
                                   SwipeAction(
@@ -129,8 +137,7 @@ class _CartScreenState extends State<CartScreen> {
                                       handler(false);
 
                                       await cartScreenController.deleteItem(
-                                        id: cartScreenController
-                                            .cartProducts[index].id,
+                                        id: snapshot.data!.cartList[index].id,
                                       );
                                       await firebaseFirestore
                                           .collection('carts')
@@ -150,57 +157,56 @@ class _CartScreenState extends State<CartScreen> {
                                 ],
                                 child: CartWidget(
                                   cartScreenController: cartScreenController,
-                                  products: cartScreenController
-                                      .cartProducts[index].cartItems,
+                                  products:
+                                      snapshot.data!.cartList[index].cartItems,
                                 ),
                               );
                             }),
-                      ),
-                    ),
-            ],
-          ),
-          cartScreenController.cartProducts.isEmpty
-              ? const SizedBox.shrink()
-              : Container(
-                  height: 70,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  margin:
-                      const EdgeInsets.only(right: 20, left: 20, bottom: 10),
-                  decoration: BoxDecoration(
-                    color: darkBlue,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      StreamBuilder(
-                          stream: cartScreenController.cartTotal.stream,
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const SizedBox();
-                            }
-                            return Text(
-                              '${snapshot.data.toString()}',
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.white),
-                            );
-                          }),
-                      SocialButton(
-                        height: 45,
-                        width: Get.width * 0.4,
-                        text: 'Continue',
-                        icon: 'assets/images/Logout.svg',
-                        color: Colors.grey.withOpacity(0.5),
-                        iconColor: Colors.white,
-                      ),
-                    ],
-                  ),
+                  ],
                 ),
-        ],
-      ),
+                snapshot.data!.cartList.isEmpty
+                    ? const SizedBox.shrink()
+                    : Container(
+                        height: 70,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        margin: const EdgeInsets.only(
+                            right: 20, left: 20, bottom: 10),
+                        decoration: BoxDecoration(
+                          color: darkBlue,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            StreamBuilder(
+                                stream: cartScreenController.cartTotal.stream,
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const SizedBox();
+                                  }
+                                  return Text(
+                                    '${snapshot.data.toString()}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.white),
+                                  );
+                                }),
+                            SocialButton(
+                              height: 45,
+                              width: Get.width * 0.4,
+                              text: 'Continue',
+                              icon: 'assets/images/Logout.svg',
+                              color: Colors.grey.withOpacity(0.5),
+                              iconColor: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ),
+              ],
+            );
+          }),
     );
   }
 }

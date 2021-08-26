@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../utils/constants.dart';
@@ -11,10 +10,11 @@ import '../models/cart_model.dart';
 import '../services/cart_api.dart';
 
 class CartScreenController extends GetxController {
-  RxList<CartList> cartProducts = <CartList>[].obs;
+  final StreamController<CartModel> cartProductsStreamController =
+      BehaviorSubject();
   StreamController cartTotal = BehaviorSubject();
   List<String> productIds = [];
-
+  RxInt cartProductsLength = 0.obs;
   late Socket socket;
 
   void cartSocketInit() {
@@ -42,15 +42,15 @@ class CartScreenController extends GetxController {
     await firebaseFirestore
         .collection('carts')
         .doc(getStorage.read('userId'))
-        .update({
+        .set({
       'productIds': FieldValue.arrayUnion([productId])
     });
   }
 
   void getCart() async {
-    var cart = await ApiCart().getCart(userId: getStorage.read('userId'));
-    cartTotal.add(cart.totalGrand);
-    cartProducts.value = cart.cartList!;
+    await ApiCart().getCart(
+        userId: getStorage.read('userId'),
+        controller: cartProductsStreamController);
   }
 
   Future updateQuantity(

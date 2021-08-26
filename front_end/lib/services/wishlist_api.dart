@@ -12,7 +12,7 @@ class ApiWishList {
     required List<String> ids,
     required StreamController wishlistController,
   }) async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
 
     try {
       var response = await dio.post(
@@ -22,7 +22,6 @@ class ApiWishList {
           responseType: ResponseType.plain,
         ),
       );
-      log(response.data);
 
       wishlistController.add(productModelFromJson(response.data));
 
@@ -37,7 +36,7 @@ class ApiWishList {
   Future clearWishlist({
     required String userId,
   }) async {
-    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
+    await EasyLoading.show(status: 'Clearing...', dismissOnTap: false);
 
     try {
       var response = await dio.patch(

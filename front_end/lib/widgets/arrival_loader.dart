@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ArrivalsLoader extends StatelessWidget {
-  const ArrivalsLoader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +12,7 @@ class ArrivalsLoader extends StatelessWidget {
         baseColor: Colors.grey.withOpacity(0.3),
         highlightColor: Colors.grey.withOpacity(0.4),
         child: ListView.builder(
-          itemCount: 6,
+          itemCount: 4,
           padding: const EdgeInsets.only(left: 15),
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
