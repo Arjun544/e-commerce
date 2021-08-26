@@ -522,7 +522,9 @@ exports.deleteUserById = async (req, res) => {
 exports.getWishlist = async (req, res) => {
   try {
     const ids = req.body.ids;
-    const products = await Product.find({ _id: { $in: ids } }).populate('cateogory');
+    const products = await Product.find({ _id: { $in: ids } }).populate(
+      "category"
+    );
 
     if (!products) {
       return res.status(400).send("Nothing in wishlist");
