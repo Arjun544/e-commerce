@@ -26,13 +26,17 @@ const productSchema = mongoose.Schema({
     type: Array,
     default: [],
   },
-
   price: {
     type: Number,
     default: 0,
     min: 0,
   },
   category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+    required: true,
+  },
+  subCategory: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
     required: true,

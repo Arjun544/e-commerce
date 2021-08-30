@@ -436,23 +436,22 @@ exports.editShippingAddress = async (req, res) => {
     if (!id || !address || !city || !country || !type || !phone) {
       return res.json({ error: true, message: "All fields are required" });
     }
-
-    await User.findOneAndUpdate(
+   
+    await User.updateOne(
       {
         _id: req.params.id,
-        "ShippingAddress.id": id,
+        "ShippingAddress.id": mongoose.Types.ObjectId(id),
       },
       {
         $set: {
-          "ShippingAddress.address": address,
-          "ShippingAddress.city": city,
-          "ShippingAddress.country": country,
-          "ShippingAddress.phone": phone,
-          "ShippingAddress.type": type,
+          "ShippingAddress.$.address": address,
+          "ShippingAddress.$.city": city,
+          "ShippingAddress.$.country": country,
+          "ShippingAddress.$.phone": phone,
+          "ShippingAddress.$.type": type,
         },
       }
     );
-
     return res.send("Address has been edited");
   } catch (error) {
     console.log(error);

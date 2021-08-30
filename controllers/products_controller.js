@@ -35,6 +35,7 @@ exports.addProduct = async (req, res) => {
       fullDescription,
       price,
       category,
+      subCategory,
       countInStock,
       totalReviews,
       isFeatured,
@@ -46,6 +47,7 @@ exports.addProduct = async (req, res) => {
       !fullDescription ||
       !price ||
       !category ||
+      !subCategory ||
       !countInStock ||
       !totalReviews ||
       !isFeatured
@@ -76,6 +78,7 @@ exports.addProduct = async (req, res) => {
       image: result.secure_url,
       price: req.body.price,
       category: req.body.category,
+      subCategory: req.body.subCategory,
       countInStock: req.body.countInStock,
       totalReviews: req.body.totalReviews,
       isFeatured: req.body.isFeatured,
@@ -98,16 +101,7 @@ exports.addProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
   try {
-    // Get products by category if query is provided, otherwise get all products
-    let filter = {};
-    if (req.query.categories) {
-      if (!mongoose.isValidObjectId(req.query.categories)) {
-        return res.status(400).send("Invalid product id");
-      }
-      filter = { category: req.query.categories.split(",") };
-    }
-
-    const productsList = await Product.find(filter).populate("category");
+    const productsList = await Product.find().populate("category");
     res.status(200).json({
       success: true,
       products: productsList,

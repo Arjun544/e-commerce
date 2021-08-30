@@ -5,6 +5,10 @@ const categorySchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  subCategories: {
+    type: Array,
+    default: [],
+  },
   icon: {
     type: String,
   },

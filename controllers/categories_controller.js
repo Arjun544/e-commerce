@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 
 exports.addCategory = async (req, res) => {
   try {
-    const { name, icon, color } = req.body;
+    const { name, icon, subCategory, subCategoryIcon } = req.body;
 
-    if (!name || !icon || !color) {
+    if (!name || !icon) {
       return res.json("All fields are required");
     }
 
@@ -15,13 +15,51 @@ exports.addCategory = async (req, res) => {
 
     const newCategory = Category({
       name,
+      // subCategories: {
+      //   id: mongoose.Types.ObjectId(),
+      //   subCategory,
+      //   subCategoryIcon,
+      // },
       icon,
-      color,
     });
     await newCategory.save();
+    return res.json("New category has been added");
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.addSubCategory = async (req, res) => {
+  try {
+    const { name, icon } = req.body;
+
+    if (!name || !icon) {
+      return res.json("All fields are required");
+    }
+
+    if (name.length < 2) {
+      return res.json("Name can't be less than 2 characters");
+    }
+    await Category.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: {
+          subCategories: {
+            id: mongoose.Types.ObjectId(),
+            name,
+          },
+        },
+      },
+
+      { new: true }
+    );
     return res.json({
       success: true,
-      message: "New category has been added",
+      message: "Sub category has been added",
     });
   } catch (error) {
     return res.json({
@@ -44,7 +82,7 @@ exports.getCategories = async (req, res) => {
 
     res.json({
       success: true,
-      caegories: categoryList,
+      categories: categoryList,
     });
   } catch (error) {
     return res.json({
@@ -98,7 +136,7 @@ exports.updateCategory = async (req, res) => {
 
     res.json({
       success: true,
-      caegories: category,
+      categories: category,
     });
   } catch (error) {
     return res.json({
@@ -108,8 +146,33 @@ exports.updateCategory = async (req, res) => {
   }
 };
 
+exports.updateSubCategory = async (req, res) => {
+  try {
+    const category = await Category.updateOne(
+      {
+        _id: req.params.id,
+        "subCategories.id": mongoose.Types.ObjectId(req.body.id),
+      },
+      {
+        $set: {
+          "subCategories.$.name": req.body.name,
+        },
+      }
+    );
+    if (!category) return res.status(400).send("Category not found");
+
+    res.json("Sub category has beem updated");
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
 exports.count = async (req, res) => {
- try {
+  try {
     const categoryCount = await Category.countDocuments((count) => count);
 
     if (!categoryCount) {
@@ -118,13 +181,13 @@ exports.count = async (req, res) => {
     res.json({
       categoryCount: categoryCount,
     });
- } catch (error) {
-   console.log(error);
-   return res.json({
-     success: false,
-     message: "Something went wrong",
-   });
- }
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
 };
 
 exports.deleteCategory = async (req, res) => {
