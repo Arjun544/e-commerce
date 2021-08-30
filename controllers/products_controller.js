@@ -136,7 +136,7 @@ exports.getProductById = async (req, res) => {
   }
 };
 
-exports.getProductsByCategory = async (req, res) => {
+exports.getSimilarProducts = async (req, res) => {
   try {
     const products = await Product.find({
       category: req.params.category,
@@ -194,7 +194,44 @@ exports.filterByPrice = async (req, res) => {
   }
 };
 
-exports.sorting = async (req, res) => {
+exports.productsByCategory = async (req, res) => {
+  try {
+    // If query params is avaliable then get products by both category & subcategory
+    let products;
+    if (req.query.subCategory) {
+      console.log(req.query.subCategory);
+      products = await Product.find({
+        category: req.params.categoryId,
+        "subCategory": req.query.subCategory,
+      }).populate("category");
+    }
+    // get by only category
+    else {
+      products = await Product.find({
+        category: req.params.categoryId,
+      }).populate("category");
+    }
+
+    if (!products) {
+      res.json({
+        error: true,
+        message: "Mo products found",
+      });
+    } else {
+      res.status(200).json({
+        products: products,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.sortProducts = async (req, res) => {
   try {
     let productsList;
     // Get newest products

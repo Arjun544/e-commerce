@@ -35,9 +35,9 @@ exports.addCategory = async (req, res) => {
 
 exports.addSubCategory = async (req, res) => {
   try {
-    const { name, icon } = req.body;
+    const { name } = req.body;
 
-    if (!name || !icon) {
+    if (!name) {
       return res.json("All fields are required");
     }
 
