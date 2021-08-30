@@ -199,7 +199,6 @@ exports.productsByCategory = async (req, res) => {
     // If query params is avaliable then get products by both category & subcategory
     let products;
     if (req.query.subCategory) {
-      console.log(req.query.subCategory);
       products = await Product.find({
         category: req.params.categoryId,
         "subCategory": req.query.subCategory,

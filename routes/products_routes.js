@@ -33,7 +33,7 @@ router.get("/sorting", cleanBody, sortProducts);
 router.get("/featured", cleanBody, featuredProducts);
 router.get("/:id", cleanBody, getProductById);
 router.get("/search/:query", cleanBody, searchProducts);
-router.get("/similiar/:category/:currentId", cleanBody, getSimilarProducts);
+router.get("/similar/:category/:currentId", cleanBody, getSimilarProducts);
 router.get("/byCategory/:categoryId", cleanBody, productsByCategory);
 router.patch("/update/:id", cleanBody, updateProduct);
 router.delete("/delete/:id", cleanBody, deleteProduct);
