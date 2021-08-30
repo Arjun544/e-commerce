@@ -16,7 +16,7 @@ class FilteredProductsScreen extends StatelessWidget {
                 Get.back(closeOverlays: true);
               },
               iconSize: 40,
-              icon: Icon(Icons.ac_unit),
+              icon: const Icon(Icons.ac_unit),
             )
           ],
         ),

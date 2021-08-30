@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
-import 'package:front_end/widgets/cart_screen_loader.dart';
+import '../../widgets/loaders/cart_screen_loader.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 

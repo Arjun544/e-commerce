@@ -10,7 +10,7 @@ import 'package:rxdart/rxdart.dart';
 
 class DetailScreenController extends GetxController {
   ScrollController hideAddCartController = ScrollController();
-  final StreamController<ProductModel> byCategoryController = BehaviorSubject();
+  final StreamController<ProductModel> similarProductsController = BehaviorSubject();
 
   RxInt currentImage = 0.obs;
   RxInt selected = 0.obs;
@@ -27,11 +27,10 @@ class DetailScreenController extends GetxController {
     currentImage.value = newImage;
   }
 
-  Future getProductsByCategory(
-      {required categoryId, required currentId}) async {
-    await ApiProduct().getProductsByCategory(
+  Future getSimilarProducts({required categoryId, required currentId}) async {
+    await ApiProduct().getSimilarProducts(
         currentId: currentId,
         categoryId: categoryId,
-        controller: byCategoryController);
+        controller: similarProductsController);
   }
 }

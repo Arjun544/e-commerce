@@ -2,7 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../widgets/featured_loader.dart';
+import 'package:front_end/widgets/product_Item.dart';
+import '../../../widgets/loaders/featured_loader.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
@@ -35,7 +36,7 @@ class SimilarSection extends StatefulWidget {
 class _SimilarSectionState extends State<SimilarSection> {
   @override
   void initState() {
-    widget.detailScreenController.getProductsByCategory(
+    widget.detailScreenController.getSimilarProducts(
         categoryId: widget.categoryId, currentId: widget.currentId);
     super.initState();
   }
@@ -43,7 +44,7 @@ class _SimilarSectionState extends State<SimilarSection> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: widget.detailScreenController.byCategoryController.stream,
+        stream: widget.detailScreenController.similarProductsController.stream,
         builder: (context, AsyncSnapshot<ProductModel> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const FeaturedLoader();
@@ -75,7 +76,7 @@ class _SimilarSectionState extends State<SimilarSection> {
                         Radius.circular(20),
                       ),
                     ),
-                    child: BuildItem(
+                    child: ProductItem(
                       homeScreenController: widget.homeScreenController,
                       product: product,
                     ),
@@ -86,98 +87,5 @@ class _SimilarSectionState extends State<SimilarSection> {
                 return StaggeredTile.count(1, index.isEven ? 1.4 : 1.5);
               });
         });
-  }
-}
-
-class BuildItem extends StatelessWidget {
-  final Product product;
-  final HomeScreenController homeScreenController;
-
-  BuildItem({required this.product, required this.homeScreenController});
-
-  final WishListController wishListController = Get.find();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Stack(
-          alignment: Alignment.topRight,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: CachedNetworkImage(
-                imageUrl: product.image.toString(),
-                fit: BoxFit.contain,
-                width: Get.width * 0.5,
-              ),
-            ),
-            PreferenceBuilder<List<String>>(
-                preference: sharedPreferences
-                    .getStringList('favListIds', defaultValue: []),
-                builder: (context, snapshot) {
-                  wishListController.ids = snapshot;
-                  return LikeButton(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    size: 20,
-                    isLiked: snapshot.contains(product.id) ? true : false,
-                    circleColor: const CircleColor(
-                      start: Colors.pink,
-                      end: Colors.pink,
-                    ),
-                    bubblesColor: BubblesColor(
-                      dotPrimaryColor: Colors.pink,
-                      dotSecondaryColor: Colors.pink.withOpacity(0.5),
-                    ),
-                    likeBuilder: (bool isLiked) {
-                      return isLiked
-                          ? SvgPicture.asset(
-                              'assets/images/Heart.svg',
-                              color: Colors.pink,
-                            )
-                          : SvgPicture.asset(
-                              'assets/images/Heart-Outline.svg',
-                              color: Colors.black,
-                            );
-                    },
-                    onTap: (isLiked) async {
-                      snapshot.contains(product.id)
-                          ? snapshot.remove(product.id)
-                          : snapshot.add(product.id);
-                      await sharedPreferences.setStringList(
-                          'favListIds', snapshot);
-                      return !isLiked;
-                    },
-                  );
-                }),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                product.name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              Text(
-                '\$ ${product.price.toString()}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.black54,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
   }
 }

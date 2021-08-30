@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import '../models/category_model.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -13,6 +14,8 @@ class HomeScreenController extends GetxController {
   int _currentPage = 0;
   RxBool isLoading = false.obs;
 
+  final StreamController<CategoryModel> categoriesStreamController =
+      BehaviorSubject();
   final StreamController<ProductModel> featuredProductsStreamController =
       BehaviorSubject();
   final StreamController<ProductModel> arrivalProductsStreamController =
@@ -53,6 +56,7 @@ class HomeScreenController extends GetxController {
   }
 
   Future getData() async => await ApiProduct().getData(
+        categoriesController: categoriesStreamController,
         arrivalController: arrivalProductsStreamController,
         featuredController: featuredProductsStreamController,
       );

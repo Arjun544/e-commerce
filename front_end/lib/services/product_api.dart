@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import '../models/category_model.dart';
 import 'package:get/get.dart';
 
 import '../models/product_Model.dart';
@@ -9,6 +10,7 @@ import '../utils/constants.dart';
 
 class ApiProduct {
   Future getData({
+    required StreamController categoriesController,
     required StreamController arrivalController,
     required StreamController featuredController,
   }) async {
@@ -25,8 +27,15 @@ class ApiProduct {
           responseType: ResponseType.plain,
         ),
       );
-      arrivalController.add(productModelFromJson(arrivalResponse.data));
 
+      var categoriesResponse = await dio.get(
+        baseUrl + 'categories/get',
+        options: Options(
+          responseType: ResponseType.plain,
+        ),
+      );
+      categoriesController.add(categoryModelFromJson(categoriesResponse.data));
+      arrivalController.add(productModelFromJson(arrivalResponse.data));
       featuredController.add(productModelFromJson(featuredResponse.data));
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
@@ -35,19 +44,50 @@ class ApiProduct {
     }
   }
 
-  Future getProductsByCategory({
+  Future getSimilarProducts({
     required String categoryId,
     required String currentId,
     required StreamController controller,
   }) async {
     try {
       var response = await dio.get(
-        baseUrl + 'products/byCategory/$categoryId/$currentId',
+        baseUrl + 'products/similar/$categoryId/$currentId',
         options: Options(
           responseType: ResponseType.plain,
         ),
       );
       controller.add(productModelFromJson(response.data));
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
+    }
+  }
+
+  Future getFilteredProducts({
+    required String categoryId,
+    String? subCategory,
+    required StreamController controller,
+    required bool hasQueryParam,
+  }) async {
+    try {
+      if (hasQueryParam) {
+        var response = await dio.get(
+          baseUrl + 'products/byCategory/$categoryId?subCategory=$subCategory',
+          options: Options(
+            responseType: ResponseType.plain,
+          ),
+        );
+        controller.add(productModelFromJson(response.data));
+      } else {
+        var response = await dio.get(
+          baseUrl + 'products/byCategory/$categoryId',
+          options: Options(
+            responseType: ResponseType.plain,
+          ),
+        );
+        controller.add(productModelFromJson(response.data));
+      }
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);

@@ -2,7 +2,6 @@
 //
 //     final cartModel = cartModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 CartModel cartModelFromJson(String str) => CartModel.fromJson(json.decode(str));

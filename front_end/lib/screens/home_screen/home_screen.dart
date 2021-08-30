@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:front_end/screens/home_screen/components/filter_bottomSheet.dart';
-import 'package:front_end/utils/colors.dart';
+import 'components/all_catogories.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/cart_screen_controller.dart';
@@ -54,43 +52,25 @@ class HomeScreen extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Container(
-                  height: 50,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        const Color(0xFFFB6F52),
-                        const Color(0xFFF7AF2E).withOpacity(0.6)
-                      ],
-                    ),
-                    borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(50),
-                      bottomRight: Radius.circular(50),
-                    ),
+            CategoriesSection(),
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 15, left: 15, bottom: 10, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'New Arrivals',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
-                  child: IconButton(
-                    onPressed: () {
-                      Get.bottomSheet(FilterBottomSheet(),
-                          isScrollControlled: true);
-                    },
-                    icon: SvgPicture.asset(
-                      'assets/images/Filter.svg',
-                      height: 22,
-                      color: Colors.white,
-                    ),
+                  const Text(
+                    'View all',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Colors.grey),
                   ),
-                ),
-                const Expanded(child: CategoriesSection()),
-              ],
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
-              child: Text(
-                'New Arrivals',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ],
               ),
             ),
             ArrivalsSection(
