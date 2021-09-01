@@ -1,3 +1,4 @@
+import 'controllers/checkout_screen_controller.dart';
 import 'controllers/filtered_products_screen_controller.dart';
 import 'controllers/profile_screen_controller.dart';
 import 'package:get/get.dart';
@@ -20,5 +21,6 @@ class ControllersBinding implements Bindings {
     Get.lazyPut<WishListController>(() => WishListController());
     Get.lazyPut<ProfileScreenController>(() => ProfileScreenController());
     Get.lazyPut<FilteredProductsScreenController>(() => FilteredProductsScreenController());
+    Get.lazyPut<CheckoutScreenController>(() => CheckoutScreenController());
   }
 }

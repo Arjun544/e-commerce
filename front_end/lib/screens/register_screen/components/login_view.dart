@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import '../../../controllers/register_screen_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
-import '../../../widgets/social_btn.dart';
-import 'package:get/get.dart';
 import '../../../widgets/email_textField.dart';
 import '../../../widgets/pass_textField.dart';
+import '../../../widgets/social_btn.dart';
 
 class LoginView extends StatelessWidget {
   final RegisterScreenController controller =
@@ -81,6 +82,7 @@ class LoginView extends StatelessWidget {
                 icon: 'assets/images/Call.svg',
                 color: customYellow,
                 iconColor: Colors.white,
+                onPressed: (){},
               ),
               const SizedBox(height: 10),
               SocialButton(
@@ -89,6 +91,7 @@ class LoginView extends StatelessWidget {
                 text: 'Continue with Google',
                 icon: 'assets/images/Google.svg',
                 color: const Color(0xFFA2DBFA),
+                onPressed: () {},
               ),
             ],
           ),

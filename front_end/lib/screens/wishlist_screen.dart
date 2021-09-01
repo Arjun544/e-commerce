@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 import '../controllers/home_screen_controller.dart';
@@ -124,7 +127,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               crossAxisSpacing: 15,
                               mainAxisSpacing: 15,
                               padding: const EdgeInsets.only(
-                                  right: 15, left: 15, bottom: 70, top: 20),
+                                  right: 15, left: 15, bottom: 20, top: 20),
                               itemCount: snapshot.data!.products.length,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
@@ -153,39 +156,89 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                               wishListController,
                                         ),
                                       ),
-                                      IconButton(
-                                        onPressed: getStorage.read('isLogin') ==
-                                                true
-                                            ? () async {
-                                                log(homeScreenController
-                                                    .favListIds
-                                                    .toString());
-                                                homeScreenController.favListIds
-                                                    .remove(product.id);
-                                                log(homeScreenController
-                                                    .favListIds
-                                                    .toString());
-                                                wishListController.ids
-                                                    .remove(product.id);
-                                                await sharedPreferences
-                                                    .setStringList(
-                                                        'favListIds',
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          product.discount > 0
+                                              ? Container(
+                                                  height: 24,
+                                                  width: 70,
+                                                  margin: const EdgeInsets.only(
+                                                      left: 10),
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.redAccent,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            7),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Text(
+                                                        '${product.discount}%',
+                                                        style: const TextStyle(
+                                                          fontSize: 13,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      const Text(
+                                                        'OFF',
+                                                        style: TextStyle(
+                                                          fontSize: 10,
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              : const SizedBox.shrink(),
+                                          IconButton(
+                                            onPressed:
+                                                getStorage.read('isLogin') ==
+                                                        true
+                                                    ? () async {
+                                                        log(homeScreenController
+                                                            .favListIds
+                                                            .toString());
                                                         homeScreenController
-                                                            .favListIds);
-                                                setState(() {
-                                                  wishListController
-                                                      .getWishlist();
-                                                });
-                                              }
-                                            : () {
-                                                AccessDialogue(context);
-                                              },
-                                        icon: Icon(
-                                          Icons.delete_rounded,
-                                          size: 20,
-                                          color:
-                                              Colors.redAccent.withOpacity(0.5),
-                                        ),
+                                                            .favListIds
+                                                            .remove(product.id);
+                                                        log(homeScreenController
+                                                            .favListIds
+                                                            .toString());
+                                                        wishListController.ids
+                                                            .remove(product.id);
+                                                        await sharedPreferences
+                                                            .setStringList(
+                                                                'favListIds',
+                                                                homeScreenController
+                                                                    .favListIds);
+                                                        setState(() {
+                                                          wishListController
+                                                              .getWishlist();
+                                                        });
+                                                      }
+                                                    : () {
+                                                        AccessDialogue(context);
+                                                      },
+                                            icon: Icon(
+                                              Icons.delete_rounded,
+                                              size: 20,
+                                              color: Colors.redAccent
+                                                  .withOpacity(0.5),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -193,7 +246,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               },
                               staggeredTileBuilder: (index) {
                                 return StaggeredTile.count(
-                                    1, index.isEven ? 1.4 : 1.5);
+                                    1, index.isEven ? 1.5 : 1.6);
                               },
                             );
                     },
@@ -213,6 +266,19 @@ class BuildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double averageRating = 0;
+    double priceAfterDiscount = 0;
+    if (product.reviews.isNotEmpty) {
+      averageRating = product.reviews
+              .map((m) => double.parse(m.number))
+              .reduce((a, b) => a + b) /
+          product.reviews.length;
+    }
+    if (product.discount > 0) {
+      priceAfterDiscount =
+          product.price - (product.price * product.discount / 100);
+      print(priceAfterDiscount.toString());
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -228,19 +294,87 @@ class BuildItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                product.name,
+                toBeginningOfSentenceCase(product.name) ?? '',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-              Text(
-                '\$ ${product.price.toString()}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.black54,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  product.discount > 0
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '\$${priceAfterDiscount.toString()}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              '\$${product.price.toString()}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                decorationColor: Colors.red,
+                                decorationThickness: 3,
+                                decoration: TextDecoration.lineThrough,
+                                color: Colors.black45,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          '\$${product.price.toString()}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Colors.black,
+                          ),
+                        ),
+                ],
+              ),
+              Row(
+                children: [
+                  RatingBar.builder(
+                    initialRating: averageRating,
+                    updateOnDrag: false,
+                    ignoreGestures: true,
+                    itemSize: 10,
+                    minRating: 1,
+                    maxRating: 5,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                    itemBuilder: (context, _) => SvgPicture.asset(
+                      'assets/images/Star.svg',
+                      height: 20,
+                      color: customYellow,
+                    ),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    averageRating.toString(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

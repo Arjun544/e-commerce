@@ -2,21 +2,21 @@ import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../widgets/draggable_detail.dart';
-import '../../controllers/home_screen_controller.dart';
-import 'components/similar_section.dart';
-import '../../controllers/cart_screen_controller.dart';
-import '../../models/product_Model.dart';
-import '../cart_screen/cart_screen.dart';
-import '../register_screen/register_screen.dart';
-import '../../utils/constants.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/cart_screen_controller.dart';
 import '../../controllers/detail_screen_controller.dart';
+import '../../controllers/home_screen_controller.dart';
+import '../../models/product_Model.dart';
 import '../../utils/colors.dart';
+import '../../utils/constants.dart';
 import '../../widgets/custom_button.dart';
+import '../../widgets/draggable_detail.dart';
+import '../cart_screen/cart_screen.dart';
+import '../register_screen/register_screen.dart';
 import 'components/product_details.dart';
 import 'components/product_images.dart';
+import 'components/similar_section.dart';
 import 'components/top_header.dart';
 
 class DetailScreen extends StatelessWidget {

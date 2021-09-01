@@ -201,7 +201,7 @@ exports.productsByCategory = async (req, res) => {
     if (req.query.subCategory) {
       products = await Product.find({
         category: req.params.categoryId,
-        "subCategory": req.query.subCategory,
+        subCategory: req.query.subCategory,
       }).populate("category");
     }
     // get by only category
@@ -293,48 +293,19 @@ exports.updateProduct = async (req, res) => {
     const newCategory = await Category.findById(req.body.category);
     if (!newCategory) return res.status(400).send("Invalid Category");
 
-    let product;
-    if (req.body.onSale === "true") {
-      const item = await Product.findById(req.params.id).select("price");
-      console.log(item.price);
-      if (req.body.discount >= item.price) {
-        return res.status(400).send("Discount can't be larger than price");
-      }
-
-      const totalPrice = parseInt(item.price) - parseInt(req.body.discount);
-
-      product = await Product.findByIdAndUpdate(
-        req.params.id,
-        {
-          onSale: req.body.onSale,
-          totalPrice: totalPrice,
-          discount: req.body.discount,
-        },
-        { new: true }
-      );
-      if (!product) {
-        return res.status(400).send("Product not found");
-      }
-
-      res.send({
-        success: true,
-        updatedProduct: product,
-      });
-    } else {
-      product = await Product.findByIdAndUpdate(
-        req.params.id,
-        { $set: req.body },
-        { new: true }
-      );
-      if (!product) {
-        return res.status(400).send("Product not found");
-      }
-
-      res.send({
-        success: true,
-        updatedProduct: product,
-      });
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    if (!product) {
+      return res.status(400).send("Product not found");
     }
+
+    res.send({
+      success: true,
+      updatedProduct: product,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({

@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,7 +23,7 @@ class TopBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         InkWell(
-          onTap: (){},
+          onTap: () {},
           child: SvgPicture.asset(
             'assets/images/Category.svg',
             height: 25,
@@ -57,31 +56,32 @@ class TopBar extends StatelessWidget {
                       } else if (snapshot.data == null) {}
                       UserModel? currentUser = snapshot.data;
                       return InkWell(
-                          onTap: () {
-                            Get.to(
-                              () => ProfileScreen(),
-                            );
-                          },
-                          radius: 10,
-                          child: currentUser!.data.profile != ''
-                              ? CircleAvatar(
-                                  radius: 20,
-                                  backgroundImage: CachedNetworkImageProvider(
-                                      currentUser.data.profile),
-                                )
-                              : PreferenceBuilder<String>(
-                                  preference: sharedPreferences.getString(
-                                      'user profile',
-                                      defaultValue:
-                                          'assets/avatars/avatar 9.png'),
-                                  builder: (context, snapshot) {
-                                    return CircleAvatar(
-                                      radius: 20,
-                                      backgroundImage: AssetImage(
-                                        snapshot,
-                                      ),
-                                    );
-                                  }));
+                        onTap: () {
+                          Get.to(
+                            () => ProfileScreen(),
+                          );
+                        },
+                        radius: 10,
+                        child: currentUser!.data.profile != ''
+                            ? CircleAvatar(
+                                radius: 20,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    currentUser.data.profile),
+                              )
+                            : PreferenceBuilder<String>(
+                                preference: sharedPreferences.getString(
+                                    'user profile',
+                                    defaultValue:
+                                        'assets/avatars/avatar 9.png'),
+                                builder: (context, snapshot) {
+                                  return CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage: AssetImage(
+                                      snapshot,
+                                    ),
+                                  );
+                                }),
+                      );
                     })
                 : PreferenceBuilder<String>(
                     preference: sharedPreferences.getString('user profile',

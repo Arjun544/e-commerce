@@ -2,11 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../models/product_Model.dart' as model;
-import 'all_reviews_section.dart';
-import '../../../utils/colors.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import '../../../models/product_Model.dart' as model;
+import '../../../utils/colors.dart';
+import 'all_reviews_section.dart';
 
 class ReviewsSection extends StatelessWidget {
   final List<model.Review> reviews;

@@ -13,6 +13,7 @@ class CartScreenController extends GetxController {
   final StreamController<CartModel> cartProductsStreamController =
       BehaviorSubject();
   StreamController cartTotal = BehaviorSubject();
+  RxDouble totalAfterDiscount = 0.0.obs;
   List<String> productIds = [];
   RxInt cartProductsLength = 0.obs;
   late Socket socket;

@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:front_end/screens/filter_products_screen/filter_products_screen.dart';
-import 'package:front_end/utils/colors.dart';
+import '../../filter_products_screen/filter_products_screen.dart';
+import '../../../utils/colors.dart';
 import 'package:intl/intl.dart';
 import '../../../controllers/home_screen_controller.dart';
 import '../../../models/category_model.dart';

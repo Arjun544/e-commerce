@@ -27,8 +27,8 @@ class FeaturedSection extends StatelessWidget {
               shrinkWrap: true,
               crossAxisCount: 2,
               crossAxisSpacing: 15,
-              mainAxisSpacing: 15,
-              padding: const EdgeInsets.only(right: 12, left: 12, bottom: 70),
+              mainAxisSpacing: 10,
+              padding: const EdgeInsets.only(right: 12, left: 12, bottom: 20),
               itemCount: snapshot.data!.products.length,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
@@ -58,9 +58,8 @@ class FeaturedSection extends StatelessWidget {
                 );
               },
               staggeredTileBuilder: (index) {
-                return StaggeredTile.count(1, index.isEven ? 1.4 : 1.5);
+                return StaggeredTile.count(1, index.isEven ? 1.5 : 1.6);
               });
         });
   }
 }
-

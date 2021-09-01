@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
+import 'package:front_end/controllers/checkout_screen_controller.dart';
+import 'package:front_end/screens/checkout_screen/checkout_screen.dart';
 import '../../widgets/loaders/cart_screen_loader.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -23,6 +25,8 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final CartScreenController cartScreenController = Get.find();
   final HomeScreenController homeScreenController = Get.find();
+  final CheckoutScreenController checkoutScreenController =
+      Get.put(CheckoutScreenController());
 
   @override
   void initState() {
@@ -69,7 +73,7 @@ class _CartScreenState extends State<CartScreen> {
                             child: Text(
                               'My Cart',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
+                                  fontWeight: FontWeight.bold, fontSize: 18),
                             ),
                           ),
                           snapshot.data!.cartList.isEmpty
@@ -121,6 +125,8 @@ class _CartScreenState extends State<CartScreen> {
                             padding: const EdgeInsets.only(
                                 right: 15, left: 15, bottom: 80),
                             itemBuilder: (context, index) {
+                              checkoutScreenController.orderItems =
+                                  snapshot.data!.cartList[index].cartItems;
                               return SwipeActionCell(
                                 key: ValueKey(snapshot.data!.cartList[index]),
                                 performsFirstActionWithFullSwipe: true,
@@ -200,6 +206,11 @@ class _CartScreenState extends State<CartScreen> {
                               icon: 'assets/images/Logout.svg',
                               color: Colors.grey.withOpacity(0.5),
                               iconColor: Colors.white,
+                              onPressed: () {
+                                Get.to(
+                                  () => const CheckoutScreen(),
+                                );
+                              },
                             ),
                           ],
                         ),

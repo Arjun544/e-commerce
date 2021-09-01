@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'components/all_catogories.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/cart_screen_controller.dart';

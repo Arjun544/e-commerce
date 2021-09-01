@@ -10,6 +10,14 @@ class FilteredProductsScreenController extends GetxController {
   final StreamController<ProductModel> filteredProductsStreamController =
       BehaviorSubject();
 
+  final StreamController<List<Product>> sortedProductsStreamController =
+      BehaviorSubject();
+
+  RxBool isSorting = false.obs;
+  RxString appliedSort = ''.obs;
+
+  List<Product> filteredProducts = [];
+
   Future getFilteredProducts(
           {required String id,
           required bool hasQueryParam,
