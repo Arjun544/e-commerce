@@ -267,18 +267,13 @@ class BuildItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double averageRating = 0;
-    double priceAfterDiscount = 0;
     if (product.reviews.isNotEmpty) {
       averageRating = product.reviews
               .map((m) => double.parse(m.number))
               .reduce((a, b) => a + b) /
           product.reviews.length;
     }
-    if (product.discount > 0) {
-      priceAfterDiscount =
-          product.price - (product.price * product.discount / 100);
-      print(priceAfterDiscount.toString());
-    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -308,7 +303,7 @@ class BuildItem extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '\$${priceAfterDiscount.toString()}',
+                              '\$${product.totalPrice.toString()}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,

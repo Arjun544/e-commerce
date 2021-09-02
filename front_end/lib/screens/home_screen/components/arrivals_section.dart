@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../widgets/loaders/arrival_loader.dart';
 import 'package:get/get.dart';
@@ -28,8 +29,7 @@ class ArrivalsSection extends StatelessWidget {
         stream: homeScreenController.arrivalProductsStreamController.stream,
         builder: (context, AsyncSnapshot<ProductModel> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return ArrivalsLoader(
-            );
+            return ArrivalsLoader();
           }
 
           return Container(
@@ -109,7 +109,7 @@ class BuildItem extends StatelessWidget {
           children: [
             Center(
               child: Container(
-                height: 110,
+                height: 90,
                 width: 180,
                 margin: const EdgeInsets.only(top: 5),
                 decoration: BoxDecoration(
@@ -179,38 +179,81 @@ class BuildItem extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  product.discount > 0
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '\$${product.totalPrice.toString()}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              '\$${product.price.toString()}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                decorationColor: Colors.red,
+                                decorationThickness: 3,
+                                decoration: TextDecoration.lineThrough,
+                                color: Colors.black45,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          '\$ ${product.price.toString()}',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Colors.black,
+                          ),
+                        ),
+                ],
+              ),
+              Row(
+                children: [
+                  RatingBar.builder(
+                    initialRating: averageRating,
+                    updateOnDrag: false,
+                    ignoreGestures: true,
+                    itemSize: 10,
+                    minRating: 1,
+                    maxRating: 5,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                    itemBuilder: (context, _) => SvgPicture.asset(
+                      'assets/images/Star.svg',
+                      height: 20,
+                      color: customYellow,
+                    ),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
                   Text(
-                    '\$ ${product.price.toString()}',
+                    averageRating.toString(),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                       color: Colors.black54,
                     ),
-                  ),
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/Star.svg',
-                        height: 10,
-                        color: customYellow,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        averageRating.toString(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ],
                   ),
                 ],
               ),

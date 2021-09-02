@@ -5,8 +5,13 @@ class StepThree extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text('Three'),
+    return Column(
+      children: [
+        const Text(
+          'Payment',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+      ],
     );
   }
 }
