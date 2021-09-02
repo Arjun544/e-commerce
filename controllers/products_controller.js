@@ -35,6 +35,8 @@ exports.addProduct = async (req, res) => {
       fullDescription,
       price,
       category,
+      discount,
+      onSale,
       subCategory,
       countInStock,
       totalReviews,
@@ -46,6 +48,8 @@ exports.addProduct = async (req, res) => {
       !description ||
       !fullDescription ||
       !price ||
+      !discount ||
+      !onSale ||
       !category ||
       !subCategory ||
       !countInStock ||
@@ -71,20 +75,43 @@ exports.addProduct = async (req, res) => {
     // Upload image to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path);
 
-    const product = new Product({
-      name: req.body.name,
-      description: req.body.description,
-      fullDescription: req.body.fullDescription,
-      image: result.secure_url,
-      price: req.body.price,
-      category: req.body.category,
-      subCategory: req.body.subCategory,
-      countInStock: req.body.countInStock,
-      totalReviews: req.body.totalReviews,
-      isFeatured: req.body.isFeatured,
-    });
+    if (onSale === "true" && discount > 0) {
+      const priceAfterDiscount = price - (price * req.body.discount) / 100;
 
-    await product.save();
+      const product = new Product({
+        name: req.body.name,
+        description: req.body.description,
+        fullDescription: req.body.fullDescription,
+        image: result.secure_url,
+        price: req.body.price,
+        discount: discount,
+        onSale: onSale,
+        totalPrice: priceAfterDiscount,
+        category: req.body.category,
+        subCategory: req.body.subCategory,
+        countInStock: req.body.countInStock,
+        totalReviews: req.body.totalReviews,
+        isFeatured: req.body.isFeatured,
+      });
+      await product.save();
+    } else {
+      const product = new Product({
+        name: req.body.name,
+        description: req.body.description,
+        fullDescription: req.body.fullDescription,
+        image: result.secure_url,
+        price: req.body.price,
+        totalPrice: req.body.price,
+        onSale: onSale,
+        category: req.body.category,
+        subCategory: req.body.subCategory,
+        countInStock: req.body.countInStock,
+        totalReviews: req.body.totalReviews,
+        isFeatured: req.body.isFeatured,
+      });
+
+      await product.save();
+    }
 
     res.send({
       success: true,
@@ -293,11 +320,28 @@ exports.updateProduct = async (req, res) => {
     const newCategory = await Category.findById(req.body.category);
     if (!newCategory) return res.status(400).send("Invalid Category");
 
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    );
+    let product;
+    if (req.body.onSale === "true" && req.body.discount > 0) {
+      const priceAfterDiscount =
+        req.body.price - (req.body.price * req.body.discount) / 100;
+
+      product = await Product.findByIdAndUpdate(
+        req.params.id,
+        {
+          onSale: req.body.onSale,
+          totalPrice: priceAfterDiscount,
+          discount: req.body.discount,
+        },
+        { new: true }
+      );
+    } else {
+      product = await Product.findByIdAndUpdate(
+        req.params.id,
+        { $set: req.body },
+        { new: true }
+      );
+    }
+
     if (!product) {
       return res.status(400).send("Product not found");
     }
