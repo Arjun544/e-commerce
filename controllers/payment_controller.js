@@ -35,104 +35,21 @@ exports.createCustomer = async (req, res) => {
   }
 };
 
-exports.getCustomer = async (req, res) => {
+exports.getCustomerCard = async (req, res) => {
   try {
-    const customer = await stripe.customers.retrieve(req.params.id);
-
-    if (!customer) {
-      return res.json({
-        success: false,
-        message: "Couldn't get customer",
-      });
-    } else {
-      return res.json({
-        customer: customer,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    return res.json({
-      success: false,
-      message: "Something went wrong",
-    });
-  }
-};
-
-exports.getCustomerTransactions = async (req, res) => {
-  try {
-    const balanceTransactions = await stripe.customers.listBalanceTransactions(
+    const card = await stripe.customers.retrieveSource(
       req.params.id,
-      { limit: 100 }
+      req.params.card
     );
-
-    if (!balanceTransactions) {
-      return res.json({
-        success: false,
-        message: "Couldn't get transactions",
-      });
-    } else {
-      return res.json({
-        transactions: balanceTransactions,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    return res.json({
-      success: false,
-      message: "Something went wrong",
-    });
-  }
-};
-
-exports.addNewCard = async (req, res) => {
-  try {
-    const token = await stripe.tokens.create({
-      card: {
-        number: req.body.card.number,
-        exp_month: req.body.card.exp_month,
-        exp_year: req.body.card.exp_year,
-        cvc: req.body.card.cvc,
-      },
-    });
-    const card = await stripe.customers.createSource(req.body.id, {
-      source: token.id,
-      name: req.body.name,
-    });
 
     if (!card) {
       return res.json({
         success: false,
-        message: "Couldn't create card",
+        message: "Couldn't get card",
       });
     } else {
       return res.json({
-        newCard: card,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    return res.json({
-      success: false,
-      message: "Something went wrong",
-    });
-  }
-};
-
-exports.getCustomerCards = async (req, res) => {
-  try {
-    const cards = await stripe.customers.listSources(req.params.id, {
-      object: "card",
-      limit: 2,
-    });
-
-    if (!cards) {
-      return res.json({
-        success: false,
-        message: "Couldn't get cards",
-      });
-    } else {
-      return res.json({
-        cards: cards,
+        card: card,
       });
     }
   } catch (error) {

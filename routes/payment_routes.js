@@ -4,18 +4,12 @@ const cleanBody = require("../middlewares/cleanBody");
 
 const {
   createCustomer,
-  getCustomer,
-  getCustomerTransactions,
-  getCustomerCards,
-  addNewCard,
+  getCustomerCard,
   payAmount,
 } = require("../controllers/payment_controller");
 
 router.post("/createCustomer", cleanBody, createCustomer);
-router.get("/getCustomer/:id", cleanBody, getCustomer);
-router.get("/getCustomerTransactions/:id", cleanBody, getCustomerTransactions);
-router.get("/getCustomerCards/:id", cleanBody, getCustomerCards);
-router.post("/addNewCard", cleanBody, addNewCard);
+router.get("/getCustomerCard/:id/:card", cleanBody, getCustomerCard);
 router.post("/pay", cleanBody, payAmount);
 
 module.exports = router;
