@@ -37,7 +37,7 @@ exports.createCustomer = async (req, res) => {
 
 exports.getCustomer = async (req, res) => {
   try {
-    const customer = await stripe.customers.retrieve(req.body.id);
+    const customer = await stripe.customers.retrieve(req.params.id);
 
     if (!customer) {
       return res.json({
@@ -47,6 +47,32 @@ exports.getCustomer = async (req, res) => {
     } else {
       return res.json({
         customer: customer,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.getCustomerTransactions = async (req, res) => {
+  try {
+    const balanceTransactions = await stripe.customers.listBalanceTransactions(
+      req.params.id,
+      { limit: 100 }
+    );
+
+    if (!balanceTransactions) {
+      return res.json({
+        success: false,
+        message: "Couldn't get transactions",
+      });
+    } else {
+      return res.json({
+        transactions: balanceTransactions,
       });
     }
   } catch (error) {
@@ -93,7 +119,7 @@ exports.addNewCard = async (req, res) => {
 
 exports.getCustomerCards = async (req, res) => {
   try {
-    const cards = await stripe.customers.listSources(req.body.id, {
+    const cards = await stripe.customers.listSources(req.params.id, {
       object: "card",
       limit: 2,
     });
