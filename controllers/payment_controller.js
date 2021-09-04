@@ -96,6 +96,7 @@ exports.addNewCard = async (req, res) => {
     });
     const card = await stripe.customers.createSource(req.body.id, {
       source: token.id,
+      name: req.body.name,
     });
 
     if (!card) {
