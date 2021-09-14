@@ -3,6 +3,7 @@ const router = express.Router();
 const cleanBody = require("../middlewares/cleanBody");
 require("../config/cloudinary.config");
 const upload = require("../config/multer");
+const authMiddleware = require("../middlewares/auth_middleware");
 
 const {
   addProduct,
@@ -22,20 +23,27 @@ const {
   searchProducts,
 } = require("../controllers/products_controller");
 
-router.post("/add", upload.single("image"), cleanBody, addProduct);
-router.patch("/addReview/:id", cleanBody, addReview);
-router.get("/get", cleanBody, getProducts);
-router.get("/newArrival", cleanBody, NewArrivalProducts);
-router.get("/count", cleanBody, count);
-router.get("/filterByPrice", cleanBody, filterByPrice);
-router.patch("/multipleImages/:id", upload.array("images", 4), multipleImages);
-router.get("/sorting", cleanBody, sortProducts);
-router.get("/featured", cleanBody, featuredProducts);
-router.get("/:id", cleanBody, getProductById);
-router.get("/search/:query", cleanBody, searchProducts);
-router.get("/similar/:category/:currentId", cleanBody, getSimilarProducts);
+
+router.post(
+  "/add",
+  authMiddleware,
+  upload.single("image"),
+  cleanBody,
+  addProduct
+);
+router.patch("/addReview/:id", authMiddleware, cleanBody, addReview);
+router.get("/get", cleanBody,authMiddleware, getProducts);
+router.get("/newArrival",authMiddleware, cleanBody, NewArrivalProducts);
+router.get("/count",authMiddleware, cleanBody, count);
+router.get("/filterByPrice",authMiddleware, cleanBody, filterByPrice);
+router.patch("/multipleImages/:id",authMiddleware, upload.array("images", 4), multipleImages);
+router.get("/sorting",authMiddleware, cleanBody, sortProducts);
+router.get("/featured",authMiddleware, cleanBody, featuredProducts);
+router.get("/:id",authMiddleware, cleanBody, getProductById);
+router.get("/search/:query",authMiddleware, cleanBody, searchProducts);
+router.get("/similar/:category/:currentId",authMiddleware, cleanBody, getSimilarProducts);
 router.get("/byCategory/:categoryId", cleanBody, productsByCategory);
-router.patch("/update/:id", cleanBody, updateProduct);
-router.delete("/delete/:id", cleanBody, deleteProduct);
+router.patch("/update/:id",authMiddleware, cleanBody, updateProduct);
+router.delete("/delete/:id",authMiddleware, cleanBody, deleteProduct);
 
 module.exports = router;

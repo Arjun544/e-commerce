@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const cleanBody = require("../middlewares/cleanBody");
+const authMiddleware = require("../middlewares/auth_middleware");
+
 
 const {
   addOrder,
@@ -13,13 +15,13 @@ const {
   userOrders,
 } = require("../controllers/orders_controller");
 
-router.post("/add", cleanBody, addOrder);
-router.get("/get", cleanBody, getOrders);
-router.get("/totalsales", cleanBody, totalSales);
-router.get("/count", cleanBody, count);
-router.get("/userOrders/:id", cleanBody, userOrders);
-router.get("/:id", cleanBody, getOrderById);
-router.patch("/:id", cleanBody, updateStatus);
-router.delete("/:id", cleanBody, deleteOrder);
+router.post("/add",authMiddleware, cleanBody, addOrder);
+router.get("/get",authMiddleware, cleanBody,authMiddleware, getOrders);
+router.get("/totalsales",authMiddleware, cleanBody, totalSales);
+router.get("/count",authMiddleware, cleanBody, count);
+router.get("/userOrders/:id",authMiddleware, cleanBody, userOrders);
+router.get("/:id",authMiddleware, cleanBody, getOrderById);
+router.patch("/:id",authMiddleware, cleanBody, updateStatus);
+router.delete("/:id",authMiddleware, cleanBody, deleteOrder);
 
 module.exports = router;

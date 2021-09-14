@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:front_end/controllers/profile_screen_controller.dart';
-import 'package:front_end/screens/profile_screen/components/shipping_address.dart';
+import '../../../controllers/profile_screen_controller.dart';
+import '../../profile_screen/components/shipping_address.dart';
 import '../../../controllers/checkout_screen_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
@@ -13,8 +13,11 @@ import '../../../widgets/address_widget.dart';
 import 'package:get/get.dart';
 
 class StepTwo extends StatelessWidget {
+  final CheckoutScreenController checkoutScreenController;
+
+  StepTwo({required this.checkoutScreenController});
+
   final RootScreenController rootScreenController = Get.find();
-  final CheckoutScreenController checkoutScreenController = Get.find();
   final ProfileScreenController profileScreenController = Get.find();
 
   @override

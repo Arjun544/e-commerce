@@ -9,28 +9,51 @@ function isAuthenticated() {
     isRevoked: isRevoked,
   }).unless({
     path: [
-      {
-        url: /\/api\/products(.*)/,
-        methods: ["GET", "OPTIONS", "PATCH"],
-      },
-      { url: /\/api\/categories(.*)/, methods: ["GET", "OPTIONS"] },
-      { url: /\/api\/orders(.*)/, methods: ["GET", "OPTIONS", "POST"] },
-      {
-        url: /\/api\/users(.*)/,
-        methods: ["GET", "OPTIONS", "PATCH", "POST"],
-      },
-      {
-        url: /\/api\/cart(.*)/,
-        methods: ["GET", "OPTIONS", "PATCH", "POST", "DELETE"],
-      },
-      {
-        url: /\/api\/payment(.*)/,
-        methods: ["GET", "OPTIONS", "PATCH", "POST", "DELETE"],
-      },
+      // User routes
       "/api/users/login",
       "/api/users/register",
       "/api/users/activate",
-      "/api/users/allUsers",
+      "/api/users/wishlist",
+      "/api/users/forgotPassword",
+      "/api/users/resetPassword",
+      "/api/users/addAddress",
+      "/api/users/editAddress",
+      "/api/users/removeAddress",
+      "/api/users/updateImage",
+      "/api/users/:id",
+      "/api/users/update",
+      "/api/users/wishlist",
+
+      // Products routes
+      "/api/products/addReview",
+      "/api/products/get",
+      "/api/products/newArrival",
+      "/api/products/filterByPrice",
+      "/api/products/sorting",
+      "/api/products/featured",
+      "/api/products/:id",
+      "/api/products/search",
+      "/api/products/similar",
+      "/api/products/byCategory",
+
+      // Orders routes
+      "/api/orders/add",
+      "/api/orders/userOrders",
+
+      // Categories routes
+      "/api/orders/get",
+
+      // Cart routes
+      "/api/cart/addToCart",
+      "/api/cart/getCart",
+      "/api/cart/updateQuantity",
+      "/api/cart/:id",
+      "/api/cart/clear",
+
+      // Payment routes
+      "/api/payment/createCustomer",
+      "/api/payment/getCustomerCard",
+      "/api/payment/pay",
     ],
   });
 }

@@ -5,11 +5,30 @@ import 'package:im_stepper/stepper.dart';
 import '../../utils/colors.dart';
 import 'package:get/get.dart';
 
-class CheckoutScreen extends StatelessWidget {
-  final CheckoutScreenController controller = Get.find();
+import 'components/step_four.dart';
+import 'components/step_one.dart';
+import 'components/step_three.dart';
+import 'components/step_two.dart';
+
+class CheckoutScreen extends StatefulWidget {
+  @override
+  _CheckoutScreenState createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
+  final CheckoutScreenController controller =
+      Get.put(CheckoutScreenController());
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> activeStepView = [
+      StepOne(),
+      StepTwo(
+        checkoutScreenController: controller,
+      ),
+      StepThree(),
+      StepFour(),
+    ];
     return Scaffold(
       body: Column(
         children: [
@@ -53,7 +72,7 @@ class CheckoutScreen extends StatelessWidget {
               indicator: Indicator.shrink,
               onDotTapped: (tappedDotIndex) {
                 controller.activeStep.value = tappedDotIndex;
-                controller.activeStepView[controller.activeStep.value];
+                activeStepView[controller.activeStep.value];
               },
               fixedDotDecoration: FixedDotDecoration(
                 color: Colors.grey.withOpacity(0.3),
@@ -71,7 +90,7 @@ class CheckoutScreen extends StatelessWidget {
             height: 20,
           ),
           Obx(
-            () => controller.activeStepView[controller.activeStep.value],
+            () => activeStepView[controller.activeStep.value],
           ),
         ],
       ),

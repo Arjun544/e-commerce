@@ -2,6 +2,7 @@ const express = require("express");
 const cleanBody = require("../middlewares/cleanBody");
 const router = express.Router();
 const upload = require("../config/multer");
+const authMiddleware = require("../middlewares/auth_middleware");
 
 const {
   register,
@@ -22,26 +23,32 @@ const {
   updateImage,
 } = require("../controllers/user_controllers");
 
+
 router.post("/login", cleanBody, logIn);
 router.post("/register", cleanBody, register);
-router.post("/wishlist", cleanBody, getWishlist);
+router.post("/wishlist", authMiddleware, cleanBody, getWishlist);
 router.patch("/activate", cleanBody, activate);
-router.patch("/forgotPassword", cleanBody, forgotPassword);
-router.patch("/resetPassword", cleanBody, resetPassword);
-router.patch("/addAddress/:id", cleanBody, addShippingAddress);
-router.patch("/editAddress/:id", cleanBody, editShippingAddress);
-router.patch("/removeAddress/:id", cleanBody, removeAddress);
+router.patch("/forgotPassword", authMiddleware, cleanBody, forgotPassword);
+router.patch("/resetPassword", authMiddleware, cleanBody, resetPassword);
+router.patch("/addAddress/:id", authMiddleware, cleanBody, addShippingAddress);
+router.patch(
+  "/editAddress/:id",
+  authMiddleware,
+  cleanBody,
+  editShippingAddress
+);
+router.patch("/removeAddress/:id", authMiddleware, cleanBody, removeAddress);
 router.patch(
   "/updateImage/:id",
   upload.single("image"),
   cleanBody,
   updateImage
 );
-router.get("/allUsers", cleanBody, getAllUsers);
-router.get("/count", cleanBody, count);
-router.get("/:id", cleanBody, getUserById);
-router.patch("/update/:id", cleanBody, updateUser);
-router.patch("/wishlist/:userId", cleanBody, clearWishlist);
-router.delete("/delete/:id", cleanBody, deleteUserById);
+router.get("/allUsers", authMiddleware, cleanBody, getAllUsers);
+router.get("/count", authMiddleware, cleanBody, count);
+router.get("/:id", authMiddleware, cleanBody, getUserById);
+router.patch("/update/:id", authMiddleware, cleanBody, updateUser);
+router.patch("/wishlist/:userId", authMiddleware, cleanBody, clearWishlist);
+router.delete("/delete/:id", authMiddleware, cleanBody, deleteUserById);
 
 module.exports = router;

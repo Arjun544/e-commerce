@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/screens/profile_screen/components/payment_details.dart';
 import '../../widgets/draggable_scaffold.dart';
 import 'components/reset_password.dart';
 import 'components/shipping_address.dart';
@@ -124,10 +125,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           },
                         ),
                         ProfileTile(
-                          text: 'Payment Method',
+                          text: 'Payment Cards',
                           icon: 'assets/images/Scan.svg',
                           iconColor: Colors.teal[300],
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(
+                              () => PaymentDetails(
+                                profileScreenController:
+                                    profileScreenController,
+                              ),
+                            );
+                          },
                         ),
                         ProfileTile(
                           text: 'Order History',

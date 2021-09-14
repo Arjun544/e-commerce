@@ -122,7 +122,8 @@ exports.logIn = async (req, res) => {
         isAdmin: user.isAdmin,
       },
       process.env.JWT_SECRET,
-      {}
+
+      { expiresIn: "60s" }
     );
     await user.save();
 
@@ -436,7 +437,7 @@ exports.editShippingAddress = async (req, res) => {
     if (!id || !address || !city || !country || !type || !phone) {
       return res.json({ error: true, message: "All fields are required" });
     }
-   
+
     await User.updateOne(
       {
         _id: req.params.id,

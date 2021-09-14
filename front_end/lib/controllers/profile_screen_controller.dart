@@ -13,6 +13,7 @@ class ProfileScreenController extends GetxController {
   final TextEditingController pinController = TextEditingController();
   RxInt currentAvatar = 0.obs;
   RxInt selectedShippingAddress = 0.obs;
+  RxInt currentPaymentCard = 0.obs;
 
   Future updateProfile(
           {required String userId,

@@ -1,8 +1,8 @@
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:front_end/widgets/custom_button.dart';
+import '../../../controllers/cart_screen_controller.dart';
+import '../../../widgets/custom_button.dart';
 import '../../../models/delivery_model.dart';
 import '../../../controllers/checkout_screen_controller.dart';
 import '../../../utils/colors.dart';
@@ -14,13 +14,14 @@ class StepOne extends StatefulWidget {
 }
 
 class _StepOneState extends State<StepOne> {
+  final CartScreenController cartScreenController = Get.find();
   final CheckoutScreenController checkoutScreenController = Get.find();
 
   @override
   void initState() {
     //Calculating total price of order items
     checkoutScreenController.orderItemsPrices =
-        checkoutScreenController.orderItems.map((element) {
+        cartScreenController.orderItems.map((element) {
       var item = element.product.discount > 0
           ? element.product.totalPrice * element.quantity
           : element.product.price * element.quantity;
@@ -46,7 +47,7 @@ class _StepOneState extends State<StepOne> {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 15),
-              itemCount: checkoutScreenController.orderItems.length,
+              itemCount: cartScreenController.orderItems.length,
               itemBuilder: (context, index) {
                 return Container(
                   width: Get.width * 0.7,
@@ -63,7 +64,7 @@ class _StepOneState extends State<StepOne> {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: CachedNetworkImage(
-                              imageUrl: checkoutScreenController
+                              imageUrl: cartScreenController
                                   .orderItems[index].product.image,
                               fit: BoxFit.cover,
                               width: Get.width * 0.15,
@@ -77,22 +78,22 @@ class _StepOneState extends State<StepOne> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                checkoutScreenController
+                                cartScreenController
                                     .orderItems[index].product.name,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
-                              checkoutScreenController
+                              cartScreenController
                                           .orderItems[index].product.discount >
                                       0
                                   ? Text(
-                                      '\$ ${checkoutScreenController.orderItems[index].product.totalPrice.toString()}',
+                                      '\$ ${cartScreenController.orderItems[index].product.totalPrice.toString()}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12),
                                     )
                                   : Text(
-                                      '\$ ${checkoutScreenController.orderItems[index].product.price.toString()}',
+                                      '\$ ${cartScreenController.orderItems[index].product.price.toString()}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12),
@@ -102,7 +103,7 @@ class _StepOneState extends State<StepOne> {
                         ],
                       ),
                       Text(
-                        'x ${checkoutScreenController.orderItems[index].quantity.toString()}',
+                        'x ${cartScreenController.orderItems[index].quantity.toString()}',
                         style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 12),
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/controllers/checkout_screen_controller.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/cart_screen_controller.dart';
@@ -15,9 +16,7 @@ import 'components/top_bar.dart';
 class HomeScreen extends StatelessWidget {
   final HomeScreenController homeScreenController = Get.find();
   final CartScreenController cartScreenController = Get.find();
-
   final RootScreenController rootScreenController = Get.find();
-
   final RegisterScreenController registerScreenController = Get.find();
 
   @override
