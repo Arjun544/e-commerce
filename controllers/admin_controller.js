@@ -1,8 +1,5 @@
-const Joi = require("joi");
 const Admin = require("../models/Admin");
-const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
-const cloudinary = require("cloudinary");
+const tokenService = require("../services/token_services");
 
 exports.logIn = async (req, res) => {
   try {
@@ -37,23 +34,29 @@ exports.logIn = async (req, res) => {
         message: "Invalid credentials",
       });
     }
-    let token = jwt.sign(
-      {
-        adminId: admin.id,
-      },
-      process.env.JWT_SECRET,
+    const { accessToken, refreshToken } = tokenService.generateTokens({
+      _id: admin._id,
+      activated: false,
+    });
+    await tokenService.storeRefreshToken(refreshToken, admin._id);
 
-      { expiresIn: "1h" }
-    );
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      httpOnly: true,
+    });
+
+    res.cookie("accessToken", accessToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 30,
+      httpOnly: true,
+    });
+
     await admin.save();
-
+    console.log(accessToken);
+    console.log(refreshToken);
     //Success
     return res.json({
-      success: true,
-      token: token,
       user: admin,
       auth: true,
-      message: "User logged in successfully",
     });
   } catch (err) {
     return res.status(500).json({
@@ -61,4 +64,67 @@ exports.logIn = async (req, res) => {
       message: "Couldn't login. Please try again later.",
     });
   }
+};
+
+exports.refreshToken = async (req, res) => {
+  // get refresh token from cookie
+  const { refreshToken: refreshTokenFromCookie } = req.cookies;
+  // check if token is valid
+  let userData;
+  try {
+    userData = await tokenService.verifyRefreshToken(refreshTokenFromCookie);
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid Token" });
+  }
+  // Check if token is in db
+  try {
+    const token = await tokenService.findRefreshToken(
+      userData._id,
+      refreshTokenFromCookie
+    );
+    if (!token) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Internal error" });
+  }
+  // check if valid user
+  const user = await Admin.findOne({ _id: userData._id });
+  if (!user) {
+    return res.status(404).json({ message: "No user" });
+  }
+  // Generate new tokens
+  const { refreshToken, accessToken } = tokenService.generateTokens({
+    _id: userData._id,
+  });
+
+  // Update refresh token
+  try {
+    await tokenService.updateRefreshToken(userData._id, refreshToken);
+  } catch (err) {
+    return res.status(500).json({ message: "Internal error" });
+  }
+  // put in cookie
+  res.cookie("refreshToken", refreshToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 30,
+    httpOnly: true,
+  });
+
+  res.cookie("accessToken", accessToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 30,
+    httpOnly: true,
+  });
+  // response
+  const userDto = new UserDto(user);
+  res.json({ user: userDto, auth: true });
+};
+
+exports.logout = async (req, res) => {
+  const { refreshToken } = req.cookies;
+  // delete refresh token from db
+  await tokenService.removeToken(refreshToken);
+  // delete cookies
+  res.clearCookie("refreshToken");
+  res.clearCookie("accessToken");
+  res.json({ user: null, auth: false });
 };
