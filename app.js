@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const Emitter = require("events");
+const cors = require("cors");
 
 //imports
 const userRoutes = require("./routes/user_routes");
@@ -10,8 +11,6 @@ const ordersRoutes = require("./routes/orders_routes");
 const cartRoutes = require("./routes/cart_router");
 const paymentRoutes = require("./routes/payment_routes");
 const adminRoutes = require("./routes/admin_routes");
-
-
 
 const connectDB = require("./config/db_config");
 const isAuthenticated = require("./middlewares/isAuthenticated");
@@ -32,6 +31,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // To parse the incoming requests with JSON payloads
 app.use(isAuthenticated());
 app.use(authError);
+const corsOptions = {
+  origin: "*",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 // Api Routes
 app.use("/api/users/", userRoutes);

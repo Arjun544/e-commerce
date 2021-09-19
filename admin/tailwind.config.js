@@ -1,4 +1,5 @@
 const colors = require("tailwindcss/colors");
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
@@ -41,6 +42,9 @@ module.exports = {
     extend: {
       transitionProperty: {
         width: "width",
+      },
+      fontFamily: {
+        sans: ["Roboto", ...defaultTheme.fontFamily.sans],
       },
     },
   },

@@ -4,16 +4,28 @@ import SocialButton from "./components/social_button";
 import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 import Logo from "../../components/icons/Logo";
+import { useLoginMutation } from "../../api/userApi";
 
 const Login = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [login, { isLoading }] = useLoginMutation();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSignIn = async (data) => {};
+  const onSignIn = async (data) => {
+    try {
+      const user = await login( data.email,data.password);
+      console.log(user);
+    } catch (error) {
+      enqueueSnackbar(error.message, {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full bg-white">
@@ -37,7 +49,7 @@ const Login = () => {
       >
         <div className="flex flex-col">
           <input
-            className="h-14 w-80 rounded-2xl bg-bgColor-light pl-4 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
+            className="h-14 w-80 rounded-2xl text-black bg-bgColor-light pl-4 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
             placeholder="Email"
             {...register("email", {
               required: true,
@@ -56,7 +68,7 @@ const Login = () => {
             </span>
           )}
           <input
-            className="h-14 w-80 rounded-2xl bg-bgColor-light pl-4 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            className="h-14 w-80 rounded-2xl text-black bg-bgColor-light pl-4 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             placeholder="Password"
             {...register("password", {
               required: true,
@@ -73,7 +85,7 @@ const Login = () => {
               Password must have at least 8 characters
             </span>
           )}
-          <span className="flex justify-end font-semibold text-xs cursor-pointer text-grey-light mt-4 mb-16">
+          <span className="flex justify-end font-semibold text-xs cursor-pointer text-Grey-dark mt-4 mb-16">
             Forget password?
           </span>
         </div>
@@ -84,7 +96,7 @@ const Login = () => {
           onPressed={handleSubmit((data) => onSignIn(data))}
         />
       </form>
-      <span className=" font-semibold text-xs  text-grey-light mt-10">OR</span>
+      <span className=" font-semibold text-xs text-Grey-dark mt-10">OR</span>
       <div className="flex mt-10">
         <SocialButton img={"assets/google.png"} text={"Continue with Google"} />
         <SocialButton
