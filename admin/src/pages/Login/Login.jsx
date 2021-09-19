@@ -19,7 +19,12 @@ const Login = () => {
     try {
       const user = await login(data.email,data.password);
       console.log(user);
-      if() 
+      if (user.success === false) {
+        enqueueSnackbar(user.error.data.message, {
+          variant: "error",
+          autoHideDuration: 2000,
+        });
+      }
     } catch (error) {
       enqueueSnackbar(error.message, {
         variant: "error",
