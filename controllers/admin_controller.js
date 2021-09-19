@@ -49,9 +49,9 @@ exports.logIn = async (req, res) => {
 
     //Success
     return res.json({
-      success: true,
       token: token,
-      adminId: admin.id,
+      admin: admin,
+      auth: true,
       message: "User logged in successfully",
     });
   } catch (err) {
