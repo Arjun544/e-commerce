@@ -17,8 +17,9 @@ const Login = () => {
 
   const onSignIn = async (data) => {
     try {
-      const user = await login( data.email,data.password);
+      const user = await login(data.email,data.password);
       console.log(user);
+      if() 
     } catch (error) {
       enqueueSnackbar(error.message, {
         variant: "error",

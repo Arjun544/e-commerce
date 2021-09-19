@@ -33,7 +33,7 @@ exports.logIn = async (req, res) => {
 
     if (!isValid) {
       return res.status(400).json({
-        error: true,
+        success: false,
         message: "Invalid credentials",
       });
     }
@@ -49,6 +49,7 @@ exports.logIn = async (req, res) => {
 
     //Success
     return res.json({
+      success: true,
       token: token,
       admin: admin,
       auth: true,
