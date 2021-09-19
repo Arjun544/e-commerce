@@ -54,6 +54,9 @@ function isAuthenticated() {
       "/api/payment/createCustomer",
       "/api/payment/getCustomerCard",
       "/api/payment/pay",
+
+      // Admin routes
+      "/api/admin/login",
     ],
   });
 }

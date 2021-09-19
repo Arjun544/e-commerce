@@ -4,15 +4,24 @@ module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    fill: {
+      current: "currentColor",
+    },
+    fill: (theme) => ({
+      grey: theme("colors.gray.400"),
+      red: theme("colors.red.400"),
+      green: theme("colors.green.500"),
+      blue: theme("colors.blue.500"),
+    }),
     colors: {
-      grey: {
-        light: "#7176AC",
+      blue: {
+        light: "#D7E6FE",
       },
       darkBlue: {
         light: "#0F3460",
       },
-      lightGrey: {
-        light: "#7176AC9F",
+      Grey: {
+        dark: "#7176AC9F",
       },
       bgColor: {
         light: "#FAFBFD",
@@ -29,10 +38,16 @@ module.exports = {
       yellow: colors.amber,
     },
 
-    extend: {},
+    extend: {
+      transitionProperty: {
+        width: "width",
+      },
+    },
   },
   variants: {
-    extend: {},
+    extend: {
+      fill: ["hover", "focus"],
+    },
     width: ["responsive", "hover", "focus"],
     height: ["responsive", "hover", "focus"],
   },
@@ -51,6 +66,6 @@ module.exports = {
     },
   ],
   daisyui: {
-    styled: true,
+    styled: false,
   },
 };

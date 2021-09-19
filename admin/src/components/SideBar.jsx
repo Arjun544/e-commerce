@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AppContext } from "../App";
+import { useHistory } from "react-router-dom";
 import BagIcon from "./icons/BagIcon";
 import BannerIcon from "./icons/BannerIcon";
 import CartIcon from "./icons/CartIcon";
@@ -9,25 +10,91 @@ import DashBoardIcon from "./icons/DashBoardIcon";
 import FlashIcon from "./icons/FlashIcon";
 import Logo from "./icons/Logo";
 import PersonIcon from "./icons/PersonIcon";
+import { createBrowserHistory } from "history";
 
 const SideBar = () => {
-  const { isSideBarOpen } = useContext(AppContext);
+  const history = useHistory();
+  const createHistory = createBrowserHistory();
+
+  const { isSideBarOpen, isBigScreen, isMenuOpen, setIsMenuOpen } =
+    useContext(AppContext);
   const [selectedBar, setSelectedBar] = useState(0);
+
+  useEffect(() => {
+    switch (createHistory.location.pathname) {
+      case "/":
+        setSelectedBar(0);
+        break;
+      case "/orders":
+        setSelectedBar(1);
+        break;
+      case "/products":
+        setSelectedBar(2);
+        break;
+      default:
+        break;
+    }
+  }, []);
+
   return (
     <div
       className={`flex-col ${
         isSideBarOpen ? "w-72" : "w-20"
-      } h-full pt-5 bg-darkBlue-light`}
+      } h-full pt-5 bg-darkBlue-light transition-width duration-400  ease`}
     >
-      <div
-        className={`flex w-full items-start justify-start ${
-          isSideBarOpen ? "ml-6" : "ml-3"
-        }`}
-      >
-        <Logo />
-      </div>
+      {isBigScreen ? (
+        <div
+          className={`flex w-full items-center ${
+            isSideBarOpen ? "ml-6 " : "ml-5"
+          }`}
+        >
+          <Logo color={"#ffff"} />
+          {isSideBarOpen && (
+            <div>
+              <span className="text-lg font-semibold ml-2 tracking-wider">
+                Sell
+              </span>
+              <span className="text-lg font-semibold text-customYellow-light tracking-wider">
+                Corner
+              </span>
+            </div>
+          )}
+        </div>
+      ) : (
+        isMenuOpen && (
+          <div className="flex items-center justify-between px-6">
+            <div className="flex items-center">
+              <Logo color={"#ffff"} />
+              <span className="text-lg font-semibold ml-2 tracking-wider">
+                Sell
+              </span>
+              <span className="text-lg font-semibold text-customYellow-light tracking-wider">
+                Corner
+              </span>
+            </div>
+            <div
+              onClick={(e) => setIsMenuOpen(false)}
+              className="cursor-pointer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+          </div>
+        )
+      )}
 
       {/* Menu tiems */}
+
       <div
         className={`flex flex-col items-${
           isSideBarOpen ? "start" : "center"
@@ -36,7 +103,10 @@ const SideBar = () => {
         {/* Dashboard */}
 
         <div
-          onClick={(e) => setSelectedBar(0)}
+          onClick={(e) => {
+            setSelectedBar(0);
+            history.push("/");
+          }}
           className={`flex w-${
             isSideBarOpen ? "48" : "42"
           }  items-center py-3 ${
@@ -57,7 +127,10 @@ const SideBar = () => {
 
         {/* Orders */}
         <div
-          onClick={(e) => setSelectedBar(1)}
+          onClick={(e) => {
+            setSelectedBar(1);
+            history.push("/orders");
+          }}
           className={`flex w-${
             isSideBarOpen ? "48" : "42"
           }  items-center py-3 ${
@@ -78,7 +151,10 @@ const SideBar = () => {
 
         {/* Products */}
         <div
-          onClick={(e) => setSelectedBar(2)}
+          onClick={(e) => {
+            setSelectedBar(2);
+            history.push("/products");
+          }}
           className={`flex w-${
             isSideBarOpen ? "48" : "42"
           }  items-center py-3 ${

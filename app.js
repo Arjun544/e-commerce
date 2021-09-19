@@ -9,6 +9,7 @@ const productsRoutes = require("./routes/products_routes");
 const ordersRoutes = require("./routes/orders_routes");
 const cartRoutes = require("./routes/cart_router");
 const paymentRoutes = require("./routes/payment_routes");
+const adminRoutes = require("./routes/admin_routes");
 
 
 
@@ -39,6 +40,7 @@ app.use("/api/products/", productsRoutes);
 app.use("/api/orders/", ordersRoutes);
 app.use("/api/cart/", cartRoutes);
 app.use("/api/payment/", paymentRoutes);
+app.use("/api/admin/", adminRoutes);
 
 //Listening to port
 const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
