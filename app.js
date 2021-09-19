@@ -32,8 +32,8 @@ app.use(express.json()); // To parse the incoming requests with JSON payloads
 app.use(isAuthenticated());
 app.use(authError);
 const corsOptions = {
-  origin: "*",
-  credentials: true, //access-control-allow-credentials:true
+  origin: 'https://sell-corner.herokuapp.com',
+  credentials: true,
   optionSuccessStatus: 200,
 };
 
