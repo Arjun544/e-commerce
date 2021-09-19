@@ -10,6 +10,8 @@ import Grow from "@material-ui/core/Grow";
 import { useMediaQuery } from "react-responsive";
 import Orders from "./pages/orders/Orders";
 import Products from "./pages/products/Products";
+import { ProtectedRoute } from "./protected_route";
+import { GuestRoute } from "./protected_route";
 
 export const AppContext = createContext(null);
 
@@ -38,9 +40,9 @@ function App() {
         <div className=" w-screen h-screen m-0 box-border bg-white">
           <BrowserRouter>
             <Switch>
-              <Route path="/login">
+              <GuestRoute path="/login">
                 <Login />
-              </Route>
+              </GuestRoute>
               <div className="flex h-full w-full bg-white">
                 {isBigScreen ? (
                   <SideBar />
@@ -53,15 +55,15 @@ function App() {
                 )}
                 <div className="flex flex-col w-full">
                   <TopBar />
-                  <Route path="/" exact>
+                  <ProtectedRoute path="/" exact>
                     <Dashboard />
-                  </Route>
-                  <Route path="/orders">
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/orders">
                     <Orders />
-                  </Route>
-                  <Route path="/products">
+                  </ProtectedRoute>
+                  <ProtectedRoute path="/products">
                     <Products />
-                  </Route>
+                  </ProtectedRoute>
                 </div>
               </div>
             </Switch>

@@ -27,11 +27,11 @@ const Login = () => {
       password: data.password,
     };
     try {
-      const user = await login(body);
-      dispatch(setAuth(user));
-      history.replace("/");
-      if (user.error) {
-        enqueueSnackbar(user.error.data.message, {
+      const { data } = await login(body);
+      dispatch(setAuth({ auth: data.auth, user: data.user }));
+
+      if (data.error) {
+        enqueueSnackbar(data.error.data.message, {
           variant: "error",
           autoHideDuration: 2000,
         });

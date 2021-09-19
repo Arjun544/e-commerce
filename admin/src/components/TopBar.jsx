@@ -8,9 +8,8 @@ import { useSelector } from "react-redux";
 const TopBar = () => {
   const { isSideBarOpen, setIsSideBarOpen, isBigScreen, setIsMenuOpen } =
     useContext(AppContext);
-  
-  const { user } = useSelector((state) => state.auth);
-  console.log(user);
+
+  const { auth, user } = useSelector((state) => state.auth);
 
   return (
     <div className="w-full flex justify-between px-6 my-6 items-center bg-white">
@@ -60,11 +59,13 @@ const TopBar = () => {
         </div>
       </div>
 
-      <img
-        className="h-10 w-10 mr-4 rounded-full"
-        src={user.profile}
-        alt=""
-      />
+      {!auth && (
+        <img
+          className="h-10 w-10 mr-4 rounded-full"
+          src={user.profile}
+          alt=""
+        />
+      )}
     </div>
   );
 };
