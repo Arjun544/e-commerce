@@ -3,10 +3,15 @@ import SearchIcon from "./icons/SearchIcon";
 import ArrowLeftIcon from "./icons/ArrowLeftIcon";
 import { AppContext } from "../App";
 import ArrowRightIcon from "../components/icons/ArrowRightIcon";
+import { useSelector } from "react-redux";
 
 const TopBar = () => {
   const { isSideBarOpen, setIsSideBarOpen, isBigScreen, setIsMenuOpen } =
     useContext(AppContext);
+  
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
+
   return (
     <div className="w-full flex justify-between px-6 my-6 items-center bg-white">
       <div className="flex h-12 w-1/2 items-center">
@@ -57,7 +62,7 @@ const TopBar = () => {
 
       <img
         className="h-10 w-10 mr-4 rounded-full"
-        src="assets/images/profile.jpg"
+        src={user.profile}
         alt=""
       />
     </div>

@@ -5,13 +5,10 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_URL }),
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: (email,password) => ({
+      query: (body) => ({
         url: "admin/login",
         method: "POST",
-        body: {
-          email,
-          password,
-        },
+        body: body,
       }),
     }),
   }),

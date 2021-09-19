@@ -11,10 +11,10 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setAuth: (state, action) => {
-      const { user, token } = action.payload;
-      state.user = user;
+      const { admin, token } = action.payload;
+      state.user = admin;
       state.token = token;
-      if (user === null) {
+      if (admin === null) {
         state.isAuth = false;
       } else {
         state.isAuth = true;

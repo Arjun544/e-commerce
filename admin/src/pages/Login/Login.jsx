@@ -1,12 +1,18 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import CustomButon from "../../components/custom_button";
 import SocialButton from "./components/social_button";
 import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 import Logo from "../../components/icons/Logo";
+import Loader from "react-loader-spinner";
 import { useLoginMutation } from "../../api/userApi";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../../redux/authSlice";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [login, { isLoading }] = useLoginMutation();
   const {
@@ -16,10 +22,15 @@ const Login = () => {
   } = useForm();
 
   const onSignIn = async (data) => {
+    const body = {
+      email: data.email,
+      password: data.password,
+    };
     try {
-      const user = await login(data.email,data.password);
-      console.log(user);
-      if (user.success === false) {
+      const user = await login(body);
+      dispatch(setAuth(user));
+      history.replace("/");
+      if (user.error) {
         enqueueSnackbar(user.error.data.message, {
           variant: "error",
           autoHideDuration: 2000,
@@ -95,12 +106,25 @@ const Login = () => {
             Forget password?
           </span>
         </div>
-        <CustomButon
-          text={"Sign in"}
-          color={"bg-darkBlue-light"}
-          width={72}
-          onPressed={handleSubmit((data) => onSignIn(data))}
-        />
+
+        {isLoading ? (
+          <div className="flex items-center justify-center">
+            <Loader
+              type="Puff"
+              color="#00BFFF"
+              height={50}
+              width={50}
+              timeout={3000} //3 secs
+            />
+          </div>
+        ) : (
+          <CustomButon
+            text={"Sign in"}
+            color={"bg-darkBlue-light"}
+            width={72}
+            onPressed={handleSubmit((data) => onSignIn(data))}
+          />
+        )}
       </form>
       <span className=" font-semibold text-xs text-Grey-dark mt-10">OR</span>
       <div className="flex mt-10">
