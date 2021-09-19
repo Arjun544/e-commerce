@@ -3,7 +3,7 @@ import "./App.css";
 import SideBar from "./components/SideBar";
 import TopBar from "./components/TopBar";
 import Dashboard from "./pages/dashboard/Dashboard";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import { SnackbarProvider } from "notistack";
 import Grow from "@material-ui/core/Grow";
@@ -12,14 +12,28 @@ import Orders from "./pages/orders/Orders";
 import Products from "./pages/products/Products";
 import { ProtectedRoute } from "./protected_route";
 import { GuestRoute } from "./protected_route";
+import { RefreshHook } from "./hooks/refreshHook";
+import Loader from "react-loader-spinner";
 
 export const AppContext = createContext(null);
 
 function App() {
+  // calls refresh token endpoint
+  const { loading } = RefreshHook();
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
-  return (
+  return loading  ? (
+    <div className="flex items-center justify-center">
+      <Loader
+        type="Puff"
+        color="#00BFFF"
+        height={50}
+        width={50}
+        timeout={3000} //3 secs
+      />
+    </div>
+  ) : (
     <SnackbarProvider
       maxSnack={2}
       anchorOrigin={{
@@ -54,7 +68,7 @@ function App() {
                   )
                 )}
                 <div className="flex flex-col w-full">
-                  <TopBar />
+                  {/* <TopBar /> */}
                   <ProtectedRoute path="/" exact>
                     <Dashboard />
                   </ProtectedRoute>
@@ -72,6 +86,7 @@ function App() {
       </AppContext.Provider>
     </SnackbarProvider>
   );
+  
 }
 
 export default App;

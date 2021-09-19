@@ -8,11 +8,9 @@ import Loader from "react-loader-spinner";
 import { useLoginMutation } from "../../api/userApi";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../redux/authSlice";
-import { useHistory } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [login, { isLoading }] = useLoginMutation();
   const {

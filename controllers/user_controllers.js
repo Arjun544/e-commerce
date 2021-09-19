@@ -121,7 +121,7 @@ exports.logIn = async (req, res) => {
         userId: user.id,
         isAdmin: user.isAdmin,
       },
-      process.env.JWT_SECRET,
+      process.env.ACCESS_JWT_SECRET,
 
       { expiresIn: "60s" }
     );
