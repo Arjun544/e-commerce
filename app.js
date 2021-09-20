@@ -38,6 +38,11 @@ app.use(express.json()); // To parse the incoming requests with JSON payloads
 app.use(isAuthenticated());
 app.use(authError);
 app.use(cookieParser());
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 
 // Api Routes
 app.use("/api/users/", userRoutes);
