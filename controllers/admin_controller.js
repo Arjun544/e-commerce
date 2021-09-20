@@ -51,8 +51,6 @@ exports.logIn = async (req, res) => {
     });
 
     await admin.save();
-    console.log(accessToken);
-    console.log(refreshToken);
     //Success
     return res.json({
       user: admin,

@@ -1,17 +1,46 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import axios from "axios";
 
-export const userApi = createApi({
-  reducerPath: "userApi",
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_API_URL }),
-  endpoints: (builder) => ({
-    login: builder.mutation({
-      query: (body) => ({
-        url: "admin/login",
-        method: "POST",
-        body: body,
-      }),
-    }),
-  }),
+const api = axios.create({
+  baseURL: process.env.REACT_APP_API_URL,
+  withCredentials: true,
+  headers: {
+    "Content-type": "application/json",
+    Accept: "application/json",
+  },
 });
 
-export const { useLoginMutation } = userApi;
+// List of all the endpoints
+export const login = (email, password) =>
+  api.post("admin/login", {
+    email,
+    password,
+  });
+
+// Interceptors;
+api.interceptors.response.use(
+  (config) => {
+    return config;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    if (
+      error.response.status === 401 &&
+      originalRequest &&
+      !originalRequest._isRetry
+    ) {
+      originalRequest.isRetry = true;
+      try {
+        await axios.get(`${process.env.REACT_APP_API_URL}admin/refresh`, {
+          withCredentials: true,
+        });
+
+        return api.request(originalRequest);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+    throw error;
+  }
+);
+
+export default api;

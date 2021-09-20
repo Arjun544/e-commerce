@@ -14,6 +14,7 @@ export function RefreshHook() {
             withCredentials: true,
           }
         );
+        console.log(data);
         dispatch(setAuth(data));
         setLoading(false);
       } catch (err) {

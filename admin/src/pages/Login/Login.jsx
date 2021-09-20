@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CustomButon from "../../components/custom_button";
 import SocialButton from "./components/social_button";
 import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 import Logo from "../../components/icons/Logo";
 import Loader from "react-loader-spinner";
-import { useLoginMutation } from "../../api/userApi";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../redux/authSlice";
+import { login } from "../../api/userApi";
 
 const Login = () => {
   const dispatch = useDispatch();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [login, { isLoading }] = useLoginMutation();
+  const [loading, setLoading] = useState(false);
+  const [unMounted, setUnMounted] = useState(false);
   const {
     register,
     handleSubmit,
@@ -20,27 +21,34 @@ const Login = () => {
   } = useForm();
 
   const onSignIn = async (data) => {
-    const body = {
-      email: data.email,
-      password: data.password,
-    };
     try {
-      const { data } = await login(body);
-      dispatch(setAuth({ auth: data.auth, user: data.user }));
-
-      if (data.error) {
-        enqueueSnackbar(data.error.data.message, {
-          variant: "error",
-          autoHideDuration: 2000,
-        });
+      setLoading(true);
+      const response = await login(data.email, data.password);
+      if (response.data.auth) {
+        if (!unMounted) {
+          dispatch(
+            setAuth({ auth: response.data.auth, user: response.data.user })
+          );
+        }
       }
+
+      setLoading(false);
     } catch (error) {
-      enqueueSnackbar(error.message, {
+      console.log(error);
+      enqueueSnackbar(error.response.data.message, {
         variant: "error",
         autoHideDuration: 2000,
       });
+    } finally {
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setUnMounted(true);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full bg-white">
@@ -105,7 +113,7 @@ const Login = () => {
           </span>
         </div>
 
-        {isLoading ? (
+        {loading ? (
           <div className="flex items-center justify-center">
             <Loader
               type="Puff"

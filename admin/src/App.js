@@ -23,7 +23,7 @@ function App() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
-  return loading  ? (
+  return loading ? (
     <div className="flex items-center justify-center">
       <Loader
         type="Puff"
@@ -86,7 +86,6 @@ function App() {
       </AppContext.Provider>
     </SnackbarProvider>
   );
-  
 }
 
 export default App;

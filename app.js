@@ -34,7 +34,7 @@ app.use(isAuthenticated());
 app.use(authError);
 app.use(cookieParser());
 const corsOptions = {
-  origin: ["http://localhost:3000"],
+  origin: true,
   credentials: true,
 };
 
