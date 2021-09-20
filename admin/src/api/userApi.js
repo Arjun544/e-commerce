@@ -6,12 +6,13 @@ const api = axios.create({
   headers: {
     "Content-type": "application/json",
     Accept: "application/json",
+    crossorigin: true,
   },
 });
 
 // List of all the endpoints
 export const login = (email, password) =>
-  api.post("admin/login", {
+  api.post("/admin/login", {
     email,
     password,
   });
@@ -30,7 +31,7 @@ api.interceptors.response.use(
     ) {
       originalRequest.isRetry = true;
       try {
-        await axios.get(`${process.env.REACT_APP_API_URL}admin/refresh`, {
+        await axios.get(`${process.env.REACT_APP_API_URL}/admin/refresh`, {
           withCredentials: true,
         });
 

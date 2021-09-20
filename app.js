@@ -17,7 +17,7 @@ const connectDB = require("./config/db_config");
 const isAuthenticated = require("./middlewares/isAuthenticated");
 const authError = require("./middlewares/authError");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 require("dotenv").config();
 
 // Db Connection
@@ -33,12 +33,18 @@ app.use(express.json()); // To parse the incoming requests with JSON payloads
 app.use(isAuthenticated());
 app.use(authError);
 app.use(cookieParser());
-const corsOptions = {
-  origin: true,
-  credentials: true,
-};
 
-app.use(cors(corsOptions));
+app.use(cors(), function (req, res, next) {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://sell-corner.herokuapp.com"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 // Api Routes
 app.use("/api/users/", userRoutes);

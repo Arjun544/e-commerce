@@ -9,7 +9,7 @@ export function RefreshHook() {
     (async () => {
       try {
         const { data } = await axios.get(
-          `${process.env.REACT_APP_API_URL}admin/refresh`,
+          `${process.env.REACT_APP_API_URL}/admin/refresh`,
           {
             withCredentials: true,
           }
