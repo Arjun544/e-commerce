@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const Emitter = require("events");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 //imports
 const userRoutes = require("./routes/user_routes");
@@ -31,8 +32,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // To parse the incoming requests with JSON payloads
 app.use(isAuthenticated());
 app.use(authError);
+app.use(cookieParser());
 const corsOptions = {
-  origin: 'https://sell-corner.herokuapp.com',
+  origin: "*",
   credentials: true,
   optionSuccessStatus: 200,
 };
