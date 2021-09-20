@@ -68,7 +68,7 @@ function App() {
                   )
                 )}
                 <div className="flex flex-col w-full">
-                  {/* <TopBar /> */}
+                  <TopBar />
                   <ProtectedRoute path="/" exact>
                     <Dashboard />
                   </ProtectedRoute>

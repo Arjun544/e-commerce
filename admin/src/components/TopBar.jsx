@@ -62,7 +62,7 @@ const TopBar = () => {
       {!auth && (
         <img
           className="h-10 w-10 mr-4 rounded-full"
-          src={user.profile}
+          src="https://images.unsplash.com/photo-1532074205216-d0e1f4b87368?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fHByb2ZpbGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
           alt=""
         />
       )}
