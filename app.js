@@ -30,7 +30,7 @@ app.set("eventEmitter", eventEmitter);
 //Middlewares
 const corsOptions = {
   credentials: true,
-  origin: ["https://sell-corner.herokuapp.com/api/"],
+  origin: ["https://sell-corner.herokuapp.com"],
 };
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
