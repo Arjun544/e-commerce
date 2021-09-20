@@ -115,8 +115,7 @@ exports.refreshToken = async (req, res) => {
     httpOnly: true,
   });
   // response
-  const userDto = new UserDto(user);
-  res.json({ user: userDto, auth: true });
+  res.json({ user: user, auth: true });
 };
 
 exports.logout = async (req, res) => {

@@ -40,10 +40,7 @@ class TokenService {
   }
 
   async updateRefreshToken(userId, refreshToken) {
-    return await Token.updateOne(
-      { userId: userId },
-      { token: refreshToken }
-    );
+    return await Token.updateOne({ userId: userId }, { token: refreshToken });
   }
 
   async removeToken(refreshToken) {
