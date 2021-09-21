@@ -42,7 +42,7 @@ exports.logIn = async (req, res) => {
 
     res.cookie("refreshToken", refreshToken, {
       maxAge: 1000 * 60 * 60 * 24 * 30,
-      httpOnly: true,
+      httpOnly: false,
     });
 
     res.cookie("accessToken", accessToken, {
@@ -54,7 +54,7 @@ exports.logIn = async (req, res) => {
     //Success
     return res.json({
       user: admin,
-      auth: false,
+      auth: true,
     });
   } catch (err) {
     return res.status(500).json({
