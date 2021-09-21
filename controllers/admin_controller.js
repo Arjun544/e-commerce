@@ -47,14 +47,14 @@ exports.logIn = async (req, res) => {
 
     res.cookie("accessToken", accessToken, {
       maxAge: 1000 * 60 * 60 * 24 * 30,
-      httpOnly: true,
+      httpOnly: false,
     });
 
     await admin.save();
     //Success
     return res.json({
       user: admin,
-      auth: true,
+      auth: false,
     });
   } catch (err) {
     return res.status(500).json({
@@ -105,10 +105,12 @@ exports.refreshToken = async (req, res) => {
   // put in cookie
   res.cookie("refreshToken", refreshToken, {
     maxAge: 1000 * 60 * 60 * 24 * 30,
+    httpOnly: false,
   });
 
   res.cookie("accessToken", accessToken, {
     maxAge: 1000 * 60 * 60 * 24 * 30,
+    httpOnly: false,
   });
   // response
   res.json({ user: user, auth: true });
