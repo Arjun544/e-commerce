@@ -58,6 +58,7 @@ function isAuthenticated() {
       // Admin routes
       "/api/admin/login",
       "/api/admin/refresh",
+      "/api/admin/logout",
     ],
   });
 }
