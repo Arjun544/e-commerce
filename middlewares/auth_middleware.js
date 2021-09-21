@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, process.env.ACCESS_JWT_SECRET, (err, user) => {
+  jwt.verify(token, process.env.REFRESH_JWT_SECRET, (err, user) => {
     if (err) {
       return res.json({
         status: false,
