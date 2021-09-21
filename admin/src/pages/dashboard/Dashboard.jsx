@@ -62,9 +62,9 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="flex flex-col  w-full h-full overflow-y-auto bg-white px-4">
+    <div className="flex flex-col  w-full h-full overflow-y-auto bg-white ">
       <TopBar />
-      <div className="flex my-6">
+      <div className="flex my-6 px-6">
         {/* DashBoard  */}
         <div className={`flex flex-col w-${isBigScreen ? "3/4" : "full"} mr-6`}>
           <div className="flex  justify-between">

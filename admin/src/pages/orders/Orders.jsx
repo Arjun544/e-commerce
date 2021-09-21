@@ -122,9 +122,9 @@ const Orders = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full h-full overflow-y-auto overflow-x-hidden  bg-white px-10">
+    <div className="flex flex-col w-full h-full overflow-y-auto overflow-x-hidden  bg-white">
       <TopBar />
-      <div className="flex flex-col">
+      <div className="flex flex-col px-10">
         {/* Tabs */}
 
         <div className="flex items-center mb-6 w-full justify-center cursor-pointer pt-4">

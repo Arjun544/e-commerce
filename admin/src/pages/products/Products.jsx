@@ -64,10 +64,12 @@ const Products = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full h-full overflow-y-auto overflow-x-hidden  bg-white px-10">
+    <div className="flex flex-col w-full h-full overflow-y-auto overflow-x-hidden  bg-white">
       <TopBar />
       {/* Views */}
-      <ProductsTable columns={columns} data={data} />
+      <div className="px-10">
+        <ProductsTable columns={columns} data={data} />
+      </div>
     </div>
   );
 };
