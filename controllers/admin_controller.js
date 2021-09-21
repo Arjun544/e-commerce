@@ -105,12 +105,10 @@ exports.refreshToken = async (req, res) => {
   // put in cookie
   res.cookie("refreshToken", refreshToken, {
     maxAge: 1000 * 60 * 60 * 24 * 30,
-    httpOnly: true,
   });
 
   res.cookie("accessToken", accessToken, {
     maxAge: 1000 * 60 * 60 * 24 * 30,
-    httpOnly: true,
   });
   // response
   res.json({ user: user, auth: true });
