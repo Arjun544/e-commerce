@@ -37,7 +37,7 @@ function GlobalFilter({
     <div className="w-full flex justify-between items-center pt-3">
       <input
         type="text"
-        className="rounded-md py-2 px-10 mt-2 text-white placeholder-white bg-Grey-dark border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        className="rounded-xl py-2 px-10 mt-2 text-white placeholder-white bg-Grey-dark border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
@@ -45,7 +45,7 @@ function GlobalFilter({
         }}
         placeholder={`Search in ${count} products...`}
       />
-      <div className="flex h-12 w-40 bg-customYellow-light rounded-2xl cursor-pointer items-center justify-center transform hover:scale-100 transition duration-500 ease-in-out">
+      <div className="flex h-12 w-40 bg-customYellow-light rounded-2xl cursor-pointer items-center justify-center transform hover:scale-95 transition duration-500 ease-in-out">
         <span className="text-white font-semibold">Add product</span>
       </div>
     </div>

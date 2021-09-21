@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import SearchIcon from "./icons/SearchIcon";
 import ArrowLeftIcon from "./icons/ArrowLeftIcon";
 import { AppContext } from "../App";
@@ -8,12 +8,11 @@ import { useSelector } from "react-redux";
 const TopBar = () => {
   const { isSideBarOpen, setIsSideBarOpen, isBigScreen, setIsMenuOpen } =
     useContext(AppContext);
-
   const { auth, user } = useSelector((state) => state.auth);
 
   return (
-    <div className="w-full flex justify-between px-6 my-6 items-center bg-white">
-      <div className="flex h-12 w-1/2 items-center">
+    <div className="w-full flex justify-between px-6 sticky top-0 z-50 items-center bg-white">
+      <div className="flex h-24  w-1/2 items-center">
         <div
           onClick={
             isBigScreen

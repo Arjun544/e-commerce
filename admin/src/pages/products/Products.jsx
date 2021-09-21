@@ -5,6 +5,7 @@ import OnSale from "./components/onSale";
 import ProductsTable from "./components/products_table";
 import Status from "./components/status";
 import { TableActions } from "./components/table_actions";
+import TopBar from "../../components/TopBar";
 
 const Products = () => {
   const { isBigScreen } = useContext(AppContext);
@@ -63,7 +64,8 @@ const Products = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden  bg-white px-10">
+    <div className="flex flex-col w-full h-full overflow-y-auto overflow-x-hidden  bg-white px-10">
+      <TopBar />
       {/* Views */}
       <ProductsTable columns={columns} data={data} />
     </div>

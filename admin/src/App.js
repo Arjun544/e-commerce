@@ -1,7 +1,7 @@
 import { useState, createContext } from "react";
 import "./App.css";
 import SideBar from "./components/SideBar";
-import TopBar from "./components/TopBar";
+
 import Dashboard from "./pages/dashboard/Dashboard";
 import { BrowserRouter, Switch } from "react-router-dom";
 import Login from "./pages/Login/Login";
@@ -24,7 +24,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
   return loading ? (
-    <div className="flex items-center justify-center">
+    <div className="flex w-full h-screen items-center justify-center bg-white">
       <Loader
         type="Puff"
         color="#00BFFF"
@@ -67,18 +67,16 @@ function App() {
                     </div>
                   )
                 )}
-                <div className="flex flex-col w-full">
-                  <TopBar />
-                  <ProtectedRoute path="/" exact>
-                    <Dashboard />
-                  </ProtectedRoute>
-                  <ProtectedRoute path="/orders">
-                    <Orders />
-                  </ProtectedRoute>
-                  <ProtectedRoute path="/products">
-                    <Products />
-                  </ProtectedRoute>
-                </div>
+
+                <ProtectedRoute path="/" exact>
+                  <Dashboard />
+                </ProtectedRoute>
+                <ProtectedRoute path="/orders">
+                  <Orders />
+                </ProtectedRoute>
+                <ProtectedRoute path="/products">
+                  <Products />
+                </ProtectedRoute>
               </div>
             </Switch>
           </BrowserRouter>

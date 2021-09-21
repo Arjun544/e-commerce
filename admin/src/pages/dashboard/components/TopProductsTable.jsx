@@ -35,7 +35,7 @@ function GlobalFilter({
   return (
     <input
       type="text"
-      className="rounded-md py-2 px-10 mt-2 text-white placeholder-white bg-Grey-dark border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+      className="rounded-xl py-2 px-10 mt-2 text-white placeholder-white bg-Grey-dark border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
       value={value || ""}
       onChange={(e) => {
         setValue(e.target.value);
