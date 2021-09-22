@@ -1,15 +1,5 @@
 import axios from "axios";
 const api = axios.create();
-// const api = axios.create({
-//   baseURL: process.env.REACT_APP_API_URL,
-//   withCredentials: true,
-//   headers: {
-//     "Content-type": "application/json",
-//     Accept: "application/json",
-//     crossorigin: true,
-//     "Access-Control-Allow-Origin": "*",
-//   },
-// });
 
 // List of all the endpoints
 export const login = (email, password) =>
@@ -19,6 +9,18 @@ export const login = (email, password) =>
       email,
       password,
     },
+    { withCredentials: true },
+    {
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+
+export const logout = () =>
+  api.post(
+    "/api/admin/logout",
     { withCredentials: true },
     {
       headers: {

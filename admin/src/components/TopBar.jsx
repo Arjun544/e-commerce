@@ -5,10 +5,19 @@ import { AppContext } from "../App";
 import ArrowRightIcon from "../components/icons/ArrowRightIcon";
 import { useSelector } from "react-redux";
 import useOutsideClick from "../useOutsideClick";
+import { useDispatch } from "react-redux";
+import { setAuth } from "../redux/authSlice";
+import { logout } from "../api/userApi";
 
 const TopBar = () => {
-  const { isSideBarOpen, setIsSideBarOpen, isBigScreen, setIsMenuOpen } =
-    useContext(AppContext);
+  const dispatch = useDispatch();
+  const {
+    isSideBarOpen,
+    setIsSideBarOpen,
+    isBigScreen,
+    setIsMenuOpen,
+    setIsLoading,
+  } = useContext(AppContext);
   const { user } = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -19,9 +28,19 @@ const TopBar = () => {
       setIsOpen(false);
     }
   });
+
   const toggleMenu = (e) => {
     e.preventDefault();
+
     setIsOpen((isOpen) => !isOpen);
+  };
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const { data } = await logout();
+    dispatch(setAuth(data));
+    setIsLoading(false);
   };
 
   return (
@@ -89,11 +108,12 @@ const TopBar = () => {
             </span>
 
             <div className="flex flex-col">
-              <span className=" pl-4 mb-2 text-gray-500 hover:bg-blue-light cursor-pointer">
+              <span className=" pl-4 text-gray-500 hover:bg-blue-light cursor-pointer py-2">
                 <div>Settings</div>
               </span>
-              <span className="pl-4 text-gray-500 hover:bg-blue-light cursor-pointer">
-                <div>Logout</div>
+
+              <span className="pl-4 text-gray-500 hover:bg-blue-light cursor-pointer py-2">
+                <div onClick={handleLogout}>Logout</div>
               </span>
             </div>
           </div>

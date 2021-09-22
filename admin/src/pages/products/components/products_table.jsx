@@ -20,6 +20,9 @@ import {
   SortUpIcon,
   SortDownIcon,
 } from "../../../components/pagination_icons";
+import ProductDetail from "../../ProductDetail/ProductDetail";
+import { Link, Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -53,6 +56,7 @@ function GlobalFilter({
 }
 
 function ProductsTable({ columns, data }) {
+  const history = useHistory();
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -71,7 +75,6 @@ function ProductsTable({ columns, data }) {
     nextPage,
     previousPage,
     setPageSize,
-
     state,
     preGlobalFilteredRows,
     setGlobalFilter,
@@ -85,6 +88,12 @@ function ProductsTable({ columns, data }) {
     useSortBy,
     usePagination // new
   );
+
+  const onProductClick = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    history.push(`/product/${product.id}`);
+  };
 
   // Render the UI for your table
   return (
@@ -157,6 +166,9 @@ function ProductsTable({ columns, data }) {
                           return (
                             <td
                               {...cell.getCellProps()}
+                              onClick={(e) =>
+                                onProductClick(e, cell.row.original.product)
+                              }
                               className="px-6 py-4 whitespace-nowrap font-semibold"
                               role="cell"
                             >

@@ -14,16 +14,18 @@ import { ProtectedRoute } from "./protected_route";
 import { GuestRoute } from "./protected_route";
 import { RefreshHook } from "./hooks/refreshHook";
 import Loader from "react-loader-spinner";
+import ProductDetail from "./pages/ProductDetail/ProductDetail";
 
 export const AppContext = createContext(null);
 
 function App() {
   // calls refresh token endpoint
-  const { loading } = RefreshHook();
+  const { refreshing } = RefreshHook();
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
-  return loading ? (
+  return refreshing || isLoading ? (
     <div className="flex w-full h-screen items-center justify-center bg-white">
       <Loader
         type="Puff"
@@ -49,6 +51,7 @@ function App() {
           isBigScreen,
           isMenuOpen,
           setIsMenuOpen,
+          setIsLoading,
         }}
       >
         <div className=" w-screen h-screen m-0 box-border bg-white">
@@ -76,6 +79,9 @@ function App() {
                 </ProtectedRoute>
                 <ProtectedRoute path="/products">
                   <Products />
+                </ProtectedRoute>
+                <ProtectedRoute path={["/product/:id"]}>
+                  <ProductDetail />
                 </ProtectedRoute>
               </div>
             </Switch>

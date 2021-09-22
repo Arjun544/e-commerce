@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Switch from "react-switch";
 
-const OnSale = () => {
-  const [value, setValue] = useState(false);
+const OnSale = ({status}) => {
+  const [value, setValue] = useState(status);
   return (
     <Switch
       value={value}

@@ -14,8 +14,6 @@ const paymentRoutes = require("./routes/payment_routes");
 const adminRoutes = require("./routes/admin_routes");
 
 const connectDB = require("./config/db_config");
-const isAuthenticated = require("./middlewares/isAuthenticated");
-const authError = require("./middlewares/authError");
 
 const PORT = process.env.PORT || 4000;
 require("dotenv").config();
@@ -35,8 +33,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // To parse the incoming requests with JSON payloads
-app.use(isAuthenticated());
-app.use(authError);
 app.use(cookieParser());
 app.use(function (req, res, next) {
   res.header(

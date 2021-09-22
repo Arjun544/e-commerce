@@ -1,29 +1,47 @@
-import React, { useState, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../App";
 import Featured from "./components/featured";
 import OnSale from "./components/onSale";
 import ProductsTable from "./components/products_table";
-import Status from "./components/status";
 import { TableActions } from "./components/table_actions";
 import TopBar from "../../components/TopBar";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setProducts } from "../../redux/productsSlice";
+import { getProducts } from "../../api/productsApi";
+import Loader from "react-loader-spinner";
 
 const Products = () => {
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const [tableData, setTableData] = useState([]);
+  const { products } = useSelector((state) => state.products);
   const { isBigScreen } = useContext(AppContext);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const { data } = await getProducts();
+        dispatch(setProducts(data.products));
 
-  const data = [
-    {
-      name: "Test",
-      date: Date.now(),
-    },
-    {
-      name: "Test",
-      date: Date.now(),
-    },
-    {
-      name: "Test",
-      date: Date.now(),
-    },
-  ];
+        setTableData(data.products);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error.response);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const data = tableData.map((item) => ({
+    product: item,
+    name: item.name,
+    date: item.dateCreated,
+    price: item.price,
+    featured: item.isFeatured,
+    onSale: item.onSale,
+  }));
 
   const columns = [
     {
@@ -31,7 +49,6 @@ const Products = () => {
       maxWidth: 10,
       accessor: "",
       Cell: (row) => {
-        console.log(row.row);
         return <div>{row.row.index + 1}</div>;
       },
       disableSortBy: true,
@@ -46,17 +63,20 @@ const Products = () => {
       accessor: "date",
     },
     {
+      Header: "Price",
+      accessor: "price",
+    },
+    {
       Header: "Featured",
-      Cell: Featured,
+      accessor: "featured",
+      Cell: (props) => <Featured status={props.cell.value} />,
     },
     {
       Header: "On Sale",
-      Cell: OnSale,
+      accessor: "onSale",
+      Cell: (props) => <OnSale status={props.cell.value} />,
     },
-    {
-      Header: "Status",
-      Cell: Status,
-    },
+
     {
       Header: "Actions",
       Cell: TableActions,
@@ -67,9 +87,21 @@ const Products = () => {
     <div className="flex flex-col w-full h-full overflow-y-auto overflow-x-hidden  bg-white">
       <TopBar />
       {/* Views */}
-      <div className="px-10">
-        <ProductsTable columns={columns} data={data} />
-      </div>
+      {isLoading ? (
+        <div className="flex w-full h-screen items-center justify-center bg-white">
+          <Loader
+            type="Puff"
+            color="#00BFFF"
+            height={50}
+            width={50}
+            timeout={3000} //3 secs
+          />
+        </div>
+      ) : (
+        <div className="px-10">
+          <ProductsTable columns={columns} data={data} />
+        </div>
+      )}
     </div>
   );
 };
