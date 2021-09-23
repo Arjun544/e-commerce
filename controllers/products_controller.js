@@ -416,7 +416,8 @@ exports.getRecentReviews = async (req, res) => {
       (item) =>
         item.addedAt.addedAt.toISOString().split("T")[0] === currrentDate
     );
-    res.send(filteredReviews[0]);
+   
+    res.send({filteredReviews});
   } catch (error) {
     console.log(error);
     return res.status(500).json({

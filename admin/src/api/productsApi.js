@@ -13,13 +13,21 @@ export const getProducts = () =>
       Accept: "application/json",
     },
   });
-  export const getProductById = (id) =>
-    api.get(`/api/products/${id}`, {
-      headers: {
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
-        "Content-type": "application/json",
-        Accept: "application/json",
-      },
-    });
+export const getProductById = (id) =>
+  api.get(`/api/products/${id}`, {
+    headers: {
+      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
+    },
+  });
+export const getRecentReviews = (id) =>
+  api.get("/api/products/getRecentReviews", {
+    headers: {
+      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
+    },
+  });
 
 export default api;
