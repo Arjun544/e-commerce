@@ -408,6 +408,24 @@ exports.addReview = async (req, res) => {
   }
 };
 
+exports.getRecentReviews = async (req, res) => {
+  try {
+    const currrentDate = new Date().toISOString().split("T")[0];
+    const totalReviews = await Product.find({}).distinct("reviews");
+    const filteredReviews = totalReviews.filter(
+      (item) =>
+        item.addedAt.addedAt.toISOString().split("T")[0] === currrentDate
+    );
+    res.send(filteredReviews[0]);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
 exports.count = async (req, res) => {
   const productCount = await Product.countDocuments((count) => count);
 

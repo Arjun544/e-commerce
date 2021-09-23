@@ -44,7 +44,7 @@ const TopBar = () => {
   };
 
   return (
-    <div className="w-full flex justify-between px-6 sticky top-0 z-50 items-center bg-white">
+    <div className="w-full flex justify-between px-6 sticky top-0 z-20 items-center bg-white">
       <div className="flex h-24  w-1/2 items-center">
         <div
           onClick={

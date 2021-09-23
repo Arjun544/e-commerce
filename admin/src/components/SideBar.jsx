@@ -19,6 +19,7 @@ const SideBar = () => {
   const { isSideBarOpen, isBigScreen, isMenuOpen, setIsMenuOpen } =
     useContext(AppContext);
   const [selectedBar, setSelectedBar] = useState(0);
+  
 
   useEffect(() => {
     switch (createHistory.location.pathname) {

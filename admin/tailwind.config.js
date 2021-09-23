@@ -62,8 +62,8 @@ module.exports = {
       const extendLineThrough = {
         ".line-through": {
           textDecoration: "line-through",
-          "text-decoration-color": "black",
-          "text-decoration-thickness": "3px",
+          "text-decoration-color": "gray",
+          "text-decoration-thickness": "1px",
         },
       };
       addUtilities(extendLineThrough);

@@ -60,7 +60,7 @@ const CategoryDropDown = () => {
       ref={ref}
       onClick={toggleMenu}
       className={
-        "flex relative h-12 z-50 bg-bgColor-light shadow-sm border-none px-4 w-40 rounded-xl hover:bg-gray-50 items-center justify-between cursor-pointer"
+        "flex relative h-12 z-20 bg-bgColor-light shadow-sm border-none px-4 w-40 rounded-xl hover:bg-gray-50 items-center justify-between cursor-pointer"
       }
     >
       <span className="font-semibold text-sm text-black">

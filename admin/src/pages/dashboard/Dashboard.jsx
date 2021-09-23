@@ -1,17 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../../App";
 import CategoryDropDown from "../../components/CategoryDropDown";
 import CartIcon from "../../components/icons/CartIcon";
 import CustomersPaymentChart from "./components/CustomersPaymentChart";
 import EarningChart from "./components/EarningChart";
 import OverviewChart from "./components/OverviewChart";
-import RightContainer from "./components/Right_Container";
+import OrdersMenu from "./components/Orders_Menu";
 import TopProductsTable from "./components/TopProductsTable";
 import { AvatarCell } from "./components/TopProductsTable";
 import TopBar from "../../components/TopBar";
+import AllOrders from "./components/AllOrders";
+import LatestReviews from "./components/LatestReviews";
+
+
 
 const Dashboard = () => {
   const { isBigScreen } = useContext(AppContext);
+  const [isOrderMenuOpen, setIsOrderMenuOpen] = useState(false);
+
+  const onTodaysOrdersClick = (e) => {
+    e.preventDefault();
+    setIsOrderMenuOpen(true);
+  }
 
   const data = [
     {
@@ -62,11 +72,17 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="flex flex-col  w-full h-full overflow-y-auto bg-white ">
+    <div className="flex flex-col w-full h-full overflow-y-auto bg-white ">
+      {isOrderMenuOpen && (
+        <OrdersMenu
+          isOrderMenuOpen={isOrderMenuOpen}
+          setIsOrderMenuOpen={setIsOrderMenuOpen}
+        />
+      )}
       <TopBar />
       <div className="flex my-6 px-6">
         {/* DashBoard  */}
-        <div className={`flex flex-col w-${isBigScreen ? "3/4" : "full"} mr-6`}>
+        <div className={`flex flex-col w-full mr-6`}>
           <div className="flex  justify-between">
             <div className="flex flex-col">
               <span className="text-black font-semibold text-xl">
@@ -76,7 +92,17 @@ const Dashboard = () => {
                 Detailed information about yor store
               </span>
             </div>
-            <CategoryDropDown />
+            <div className="flex">
+              <CategoryDropDown />
+              <div
+                onClick={onTodaysOrdersClick}
+                className="flex relative h-12 bg-darkBlue-light  shadow-sm border-none ml-4 w-40 rounded-xl hover:bg-Grey-dark items-center justify-center cursor-pointer"
+              >
+                <span className="font-semibold text-sm text-white">
+                  Today's Orders
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Orders stats */}
@@ -144,7 +170,31 @@ const Dashboard = () => {
           <div className="flex flex-col mt-12">
             <EarningChart />
           </div>
-
+          <div
+            className={`flex ${
+              !isBigScreen && "flex-col"
+            } w-full justify-around mt-12`}
+          >
+            {/* All Orders */}
+            <div
+              className={`h-48 flex-grow ${
+                isBigScreen ? "mr-6" : "mb-6"
+              } bg-bgColor-light rounded-3xl p-6`}
+            >
+              <AllOrders />
+            </div>
+            <div
+              className={`h-full flex-grow bg-bgColor-light rounded-3xl p-6 ${
+                isBigScreen ? "mr-6" : "mb-6"
+              }`}
+            >
+              <LatestReviews />
+            </div>
+            {/* Latest Reviews*/}
+            <div className="h-full flex-grow bg-bgColor-light rounded-3xl p-6">
+              <LatestReviews />
+            </div>
+          </div>
           <div
             className={`flex ${
               !isBigScreen && "flex-col"
@@ -177,7 +227,6 @@ const Dashboard = () => {
             <TopProductsTable columns={columns} data={data} />
           </div>
         </div>
-        {isBigScreen && <RightContainer />}
       </div>
     </div>
   );

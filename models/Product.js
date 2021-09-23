@@ -72,6 +72,7 @@ const productSchema = mongoose.Schema({
   reviews: [
     {
       type: Object,
+      default: {},
     },
   ],
   isFeatured: {

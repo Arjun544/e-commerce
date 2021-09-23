@@ -21,6 +21,7 @@ const {
   NewArrivalProducts,
   getSimilarProducts,
   searchProducts,
+  getRecentReviews,
 } = require("../controllers/products_controller");
 
 router.post(
@@ -34,6 +35,7 @@ router.patch("/addReview/:id", authMiddleware, cleanBody, addReview);
 router.get("/get", cleanBody, authMiddleware, getProducts);
 router.get("/newArrival", authMiddleware, cleanBody, NewArrivalProducts);
 router.get("/count", authMiddleware, cleanBody, count);
+router.get("/getRecentReviews", authMiddleware, cleanBody, getRecentReviews);
 router.get("/filterByPrice", authMiddleware, cleanBody, filterByPrice);
 router.patch(
   "/multipleImages/:id",
