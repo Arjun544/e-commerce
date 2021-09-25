@@ -13,17 +13,11 @@ exports.addCategory = async (req, res) => {
     if (!icon) {
       return res.json("All fields are required");
     }
-
     // Upload image to cloudinary
     const result = await cloudinary.uploader.upload(icon);
 
     const newCategory = Category({
       name,
-      // subCategories: {
-      //   id: mongoose.Types.ObjectId(),
-      //   subCategory,
-      //   subCategoryIcon,
-      // },
       icon: result.secure_url,
     });
     await newCategory.save();
