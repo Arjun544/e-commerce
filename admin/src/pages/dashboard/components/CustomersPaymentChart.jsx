@@ -22,13 +22,20 @@ const CustomersPaymentChart = () => {
       type: "gradient",
     },
     legend: {
+      position: "bottom",
       formatter: function (val, opts) {
-        return val + " - " + opts.w.globals.series[opts.seriesIndex];
+        return (
+          '<div class="flex-col w-full ml-2">' +
+          "<span class='text-black font-semibold text-sm mr-2'>" +
+          opts.w.globals.series[opts.seriesIndex] +
+          "</span>" +
+          "<span class='text-black font-semibold'>" +
+          val +
+          "</span>"
+        );
       },
     },
-    title: {
-      text: "Customers Payment Methods",
-    },
+
     responsive: [
       {
         breakpoint: 480,
@@ -46,12 +53,15 @@ const CustomersPaymentChart = () => {
   const [series, setSeries] = useState([44, 15]);
 
   return (
-    <ReactApexCharts
-      options={options}
-      series={series}
-      type="radialBar"
-      height={300}
-    />
+    <div className="flex flex-col">
+      <span className="text-black font-semibold text-lg mb-2">Overview</span>
+      <ReactApexCharts
+        options={options}
+        series={series}
+        type="radialBar"
+        height={300}
+      />
+    </div>
   );
 };
 

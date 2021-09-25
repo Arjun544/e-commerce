@@ -67,7 +67,7 @@ const ProductDetail = () => {
                   }}
                   className={
                     selectedTab === 0
-                      ? "tabs tab-active w-32 h-10 items-center bg-customYellow-light justify-center font-semibold  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-110 transition duration-500 ease-in-out"
+                      ? "tabs tab-active w-32 h-10 items-center bg-customYellow-light justify-center font-semibold  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
                       : "tabs w-28 h-10 items-center justify-center font-semibold text-gray-400 tracking-wide"
                   }
                 >
@@ -80,7 +80,7 @@ const ProductDetail = () => {
                   }}
                   className={
                     selectedTab === 1
-                      ? "tabs tab-active w-32 h-10 items-center bg-customYellow-light justify-center font-semibold  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-110 transition duration-500 ease-in-out"
+                      ? "tabs tab-active w-32 h-10 items-center bg-customYellow-light justify-center font-semibold  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
                       : "tabs w-28 h-10 items-center justify-center font-semibold text-gray-400 tracking-wide"
                   }
                 >

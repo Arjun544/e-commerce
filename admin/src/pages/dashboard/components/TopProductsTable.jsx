@@ -33,16 +33,19 @@ function GlobalFilter({
   }, 200);
 
   return (
-    <input
-      type="text"
-      className="rounded-xl py-2 px-10 mt-2 text-white placeholder-white bg-Grey-dark border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      value={value || ""}
-      onChange={(e) => {
-        setValue(e.target.value);
-        onChange(e.target.value);
-      }}
-      placeholder={`Search in ${count} records...`}
-    />
+    <div className="flex flex-col">
+      <span className="text-black font-semibold text-lg mb-4">Top Products</span>
+      <input
+        type="text"
+        className="rounded-xl py-2 px-10 mt-2 text-white placeholder-white bg-Grey-dark border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        value={value || ""}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange(e.target.value);
+        }}
+        placeholder={`Search in ${count} records...`}
+      />
+    </div>
   );
 }
 
@@ -161,9 +164,7 @@ function TopProductsTable({ columns, data }) {
                     prepareRow(row);
                     return (
                       <tr
-                        className={`bg-${
-                          i % 2 === 0 ? "blue-light" : "white"
-                        } `}
+                        className='bg-bgColor-light'
                         {...row.getRowProps()}
                       >
                         {row.cells.map((cell) => {

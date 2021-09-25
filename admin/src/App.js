@@ -15,6 +15,7 @@ import { GuestRoute } from "./protected_route";
 import { RefreshHook } from "./hooks/refreshHook";
 import Loader from "react-loader-spinner";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
+import Categories from "./pages/categories/Categories";
 
 export const AppContext = createContext(null);
 
@@ -52,6 +53,7 @@ function App() {
           isMenuOpen,
           setIsMenuOpen,
           setIsLoading,
+         
         }}
       >
         <div className=" w-screen h-screen m-0 box-border bg-white">
@@ -79,6 +81,9 @@ function App() {
                 </ProtectedRoute>
                 <ProtectedRoute path="/products">
                   <Products />
+                </ProtectedRoute>
+                <ProtectedRoute path="/categories">
+                  <Categories />
                 </ProtectedRoute>
                 <ProtectedRoute path={["/product/:id"]}>
                   <ProductDetail />

@@ -13,6 +13,8 @@ module.exports = {
       red: theme("colors.red.400"),
       green: theme("colors.green.500"),
       blue: theme("colors.blue.500"),
+      yellow: theme("colors.yellow.500"),
+      white: theme("colors.white"),
     }),
     colors: {
       blue: {
@@ -25,7 +27,7 @@ module.exports = {
         dark: "#7176AC9F",
       },
       bgColor: {
-        light: "#FAFBFD",
+        light: "#F9F9F9",
       },
       customYellow: {
         light: "#EC981A",

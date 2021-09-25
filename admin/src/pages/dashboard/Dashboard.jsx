@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../../App";
-import CategoryDropDown from "../../components/CategoryDropDown";
+import OrdersDropDown from "../../components/OrdersDropDown";
 import CartIcon from "../../components/icons/CartIcon";
 import CustomersPaymentChart from "./components/CustomersPaymentChart";
 import EarningChart from "./components/EarningChart";
@@ -11,8 +11,9 @@ import { AvatarCell } from "./components/TopProductsTable";
 import TopBar from "../../components/TopBar";
 import AllOrders from "./components/AllOrders";
 import LatestReviews from "./components/LatestReviews";
-
-
+import CustomerReviews from "./components/CustomerReviews";
+import ActivityOverview from "./components/ActivityOverview";
+import TopCustomers from "./components/TopCustomers";
 
 const Dashboard = () => {
   const { isBigScreen } = useContext(AppContext);
@@ -21,7 +22,7 @@ const Dashboard = () => {
   const onTodaysOrdersClick = (e) => {
     e.preventDefault();
     setIsOrderMenuOpen(true);
-  }
+  };
 
   const data = [
     {
@@ -92,16 +93,14 @@ const Dashboard = () => {
                 Detailed information about yor store
               </span>
             </div>
-            <div className="flex">
-              <CategoryDropDown />
-              <div
-                onClick={onTodaysOrdersClick}
-                className="flex relative h-12 bg-darkBlue-light  shadow-sm border-none ml-4 w-40 rounded-xl hover:bg-Grey-dark items-center justify-center cursor-pointer"
-              >
-                <span className="font-semibold text-sm text-white">
-                  Today's Orders
-                </span>
-              </div>
+
+            <div
+              onClick={onTodaysOrdersClick}
+              className="flex relative h-12 bg-darkBlue-light  shadow-sm border-none ml-4 w-40 rounded-xl hover:bg-Grey-dark items-center justify-center cursor-pointer"
+            >
+              <span className="font-semibold text-sm text-white">
+                Today's Orders
+              </span>
             </div>
           </div>
 
@@ -113,62 +112,102 @@ const Dashboard = () => {
                 ? "grid grid-flow-col grid-rows-1 gap-4"
                 : "grid grid-flow-col grid-rows-2 gap-4"
             } px-6  w-full py-${
-              isBigScreen ? "12" : "6"
-            } flex- items-center rounded-3xl justify-around mt-6 bg-bgColor-light`}
+              isBigScreen ? "4" : "6"
+            }  rounded-3xl mt-6 bg-bgColor-light`}
           >
-            <div className="flex items-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-green-100 bg-opacity-40">
-                <CartIcon color={"#6EE7B7"} />
-              </div>
-              <div className="flex flex-col item justify-center">
-                <span className="text-Grey-dark font-bold text-sm">
-                  Orders Completed
+            <div className="flex flex-col w-full">
+              <div className="flex justify-between items-center mb-6">
+                <span className="text-black font-semibold text-lg">
+                  Orders Stats
                 </span>
-                <span className="text-green-500 font-semibold text-xl">24</span>
+                <OrdersDropDown />
               </div>
-            </div>
-            <div className="flex items-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-customYellow-light bg-opacity-20">
-                <CartIcon color={"#EC981A"} />
-              </div>
-              <div className="flex flex-col item justify-center">
-                <span className="text-Grey-dark font-bold text-sm">
-                  Orders Pending
-                </span>
-                <span className="text-customYellow-light font-semibold text-xl">
-                  24
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-indigo-100 bg-opacity-40">
-                <CartIcon color={"#A5B4FC"} />
-              </div>
-              <div className="flex flex-col item justify-center">
-                <span className="text-Grey-dark font-bold text-sm">
-                  Orders Confirmed
-                </span>
-                <span className="text-indigo-500 font-semibold text-xl">
-                  24
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-red-100 bg-opacity-40">
-                <CartIcon color={"#FCA5A5"} />
-              </div>
-              <div className="flex flex-col item justify-center">
-                <span className="text-Grey-dark font-bold text-sm">
-                  Orders Out of Delivery
-                </span>
-                <span className="text-red-500 font-semibold text-xl">24</span>
+
+              <div className="flex justify-between mb-4 mr-4">
+                <div className="flex items-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-green-100 bg-opacity-40">
+                    <CartIcon color={"#6EE7B7"} />
+                  </div>
+                  <div className="flex flex-col item justify-center">
+                    <span className="text-Grey-dark font-bold text-sm">
+                      Completed
+                    </span>
+                    <span className="text-green-500 font-semibold text-xl">
+                      24
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-customYellow-light bg-opacity-20">
+                    <CartIcon color={"#eb7843"} />
+                  </div>
+                  <div className="flex flex-col item justify-center">
+                    <span className="text-Grey-dark font-bold text-sm">
+                      Pending
+                    </span>
+                    <span className="text-customYellow-light font-semibold text-xl">
+                      24
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-indigo-100 bg-opacity-40">
+                    <CartIcon color={"#738aff"} />
+                  </div>
+                  <div className="flex flex-col item justify-center">
+                    <span className="text-Grey-dark font-bold text-sm">
+                      Confirmed
+                    </span>
+                    <span className="text-indigo-500 font-semibold text-xl">
+                      24
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-gray-300 bg-opacity-40">
+                    <CartIcon color={"#858585"} />
+                  </div>
+                  <div className="flex flex-col item justify-center">
+                    <span className="text-Grey-dark font-bold text-sm">
+                      Processing
+                    </span>
+                    <span className="text-red-500 font-semibold text-xl">
+                      24
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-red-100 bg-opacity-40">
+                    <CartIcon color={"#ff8484"} />
+                  </div>
+                  <div className="flex flex-col item justify-center">
+                    <span className="text-Grey-dark font-bold text-sm">
+                      Delivered
+                    </span>
+                    <span className="text-red-500 font-semibold text-xl">
+                      24
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           {/*  */}
-          <div className="flex flex-col mt-12">
-            <EarningChart />
+          <div className="flex mt-12">
+            <div
+              className={`h-full flex-grow ${
+                isBigScreen ? "mr-6" : "mb-6"
+              } bg-bgColor-light rounded-3xl p-6 shadow-sm`}
+            >
+              <EarningChart />
+            </div>
+
+            <div
+              className={`flex h-full flex-grow-0 w-1/3 bg-bgColor-light rounded-3xl p-6 shadow-sm`}
+            >
+              <OverviewChart />
+            </div>
           </div>
           <div
             className={`flex ${
@@ -177,21 +216,21 @@ const Dashboard = () => {
           >
             {/* All Orders */}
             <div
-              className={`h-48 flex-grow ${
+              className={`flex-grow ${
                 isBigScreen ? "mr-6" : "mb-6"
-              } bg-bgColor-light rounded-3xl p-6`}
+              } bg-bgColor-light rounded-3xl p-6 shadow-sm`}
             >
               <AllOrders />
             </div>
             <div
-              className={`h-full flex-grow bg-bgColor-light rounded-3xl p-6 ${
+              className={`h-full flex-grow bg-bgColor-light rounded-3xl p-6 shadow-sm ${
                 isBigScreen ? "mr-6" : "mb-6"
               }`}
             >
-              <LatestReviews />
+              <CustomerReviews />
             </div>
             {/* Latest Reviews*/}
-            <div className="h-full flex-grow bg-bgColor-light rounded-3xl p-6">
+            <div className="h-full w-1/3 bg-bgColor-light rounded-3xl p-6 shadow-sm">
               <LatestReviews />
             </div>
           </div>
@@ -200,31 +239,33 @@ const Dashboard = () => {
               !isBigScreen && "flex-col"
             } w-full justify-around mt-12`}
           >
-            {/* Business Overview */}
-            <div
-              className={`h-full flex-grow ${
-                isBigScreen ? "mr-6" : "mb-6"
-              } bg-bgColor-light rounded-3xl p-6`}
-            >
-              <OverviewChart />
-            </div>
-
             {/* Customer Payments*/}
-            <div className="h-full flex-grow bg-bgColor-light rounded-3xl p-6">
+            <div
+              className={`h-full ${
+                isBigScreen ? "mr-6" : "mb-6"
+              } flex-grow bg-bgColor-light rounded-3xl p-6 shadow-sm`}
+            >
               <CustomersPaymentChart />
+            </div>
+            {/* ActivityOverview */}
+            <div className="h-full w-1/3 bg-bgColor-light rounded-3xl p-6 shadow-sm">
+              <ActivityOverview />
             </div>
           </div>
 
           {/* Top Products */}
-          <div className="flex flex-col h-full mt-12">
-            <span className="text-black font-semibold text-xl">
-              Top Products
-            </span>
-            <span className="text-gray-300 font-semibold text-sm">
-              Best selling products in your store
-            </span>
+          <div className="flex mt-12">
+            <div
+              className={`h-full w-1/2 bg-bgColor-light rounded-3xl p-6 shadow-sm ${
+                isBigScreen ? "mr-8" : "mb-6"
+              }`}
+            >
+              <TopCustomers />
+            </div>
 
-            <TopProductsTable columns={columns} data={data} />
+            <div className="flex flex-col flex-grow h-full w-full bg-bgColor-light rounded-3xl p-6 shadow-sm">
+              <TopProductsTable columns={columns} data={data} />
+            </div>
           </div>
         </div>
       </div>

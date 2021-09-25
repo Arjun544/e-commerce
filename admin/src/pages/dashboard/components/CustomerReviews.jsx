@@ -1,9 +1,10 @@
 import React from "react";
 import ReactApexCharts from "react-apexcharts";
 import { useState } from "react";
-import CartIcon from "../../../components/icons/CartIcon";
+import ChatIcon from "../../../components/icons/ChatIcon";
+import ReactStars from "react-rating-stars-component";
 
-const AllOrders = () => {
+const CustomerReviews = () => {
   const [options, setOptions] = useState({
     chart: {
       height: 100,
@@ -19,7 +20,7 @@ const AllOrders = () => {
       enabled: false,
     },
 
-    colors: ["#d63384"],
+    colors: ["#33d656"],
 
     legend: {
       show: false,
@@ -74,10 +75,25 @@ const AllOrders = () => {
 
   return (
     <div className="flex flex-col justify-between">
-      <CartIcon />
-      <span className="text-black font-semibold text-lg mt-2">Orders</span>
+      <ChatIcon />
+      <span className="text-black font-semibold text-lg mt-2">Reviews</span>
       <div className="flex items-center justify-between">
-        <span className="text-black font-semibold text-xl">310</span>
+        <div className="flex items-center">
+          <ReactStars
+            classNames="mr-2"
+            value={2}
+            count={5}
+            edit={false}
+            size={20}
+            isHalf={true}
+            emptyIcon={<i className="far fa-star"></i>}
+            halfIcon={<i className="fa fa-star-half-alt"></i>}
+            fullIcon={<i className="fa fa-star"></i>}
+            color="#575757a9"
+            activeColor="#ffd700"
+          />
+          <span className="text-black font-semibold text-sm pt-1 tracking-wider">310</span>
+        </div>
         <ReactApexCharts
           options={options}
           series={series}
@@ -91,4 +107,4 @@ const AllOrders = () => {
   );
 };
 
-export default AllOrders;
+export default CustomerReviews;

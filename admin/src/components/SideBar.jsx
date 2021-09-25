@@ -32,6 +32,9 @@ const SideBar = () => {
       case "/products":
         setSelectedBar(2);
         break;
+      case "/categories":
+        setSelectedBar(3);
+        break;
       default:
         break;
     }
@@ -177,7 +180,10 @@ const SideBar = () => {
         {/*Categories  */}
 
         <div
-          onClick={(e) => setSelectedBar(3)}
+          onClick={(e) => {
+            setSelectedBar(3);
+            history.push("/categories");
+          }}
           className={`flex w-${
             isSideBarOpen ? "48" : "42"
           }  items-center py-3 ${

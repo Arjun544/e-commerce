@@ -34,7 +34,7 @@ const OrdersMenu = ({isOrderMenuOpen, setIsOrderMenuOpen }) => {
               </div>
             </div>
           </div>
-          <div ref={ref} className="flex flex-col items-end">
+          <div className="flex flex-col items-end">
             <span className="text-Grey-dark font-semibold mr-2">$234</span>
             <span className="text-black font-semibold">Complete</span>
           </div>
