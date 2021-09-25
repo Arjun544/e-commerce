@@ -1,16 +1,21 @@
 const Category = require("../models/Category");
 const mongoose = require("mongoose");
+const cloudinary = require("cloudinary");
 
 exports.addCategory = async (req, res) => {
   try {
-    const { name, icon, subCategory, subCategoryIcon } = req.body;
+    const { name } = req.body;
 
-    if (!name) {
-      return res.json("All fields are required");
-    }
+    console.log(name);
 
     if (name.length < 2) {
       return res.json("Name can't be less than 2 characters");
+    }
+    if (!req.file) {
+      return res.status(500).json({
+        success: false,
+        message: "All fields are required",
+      });
     }
 
     // Upload image to cloudinary
@@ -23,7 +28,7 @@ exports.addCategory = async (req, res) => {
       //   subCategory,
       //   subCategoryIcon,
       // },
-      'icon': result.secure_url,
+      icon: result.secure_url,
     });
     await newCategory.save();
     return res.json("New category has been added");
