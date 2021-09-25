@@ -42,21 +42,22 @@ const CategoryDialogue = ({
     if (categoryInput) {
       try {
         setLoading(true);
-        await addCategory(categoryInput, file[0].filename);
+        await addCategory(categoryInput, file[0].getFileEncodeDataURL());
         setLoading(false);
         setCategoryAlert(false);
+         window.location.reload(false);
         enqueueSnackbar("Category added", {
-          variant: "error",
+          variant: "success",
           autoHideDuration: 2000,
         });
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
+        console.log(file[0])
         enqueueSnackbar(error.response.data.message, {
           variant: "error",
           autoHideDuration: 2000,
         });
-      } finally {
-        setLoading(false);
+         setLoading(false);
       }
     }
     setCategoryInput("");

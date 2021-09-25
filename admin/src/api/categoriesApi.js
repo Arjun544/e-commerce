@@ -11,8 +11,8 @@ export const addCategory = (name,icon) =>
     { name, icon },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
         "Content-type": "application/json",
+        Authorization: `Bearer ${cookies.get("refreshToken")}`,
         Accept: "application/json",
       },
     }

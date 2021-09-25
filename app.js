@@ -32,7 +32,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // To parse the incoming requests with JSON payloads
+app.use(express.json({ limit: "50mb" })); // To parse the incoming requests with JSON payloads
 app.use(cookieParser());
 app.use(function (req, res, next) {
   res.header(
