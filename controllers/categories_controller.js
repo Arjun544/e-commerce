@@ -4,14 +4,18 @@ const cloudinary = require("cloudinary");
 
 exports.addCategory = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, icon } = req.body;
 
     if (name.length < 2) {
       return res.json("Name can't be less than 2 characters");
     }
 
+    if (!icon) {
+      return res.json("All fields are required");
+    }
+
     // Upload image to cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path);
+    const result = await cloudinary.uploader.upload(icon);
 
     const newCategory = Category({
       name,
