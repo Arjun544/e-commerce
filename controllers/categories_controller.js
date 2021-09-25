@@ -5,13 +5,16 @@ exports.addCategory = async (req, res) => {
   try {
     const { name, icon, subCategory, subCategoryIcon } = req.body;
 
-    if (!name || !icon) {
+    if (!name) {
       return res.json("All fields are required");
     }
 
     if (name.length < 2) {
       return res.json("Name can't be less than 2 characters");
     }
+
+    // Upload image to cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path);
 
     const newCategory = Category({
       name,
@@ -20,7 +23,7 @@ exports.addCategory = async (req, res) => {
       //   subCategory,
       //   subCategoryIcon,
       // },
-      icon,
+      'icon': result.secure_url,
     });
     await newCategory.save();
     return res.json("New category has been added");
