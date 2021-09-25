@@ -6,16 +6,8 @@ exports.addCategory = async (req, res) => {
   try {
     const { name } = req.body;
 
-    console.log(name);
-
     if (name.length < 2) {
       return res.json("Name can't be less than 2 characters");
-    }
-    if (!req.file) {
-      return res.status(500).json({
-        success: false,
-        message: "All fields are required",
-      });
     }
 
     // Upload image to cloudinary
