@@ -19,6 +19,7 @@ exports.addCategory = async (req, res) => {
     const newCategory = Category({
       name,
       icon: result.secure_url,
+      iconId: result.public_id,
     });
     await newCategory.save();
     return res.json("New category has been added");
@@ -78,10 +79,7 @@ exports.getCategories = async (req, res) => {
       });
     }
 
-    res.json({
-      success: true,
-      categories: categoryList,
-    });
+    res.json({ categoryList });
   } catch (error) {
     return res.json({
       success: false,
@@ -118,15 +116,28 @@ exports.getCategoryById = async (req, res) => {
 };
 
 exports.updateCategory = async (req, res) => {
-  // update only those value passed from req.body
   try {
-    // if (!mongoose.isValidObjectId(req.params.id)) {
-    //   return res.status(400).send("Invalid category id");
-    // }
+    // delete image
+    await cloudinary.uploader.destroy(req.body.iconId, (error, result) => {
+      console.log(result, error);
+    });
+    // upload new again
+    const result = await cloudinary.uploader.upload(
+      req.body.icon,
+      (error, result) => {
+        console.log(result, error);
+      }
+    );
 
     const category = await Category.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      {
+        $set: {
+          name: req.body.name,
+          icon: result.secure_url,
+          iconId: result.public_id,
+        },
+      },
       { new: true }
     );
 
@@ -137,6 +148,7 @@ exports.updateCategory = async (req, res) => {
       categories: category,
     });
   } catch (error) {
+    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -149,7 +161,7 @@ exports.updateSubCategory = async (req, res) => {
     const category = await Category.updateOne(
       {
         _id: req.params.id,
-        "subCategories.id": mongoose.Types.ObjectId(req.body.id),
+        "subCategories.id": mongoose.Types.ObjectId(req.body.subCategoryId),
       },
       {
         $set: {
@@ -194,15 +206,22 @@ exports.deleteCategory = async (req, res) => {
     //   return res.status(400).send("Invalid category id");
     // }
 
-    const category = await Category.findByIdAndRemove(req.params.id);
-    if (!category) {
-      res.status(403).send({ success: false, msg: "category not found" });
-    } else {
-      return res.status(200).json({
-        success: true,
-        message: "Deleted category",
-      });
-    }
+    // delete image
+    // await cloudinary.uploader.destroy(req.body.iconId, (error, result) => {
+    //   console.log(result, error);
+    // });
+    console.log(req.params.id);
+      console.log(req.body.iconId);
+
+    // const category = await Category.findByIdAndRemove(req.params.id);
+    // if (!category) {
+    //   res.status(403).send({ success: false, msg: "category not found" });
+    // } else {
+    //   return res.status(200).json({
+    //     success: true,
+    //     message: "Deleted category",
+    //   });
+    // }
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -210,3 +229,29 @@ exports.deleteCategory = async (req, res) => {
     });
   }
 };
+
+exports.deleteSubCategory = async (req, res) => {
+  try {
+    const category = await Category.updateOne(
+      {
+        _id: req.params.id,
+        "subCategories.id": mongoose.Types.ObjectId(req.body.subCategoryId),
+      },
+      {
+        $pull: {
+          "subCategories.$.id": req.body.subCategoryId,
+        },
+      }
+    );
+    if (!category) return res.status(400).send("Category not found");
+
+    res.json("Sub category has beem deleted");
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+

@@ -1,8 +1,9 @@
 import React from "react";
 
-const DeleteIcon = ({ className }) => {
+const DeleteIcon = ({ className, onClick }) => {
   return (
     <svg
+      onClick={onClick}
       className={className}
       id="Iconly_Bold_Delete"
       data-name="Iconly/Bold/Delete"

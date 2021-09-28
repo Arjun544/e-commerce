@@ -12,6 +12,9 @@ const categorySchema = mongoose.Schema({
   icon: {
     type: String,
   },
+  iconId: {
+    type: String,
+  },
 });
 
 categorySchema.virtual("id").get(function () {

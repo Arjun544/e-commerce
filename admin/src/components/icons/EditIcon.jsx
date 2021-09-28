@@ -1,8 +1,9 @@
 import React from "react";
 
-const EditIcon = ({ className }) => {
+const EditIcon = ({ className, onClick }) => {
   return (
     <svg
+      onClick={onClick}
       className={className}
       id="Iconly_Bold_Edit"
       data-name="Iconly/Bold/Edit"
