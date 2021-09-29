@@ -16,6 +16,7 @@ import { RefreshHook } from "./hooks/refreshHook";
 import Loader from "react-loader-spinner";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import Categories from "./pages/categories/Categories";
+import AddProduct from "./pages/AddProduct/AddProduct";
 
 export const AppContext = createContext(null);
 
@@ -53,13 +54,12 @@ function App() {
           isMenuOpen,
           setIsMenuOpen,
           setIsLoading,
-         
         }}
       >
         <div className=" w-screen h-screen m-0 box-border bg-white">
           <BrowserRouter>
             <Switch>
-              <GuestRoute path="/login">
+              <GuestRoute exact path="/login">
                 <Login />
               </GuestRoute>
               <div className="flex h-full w-full bg-white">
@@ -72,21 +72,23 @@ function App() {
                     </div>
                   )
                 )}
-
-                <ProtectedRoute path="/" exact>
+                <ProtectedRoute path="/" exact={true}>
                   <Dashboard />
                 </ProtectedRoute>
                 <ProtectedRoute path="/orders">
                   <Orders />
                 </ProtectedRoute>
-                <ProtectedRoute path="/products">
+                <ProtectedRoute path="/products" exact={true}>
                   <Products />
                 </ProtectedRoute>
                 <ProtectedRoute path="/categories">
                   <Categories />
                 </ProtectedRoute>
-                <ProtectedRoute path={["/product/:id"]}>
+                <ProtectedRoute path="/products/view/:id" exact={true}>
                   <ProductDetail />
+                </ProtectedRoute>
+                <ProtectedRoute path="/products/add" exact={true}>
+                  <AddProduct />
                 </ProtectedRoute>
               </div>
             </Switch>

@@ -6,6 +6,7 @@ export const ProtectedRoute = ({ children, ...rest }) => {
   return (
     <Route
       {...rest}
+      exact
       render={({ location }) => {
         return !isAuth && !user ? (
           <Redirect
@@ -30,6 +31,7 @@ export const GuestRoute = ({ children, ...rest }) => {
       render={({ location }) => {
         return isAuth ? (
           <Redirect
+            exact
             to={{
               pathname: "/",
               state: { from: location },

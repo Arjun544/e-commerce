@@ -30,6 +30,7 @@ function GlobalFilter({
   globalFilter,
   setGlobalFilter,
 }) {
+  const history = useHistory();
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -48,7 +49,13 @@ function GlobalFilter({
         }}
         placeholder={`Search in ${count} products...`}
       />
-      <div className="flex h-12 w-40 bg-customYellow-light rounded-2xl cursor-pointer items-center justify-center transform hover:scale-95 transition duration-500 ease-in-out">
+      <div
+        onClick={(e) => {
+          e.preventDefault();
+          history.push("/products/add");
+        }}
+        className="flex h-12 w-40 bg-customYellow-light rounded-2xl cursor-pointer items-center justify-center transform hover:scale-95 transition duration-500 ease-in-out"
+      >
         <span className="text-white font-semibold">Add product</span>
       </div>
     </div>
@@ -92,12 +99,12 @@ function ProductsTable({ columns, data }) {
   const onProductClick = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    history.push(`/product/${product.id}`);
+    history.push(`/products/view/${product.id}`);
   };
 
   // Render the UI for your table
   return (
-    <>
+    <div>
       <div className=" sm:flex sm:gap-x-2">
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
@@ -115,7 +122,7 @@ function ProductsTable({ columns, data }) {
         )}
       </div>
       {/* table */}
-      <div className="h-screen mt-4 flex flex-col">
+      <div className="mt-4 flex flex-col">
         <div className="-my-2 overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
           <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div className="">
@@ -166,14 +173,18 @@ function ProductsTable({ columns, data }) {
                           return (
                             <td
                               {...cell.getCellProps()}
-                              onClick={(e) =>
-                                onProductClick(e, cell.row.original.product)
-                              }
                               className="px-6 py-4 whitespace-nowrap font-semibold"
                               role="cell"
                             >
                               {cell.column.Cell.name === "defaultRenderer" ? (
                                 <div
+                                  onClick={(e) =>
+                                   {cell.column.Header === "Name" &&
+                                     onProductClick(
+                                       e,
+                                       cell.row.original.product
+                                     );}
+                                  }
                                   className={`text-sm font-semibold  ${(() => {
                                     if (cell.column.Header === "Name")
                                       return "text-green-500 cursor-pointer";
@@ -288,7 +299,7 @@ function ProductsTable({ columns, data }) {
           </nav>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

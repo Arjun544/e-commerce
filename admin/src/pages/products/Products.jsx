@@ -101,7 +101,7 @@ const Products = () => {
         <div className="px-10">
           <ProductsTable columns={columns} data={data} />
         </div>
-      )}
+      )}   
     </div>
   );
 };
