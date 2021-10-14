@@ -5,6 +5,9 @@ import { getProductById } from "../../api/productsApi";
 import Loader from "react-loader-spinner";
 import ProductOverview from "./components/product_overview";
 import ReactStars from "react-rating-stars-component";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "./editor.css";
 
 const ProductDetail = () => {
   const params = useParams();
@@ -89,9 +92,12 @@ const ProductDetail = () => {
               </div>
               {/* Tab Views */}
               {selectedTab === 0 ? (
-                <div>
-                  <span className="text-black">{product.fullDescription}</span>
-                </div>
+                <ReactQuill
+                  className="editor"
+                  readOnly={true}
+                  value={product.fullDescription}
+                  theme={"snow"}
+                ></ReactQuill>
               ) : (
                 <div className="flex flex-col h-full w-full ">
                   <span className="text-black font-semibold text-2xl mb-4">

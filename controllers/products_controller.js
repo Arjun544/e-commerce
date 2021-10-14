@@ -34,89 +34,68 @@ exports.addProduct = async (req, res) => {
       description,
       fullDescription,
       price,
+      image,
       category,
       discount,
       onSale,
       subCategory,
       countInStock,
-      totalReviews,
       isFeatured,
     } = req.body;
 
-    if (
-      !name ||
-      !description ||
-      !fullDescription ||
-      !price ||
-      !discount ||
-      !onSale ||
-      !category ||
-      !subCategory ||
-      !countInStock ||
-      !totalReviews ||
-      !isFeatured
-    ) {
-      return res.status(500).json({
-        success: false,
-        message: "All fields are required",
-      });
-    }
-
-    if (!req.file) {
-      return res.status(500).json({
-        success: false,
-        message: "All fields are required",
-      });
-    }
-
-    const newCategory = await Category.findById(req.body.category);
+    const newCategory = await Category.findById(category);
     if (!newCategory) return res.status(400).send("Invalid Category");
 
-    // Upload image to cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path);
+    // Upload thumbnail to cloudinary
+    const result = await cloudinary.uploader.upload(image);
 
     if (onSale === "true" && discount > 0) {
       const priceAfterDiscount = price - (price * req.body.discount) / 100;
 
       const product = new Product({
-        name: req.body.name,
-        description: req.body.description,
-        fullDescription: req.body.fullDescription,
-        image: result.secure_url,
-        price: req.body.price,
+        name: name,
+        description: description,
+        fullDescription: fullDescription,
+        thumbnail: result.secure_url,
+        thumbnailId: result.public_id,
+        price: price,
         discount: discount,
         onSale: onSale,
         totalPrice: priceAfterDiscount,
-        category: req.body.category,
-        subCategory: req.body.subCategory,
-        countInStock: req.body.countInStock,
-        totalReviews: req.body.totalReviews,
-        isFeatured: req.body.isFeatured,
+        category: category,
+        subCategory: subCategory,
+        countInStock: countInStock,
+        isFeatured: isFeatured,
       });
       await product.save();
+      res.send({
+        success: true,
+        product: product,
+        message: "Product has been added",
+      });
     } else {
       const product = new Product({
-        name: req.body.name,
-        description: req.body.description,
-        fullDescription: req.body.fullDescription,
-        image: result.secure_url,
-        price: req.body.price,
-        totalPrice: req.body.price,
+        name: name,
+        description: description,
+        fullDescription: fullDescription,
+        thumbnail: result.secure_url,
+        thumbnailId: result.public_id,
+        price: price,
+        totalPrice: price,
         onSale: onSale,
-        category: req.body.category,
-        subCategory: req.body.subCategory,
-        countInStock: req.body.countInStock,
-        totalReviews: req.body.totalReviews,
-        isFeatured: req.body.isFeatured,
+        category: category,
+        subCategory: subCategory,
+        countInStock: countInStock,
+        isFeatured: isFeatured,
       });
 
       await product.save();
+      res.send({
+        success: true,
+        product: product,
+        message: "Product has been added",
+      });
     }
-
-    res.send({
-      success: true,
-      message: "Product has been added",
-    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -416,8 +395,8 @@ exports.getRecentReviews = async (req, res) => {
       (item) =>
         item.addedAt.addedAt.toISOString().split("T")[0] === currrentDate
     );
-   
-    res.send({filteredReviews});
+
+    res.send({ filteredReviews });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -467,26 +446,28 @@ exports.multipleImages = async (req, res) => {
     return res.status(400).send("Invalid Product Id");
   }
 
-  const uploader = async (path) => await cloudinaryFile.uploads(path, "Images");
+  const uploader = async (path) => await cloudinary.uploader.upload(path);
 
-  // Upload image to cloudinary
-  const urls = [];
-  const files = req.files;
+  // Upload images to cloudinary
+  const files = req.body.images;
+  let product;
   for (const file of files) {
-    const { path } = file;
-    const newPath = await uploader(path);
-    urls.push(newPath);
+    const newPath = await uploader(file);
+    product = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: {
+          images: {
+            id: newPath.public_id,
+            url: newPath.secure_url,
+          },
+        },
+      },
+      { new: true }
+    );
   }
 
-  const product = await Product.findByIdAndUpdate(
-    req.params.id,
-    {
-      images: urls,
-    },
-    { new: true }
-  );
-
-  if (!product) return res.status(500).send("the gallery cannot be updated!");
+  if (!product) return res.status(500).send("Images cannot be upload!");
 
   res.send({
     success: true,

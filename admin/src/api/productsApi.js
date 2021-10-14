@@ -5,6 +5,55 @@ const cookies = new Cookies();
 const api = axios.create();
 
 // List of all the endpoints
+export const addProduct = (
+  name,
+  description,
+  fullDescription,
+  category,
+  countInStock,
+  isFeatured,
+  price,
+  image,
+  subCategory,
+  onSale,
+  discount
+) =>
+  api.post(
+    "/api/products/add",
+    {
+      name,
+      description,
+      fullDescription,
+      category,
+      countInStock,
+      isFeatured,
+      price,
+      image,
+      subCategory,
+      onSale,
+      discount,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+  export const uploadMultiImages = (id, images) =>
+    api.patch(
+      `/api/products/multipleImages/${id}`,
+      { images },
+      {
+        headers: {
+          Authorization: `Bearer ${cookies.get("refreshToken")}`,
+          "Content-type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+
 export const getProducts = () =>
   api.get("/api/products/get", {
     headers: {
@@ -13,6 +62,7 @@ export const getProducts = () =>
       Accept: "application/json",
     },
   });
+
 export const getProductById = (id) =>
   api.get(`/api/products/${id}`, {
     headers: {
@@ -21,6 +71,7 @@ export const getProductById = (id) =>
       Accept: "application/json",
     },
   });
+
 export const getRecentReviews = (id) =>
   api.get("/api/products/getRecentReviews", {
     headers: {
@@ -29,5 +80,14 @@ export const getRecentReviews = (id) =>
       Accept: "application/json",
     },
   });
+
+  export const deleteProduct = (id) =>
+    api.get("/api/products/getRecentReviews", {
+      headers: {
+        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    });
 
 export default api;

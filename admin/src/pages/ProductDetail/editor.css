@@ -1,0 +1,22 @@
+.editor .ql-editor {
+  min-height: 18em;
+}
+.editor .ql-container {
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+  background: #f9f9f9;
+  color: #000000;
+  border: none;
+  outline: none;
+}
+
+/* Snow Theme */
+.editor .ql-snow.ql-toolbar {
+  height: 0px;
+  display: none;
+  align-items: center;
+  border: none;
+  background: #eaecec;
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+}

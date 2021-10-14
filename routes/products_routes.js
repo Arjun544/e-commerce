@@ -27,7 +27,7 @@ const {
 router.post(
   "/add",
   authMiddleware,
-  upload.single("image"),
+  upload.single("thumbnail"),
   cleanBody,
   addProduct
 );

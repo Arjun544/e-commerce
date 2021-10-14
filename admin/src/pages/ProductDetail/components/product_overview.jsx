@@ -21,7 +21,7 @@ const ProductOverview = ({ product, averageRating }) => {
           {product.images.map((image, index) => (
             <img
               onClick={(e) => onImageClick(e, index)}
-              className={`h-16 w-16 rounded-xl object-cover ${
+              className={`h-16 w-16 rounded-xl object-cover cursor-pointer ${
                 index === selectedImage && "border-customYellow-light border-4"
               }`}
               src={image.url}

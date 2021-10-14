@@ -20,8 +20,6 @@ import {
   SortUpIcon,
   SortDownIcon,
 } from "../../../components/pagination_icons";
-import ProductDetail from "../../ProductDetail/ProductDetail";
-import { Link, Redirect } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
 // Define a default UI for filtering

@@ -19,7 +19,10 @@ const productSchema = mongoose.Schema({
     type: String,
     default: "",
   },
-  image: {
+  thumbnail: {
+    type: String,
+  },
+  thumbnailId: {
     type: String,
   },
   images: {
