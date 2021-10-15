@@ -3,7 +3,7 @@ import { AppContext } from "../../App";
 import Featured from "./components/featured";
 import OnSale from "./components/onSale";
 import ProductsTable from "./components/products_table";
-import { TableActions } from "./components/table_actions";
+import TableActions  from "./components/table_actions";
 import TopBar from "../../components/TopBar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -23,7 +23,6 @@ const Products = () => {
         setIsLoading(true);
         const { data } = await getProducts();
         dispatch(setProducts(data.products));
-
         setTableData(data.products);
         setIsLoading(false);
       } catch (error) {
@@ -79,7 +78,13 @@ const Products = () => {
 
     {
       Header: "Actions",
-      Cell: TableActions,
+      Cell: (props) => (
+        <TableActions
+          product={props.cell.row.original.product}
+          setIsLoading={setIsLoading}
+          setTableData={setTableData}
+        />
+      ),
     },
   ];
 

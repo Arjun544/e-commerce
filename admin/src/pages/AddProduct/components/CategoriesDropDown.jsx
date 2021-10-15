@@ -4,7 +4,10 @@ import ArrowDownIcon from "../../../components/icons/ArrowDownIcon";
 
 const CategoriesDropDown = ({
   mainCategoryName,
-  isAddCategoryEditing,
+  isEditing,
+  selectedCategory,
+  editingCategoryName,
+  editingCategoryId,
   categories,
   setSelectedCategory,
   subCategories,
@@ -26,14 +29,24 @@ const CategoriesDropDown = ({
   });
 
   useEffect(() => {
-    if (isAddCategoryEditing) {
-      setCurrentCategory(mainCategoryName);
-      // setSelectedCategory(mainCategoryId);
+    
+    if (isEditing) {
+     
+      setCurrentCategory(editingCategoryName);
+      setSelectedCategoryId(editingCategoryId);
+      setSubCategories(categories.map((category) => category.subCategories));
+      // setSubCategories(
+      //   categories.filter((item) => item._id === editingCategoryId)[0]
+      //     .subCategories
+      // );
     } else {
       setSelectedCategoryId(categories.map((category) => category.id)[0]);
-      setSubCategories(categories.map((category) => category.subCategories));
+      setSubCategories(
+        categories.map((category) => category.subCategories)
+      );
+       console.log(categories.map((category) => category.subCategories));
     }
-  }, []);
+  }, [editingCategoryName]);
 
   const toggleMenu = (e) => {
     e.preventDefault();
@@ -46,7 +59,6 @@ const CategoriesDropDown = ({
     setSelectedCategory(index);
     setSelectedCategoryId(id);
     setCurrentSubCategory("Select Sub Category");
-    console.log(subCategories);
   };
 
   return (
@@ -58,7 +70,7 @@ const CategoriesDropDown = ({
       }
     >
       <span className="font-semibold text-sm text-black capitalize">
-        {isAddCategoryEditing ? mainCategoryName : currentCategory}
+        {currentCategory}
       </span>
 
       <ArrowDownIcon color={"#000000"} />

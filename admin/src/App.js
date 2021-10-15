@@ -88,7 +88,10 @@ function App() {
                   <ProductDetail />
                 </ProtectedRoute>
                 <ProtectedRoute path="/products/add" exact={true}>
-                  <AddProduct />
+                  <AddProduct isEditing={false} />
+                </ProtectedRoute>
+                <ProtectedRoute path="/products/edit/:id" exact={true}>
+                  <AddProduct isEditing={true} />
                 </ProtectedRoute>
               </div>
             </Switch>

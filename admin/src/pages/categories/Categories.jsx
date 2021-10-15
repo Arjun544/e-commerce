@@ -1,7 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AppContext } from "../../App";
 import TopBar from "../../components/TopBar";
-import { deleteCategory, deleteSubCategory, getCategories } from "../../api/categoriesApi";
+import {
+  deleteCategory,
+  deleteSubCategory,
+  getCategories,
+} from "../../api/categoriesApi";
 import Loader from "react-loader-spinner";
 import { useSnackbar } from "notistack";
 import EditIcon from "../../components/icons/EditIcon";
@@ -36,8 +40,9 @@ const Categories = () => {
     };
     fetchCategories();
   }, []);
-  const mainCategoryName = categories.map((item, index) => item.name);
-  const mainCategoryId = categories.map((item, index) => item.id);
+
+  const mainCategoryName = categories.map((item) => item.name);
+  const mainCategoryId = categories.map((item) => item.id);
   const subCategories = categories.map((item) => item.subCategories);
 
   const handleCategoryEdit = (e, category) => {
@@ -49,19 +54,22 @@ const Categories = () => {
 
   const handleCategoryDelete = async (e, category) => {
     e.preventDefault();
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       await deleteCategory(category.id, category.iconId);
+      const { data } = await getCategories();
+      setCategories(data.categoryList);
+      setSelectedTab(0);
+      setIsLoading(false);
+      enqueueSnackbar("Category deleted", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
     } catch (error) {
       console.log(error.response);
+    } finally {
+      setIsLoading(false);
     }
-    const { data } = await getCategories();
-    setCategories(data.categoryList);
-    setIsLoading(false);
-    enqueueSnackbar("Category deleted", {
-      variant: "success",
-      autoHideDuration: 2000,
-    });
   };
 
   const handleSubCategoryEdit = (e, subCategory) => {
@@ -174,7 +182,7 @@ const Categories = () => {
                       : "flex tabs w-full h-12 mb-4 items-center justify-center font-semibold capitalize text-gray-400 tracking-wide hover:text-darkBlue-light"
                   }
                 >
-                  <div className="flex w-full px-4 items-center justify-between  ">
+                  <div className="flex w-full px-4 items-center justify-between">
                     <img
                       className="h-8 w-8 rounded-xl object-cover shadow-md"
                       src={category.icon}
@@ -214,7 +222,10 @@ const Categories = () => {
             <div className="flex flex-wrap w-full h-52 rounded-3xl bg-white ml-8">
               {subCategories[selectedTab].map((item) => {
                 return (
-                  <div className="flex w-1/5 h-16 mr-8  bg-bgColor-light rounded-2xl items-center justify-between px-6 shadow-sm">
+                  <div
+                    key={item.id}
+                    className="flex w-1/5 h-16 mr-8  bg-bgColor-light rounded-2xl items-center justify-between px-6 shadow-sm"
+                  >
                     <span className="text-black font-semibold capitalize">
                       {item.name}
                     </span>

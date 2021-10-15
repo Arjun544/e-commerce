@@ -207,21 +207,19 @@ exports.deleteCategory = async (req, res) => {
     // }
 
     // delete image
-    // await cloudinary.uploader.destroy(req.body.iconId, (error, result) => {
-    //   console.log(result, error);
-    // });
-    console.log(req.params.id);
-      console.log(req.body.iconId);
+    await cloudinary.uploader.destroy(req.body.iconId, (error, result) => {
+      console.log(result, error);
+    });
 
-    // const category = await Category.findByIdAndRemove(req.params.id);
-    // if (!category) {
-    //   res.status(403).send({ success: false, msg: "category not found" });
-    // } else {
-    //   return res.status(200).json({
-    //     success: true,
-    //     message: "Deleted category",
-    //   });
-    // }
+    const category = await Category.findByIdAndRemove(req.params.id);
+    if (!category) {
+      res.status(403).send({ success: false, msg: "category not found" });
+    } else {
+      return res.status(200).json({
+        success: true,
+        message: "Deleted category",
+      });
+    }
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -254,4 +252,3 @@ exports.deleteSubCategory = async (req, res) => {
     });
   }
 };
-

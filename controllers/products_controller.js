@@ -422,6 +422,18 @@ exports.deleteProduct = async (req, res) => {
     if (!mongoose.isValidObjectId(req.params.id)) {
       return res.status(400).send("Invalid product id");
     }
+    // delete thumbnail from cloudinary
+    await cloudinary.uploader.destroy(req.body.thumbnailId, (error, result) => {
+      console.log(result, error);
+    });
+
+    // delete images from cloudinary
+    await cloudinary.v2.api.delete_resources(
+      req.body.imageIds,
+      (error, result) => {
+        console.log(result, error);
+      }
+    );
 
     const product = await Product.findByIdAndRemove(req.params.id);
 

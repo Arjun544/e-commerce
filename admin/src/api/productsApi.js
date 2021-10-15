@@ -41,18 +41,18 @@ export const addProduct = (
       },
     }
   );
-  export const uploadMultiImages = (id, images) =>
-    api.patch(
-      `/api/products/multipleImages/${id}`,
-      { images },
-      {
-        headers: {
-          Authorization: `Bearer ${cookies.get("refreshToken")}`,
-          "Content-type": "application/json",
-          Accept: "application/json",
-        },
-      }
-    );
+export const uploadMultiImages = (id, images) =>
+  api.patch(
+    `/api/products/multipleImages/${id}`,
+    { images },
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
 
 export const getProducts = () =>
   api.get("/api/products/get", {
@@ -81,13 +81,14 @@ export const getRecentReviews = (id) =>
     },
   });
 
-  export const deleteProduct = (id) =>
-    api.get("/api/products/getRecentReviews", {
-      headers: {
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
-        "Content-type": "application/json",
-        Accept: "application/json",
-      },
-    });
+export const deleteProduct = (id, thumbnailId, imageIds) =>
+  api.delete(`/api/products/delete/${id}`, {
+    headers: {
+      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
+    },
+    data: { thumbnailId: thumbnailId, imageIds: imageIds },
+  });
 
 export default api;

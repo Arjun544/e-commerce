@@ -3,14 +3,16 @@ import useOutsideClick from "../../../useOutsideClick";
 import ArrowDownIcon from "../../../components/icons/ArrowDownIcon";
 
 const SubCategoriesDropDown = ({
-  mainCategoryId,
-  mainCategoryName,
+  editingSubCategoryName,
+  categories,
   isEditing,
+  selectedCategory,
+  editingCategoryId,
   subCategories,
+  setSubCategories,
   currentSubCategory,
   setCurrentSubCategory,
 }) => {
-  
   const [isOpen, setIsOpen] = useState(false);
 
   const ref = useRef();
@@ -23,10 +25,12 @@ const SubCategoriesDropDown = ({
 
   useEffect(() => {
     if (isEditing) {
-      setCurrentSubCategory(mainCategoryName);
+      setCurrentSubCategory(editingSubCategoryName);
+      setSubCategories(subCategories);
+    } else {
+      // setSubCategories(subCategories);
     }
-    console.log(subCategories);
-  }, [subCategories]);
+  }, [editingSubCategoryName]);
 
   const toggleMenu = (e) => {
     e.preventDefault();
@@ -47,7 +51,7 @@ const SubCategoriesDropDown = ({
       }
     >
       <span className="font-semibold text-sm text-black capitalize">
-        {isEditing ? mainCategoryName : currentSubCategory}
+        {currentSubCategory}
       </span>
 
       <ArrowDownIcon color={"#000000"} />
@@ -57,6 +61,19 @@ const SubCategoriesDropDown = ({
             <span className="text-gray-500 text-sm font-semibold">
               No sub Categories
             </span>
+          ) : isEditing ? (
+            subCategories[selectedCategory].map((category) => (
+              <span
+                key={category.id}
+                className="font-semibold mb-1 pl-4 rounded-md text-gray-400 hover:text-black hover:bg-blue-light capitalize"
+              >
+                <div
+                  onClick={(e) => handleOnClick(e, category.name, category.id)}
+                >
+                  {category.name}
+                </div>
+              </span>
+            ))
           ) : (
             subCategories.map((category) => (
               <span
