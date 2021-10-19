@@ -4,10 +4,8 @@ import ArrowDownIcon from "../../../components/icons/ArrowDownIcon";
 
 const SubCategoriesDropDown = ({
   editingSubCategoryName,
-  categories,
   isEditing,
   selectedCategory,
-  editingCategoryId,
   subCategories,
   setSubCategories,
   currentSubCategory,
@@ -27,9 +25,7 @@ const SubCategoriesDropDown = ({
     if (isEditing) {
       setCurrentSubCategory(editingSubCategoryName);
       setSubCategories(subCategories);
-    } else {
-      // setSubCategories(subCategories);
-    }
+    } 
   }, [editingSubCategoryName]);
 
   const toggleMenu = (e) => {

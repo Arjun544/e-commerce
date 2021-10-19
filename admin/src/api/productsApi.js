@@ -41,6 +41,7 @@ export const addProduct = (
       },
     }
   );
+
 export const uploadMultiImages = (id, images) =>
   api.patch(
     `/api/products/multipleImages/${id}`,
@@ -55,7 +56,7 @@ export const uploadMultiImages = (id, images) =>
   );
 
 export const getProducts = () =>
-  api.get("/api/products/get", {
+  api.get("/api/products/getAdminProducts", {
     headers: {
       Authorization: `Bearer ${cookies.get("refreshToken")}`,
       "Content-type": "application/json",
@@ -80,6 +81,74 @@ export const getRecentReviews = (id) =>
       Accept: "application/json",
     },
   });
+
+export const updateProduct = (
+  id,
+  name,
+  description,
+  fullDescription,
+  category,
+  countInStock,
+  isFeatured,
+  price,
+  image,
+  subCategory,
+  onSale,
+  discount,
+  thumbnailId,
+  imageIds
+) =>
+  api.patch(
+    `/api/products/update/${id}`,
+    {
+      name,
+      description,
+      fullDescription,
+      category,
+      countInStock,
+      isFeatured,
+      price,
+      image,
+      subCategory,
+      onSale,
+      discount,
+      thumbnailId,
+      imageIds,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+
+export const updateFeatured = (id, isFeatured) =>
+  api.patch(
+    `/api/products/updateFeatured/${id}/${isFeatured}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+
+export const updateStatus = (id, status) =>
+  api.patch(
+    `/api/products/updateStatus/${id}/${status}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
 
 export const deleteProduct = (id, thumbnailId, imageIds) =>
   api.delete(`/api/products/delete/${id}`, {

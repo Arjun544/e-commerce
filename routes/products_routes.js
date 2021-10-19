@@ -7,7 +7,7 @@ const authMiddleware = require("../middlewares/auth_middleware");
 
 const {
   addProduct,
-  getProducts,
+  getAdminProducts,
   getProductById,
   featuredProducts,
   updateProduct,
@@ -22,6 +22,8 @@ const {
   getSimilarProducts,
   searchProducts,
   getRecentReviews,
+  updateFeatured,
+  updateStatus,
 } = require("../controllers/products_controller");
 
 router.post(
@@ -32,7 +34,7 @@ router.post(
   addProduct
 );
 router.patch("/addReview/:id", authMiddleware, cleanBody, addReview);
-router.get("/get", cleanBody, authMiddleware, getProducts);
+router.get("/getAdminProducts", cleanBody, authMiddleware, getAdminProducts);
 router.get("/newArrival", authMiddleware, cleanBody, NewArrivalProducts);
 router.get("/count", authMiddleware, cleanBody, count);
 router.get("/getRecentReviews", authMiddleware, cleanBody, getRecentReviews);
@@ -55,6 +57,18 @@ router.get(
 );
 router.get("/byCategory/:categoryId", cleanBody, productsByCategory);
 router.patch("/update/:id", authMiddleware, cleanBody, updateProduct);
+router.patch(
+  "/updateFeatured/:id/:isFeatured",
+  authMiddleware,
+  cleanBody,
+  updateFeatured
+);
+router.patch(
+  "/updateStatus/:id/:status",
+  authMiddleware,
+  cleanBody,
+  updateStatus
+);
 router.delete("/delete/:id", authMiddleware, cleanBody, deleteProduct);
 
 module.exports = router;

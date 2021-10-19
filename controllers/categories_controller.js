@@ -1,6 +1,7 @@
 const Category = require("../models/Category");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
+const socket = require("../app");
 
 exports.addCategory = async (req, res) => {
   try {
@@ -22,6 +23,8 @@ exports.addCategory = async (req, res) => {
       iconId: result.public_id,
     });
     await newCategory.save();
+    const categories = await Category.find();
+    socket.socket.emit("add-category", categories);
     return res.json("New category has been added");
   } catch (error) {
     console.log(error);
@@ -56,6 +59,8 @@ exports.addSubCategory = async (req, res) => {
 
       { new: true }
     );
+    const categories = await Category.find();
+    socket.socket.emit("add-subCategory", categories);
     return res.json({
       success: true,
       message: "Sub category has been added",
@@ -140,7 +145,8 @@ exports.updateCategory = async (req, res) => {
       },
       { new: true }
     );
-
+    const categories = await Category.find();
+    socket.socket.emit("edit-category", categories);
     if (!category) return res.status(400).send("category not found");
 
     res.json({
@@ -169,6 +175,8 @@ exports.updateSubCategory = async (req, res) => {
         },
       }
     );
+    const categories = await Category.find();
+    socket.socket.emit("edit-subCategory", categories);
     if (!category) return res.status(400).send("Category not found");
 
     res.json("Sub category has beem updated");
@@ -212,6 +220,10 @@ exports.deleteCategory = async (req, res) => {
     });
 
     const category = await Category.findByIdAndRemove(req.params.id);
+
+    const categories = await Category.find();
+    socket.socket.emit("delete-category", categories);
+
     if (!category) {
       res.status(403).send({ success: false, msg: "category not found" });
     } else {
@@ -230,17 +242,16 @@ exports.deleteCategory = async (req, res) => {
 
 exports.deleteSubCategory = async (req, res) => {
   try {
-    const category = await Category.updateOne(
-      {
-        _id: req.params.id,
-        "subCategories.id": mongoose.Types.ObjectId(req.body.subCategoryId),
-      },
-      {
-        $pull: {
-          "subCategories.$.id": req.body.subCategoryId,
+    const category = await Category.findByIdAndUpdate(req.params.id, {
+      $pull: {
+        subCategories: {
+          id: mongoose.Types.ObjectId(req.body.subCategoryId),
         },
-      }
-    );
+      },
+    });
+    const categories = await Category.find();
+    socket.socket.emit("delete-subCategory", categories);
+
     if (!category) return res.status(400).send("Category not found");
 
     res.json("Sub category has beem deleted");

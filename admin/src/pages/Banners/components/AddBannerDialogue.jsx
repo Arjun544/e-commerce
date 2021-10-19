@@ -9,12 +9,9 @@ import Loader from "react-loader-spinner";
 
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
-import {
-  addCategory,
-  getCategories,
-  updateCategory,
-} from "../../../api/categoriesApi";
 import { AppContext } from "../../../App";
+import { addBanner, updateBanner } from "../../../api/bannersApi";
+import TypesDropDown from "./TypesDropDown";
 
 // Register the plugins
 registerPlugin(
@@ -24,49 +21,53 @@ registerPlugin(
   FilePondPluginFileEncode
 );
 
-const AddCategoryDialogue = ({
-  isAddCategoryEditing,
-  editingCategory,
-  setIsAddCategoryEditing,
-  setCategories,
-  categoryAlert,
-  setAddCategoryAlert,
-  addCategoryAlert,
-  addCategoryInput,
-  setAddCategoryInput,
+const AddBannerDialogue = ({
+  isEditing,
+  editingBanner,
+  setIsEditing,
+  setBanners,
+  setAddBannerAlert,
+  input,
+  setInput,
 }) => {
-  const {socket} = useContext(AppContext)
+  const { socket } = useContext(AppContext);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [file, setFile] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedType, setSelectedType] = useState("Select type");
 
   useEffect(() => {
-    if (isAddCategoryEditing) {
-      setAddCategoryInput(editingCategory.name);
-      setFile(editingCategory.icon)
-   }
-  }, [])
-
+    if (isEditing) {
+      setInput(editingBanner.title);
+      setSelectedType(editingBanner.type);
+      setFile(editingBanner.image);
+    }
+  }, []);
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    if (addCategoryAlert.length <= 2 || file === "") {
+    if (input.length === 0 || file === "") {
       enqueueSnackbar("Fields can't be empty", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    } else if (selectedType === "Select type") {
+      enqueueSnackbar("Please select type", {
         variant: "error",
         autoHideDuration: 2000,
       });
     } else {
       try {
         setLoading(true);
-        await addCategory(addCategoryInput, file[0].getFileEncodeDataURL());
+        await addBanner(input, file[0].getFileEncodeDataURL(), selectedType, []);
         setLoading(false);
-        setAddCategoryAlert(false);
-        socket.current.on("add-category", (newCategories) => {
-          setCategories(newCategories);
+        setAddBannerAlert(false);
+        socket.current.on("add-banner", (newBanners) => {
+          setBanners(newBanners);
         });
-        setAddCategoryInput("");
-        setIsAddCategoryEditing(false);
-        enqueueSnackbar("Category added", {
+        setInput("");
+        setIsEditing(false);
+        enqueueSnackbar("Banner added", {
           variant: "success",
           autoHideDuration: 2000,
         });
@@ -76,15 +77,15 @@ const AddCategoryDialogue = ({
           autoHideDuration: 2000,
         });
         setLoading(false);
-        setAddCategoryInput("");
-        setIsAddCategoryEditing(false);
+        setInput("");
+        setIsEditing(false);
       }
     }
   };
 
   const handleEdit = async (e) => {
     e.preventDefault();
-    if (addCategoryInput.length <= 2 || file === "") {
+    if (input.length === 0 || file === "") {
       enqueueSnackbar("Fields can't be empty", {
         variant: "error",
         autoHideDuration: 2000,
@@ -92,20 +93,20 @@ const AddCategoryDialogue = ({
     } else {
       try {
         setLoading(true);
-        await updateCategory(
-          editingCategory.id,
-          addCategoryInput,
+        await updateBanner(
+          editingBanner._id,
+          input,
           file[0].getFileEncodeDataURL(),
-          editingCategory.iconId,
+          editingBanner.imageId,
         );
         setLoading(false);
-        setAddCategoryAlert(false);
-         socket.current.on("edit-category", (newCategories) => {
-           setCategories(newCategories);
-         });
-        setAddCategoryInput("");
-        setIsAddCategoryEditing(false);
-        enqueueSnackbar("Category updated", {
+        setAddBannerAlert(false);
+        socket.current.on("edit-banner", (newBanners) => {
+          setBanners(newBanners);
+        });
+        setInput("");
+        setIsEditing(false);
+        enqueueSnackbar("Banner updated", {
           variant: "success",
           autoHideDuration: 2000,
         });
@@ -115,33 +116,31 @@ const AddCategoryDialogue = ({
           autoHideDuration: 2000,
         });
         setLoading(false);
-        setAddCategoryInput("");
-        setIsAddCategoryEditing(false);
+        setInput("");
+        setIsEditing(false);
       }
     }
   };
 
   return (
-    <div
-     
-      className="flex flex-col py-10 w-1/3 rounded-3xl bg-blue-light justify-center px-16"
-    >
+    <div className="flex flex-col py-10 w-1/3 rounded-3xl bg-blue-light justify-center px-16">
       <div className="flex items-center justify-center">
         <span className="text-black font-semibold tracking-wider mb-8">
-          {isAddCategoryEditing ? "Edit Category" : "Add Category"}
+          {isEditing ? "Edit Banner" : "Add Banner"}
         </span>
       </div>
       <div className="flex items-center justify-center">
         <input
           className="h-14 w-full rounded-2xl text-black bg-bgColor-light pl-4 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
-          placeholder={isAddCategoryEditing ? editingCategory.name : "Name"}
+          placeholder={isEditing ? editingBanner.name : "Title"}
           type="text"
-          value={addCategoryInput}
+          value={input}
           onChange={(e) => {
-            setAddCategoryInput(e.target.value);
+            setInput(e.target.value);
           }}
         />
       </div>
+      <TypesDropDown  selectedType={selectedType} setSelectedType={setSelectedType} ></TypesDropDown>
       <FilePond
         files={file}
         allowReorder={false}
@@ -151,9 +150,9 @@ const AddCategoryDialogue = ({
         allowFileEncode={true}
         acceptedFileTypes={["image/png", "image/jpeg"]}
         labelIdle={`${
-          file === "" && isAddCategoryEditing
+          file === "" && isEditing
             ? "<span class=filepond--label-action text-green-500 no-underline>Update new</span> "
-            : "Drag & Drop category icon or <span class=filepond--label-action text-green-500 no-underline>Browse</span>"
+            : "Drag & Drop banner icon or <span class=filepond--label-action text-green-500 no-underline>Browse</span>"
         } `}
       />
 
@@ -161,9 +160,9 @@ const AddCategoryDialogue = ({
         <div
           onClick={(e) => {
             e.preventDefault();
-            setAddCategoryAlert(false);
-            setAddCategoryInput("");
-            setIsAddCategoryEditing(false);
+            setAddBannerAlert(false);
+            setInput("");
+            setIsEditing(false);
           }}
           className="flex h-12 bg-red-500  shadow-sm border-none ml-4 w-32 rounded-xl  items-center justify-center cursor-pointer transform hover:scale-95  transition duration-500 ease-in-out"
         >
@@ -171,19 +170,16 @@ const AddCategoryDialogue = ({
         </div>
         {loading ? (
           <div className="flex items-center justify-center ml-2">
-            <Loader
-              type="Puff"
-              color="#00BFFF"
-              height={50}
-              width={50}
-            />
+            <Loader type="Puff" color="#00BFFF" height={50} width={50} />
           </div>
         ) : (
           <div
-            onClick={isAddCategoryEditing ? handleEdit : handleAdd}
+            onClick={isEditing ? handleEdit : handleAdd}
             className="flex h-12 bg-green-500  shadow-sm border-none ml-4 w-32 rounded-xl  items-center justify-center cursor-pointer transform hover:scale-95  transition duration-500 ease-in-out"
           >
-              <span className="font-semibold text-sm text-white">{ isAddCategoryEditing ? 'Edit' : 'Add' }</span>
+            <span className="font-semibold text-sm text-white">
+              {isEditing ? "Edit" : "Add"}
+            </span>
           </div>
         )}
       </div>
@@ -191,4 +187,4 @@ const AddCategoryDialogue = ({
   );
 };
 
-export default AddCategoryDialogue;
+export default AddBannerDialogue;

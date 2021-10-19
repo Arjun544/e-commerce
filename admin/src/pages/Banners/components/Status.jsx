@@ -1,21 +1,21 @@
 import React, { useState, useContext } from "react";
 import Switch from "react-switch";
 import { useSnackbar } from "notistack";
-import { updateFeatured } from "../../../api/productsApi";
+import { updateStatus } from "../../../api/bannersApi";
 import { AppContext } from "../../../App";
 
-const Featured = ({ product }) => {
+const Status = ({ banner }) => {
   const { socket } = useContext(AppContext);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [value, setValue] = useState(product.isFeatured);
+  const [value, setValue] = useState(banner.status);
 
-  const handleOnFeatured = async (nextChecked) => {
+  const handleStatus = async (nextChecked) => {
     try {
-      await updateFeatured(product._id, nextChecked);
-      socket.current.on("update-featured", (newValue) => {
+      await updateStatus(banner._id, nextChecked);
+      socket.current.on("update-bannerStatus", (newValue) => {
         setValue(newValue);
       });
-      enqueueSnackbar("Featured has been updated", {
+      enqueueSnackbar("Status has been updated", {
         variant: "success",
         autoHideDuration: 2000,
       });
@@ -23,11 +23,11 @@ const Featured = ({ product }) => {
       console.log(error.response);
     }
   };
-
   return (
     <Switch
+      value={value}
       checked={value}
-      onChange={handleOnFeatured}
+      onChange={handleStatus}
       onColor="#D1FAE5"
       onHandleColor="#10B981"
       handleDiameter={20}
@@ -43,4 +43,4 @@ const Featured = ({ product }) => {
   );
 };
 
-export default Featured;
+export default Status;

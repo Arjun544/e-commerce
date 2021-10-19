@@ -68,17 +68,14 @@ export const deleteCategory = (id, iconId) =>
   });
 
 export const deleteSubCategory = (id, subCategoryId) =>
-  api.delete(
-    `/api/categories/subCategory/${id}`,
-    { subCategoryId },
-    {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
-        Accept: "application/json",
-      },
-    }
-  );
+  api.delete(`/api/categories/subCategory/${id}`, {
+    headers: {
+      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
+    },
+    data: { subCategoryId: subCategoryId },
+  });
 
 export const getCategories = () =>
   api.get("/api/categories/get", {

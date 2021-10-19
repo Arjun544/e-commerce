@@ -10,12 +10,16 @@ import Loader from "react-loader-spinner";
 import { useSnackbar } from "notistack";
 import EditIcon from "../../components/icons/EditIcon";
 import DeleteIcon from "../../components/icons/DeleteIcon";
+import { ChevronDownIcon } from "@heroicons/react/solid";
+import { ChevronUpIcon } from "@heroicons/react/solid";
 import AddCategoryDialogue from "./components/AddCategoryDialogue";
 import AddSubCategoryDialogue from "./components/AddSubCategoryDialogue";
+import { Accordion, AccordionItem } from "react-sanfona";
 
 const Categories = () => {
-  const { isBigScreen } = useContext(AppContext);
+  const { isBigScreen, socket } = useContext(AppContext);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [isTileOpen, setIsTileOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedTab, setSelectedTab] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +46,7 @@ const Categories = () => {
   }, []);
 
   const mainCategoryName = categories.map((item) => item.name);
-  const mainCategoryId = categories.map((item) => item.id);
+  const mainCategoryId = categories.map((item) => item._id);
   const subCategories = categories.map((item) => item.subCategories);
 
   const handleCategoryEdit = (e, category) => {
@@ -55,12 +59,10 @@ const Categories = () => {
   const handleCategoryDelete = async (e, category) => {
     e.preventDefault();
     try {
-      setIsLoading(true);
-      await deleteCategory(category.id, category.iconId);
-      const { data } = await getCategories();
-      setCategories(data.categoryList);
-      setSelectedTab(0);
-      setIsLoading(false);
+      await deleteCategory(category._id, category.iconId);
+      socket.current.on("delete-category", (newCategories) => {
+        setCategories(newCategories);
+      });
       enqueueSnackbar("Category deleted", {
         variant: "success",
         autoHideDuration: 2000,
@@ -79,32 +81,34 @@ const Categories = () => {
     setEditingCategory(subCategory);
   };
 
-  const handleSubCategoryDelete = async (e, category) => {
+  const handleSubCategoryDelete = async (e, mainId, category) => {
     e.preventDefault();
-    setIsLoading(true);
+    // setIsLoading(true);
     try {
-      await deleteSubCategory(mainCategoryId, category.id);
+      await deleteSubCategory(mainId, category.id);
+      socket.current.on("delete-subCategory", (newCategories) => {
+        setCategories(newCategories);
+      });
+      enqueueSnackbar("Category deleted", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
     } catch (error) {
       console.log(error.response);
     }
-    const { data } = await getCategories();
-    setCategories(data.categoryList);
-    setIsLoading(false);
-    enqueueSnackbar("Category deleted", {
-      variant: "success",
-      autoHideDuration: 2000,
-    });
+    // const { data } = await getCategories();
+    // setCategories(data.categoryList);
+    // setIsLoading(false);
   };
 
   return (
-    <div className="flex flex-col w-full h-full overflow-y-auto overflow-x-hidden  px-10  bg-white">
+    <div className="flex flex-col w-full h-full overflow-y-auto overflow-x-hidden  bg-white">
       {addCategoryAlert && (
         <div className=" flex absolute z-50 left-0 w-screen h-screen bg-blue-light bg-opacity-0 backdrop-filter backdrop-blur-sm justify-center items-center">
           <AddCategoryDialogue
             isAddCategoryEditing={isAddCategoryEditing}
             editingCategory={editingCategory}
             setIsAddCategoryEditing={setIsAddCategoryEditing}
-            setIsLoading={setIsLoading}
             setCategories={setCategories}
             addCategoryAlert={addCategoryAlert}
             setAddCategoryAlert={setAddCategoryAlert}
@@ -132,7 +136,7 @@ const Categories = () => {
       )}
 
       <TopBar />
-      <div className="flex mb-6 items-center justify-between">
+      <div className="flex mb-6 mt-2 items-center justify-between px-8">
         <span className="text-black font-semibold text-xl">Categories</span>
         <div className="flex items-center">
           <div
@@ -165,85 +169,95 @@ const Categories = () => {
           />
         </div>
       ) : (
-        <div className="flex w-full h-full overflow-x-hidden">
-          {/* Tabs */}
-          <div className="flex flex-col w-1/4 bg-bgColor-light rounded-3xl py-6 px-4 items-center cursor-pointer">
-            {categories.map((category, index) => {
+        <div className=" w-full h-full overflow-x-hidden max-w-full px-8">
+          {/* Table */}
+          <Accordion
+            className="h-auto flex-col pt-6 pb-12 items-start mb-6 "
+            isHovered={true}
+          >
+            {categories.map((category) => {
               return (
-                <div
-                  key={category.id}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedTab(index);
-                  }}
-                  className={
-                    index === selectedTab
-                      ? "flex tabs tab-active w-full h-16 mb-4 items-center bg-customYellow-light justify-start font-semibold capitalize  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95  transition duration-500 ease-in-out"
-                      : "flex tabs w-full h-12 mb-4 items-center justify-center font-semibold capitalize text-gray-400 tracking-wide hover:text-darkBlue-light"
-                  }
-                >
-                  <div className="flex w-full px-4 items-center justify-between">
-                    <img
-                      className="h-8 w-8 rounded-xl object-cover shadow-md"
-                      src={category.icon}
-                      alt=""
-                    />
-                    <div className="flex items-center w-full ml-4">
-                      <span>{category.name}</span>
-                    </div>
-
-                    {index === selectedTab && (
-                      <div className="flex items-end">
-                        <EditIcon
-                          onClick={(e) => handleCategoryEdit(e, category)}
-                          className="mr-2 h-5 w-5 cursor-pointer fill-white hover:fill-green"
+                <AccordionItem
+                  key={category._id}
+                  className="mb-4"
+                  onExpand={() => setIsTileOpen(true)}
+                  onClose={() => setIsTileOpen(false)}
+                  title={
+                    <div
+                      className={`flex h-16 items-center bg-bgColor-light border-none px-4 ${
+                        !isTileOpen ? "rounded-2xl" : "rounded-t-2xl"
+                      }  shadow-sm justify-between justify-items-center cursor-pointer hover:shadow-md`}
+                    >
+                      <div className="flex items-center justify-center">
+                        <img
+                          className="h-10 w-10 rounded-2xl mr-6 ml-4 object-contain"
+                          src={category.icon}
+                          alt=""
                         />
-                        <DeleteIcon
-                          onClick={(e) => handleCategoryDelete(e, category)}
-                          className="cursor-pointer h-5 w-5 fill-white hover:fill-red"
-                        />
+                        <span
+                          className={
+                            "font-medium text-black overflow-hidden truncate w-full"
+                          }
+                        >
+                          {category.name.charAt(0).toUpperCase() +
+                            category.name.slice(1)}
+                        </span>
                       </div>
+                      <div className="flex items-center">
+                        <div className="flex items-end mr-6">
+                          <EditIcon
+                            onClick={(e) => handleCategoryEdit(e, category)}
+                            className="mr-3 h-5 w-5 cursor-pointer fill-lightGreen hover:fill-green"
+                          />
+                          <DeleteIcon
+                            onClick={(e) => handleCategoryDelete(e, category)}
+                            className="cursor-pointer h-5 w-5 fill-lightRed hover:fill-red"
+                          />
+                        </div>
+                        {isTileOpen ? (
+                          <ChevronUpIcon className="h-6 w-6 relative text-gray-300 cursor-pointer"></ChevronUpIcon>
+                        ) : (
+                          <ChevronDownIcon className="h-6 w-6 relative text-gray-300 cursor-pointer"></ChevronDownIcon>
+                        )}
+                      </div>
+                    </div>
+                  }
+                  expanded={category === 1}
+                >
+                  <div className="flex flex-wrap h-auto bg-bgColor-light bg-opacity-50 w-full p-6">
+                    {category.subCategories.length === 0 ? (
+                      <span className="text-gray-400 font-semibold">
+                        No sub categories
+                      </span>
+                    ) : (
+                      category.subCategories.map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex w-64 h-16 mr-8 mb-6  bg-blue-light bg-opacity-30 rounded-2xl items-center justify-between px-6 shadow-sm"
+                        >
+                          <span className="text-black font-semibold capitalize">
+                            {item.name}
+                          </span>
+                          <div className="flex">
+                            <EditIcon
+                              onClick={(e) => handleSubCategoryEdit(e, item)}
+                              className="mr-2 h-5 w-5 cursor-pointer fill-grey hover:fill-green"
+                            />
+                            <DeleteIcon
+                              onClick={(e) =>
+                                handleSubCategoryDelete(e, category._id, item)
+                              }
+                              className="cursor-pointer h-5 w-5 fill-grey hover:fill-red"
+                            />
+                          </div>
+                        </div>
+                      ))
                     )}
                   </div>
-                </div>
+                </AccordionItem>
               );
             })}
-          </div>
-
-          {/* Views */}
-
-          {subCategories.length === 0 ? (
-            <div className="flex h-full w-full pt-10 justify-center">
-              <span className="text-black font-semibold">
-                No sub categories
-              </span>
-            </div>
-          ) : (
-            <div className="flex flex-wrap w-full h-52 rounded-3xl bg-white ml-8">
-              {subCategories[selectedTab].map((item) => {
-                return (
-                  <div
-                    key={item.id}
-                    className="flex w-1/5 h-16 mr-8  bg-bgColor-light rounded-2xl items-center justify-between px-6 shadow-sm"
-                  >
-                    <span className="text-black font-semibold capitalize">
-                      {item.name}
-                    </span>
-                    <div className="flex">
-                      <EditIcon
-                        onClick={(e) => handleSubCategoryEdit(e, item)}
-                        className="mr-2 h-5 w-5 cursor-pointer fill-grey hover:fill-green"
-                      />
-                      <DeleteIcon
-                        onClick={(e) => handleSubCategoryDelete(e, item)}
-                        className="cursor-pointer h-5 w-5 fill-grey hover:fill-red"
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          </Accordion>
         </div>
       )}
     </div>

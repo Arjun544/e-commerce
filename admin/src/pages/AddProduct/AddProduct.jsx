@@ -20,6 +20,7 @@ import {
   addProduct,
   uploadMultiImages,
   getProductById,
+  updateProduct,
 } from "../../api/productsApi";
 
 // Register the plugins
@@ -56,6 +57,7 @@ const AddProduct = ({ isEditing }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -77,11 +79,23 @@ const AddProduct = ({ isEditing }) => {
         const { data } = await getProductById(params.id);
         setEditingProduct(data.products);
         setThumbnail(data.products.thumbnail);
+        setImages(data.products.images.map((image) => image.url));
         setIsFeatured(data.products.isFeatured);
         setIsOnSale(data.products.onSale);
         setEditingCategoryName(data.products.category.name);
         setEditingCategoryId(data.products.category._id);
         setEditingSubCategoryName(data.products.subCategory);
+        setValue("name", data.products.name, { shouldValidate: true });
+        setValue("description", data.products.description, {
+          shouldValidate: true,
+        });
+        setInput(data.products.fullDescription);
+        setValue("price", data.products.price, {
+          shouldValidate: true,
+        });
+        setValue("stock", data.products.countInStock, {
+          shouldValidate: true,
+        });
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -128,31 +142,57 @@ const AddProduct = ({ isEditing }) => {
     } else {
       try {
         setLoading(true);
-        const product = await addProduct(
-          data.name,
-          data.description,
-          input,
-          selectedCategoryId,
-          data.stock,
-          isFeatured,
-          data.price,
-          thumbnail[0].getFileEncodeDataURL(),
-          currentSubCategory,
-          isOnSale,
-          data.discount === undefined ? 0 : data.discount
-        );
-        await uploadMultiImages(
-          product.data.product.id,
-          images.map((item) => item.getFileEncodeDataURL())
-        );
+        if (isEditing) {
+          const product = await updateProduct(
+            params.id,
+            data.name,
+            data.description,
+            input,
+            categories.filter((item) => item._id === editingCategoryId)[0],
+            data.stock,
+            isFeatured,
+            data.price,
+            thumbnail[0].getFileEncodeDataURL(),
+            currentSubCategory,
+            isOnSale,
+            data.discount === undefined ? 0 : data.discount,
+            editingProduct.thumbnailId,
+            editingProduct.images.map((item) => item.id)
+          );
+          await uploadMultiImages(
+            product.data.product.id,
+            images.map((item) => item.getFileEncodeDataURL())
+          );
+        } else {
+          const product = await addProduct(
+            data.name,
+            data.description,
+            input,
+            selectedCategoryId,
+            data.stock,
+            isFeatured,
+            data.price,
+            thumbnail[0].getFileEncodeDataURL(),
+            currentSubCategory,
+            isOnSale,
+            data.discount === undefined ? 0 : data.discount
+          );
+          await uploadMultiImages(
+            product.data.product.id,
+            images.map((item) => item.getFileEncodeDataURL())
+          );
+        }
         history.push("/products");
         setLoading(false);
-        enqueueSnackbar("Product has been added", {
-          variant: "success",
-          autoHideDuration: 2000,
-        });
+        enqueueSnackbar(
+          `${isEditing ? "Product has been edited" : "Product has been added"}`,
+          {
+            variant: "success",
+            autoHideDuration: 2000,
+          }
+        );
       } catch (error) {
-        enqueueSnackbar(error.response.data.message, {
+        enqueueSnackbar("Something went wrong", {
           variant: "error",
           autoHideDuration: 2000,
         });
@@ -181,13 +221,13 @@ const AddProduct = ({ isEditing }) => {
             {isEditing ? "Edit Product" : "Add Product"}
           </span>
           <div className=" flex-col flex-grow bg-white">
-            <div className="flex w-full items-center">
+            <div className="flex w-full items-start">
               <div className="flex-col w-1/2">
                 {/* Name */}
                 <div className="flex-col mb-4">
                   <input
                     className="h-14 w-full mt-6 rounded-2xl font-semibold text-black bg-bgColor-light pl-4 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
-                    placeholder={isEditing ? editingProduct.name : "Name"}
+                    placeholder="Name"
                     maxLength="50"
                     {...register("name", {
                       required: true,
@@ -215,9 +255,7 @@ const AddProduct = ({ isEditing }) => {
                 <div className="flex-col mb-4">
                   <input
                     className="h-14 w-full rounded-2xl text-black font-semibold bg-bgColor-light pl-4 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
-                    placeholder={
-                      isEditing ? editingProduct.description : "Description"
-                    }
+                    placeholder="Description"
                     maxLength="100"
                     {...register("description", {
                       required: true,
@@ -241,9 +279,79 @@ const AddProduct = ({ isEditing }) => {
                     </span>
                   )}
                 </div>
+                <div className="flex items-center mb-4 mt-8">
+                  {/* IsFeatured */}
+                  <div className="flex  mr-20 items-center">
+                    <span className="font-semibold text-gray-400 tracking-wide mr-6">
+                      Featured
+                    </span>
+                    <Switch
+                      value={isFeatured}
+                      checked={isFeatured}
+                      onChange={(e) => setIsFeatured((preState) => !preState)}
+                      onColor="#D1FAE5"
+                      onHandleColor="#10B981"
+                      handleDiameter={20}
+                      uncheckedIcon={false}
+                      checkedIcon={false}
+                      boxShadow="0px 1px 5px rgba(0, 0, 0, 0.329)"
+                      activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.062)"
+                      height={10}
+                      width={30}
+                      className="react-switch"
+                      id="material-switch"
+                    />
+                  </div>
+                  {/* OnSale */}
+                  <div className="flex items-center mr-8">
+                    <span className="font-semibold text-gray-400 tracking-wide mr-6">
+                      OnSale
+                    </span>
+                    <Switch
+                      value={isOnSale}
+                      checked={isOnSale}
+                      onChange={(e) => setIsOnSale((preState) => !preState)}
+                      onColor="#D1FAE5"
+                      onHandleColor="#10B981"
+                      handleDiameter={20}
+                      uncheckedIcon={false}
+                      checkedIcon={false}
+                      boxShadow="0px 1px 5px rgba(0, 0, 0, 0.329)"
+                      activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.062)"
+                      height={10}
+                      width={30}
+                      className="react-switch"
+                      id="material-switch"
+                    />
+                  </div>
+                  {isOnSale && (
+                    <div className="flex flex-col w-full">
+                      <input
+                        className="h-14 w-full rounded-xl font-semibold text-black bg-bgColor-light px-4 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
+                        placeholder="Discount in %"
+                        type="number"
+                        min="0"
+                        {...register("discount", {
+                          required: true,
+                          minLength: 0,
+                        })}
+                      />
+                      {errors?.discount?.type === "required" && (
+                        <span className="flex text-red-500 text-xs font-semibold">
+                          Discount is required
+                        </span>
+                      )}
+                      {errors?.discount?.type === "minLength" && (
+                        <span className="flex  text-red-500 text-xs">
+                          Discount can't be less than 0
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
               {/* Thumbnail */}
-              <div className="flex-col flex-grow ml-12">
+              <div className="flex-col flex-grow ml-12 mt-4">
                 <div className="flex-col">
                   <div className="flex">
                     <span className="font-semibold text-gray-400 tracking-wide mr-2">
@@ -305,84 +413,13 @@ const AddProduct = ({ isEditing }) => {
                 Full description is required
               </span>
             )}
-            <div className="flex items-center mb-4 mt-8">
-              {/* IsFeatured */}
-              <div className="flex  mr-20 items-center">
-                <span className="font-semibold text-gray-400 tracking-wide mr-6">
-                  Featured
-                </span>
-                <Switch
-                  value={isFeatured}
-                  checked={isFeatured}
-                  onChange={(e) => setIsFeatured((preState) => !preState)}
-                  onColor="#D1FAE5"
-                  onHandleColor="#10B981"
-                  handleDiameter={20}
-                  uncheckedIcon={false}
-                  checkedIcon={false}
-                  boxShadow="0px 1px 5px rgba(0, 0, 0, 0.329)"
-                  activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.062)"
-                  height={10}
-                  width={30}
-                  className="react-switch"
-                  id="material-switch"
-                />
-              </div>
-              {/* OnSale */}
-              <div className="flex items-center mr-8">
-                <span className="font-semibold text-gray-400 tracking-wide mr-6">
-                  OnSale
-                </span>
-                <Switch
-                  value={isOnSale}
-                  checked={isOnSale}
-                  onChange={(e) => setIsOnSale((preState) => !preState)}
-                  onColor="#D1FAE5"
-                  onHandleColor="#10B981"
-                  handleDiameter={20}
-                  uncheckedIcon={false}
-                  checkedIcon={false}
-                  boxShadow="0px 1px 5px rgba(0, 0, 0, 0.329)"
-                  activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.062)"
-                  height={10}
-                  width={30}
-                  className="react-switch"
-                  id="material-switch"
-                />
-              </div>
-              {isOnSale && (
-                <div className="flex flex-col w-full">
-                  <input
-                    className="h-14 w-full rounded-xl font-semibold text-black bg-bgColor-light px-4 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
-                    placeholder={
-                      isEditing ? editingProduct.discount : "Discount in %"
-                    }
-                    type="number"
-                    min="0"
-                    {...register("discount", {
-                      required: true,
-                      minLength: 0,
-                    })}
-                  />
-                  {errors?.discount?.type === "required" && (
-                    <span className="flex text-red-500 text-xs font-semibold">
-                      Discount is required
-                    </span>
-                  )}
-                  {errors?.discount?.type === "minLength" && (
-                    <span className="flex  text-red-500 text-xs">
-                      Discount can't be less than 0
-                    </span>
-                  )}
-                </div>
-              )}
-            </div>
+
             <div className="flex mt-6 flex-grow">
               {/* Price */}
               <div className=" flex-col w-full mb-4">
                 <input
                   className="h-14 w-full  mr-6 rounded-xl font-semibold text-black bg-bgColor-light px-4 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
-                  placeholder={isEditing ? editingProduct.price : "Price"}
+                  placeholder="Price"
                   type="number"
                   min="0"
                   max="9999"
@@ -413,9 +450,7 @@ const AddProduct = ({ isEditing }) => {
               <div className="flex flex-col mb-4 w-full">
                 <input
                   className="h-14 w-full rounded-xl font-semibold text-black bg-bgColor-light px-4 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
-                  placeholder={
-                    isEditing ? editingProduct.countInStock : "Stock"
-                  }
+                  placeholder="Stock"
                   type="number"
                   min="0"
                   {...register("stock", {
@@ -461,11 +496,6 @@ const AddProduct = ({ isEditing }) => {
                   setSubCategories={setSubCategories}
                   selectedCategory={selectedCategory}
                   editingCategoryId={editingCategoryId}
-                  // subCategories={
-                  //   categories.filter(
-                  //     (item) => item._id === editingCategoryId
-                  //   )[0].subCategories
-                  // }
                   currentSubCategory={currentSubCategory}
                   setCurrentSubCategory={setCurrentSubCategory}
                 />
@@ -531,7 +561,7 @@ const AddProduct = ({ isEditing }) => {
                 </div>
               ) : (
                 <CustomButon
-                  text={"Add Product"}
+                  text={isEditing ? "Edit Product" : "Add Product"}
                   color={"bg-darkBlue-light"}
                   width={72}
                   onPressed={handleSubmit((data) => handleAddProduct(data))}

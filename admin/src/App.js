@@ -1,13 +1,13 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect, useRef } from "react";
 import "./App.css";
 import SideBar from "./components/SideBar";
-
 import Dashboard from "./pages/dashboard/Dashboard";
 import { BrowserRouter, Switch } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import { SnackbarProvider } from "notistack";
 import Grow from "@material-ui/core/Grow";
 import { useMediaQuery } from "react-responsive";
+import { io } from "socket.io-client";
 import Orders from "./pages/orders/Orders";
 import Products from "./pages/products/Products";
 import { ProtectedRoute } from "./protected_route";
@@ -17,16 +17,33 @@ import Loader from "react-loader-spinner";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import Categories from "./pages/categories/Categories";
 import AddProduct from "./pages/AddProduct/AddProduct";
+import Banners from "./pages/Banners/Banners";
 
 export const AppContext = createContext(null);
 
 function App() {
   // calls refresh token endpoint
+  const socketUrl = io("http://localhost:4000");
+  let socket = useRef(null);
   const { refreshing } = RefreshHook();
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
+
+  useEffect(() => {
+    socket.current = io(socketUrl, {
+      autoConnect: false,
+    });
+    socket.current.on("connection", () => {
+      console.log("connected to server");
+    });
+
+    socket.current.on("disconnect", () => {
+      console.log("Socket disconnecting");
+    });
+  }, [socketUrl]);
+
   return refreshing || isLoading ? (
     <div className="flex w-full h-screen items-center justify-center bg-white">
       <Loader
@@ -48,6 +65,7 @@ function App() {
     >
       <AppContext.Provider
         value={{
+          socket,
           isSideBarOpen,
           setIsSideBarOpen,
           isBigScreen,
@@ -92,6 +110,9 @@ function App() {
                 </ProtectedRoute>
                 <ProtectedRoute path="/products/edit/:id" exact={true}>
                   <AddProduct isEditing={true} />
+                </ProtectedRoute>
+                <ProtectedRoute path="/banners">
+                  <Banners />
                 </ProtectedRoute>
               </div>
             </Switch>

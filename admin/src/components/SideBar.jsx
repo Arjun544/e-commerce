@@ -35,6 +35,9 @@ const SideBar = () => {
       case "/categories":
         setSelectedBar(3);
         break;
+      case "/banners":
+        setSelectedBar(4);
+        break;
       default:
         break;
     }
@@ -205,7 +208,10 @@ const SideBar = () => {
         {/* Banners */}
 
         <div
-          onClick={(e) => setSelectedBar(4)}
+          onClick={(e) => {
+            setSelectedBar(4);
+            history.push("/banners");
+          }}
           className={`flex w-${
             isSideBarOpen ? "48" : "42"
           }  items-center py-3 ${

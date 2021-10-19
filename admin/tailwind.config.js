@@ -10,8 +10,10 @@ module.exports = {
     },
     fill: (theme) => ({
       grey: theme("colors.gray.400"),
-      red: theme("colors.red.400"),
-      green: theme("colors.green.500"),
+      lightRed: theme("colors.red.400"),
+      red: theme("colors.red.600"),
+      green: theme("colors.green.700"),
+      lightGreen: theme("colors.green.500"),
       blue: theme("colors.blue.500"),
       yellow: theme("colors.yellow.500"),
       white: theme("colors.white"),

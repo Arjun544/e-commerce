@@ -5,7 +5,7 @@ const Review = require("../models/Review");
 var ObjectID = require("mongodb").ObjectID;
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
-const cloudinaryFile = require("../config/cloudinary.config");
+const socket = require("../app");
 
 exports.searchProducts = async (req, res) => {
   try {
@@ -90,6 +90,7 @@ exports.addProduct = async (req, res) => {
       });
 
       await product.save();
+
       res.send({
         success: true,
         product: product,
@@ -105,7 +106,7 @@ exports.addProduct = async (req, res) => {
   }
 };
 
-exports.getProducts = async (req, res) => {
+exports.getAdminProducts = async (req, res) => {
   try {
     const productsList = await Product.find().populate("category");
     res.status(200).json({
@@ -296,27 +297,73 @@ exports.updateProduct = async (req, res) => {
     if (!mongoose.isValidObjectId(req.params.id)) {
       return res.status(400).send("Invalid product id");
     }
+
+    const {
+      name,
+      description,
+      fullDescription,
+      price,
+      image,
+      category,
+      discount,
+      onSale,
+      subCategory,
+      countInStock,
+      isFeatured,
+    } = req.body;
+
     const newCategory = await Category.findById(req.body.category);
     if (!newCategory) return res.status(400).send("Invalid Category");
+
+    // delete old thumbnail
+    await cloudinary.uploader.destroy(req.body.thumbnailId, (error, result) => {
+      console.log(result, error);
+    });
+    // upload new thumbnail again
+    const result = await cloudinary.uploader.upload(image, (error, result) => {
+      console.log(result, error);
+    });
+
+    // // delete old images
+    await cloudinary.v2.api.delete_resources(
+      req.body.imageIds,
+      (error, result) => {
+        console.log(result, error);
+      }
+    );
 
     let product;
     if (req.body.onSale === "true" && req.body.discount > 0) {
       const priceAfterDiscount =
         req.body.price - (req.body.price * req.body.discount) / 100;
 
-      product = await Product.findByIdAndUpdate(
+      product = await Product.findOneAndUpdate(
         req.params.id,
         {
-          onSale: req.body.onSale,
+          onSale: onSale,
           totalPrice: priceAfterDiscount,
-          discount: req.body.discount,
+          discount: discount,
         },
         { new: true }
       );
     } else {
-      product = await Product.findByIdAndUpdate(
+      const newProduct = {
+        name: name,
+        description: description,
+        fullDescription: fullDescription,
+        thumbnail: result.secure_url,
+        thumbnailId: result.public_id,
+        price: price,
+        totalPrice: price,
+        onSale: onSale,
+        category: category,
+        subCategory: subCategory,
+        countInStock: countInStock,
+        isFeatured: isFeatured,
+      };
+      product = await Product.findOneAndUpdate(
         req.params.id,
-        { $set: req.body },
+        { $set: newProduct },
         { new: true }
       );
     }
@@ -328,6 +375,53 @@ exports.updateProduct = async (req, res) => {
     res.send({
       success: true,
       updatedProduct: product,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.updateFeatured = async (req, res) => {
+  try {
+    const product = await Product.findOneAndUpdate(
+      req.params.id,
+      {
+        isFeatured: req.params.isFeatured,
+      },
+      { new: true }
+    );
+
+    socket.socket.emit("update-featured", product.isFeatured);
+    res.send({
+      success: true,
+      message: "Featured has been updated",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.updateStatus = async (req, res) => {
+  try {
+    const product = await Product.findOneAndUpdate(
+      req.params.id,
+      {
+        status: req.params.status,
+      },
+      { new: true }
+    );
+    socket.socket.emit("update-productStatus", product.status);
+    res.send({
+      success: true,
+      message: "status has been updated",
     });
   } catch (error) {
     console.log(error);
@@ -436,6 +530,9 @@ exports.deleteProduct = async (req, res) => {
     );
 
     const product = await Product.findByIdAndRemove(req.params.id);
+
+    const products = await Product.find();
+    socket.socket.emit("delete-product", products);
 
     if (!product) {
       res.status(403).send({ success: false, msg: "product not found" });

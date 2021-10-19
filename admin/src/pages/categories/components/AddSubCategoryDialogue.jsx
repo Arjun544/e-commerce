@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useSnackbar } from "notistack";
 import Loader from "react-loader-spinner";
 import {
@@ -7,6 +7,7 @@ import {
   updateSubCategory,
 } from "../../../api/categoriesApi";
 import CategoriesDropDown from "./CategoriesDropDown";
+import { AppContext } from "../../../App";
 
 const AddSubCategoryDialogue = ({
   mainCategoryId,
@@ -21,6 +22,7 @@ const AddSubCategoryDialogue = ({
   addSubCategoryInput,
   setAddSubCategoryInput,
 }) => {
+  const { socket } = useContext(AppContext);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -35,15 +37,12 @@ const AddSubCategoryDialogue = ({
     } else {
       try {
         setLoading(true);
-        console.log(addSubCategoryInput);
-        console.log(selectedCategory);
         await addSubCategory(selectedCategory, addSubCategoryInput);
         setLoading(false);
         setAddSubCategoryAlert(false);
-        setIsLoading(true);
-        const { data } = await getCategories();
-        setCategories(data.categoryList);
-        setIsLoading(false);
+         socket.current.on("add-subCategory", (newCategories) => {
+           setCategories(newCategories);
+         });
         setAddSubCategoryInput("");
         setIsAddCategoryEditing(false);
         enqueueSnackbar("Sub category added", {
@@ -79,10 +78,9 @@ const AddSubCategoryDialogue = ({
         );
         setLoading(false);
         setAddSubCategoryAlert(false);
-        setIsLoading(true);
-        const { data } = await getCategories();
-        setCategories(data.categoryList);
-        setIsLoading(false);
+          socket.current.on("edit-subCategory", (newCategories) => {
+            setCategories(newCategories);
+          });
         setAddSubCategoryInput("");
         setIsAddCategoryEditing(false);
         enqueueSnackbar("Sub category added", {
@@ -147,7 +145,6 @@ const AddSubCategoryDialogue = ({
               color="#00BFFF"
               height={50}
               width={50}
-              timeout={3000} //3 secs
             />
           </div>
         ) : (

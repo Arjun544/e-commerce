@@ -5,14 +5,15 @@
   border-bottom-left-radius: 1em;
   border-bottom-right-radius: 1em;
   background: #f9f9f9;
+  color: #000000;
   border: none;
   outline: none;
 }
 
 /* Snow Theme */
 .editor .ql-snow.ql-toolbar {
-  height: 50px;
-  display: flex;
+  height: 0px;
+  display: none;
   align-items: center;
   border: none;
   background: #eaecec;

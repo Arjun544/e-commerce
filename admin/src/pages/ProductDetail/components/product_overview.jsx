@@ -12,7 +12,7 @@ const ProductOverview = ({ product, averageRating }) => {
     <div className="flex h-2/4  bg-bgColor-light rounded-2xl p-8 mb-6">
       <div className="flex flex-col h-3/4 w-1/3 rounded-2xl ">
         <img
-          className="w-full h-full object-cover rounded-2xl"
+          className="w-full h-full object-contain rounded-2xl"
           src={product.images[selectedImage].url}
           alt=""
         />
@@ -46,7 +46,7 @@ const ProductOverview = ({ product, averageRating }) => {
               {product.countInStock}
             </span>
           </div>
-          {product.onSale ? (
+          {product.onSale && product.discount >0 ? (
             <div className="flex">
               <span className="text-gray-300 line-through font-semibold text-base mr-2">
                 ${product.price}

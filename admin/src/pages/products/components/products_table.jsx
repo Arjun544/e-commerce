@@ -68,7 +68,7 @@ function ProductsTable({ columns, data }) {
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    page, 
+    page,
     canPreviousPage,
     canNextPage,
     pageOptions,
@@ -79,12 +79,14 @@ function ProductsTable({ columns, data }) {
     setPageSize,
     state,
     preGlobalFilteredRows,
+
     setGlobalFilter,
   } = useTable(
     {
       columns,
       data,
     },
+
     useFilters, // useFilters!
     useGlobalFilter,
     useSortBy,
@@ -156,6 +158,7 @@ function ProductsTable({ columns, data }) {
                   ))}
                 </thead>
                 <tbody {...getTableBodyProps()} className="bg-white">
+                  <div className="flex"></div>
                   {page.map((row, i) => {
                     // new
                     prepareRow(row);
@@ -173,13 +176,13 @@ function ProductsTable({ columns, data }) {
                             >
                               {cell.column.Cell.name === "defaultRenderer" ? (
                                 <div
-                                  onClick={(e) =>
-                                   {cell.column.Header === "Name" &&
-                                     onProductClick(
-                                       e,
-                                       cell.row.original.product
-                                     );}
-                                  }
+                                  onClick={(e) => {
+                                    cell.column.Header === "Name" &&
+                                      onProductClick(
+                                        e,
+                                        cell.row.original.product
+                                      );
+                                  }}
                                   className={`text-sm font-semibold  ${(() => {
                                     if (cell.column.Header === "Name")
                                       return "text-green-500 cursor-pointer";

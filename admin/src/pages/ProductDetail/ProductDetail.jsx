@@ -7,7 +7,6 @@ import ProductOverview from "./components/product_overview";
 import ReactStars from "react-rating-stars-component";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import "./editor.css";
 
 const ProductDetail = () => {
   const params = useParams();

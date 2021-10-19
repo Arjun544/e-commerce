@@ -8,6 +8,7 @@ import useOutsideClick from "../useOutsideClick";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../redux/authSlice";
 import { logout } from "../api/userApi";
+import ArrowDownIcon from "./icons/ArrowDownIcon";
 
 const TopBar = () => {
   const dispatch = useDispatch();
@@ -90,19 +91,24 @@ const TopBar = () => {
           />
         </div>
       </div>
-      <div ref={ref} className="h-10 w-10 mr-4 rounded-full relative">
-        <img
-          onClick={toggleMenu}
-          className="h-10 w-10 mr-4 rounded-full cursor-pointer"
-          src={
-            user.profile
-              ? user.profile
-              : "https://images.unsplash.com/photo-1532074205216-d0e1f4b87368?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fHByb2ZpbGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
-          }
-          alt=""
-        />
+      <div ref={ref} className="mr-4 rounded-full relative">
+        <div onClick={toggleMenu} className="flex items-center cursor-pointer">
+          <img
+            className="h-10 w-10 rounded-full "
+            src={
+              user.profile
+                ? user.profile
+                : "https://images.unsplash.com/photo-1532074205216-d0e1f4b87368?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fHByb2ZpbGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
+            }
+            alt=""
+          />
+          <span className="text-black font-semibold tracking-wider pl-4">
+            {user.username}
+          </span>
+          <ArrowDownIcon className="h-5 w-5" />
+        </div>
         {isOpen && (
-          <div className="flex flex-col justify-around absolute top-12 right-0 bg-white h-36 w-52 rounded-2xl shadow-lg pt-4 pb-2">
+          <div className="flex flex-col justify-around absolute z-50 top-12 right-0 bg-white h-36 w-52 rounded-2xl shadow-lg pt-4 pb-2">
             <span className="text-gray-400 font-semibold tracking-wider pl-4">
               {user.email}
             </span>

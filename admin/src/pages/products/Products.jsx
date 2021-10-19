@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../App";
 import Featured from "./components/featured";
-import OnSale from "./components/onSale";
+import Status from "./components/status";
 import ProductsTable from "./components/products_table";
-import TableActions  from "./components/table_actions";
+import TableActions from "./components/table_actions";
 import TopBar from "../../components/TopBar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { setProducts } from "../../redux/productsSlice";
 import { getProducts } from "../../api/productsApi";
 import Loader from "react-loader-spinner";
+import Avatar from "./components/avatar";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -35,11 +36,12 @@ const Products = () => {
 
   const data = tableData.map((item) => ({
     product: item,
+    image: item.thumbnail,
     name: item.name,
     date: item.dateCreated,
     price: item.price,
     featured: item.isFeatured,
-    onSale: item.onSale,
+    status: item.status,
   }));
 
   const columns = [
@@ -52,6 +54,11 @@ const Products = () => {
       },
       disableSortBy: true,
       disableFilters: true,
+    },
+    {
+      Header: "Image",
+      accessor: "image",
+      Cell: (props) => <Avatar value={props.cell.value} />,
     },
     {
       Header: "Name",
@@ -68,12 +75,12 @@ const Products = () => {
     {
       Header: "Featured",
       accessor: "featured",
-      Cell: (props) => <Featured status={props.cell.value} />,
+      Cell: (props) => <Featured product={props.cell.row.original.product} />,
     },
     {
-      Header: "On Sale",
-      accessor: "onSale",
-      Cell: (props) => <OnSale status={props.cell.value} />,
+      Header: "Status",
+      accessor: "status",
+      Cell: (props) => <Status product={props.cell.row.original.product} />,
     },
 
     {
@@ -106,7 +113,7 @@ const Products = () => {
         <div className="px-10">
           <ProductsTable columns={columns} data={data} />
         </div>
-      )}   
+      )}
     </div>
   );
 };

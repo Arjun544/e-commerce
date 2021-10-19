@@ -3,14 +3,11 @@ import useOutsideClick from "../../../useOutsideClick";
 import ArrowDownIcon from "../../../components/icons/ArrowDownIcon";
 
 const CategoriesDropDown = ({
-  mainCategoryName,
   isEditing,
-  selectedCategory,
   editingCategoryName,
   editingCategoryId,
   categories,
   setSelectedCategory,
-  subCategories,
   setSubCategories,
   setCurrentSubCategory,
   setSelectedCategoryId,
@@ -35,10 +32,6 @@ const CategoriesDropDown = ({
       setCurrentCategory(editingCategoryName);
       setSelectedCategoryId(editingCategoryId);
       setSubCategories(categories.map((category) => category.subCategories));
-      // setSubCategories(
-      //   categories.filter((item) => item._id === editingCategoryId)[0]
-      //     .subCategories
-      // );
     } else {
       setSelectedCategoryId(categories.map((category) => category.id)[0]);
       setSubCategories(
