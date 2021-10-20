@@ -52,7 +52,7 @@ const ProductsDropDown = ({
       <ArrowDownIcon color={"#000000"} />
 
       {isOpen && (
-        <div className="flex-col absolute top-16 z-40 left-0 right-1 w-full py-4 px-6 rounded-2xl shadow bg-gray-50">
+        <div className="flex-col h-80 absolute top-16 z-40 left-0 right-1 w-full py-4 px-6 rounded-2xl shadow bg-gray-50">
           <input
             className="h-12 w-full mb-4 rounded-xl font-semibold text-black bg-bgColor-light focus-within: px-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-Grey-dark "
             placeholder="Search product"
@@ -63,19 +63,52 @@ const ProductsDropDown = ({
               setSearchInput(e.target.value);
             }}
           />
-          {searchInput ? (
-            products.filter(filterNames).length === 0 ? (
-              <div className="div">
-                <span className="text-gray-400 font-semibold ">
-                  No products
-                </span>
-              </div>
+          <div className="flex-col h-56  overflow-y-auto overflow-x-hidden scrollbar scrollbar-thin hover:scrollbar-thumb-amber-light scrollbar-thumb-gray-200 scrollbar-track-gray-100">
+            {searchInput ? (
+              products.filter(filterNames).length === 0 ? (
+                <div className="div ">
+                  <span className="text-gray-400 font-semibold ">
+                    No products
+                  </span>
+                </div>
+              ) : (
+                products.filter(filterNames).map((product) => {
+                  return (
+                    <div
+                      id={product._id}
+                      onClick={(e) => handleSort(e, product)}
+                      className="flex items-center hover:bg-blue-light py-2 rounded-md"
+                    >
+                      <img
+                        className="h-6 w-6 rounded-full ml-3"
+                        src={product.thumbnail}
+                        alt=""
+                      />
+                      <span className="font-semibold pl-3 text-gray-500">
+                        <div>
+                          {product.name.charAt(0).toUpperCase() +
+                            product.name.slice(1)}
+                        </div>
+                      </span>
+                    </div>
+                  );
+                })
+              )
             ) : (
-              products.filter(filterNames).map((product) => {
+              products.map((product) => {
                 return (
-                  <div className="flex items-center hover:bg-blue-light py-2 rounded-md">
+                  <div
+                    id={product._id}
+                    onClick={(e) => handleSort(e, product)}
+                    className="flex items-center hover:bg-blue-light py-2 rounded-md"
+                  >
+                    <img
+                      className="h-6 w-6 rounded-full ml-3"
+                      src={product.thumbnail}
+                      alt=""
+                    />
                     <span className="font-semibold pl-3 text-gray-500">
-                      <div onClick={(e) => handleSort(e, product)}>
+                      <div>
                         {product.name.charAt(0).toUpperCase() +
                           product.name.slice(1)}
                       </div>
@@ -83,10 +116,8 @@ const ProductsDropDown = ({
                   </div>
                 );
               })
-            )
-          ) : (
-            <div />
-          )}
+            )}
+          </div>
         </div>
       )}
     </div>

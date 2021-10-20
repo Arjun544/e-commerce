@@ -20,12 +20,11 @@ const bannerSchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    // products: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Product",
-    //   },
-    // ],
+    products: [
+      {
+        type: Object,
+      },
+    ],
   },
   { strict: false }
 );

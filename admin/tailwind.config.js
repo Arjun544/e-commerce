@@ -61,7 +61,7 @@ module.exports = {
   },
   plugins: [
     require("daisyui"),
-    // require("tailwind-scrollbar"),
+    require("tailwind-scrollbar"),
     function ({ addUtilities }) {
       const extendLineThrough = {
         ".line-through": {

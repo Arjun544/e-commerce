@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
 const socket = require("../app");
 const Banner = require("../models/Banner");
+const Product = require("../models/Product");
 
 exports.addBanner = async (req, res) => {
   try {
@@ -125,6 +126,90 @@ exports.updateBanner = async (req, res) => {
     const banners = await Banner.find();
     socket.socket.emit("edit-banner", banners);
     if (!banner) return res.status(400).send("banner not found");
+
+    res.json({
+      success: true,
+      message: "Banner has been updated",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.addBannerProducts = async (req, res) => {
+  try {
+    // Update products discount and price
+    req.body.product.map(async (item) => {
+      const priceAfterDiscount =
+        item.price - (item.price * item.discount) / 100;
+
+      await Product.updateMany(
+        { _id: { $in: item.id } },
+        {
+          $set: {
+            onSale: true,
+            discount: item.discount,
+            totalPrice: priceAfterDiscount,
+          },
+        },
+        { multi: true }
+      );
+    });
+
+    await Banner.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        products: req.body.products,
+      },
+      { new: true }
+    );
+
+    const banners = await Banner.find();
+    socket.socket.emit("add-bannerProducts", banners);
+
+    res.json({
+      success: true,
+      message: "Banner has been updated",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.removeBannerProduct = async (req, res) => {
+  try {
+    // Update products discount and price
+
+    await Product.findOneAndUpdate(
+      { _id: req.body.productId },
+      {
+        $set: {
+          onSale: false,
+          discount: 0,
+          totalPrice: req.body.productPrice,
+        },
+      },
+      { multi: true }
+    );
+
+    await Banner.findByIdAndUpdate(req.params.id, {
+      $pull: {
+        products: {
+          _id: req.body.productId,
+        },
+      },
+    });
+
+    const banners = await Banner.find();
+    socket.socket.emit("remove-bannerProduct", banners);
 
     res.json({
       success: true,

@@ -73,7 +73,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full h-full overflow-y-auto bg-white ">
+    <div className="flex flex-col w-full h-full overflow-y-auto bg-white scrollbar scrollbar-thin hover:scrollbar-thumb-gray-900 scrollbar-thumb-gray-500 scrollbar-track-gray-300">
       {isOrderMenuOpen && (
         <OrdersMenu
           isOrderMenuOpen={isOrderMenuOpen}

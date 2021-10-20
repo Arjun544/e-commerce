@@ -38,6 +38,9 @@ const SideBar = () => {
       case "/banners":
         setSelectedBar(4);
         break;
+      case "/flashDeal":
+        setSelectedBar(5);
+        break;
       default:
         break;
     }
@@ -233,7 +236,10 @@ const SideBar = () => {
         {/* Deals */}
 
         <div
-          onClick={(e) => setSelectedBar(5)}
+          onClick={(e) => {
+            setSelectedBar(5);
+            history.push("/flashDeal");
+          }}
           className={`flex w-${
             isSideBarOpen ? "48" : "42"
           }  items-center py-3 ${
@@ -247,7 +253,7 @@ const SideBar = () => {
                 selectedBar === 5 ? "text-customYellow-light" : "text-white"
               } ml-3 text-sm font-semibold tracking-wider`}
             >
-              Deals
+              Flash deal
             </span>
           )}
         </div>

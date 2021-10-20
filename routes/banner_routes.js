@@ -11,6 +11,8 @@ const {
   deleteBanner,
   updateStatus,
   updateBanner,
+  addBannerProducts,
+  removeBannerProduct,
 } = require("../controllers/banners_controller");
 
 router.post(
@@ -28,6 +30,18 @@ router.patch(
   updateStatus
 );
 router.patch("/update/:id", authMiddleware, cleanBody, updateBanner);
+router.patch(
+  "/addBannerProducts/:id",
+  authMiddleware,
+  cleanBody,
+  addBannerProducts
+);
+router.patch(
+  "/removeBannerProduct/:id",
+  authMiddleware,
+  cleanBody,
+  removeBannerProduct,
+);
 router.delete("/deleteBanner/:id", authMiddleware, cleanBody, deleteBanner);
 
 module.exports = router;

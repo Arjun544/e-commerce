@@ -45,6 +45,32 @@ export const updateBanner = (id, title, image, imageId) =>
     }
   );
 
+export const addBannerProducts = (id, product, products) =>
+  api.patch(
+    `/api/banners/addBannerProducts/${id}`,
+    { product, products },
+    {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Accept: "application/json",
+      },
+    }
+  );
+
+export const removeBannerProducts = (id, productId, productPrice) =>
+  api.patch(
+    `/api/banners/removeBannerProduct/${id}`,
+    { productId, productPrice },
+    {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Accept: "application/json",
+      },
+    }
+  );
+
 export const updateStatus = (id, status) =>
   api.patch(
     `/api/banners/updateStatus/${id}/${status}`,

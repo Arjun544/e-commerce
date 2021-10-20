@@ -18,6 +18,7 @@ import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import Categories from "./pages/categories/Categories";
 import AddProduct from "./pages/AddProduct/AddProduct";
 import Banners from "./pages/Banners/Banners";
+import FlashDeal from "./pages/FlashDeal/FlashDeal";
 
 export const AppContext = createContext(null);
 
@@ -113,6 +114,9 @@ function App() {
                 </ProtectedRoute>
                 <ProtectedRoute path="/banners">
                   <Banners />
+                </ProtectedRoute>
+                <ProtectedRoute path="/flashDeal">
+                  <FlashDeal />
                 </ProtectedRoute>
               </div>
             </Switch>

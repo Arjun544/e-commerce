@@ -3,7 +3,11 @@ import TopBar from "../../components/TopBar";
 import Loader from "react-loader-spinner";
 import { useSnackbar } from "notistack";
 import { AppContext } from "../../App";
-import { getBanners, deleteBanner } from "../../api/bannersApi";
+import {
+  getBanners,
+  deleteBanner,
+  removeBannerProducts,
+} from "../../api/bannersApi";
 import AddBannerDialogue from "./components/AddBannerDialogue";
 import { Accordion, AccordionItem } from "react-sanfona";
 import EditIcon from "../../components/icons/EditIcon";
@@ -19,6 +23,7 @@ const Banners = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [banners, setBanners] = useState([]);
+  const [currentBanner, setCurrentBanner] = useState({});
   const [products, setProducts] = useState([]);
   const [isTileOpen, setIsTileOpen] = useState(false);
   const [addBannerAlert, setAddBannerAlert] = useState(false);
@@ -54,8 +59,9 @@ const Banners = () => {
     setAddBannerAlert(true);
   };
 
-  const handleAddProducts = (e) => {
+  const handleAddProducts = (e, banner) => {
     e.preventDefault();
+    setCurrentBanner(banner);
     setAddProductsDialogue(true);
   };
 
@@ -86,8 +92,24 @@ const Banners = () => {
     }
   };
 
-  const handleProductDelete = (e, id) => {
+  const handleProductDelete = async (e, bannerId, productId, productPrice) => {
     e.preventDefault();
+    try {
+      await removeBannerProducts(bannerId, productId, productPrice);
+      socket.current.on("remove-bannerProduct", (newBanners) => {
+        setBanners(newBanners);
+      });
+      enqueueSnackbar("Product deleted", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+    } catch (error) {
+      console.log(error.response);
+      enqueueSnackbar("Something went wrong", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
   };
 
   return (
@@ -109,6 +131,8 @@ const Banners = () => {
       {addProductsDialogue && (
         <div className=" flex absolute z-50 left-0 w-screen h-screen bg-blue-light bg-opacity-0 backdrop-filter backdrop-blur-sm justify-center items-center">
           <AddProductsDialogue
+            setBanners={setBanners}
+            currentBanner={currentBanner}
             products={products}
             setAddProductsDialogue={setAddProductsDialogue}
           />
@@ -117,7 +141,7 @@ const Banners = () => {
       <TopBar></TopBar>
       <div className="flex-col h-full w-full items-center px-8 mt-2">
         <div className="flex items-center justify-between">
-          <span className="text-black font-semibold text-xl">Banners</span>
+          <span className="text-black font-semibold text-xl">Top Banners</span>
           <div
             onClick={handleAdd}
             className="flex relative h-12 bg-customYellow-light shadow-sm border-none ml-4 w-40 rounded-xl  items-center justify-center cursor-pointer transform hover:scale-95  transition duration-500 ease-in-out"
@@ -276,7 +300,7 @@ const Banners = () => {
                               </div>
 
                               <div
-                                onClick={handleAddProducts}
+                                onClick={(e) => handleAddProducts(e, banner)}
                                 className="flex items-center justify-center h-8 w-28 rounded-xl bg-darkBlue-light cursor-pointer transform hover:scale-95  transition duration-500 ease-in-out"
                               >
                                 <span className="text-white font-semibold text-sm">
@@ -298,9 +322,9 @@ const Banners = () => {
                                   />
                                 </div>
                                 {isTileOpen ? (
-                                  <ChevronUpIcon className="h-6 w-6 relative text-gray-300 cursor-pointer"></ChevronUpIcon>
+                                  <ChevronUpIcon className="h-6 w-6 relative text-black cursor-pointer"></ChevronUpIcon>
                                 ) : (
-                                  <ChevronDownIcon className="h-6 w-6 relative text-gray-300 cursor-pointer"></ChevronDownIcon>
+                                  <ChevronDownIcon className="h-6 w-6 relative text-black cursor-pointer"></ChevronDownIcon>
                                 )}
                               </div>
                             </div>
@@ -316,19 +340,30 @@ const Banners = () => {
                               banner.products.map((item, index) => (
                                 <div
                                   key={index}
-                                  className="flex w-64 h-16 mr-8 mb-6  bg-blue-light bg-opacity-30 rounded-2xl items-center justify-between px-6 shadow-sm"
+                                  className="flex w-80 h-16 mr-8 mb-6  bg-blue-light bg-opacity-30 rounded-2xl items-center justify-between px-6 shadow-sm"
                                 >
-                                  <span className="text-black font-semibold capitalize">
-                                    {item.name}
-                                  </span>
-                                  <div className="flex">
-                                    <EditIcon
-                                      onClick={(e) => handleEdit(e, item)}
-                                      className="mr-2 h-5 w-5 cursor-pointer fill-grey hover:fill-green"
+                                  <div className="flex items-center">
+                                    <img
+                                      className="h-8 w-8 rounded-full mr-2"
+                                      src={item.thumbnail}
+                                      alt=""
                                     />
+                                    <span className="text-black font-semibold capitalize mr-4">
+                                      {item.name}
+                                    </span>
+                                    <span className="text-green-400 font-semibold capitalize">
+                                      {`${item.discount}% OFF`}
+                                    </span>
+                                  </div>
+                                  <div className="flex">
                                     <DeleteIcon
                                       onClick={(e) =>
-                                        handleProductDelete(e, banner._id)
+                                        handleProductDelete(
+                                          e,
+                                          banner._id,
+                                          item._id,
+                                          item.price
+                                        )
                                       }
                                       className="cursor-pointer h-5 w-5 fill-grey hover:fill-red"
                                     />
