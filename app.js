@@ -12,6 +12,7 @@ const ordersRoutes = require("./routes/orders_routes");
 const cartRoutes = require("./routes/cart_router");
 const paymentRoutes = require("./routes/payment_routes");
 const bannersRoutes = require("./routes/banner_routes");
+const dealRoutes = require("./routes/deal_routes");
 const adminRoutes = require("./routes/admin_routes");
 
 const connectDB = require("./config/db_config");
@@ -51,6 +52,7 @@ app.use("/api/products/", productsRoutes);
 app.use("/api/orders/", ordersRoutes);
 app.use("/api/cart/", cartRoutes);
 app.use("/api/banners/", bannersRoutes);
+app.use("/api/deal/", dealRoutes);
 app.use("/api/payment/", paymentRoutes);
 app.use("/api/admin/", adminRoutes);
 
@@ -58,6 +60,7 @@ app.use("/api/admin/", adminRoutes);
 const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
 
 const io = require("socket.io")(server, {
+  transports: ["polling"],
   cors: {
     origin: "http://localhost:3000",
     credentials: true,
@@ -65,7 +68,6 @@ const io = require("socket.io")(server, {
 });
 
 const socket = io.on("connection", (socket) => {
-  
   console.log("socket server is connected");
   socket.on("updatedCart", (productId) => {
     console.log(productId);

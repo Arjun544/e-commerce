@@ -296,7 +296,7 @@ const Banners = () => {
                                 <span className="text-black font-semibold mr-4">
                                   Status
                                 </span>
-                                <Status banner={banner} />
+                                <Status  banner={banner} />
                               </div>
 
                               <div

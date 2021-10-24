@@ -72,10 +72,10 @@ const ProductsDropDown = ({
                   </span>
                 </div>
               ) : (
-                products.filter(filterNames).map((product) => {
+                products.filter(filterNames).map((product, index) => {
                   return (
                     <div
-                      id={product._id}
+                      id={index}
                       onClick={(e) => handleSort(e, product)}
                       className="flex items-center hover:bg-blue-light py-2 rounded-md"
                     >
@@ -95,10 +95,10 @@ const ProductsDropDown = ({
                 })
               )
             ) : (
-              products.map((product) => {
+              products.map((product, index) => {
                 return (
                   <div
-                    id={product._id}
+                    id={index}
                     onClick={(e) => handleSort(e, product)}
                     className="flex items-center hover:bg-blue-light py-2 rounded-md"
                   >

@@ -11,14 +11,21 @@ const Status = ({ banner }) => {
 
   const handleStatus = async (nextChecked) => {
     try {
-      await updateStatus(banner._id, nextChecked);
-      socket.current.on("update-bannerStatus", (newValue) => {
-        setValue(newValue);
-      });
-      enqueueSnackbar("Status has been updated", {
-        variant: "success",
-        autoHideDuration: 2000,
-      });
+      if (banner.products.length === 0) {
+        enqueueSnackbar("Products can't be empty", {
+          variant: "warning",
+          autoHideDuration: 2000,
+        });
+      } else {
+        await updateStatus(banner._id, nextChecked);
+        socket.current.on("update-bannerStatus", (newValue) => {
+          setValue(newValue);
+        });
+        enqueueSnackbar("Status has been updated", {
+          variant: "success",
+          autoHideDuration: 2000,
+        });
+      }
     } catch (error) {
       console.log(error.response);
     }

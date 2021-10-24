@@ -142,31 +142,35 @@ exports.updateBanner = async (req, res) => {
 
 exports.addBannerProducts = async (req, res) => {
   try {
-    // Update products discount and price
-    req.body.product.map(async (item) => {
-      const priceAfterDiscount =
-        item.price - (item.price * item.discount) / 100;
-
-      await Product.updateMany(
-        { _id: { $in: item.id } },
-        {
-          $set: {
-            onSale: true,
-            discount: item.discount,
-            totalPrice: priceAfterDiscount,
-          },
-        },
-        { multi: true }
-      );
-    });
-
+    const { product, products } = req.body;
+    // Add product
     await Banner.findOneAndUpdate(
       { _id: req.params.id },
       {
-        products: req.body.products,
+        products: products,
       },
       { new: true }
     );
+
+    // Update discount
+    product.map(async (item) => {
+      const priceAfterDiscount =
+        item.price - (item.price * item.discount) / 100;
+
+      await Banner.findOneAndUpdate(
+        {
+          _id: req.params.id,
+          "products._id": item.id,
+        },
+        {
+          $set: {
+            "products.$.onSale": true,
+            "products.$.discount": item.discount,
+            "products.$.totalPrice": priceAfterDiscount,
+          },
+        }
+      );
+    });
 
     const banners = await Banner.find();
     socket.socket.emit("add-bannerProducts", banners);
