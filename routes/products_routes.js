@@ -25,6 +25,7 @@ const {
   getRecentReviews,
   updateFeatured,
   updateStatus,
+  getProducts,
 } = require("../controllers/products_controller");
 
 router.post(
@@ -35,8 +36,9 @@ router.post(
   addProduct
 );
 router.patch("/addReview/:id", authMiddleware, cleanBody, addReview);
+router.get("/getProducts", cleanBody, getProducts);
 router.get("/getAdminProducts", cleanBody, authMiddleware, getAdminProducts);
-router.get("/newArrival", authMiddleware, cleanBody, NewArrivalProducts);
+router.get("/newArrival", cleanBody, NewArrivalProducts);
 router.get("/count", authMiddleware, cleanBody, count);
 router.get("/getRecentReviews", authMiddleware, cleanBody, getRecentReviews);
 router.get("/getAllReviews", authMiddleware, cleanBody, getAllReviews);
@@ -48,12 +50,11 @@ router.patch(
   multipleImages
 );
 router.get("/sorting", authMiddleware, cleanBody, sortProducts);
-router.get("/featured", authMiddleware, cleanBody, featuredProducts);
+router.get("/featured", cleanBody, featuredProducts);
 router.get("/:id", authMiddleware, cleanBody, getProductById);
 router.get("/search/:query", authMiddleware, cleanBody, searchProducts);
 router.get(
   "/similar/:category/:currentId",
-  authMiddleware,
   cleanBody,
   getSimilarProducts
 );

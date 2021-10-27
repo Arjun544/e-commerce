@@ -23,7 +23,7 @@ router.post(
   cleanBody,
   addCategory
 );
-router.get("/get", authMiddleware, cleanBody, getCategories);
+router.get("/get", cleanBody, getCategories);
 router.get("/count", authMiddleware, cleanBody, count);
 router.get("/:id", authMiddleware, cleanBody, getCategoryById);
 router.delete("/:id", authMiddleware, cleanBody, deleteCategory);

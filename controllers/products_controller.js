@@ -106,6 +106,15 @@ exports.addProduct = async (req, res) => {
   }
 };
 
+exports.getProducts = async (req, res) => {
+  try {
+    const products = await Product.find({ status: true }).populate("category");
+    res.send({ products });
+  } catch (error) {
+    res.status(500).json({ error: true, message: "Can't get products" });
+  }
+};
+
 exports.getAdminProducts = async (req, res) => {
   try {
     const productsList = await Product.find().populate("category");
@@ -147,6 +156,7 @@ exports.getSimilarProducts = async (req, res) => {
   try {
     const products = await Product.find({
       category: req.params.category,
+      status: true,
       _id: { $ne: ObjectID(req.params.currentId) },
     }).populate("category");
 
@@ -174,6 +184,7 @@ exports.NewArrivalProducts = async (req, res) => {
   var start = new Date(new Date().getTime() - 48 * 60 * 60 * 1000);
 
   const products = await Product.find({
+    status: true,
     dateCreated: { $gte: start },
   }).populate("category");
 
@@ -283,9 +294,10 @@ exports.sortProducts = async (req, res) => {
 
 exports.featuredProducts = async (req, res) => {
   try {
-    const products = await Product.find({ isFeatured: true }).populate(
-      "category"
-    );
+    const products = await Product.find({
+      status: true,
+      isFeatured: true,
+    }).populate("category");
     res.send({ products });
   } catch (error) {
     res.status(500).json({ error: true, message: "Can't get products" });

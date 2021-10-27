@@ -71,43 +71,13 @@ class _RootScreenState extends State<RootScreen> {
                 showBadge: rootScreenController.isBottomBarVisible.value
                     ? true
                     : false,
-                badgeContent: getStorage.read('isLogin') == true
-                    ? StreamBuilder<DocumentSnapshot>(
-                        stream: firebaseFirestore
-                            .collection('carts')
-                            .doc(getStorage.read('userId'))
-                            .snapshots(),
-                        builder: (context,
-                            AsyncSnapshot<DocumentSnapshot> snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const SizedBox.shrink();
-                          }
-                          log(snapshot.data.toString());
-                          return snapshot.data!.exists
-                              ? Text(
-                                  snapshot.data!['productIds'].length
-                                      .toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green,
-                                      fontSize: 12),
-                                )
-                              : const Text(
-                                  '0',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green,
-                                      fontSize: 12),
-                                );
-                        })
-                    : const Text(
-                        '0',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                            fontSize: 12),
-                      ),
+                badgeContent: const Text(
+                  '0',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
+                      fontSize: 12),
+                ),
                 badgeColor: Colors.white,
                 child: SvgPicture.asset(
                   'assets/images/Bag.svg',

@@ -75,7 +75,7 @@ exports.addSubCategory = async (req, res) => {
 
 exports.getCategories = async (req, res) => {
   try {
-    const categoryList = await Category.find();
+    const categoryList = await Category.find({ status: true });
 
     if (!categoryList) {
       return res.json({
