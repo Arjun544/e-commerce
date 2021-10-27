@@ -41,6 +41,12 @@ const SideBar = () => {
       case "/flashDeal":
         setSelectedBar(5);
         break;
+      case "/customers":
+        setSelectedBar(6);
+        break;
+      case "/reviews":
+        setSelectedBar(7);
+        break;
       default:
         break;
     }
@@ -261,14 +267,19 @@ const SideBar = () => {
         {/* Customer */}
 
         <div
-          onClick={(e) => setSelectedBar(6)}
+          onClick={(e) => {
+            setSelectedBar(6);
+            history.push("/customers");
+          }}
           className={`flex w-${
             isSideBarOpen ? "48" : "42"
           }  items-center py-3 ${
             isSideBarOpen ? "px-6" : "px-3"
           } rounded-2xl hover:bg-lightGrey-light cursor-pointer transform hover:scale-90 transition duration-500 ease-in-out`}
         >
-          <PersonIcon color={selectedBar === 6 ? "#EC981A" : "#fff"} />
+          <PersonIcon
+            className={selectedBar === 6 ? "fill-yellow" : "fill-white"}
+          />
           {isSideBarOpen && (
             <span
               className={`${
@@ -283,7 +294,10 @@ const SideBar = () => {
         {/* Customer Reviews */}
 
         <div
-          onClick={(e) => setSelectedBar(7)}
+          onClick={(e) => {
+            setSelectedBar(7);
+            history.push("/reviews");
+          }}
           className={`flex w-${isSideBarOpen ? "48" : "42"} items-center py-3 ${
             isSideBarOpen ? "px-6" : "px-3"
           } rounded-2xl hover:bg-lightGrey-light cursor-pointer transform hover:scale-90 transition duration-500 ease-in-out`}

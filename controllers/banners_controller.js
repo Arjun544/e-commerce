@@ -217,7 +217,7 @@ exports.removeBannerProduct = async (req, res) => {
 
     res.json({
       success: true,
-      message: "Banner has been updated",
+      message: "Banner has been removed",
     });
   } catch (error) {
     console.log(error);

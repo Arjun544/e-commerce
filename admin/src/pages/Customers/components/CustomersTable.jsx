@@ -45,22 +45,14 @@ function GlobalFilter({
           setValue(e.target.value);
           onChange(e.target.value);
         }}
-        placeholder={`Search in ${count} products...`}
+        placeholder={`Search in ${count} users...`}
       />
-      <div
-        onClick={(e) => {
-          e.preventDefault();
-          history.push("/products/add");
-        }}
-        className="flex h-12 w-40 bg-customYellow-light rounded-2xl cursor-pointer items-center justify-center transform hover:scale-95 transition duration-500 ease-in-out"
-      >
-        <span className="text-white font-semibold">Add product</span>
-      </div>
+     
     </div>
   );
 }
 
-function ProductsTable({ columns, data }) {
+function CustomersTable({ columns, data }) {
   const history = useHistory();
   // Use the state and functions returned from useTable to build your UI
   const {
@@ -93,10 +85,10 @@ function ProductsTable({ columns, data }) {
     usePagination // new
   );
 
-  const onProductClick = (e, product) => {
+  const onUserClick = (e, user) => {
     e.preventDefault();
     e.stopPropagation();
-    history.push(`/products/view/${product.id}`);
+    history.push(`/customers/view/${user._id}`);
   };
 
   // Render the UI for your table
@@ -178,14 +170,28 @@ function ProductsTable({ columns, data }) {
                                 <div
                                   onClick={(e) => {
                                     cell.column.Header === "Name" &&
-                                      onProductClick(
+                                      onUserClick(
                                         e,
-                                        cell.row.original.product
+                                        cell.row.original.user
                                       );
                                   }}
                                   className={`text-sm font-semibold  ${(() => {
                                     if (cell.column.Header === "Name")
                                       return "text-green-500 cursor-pointer";
+                                    if (cell.value === "Cash")
+                                      return "text-red-500";
+                                    if (cell.value === "Card")
+                                      return "text-green-500";
+                                    if (cell === "Pending")
+                                      return "text-customYellow-light";
+                                    if (cell.value === "Confirmed")
+                                      return "text-green-500";
+                                    if (cell.value === "Delivered")
+                                      return "text-green-500";
+                                    if (cell.value === "Cancelled")
+                                      return "text-red-500";
+                                    if (cell.value === "Express")
+                                      return "text-green-500";
                                     else {
                                       return "text-gray-500";
                                     }
@@ -287,4 +293,4 @@ function ProductsTable({ columns, data }) {
   );
 }
 
-export default ProductsTable;
+export default CustomersTable;

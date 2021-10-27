@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const Product = require("../models/Product");
 const { sendEmail } = require("../helpers/mailer");
 const cloudinary = require("cloudinary");
+const socket = require("../app");
 
 const userSchema = Joi.object().keys({
   username: Joi.string().required().min(2),
@@ -373,16 +374,16 @@ exports.updateImage = async (req, res) => {
     return res.status(400).send("Invalid user id");
   }
   // update only those value passed from req.body, but not password
-  if (!req.file) {
-    return res.send("ImageUrl is required");
+  if (!req.body.image) {
+    return res.send("All fields are required");
   }
 
   // Upload image to cloudinary
-  const result = await cloudinary.uploader.upload(req.file.path);
+  const result = await cloudinary.uploader.upload(req.body.image);
 
   const user = await User.findByIdAndUpdate(
     req.params.id,
-    { $set: { profile: result.secure_url } },
+    { $set: { profile: result.secure_url, profileId: result.public_id } },
     { new: true }
   );
 
@@ -493,7 +494,7 @@ exports.removeAddress = async (req, res) => {
   }
 };
 
-// @desc    Delete post
+// @desc    Delete user
 // @access  Public
 
 exports.deleteUserById = async (req, res) => {
@@ -501,6 +502,17 @@ exports.deleteUserById = async (req, res) => {
     if (!mongoose.isValidObjectId(req.params.id)) {
       return res.status(400).send("Invalid user id");
     }
+
+    if (!req.body.profileId) {
+      return res.status(500).json({ success: false, message: "All fields are required" });
+    }
+
+    console.log(req.params.id, req.body.profileId);
+
+    // delete image
+    await cloudinary.uploader.destroy(req.body.profileId, (error, result) => {
+      console.log(result, error);
+    });
 
     const user = await User.findByIdAndRemove(req.params.id);
     if (!user) {
@@ -511,7 +523,13 @@ exports.deleteUserById = async (req, res) => {
         message: "Deleted user",
       });
     }
+
+    const users = await User.find().select(
+      "-resetPasswordToken -resetPasswordExpires -emailToken -emailTokenExpires -password"
+    );
+    socket.socket.emit("delete-user", users);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Server Error",

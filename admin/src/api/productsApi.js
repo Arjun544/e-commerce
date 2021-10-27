@@ -73,15 +73,6 @@ export const getProductById = (id) =>
     },
   });
 
-export const getRecentReviews = (id) =>
-  api.get("/api/products/getRecentReviews", {
-    headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
-    },
-  });
-
 export const updateProduct = (
   id,
   name,

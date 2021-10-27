@@ -17,6 +17,7 @@ const {
   addReview,
   productsByCategory,
   filterByPrice,
+  getAllReviews,
   sortProducts,
   NewArrivalProducts,
   getSimilarProducts,
@@ -38,6 +39,7 @@ router.get("/getAdminProducts", cleanBody, authMiddleware, getAdminProducts);
 router.get("/newArrival", authMiddleware, cleanBody, NewArrivalProducts);
 router.get("/count", authMiddleware, cleanBody, count);
 router.get("/getRecentReviews", authMiddleware, cleanBody, getRecentReviews);
+router.get("/getAllReviews", authMiddleware, cleanBody, getAllReviews);
 router.get("/filterByPrice", authMiddleware, cleanBody, filterByPrice);
 router.patch(
   "/multipleImages/:id",

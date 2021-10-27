@@ -20,7 +20,6 @@ import {
   SortUpIcon,
   SortDownIcon,
 } from "../../../components/pagination_icons";
-import { useHistory } from "react-router-dom";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -28,7 +27,6 @@ function GlobalFilter({
   globalFilter,
   setGlobalFilter,
 }) {
-  const history = useHistory();
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -36,39 +34,30 @@ function GlobalFilter({
   }, 200);
 
   return (
-    <div className="w-full flex justify-between items-center pt-3">
-      <input
-        type="text"
-        className="rounded-xl py-2 px-10 mt-2 text-white placeholder-white bg-Grey-dark border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        value={value || ""}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder={`Search in ${count} products...`}
-      />
-      <div
-        onClick={(e) => {
-          e.preventDefault();
-          history.push("/products/add");
-        }}
-        className="flex h-12 w-40 bg-customYellow-light rounded-2xl cursor-pointer items-center justify-center transform hover:scale-95 transition duration-500 ease-in-out"
-      >
-        <span className="text-white font-semibold">Add product</span>
-      </div>
-    </div>
+    <input
+      type="text"
+      className="rounded-xl py-2 px-10 mt-2 text-white placeholder-white bg-Grey-dark border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+      value={value || ""}
+      onChange={(e) => {
+        setValue(e.target.value);
+        onChange(e.target.value);
+      }}
+      placeholder={`Search in ${count} orders...`}
+    />
   );
 }
 
-function ProductsTable({ columns, data }) {
-  const history = useHistory();
+function UserOrdersTable({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    page,
+    page, // Instead of using 'rows', we'll use page,
+    // which has only the rows for the active page
+
+    // The rest of these things are super handy, too ;)
     canPreviousPage,
     canNextPage,
     pageOptions,
@@ -77,31 +66,24 @@ function ProductsTable({ columns, data }) {
     nextPage,
     previousPage,
     setPageSize,
+
     state,
     preGlobalFilteredRows,
-
     setGlobalFilter,
   } = useTable(
     {
       columns,
       data,
     },
-
     useFilters, // useFilters!
     useGlobalFilter,
     useSortBy,
     usePagination // new
   );
 
-  const onProductClick = (e, product) => {
-    e.preventDefault();
-    e.stopPropagation();
-    history.push(`/products/view/${product.id}`);
-  };
-
   // Render the UI for your table
   return (
-    <div>
+    <>
       <div className=" sm:flex sm:gap-x-2">
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
@@ -158,7 +140,6 @@ function ProductsTable({ columns, data }) {
                   ))}
                 </thead>
                 <tbody {...getTableBodyProps()} className="bg-white">
-                  <div className="flex"></div>
                   {page.map((row, i) => {
                     // new
                     prepareRow(row);
@@ -176,16 +157,21 @@ function ProductsTable({ columns, data }) {
                             >
                               {cell.column.Cell.name === "defaultRenderer" ? (
                                 <div
-                                  onClick={(e) => {
-                                    cell.column.Header === "Name" &&
-                                      onProductClick(
-                                        e,
-                                        cell.row.original.product
-                                      );
-                                  }}
-                                  className={`text-sm font-semibold  ${(() => {
-                                    if (cell.column.Header === "Name")
-                                      return "text-green-500 cursor-pointer";
+                                  className={`text-sm font-semibold relative  ${(() => {
+                                    if (cell.value === "Cash")
+                                      return "text-red-500";
+                                    if (cell.value === "Card")
+                                      return "text-green-500";
+                                    if (cell.value === "Pending")
+                                      return "text-customYellow-light";
+                                    if (cell.value === "Confirmed")
+                                      return "text-green-500";
+                                    if (cell.value === "Delivered")
+                                      return "text-green-500";
+                                    if (cell.value === "Cancelled")
+                                      return "text-red-500";
+                                    if (cell.value === "Express")
+                                      return "text-green-500";
                                     else {
                                       return "text-gray-500";
                                     }
@@ -283,8 +269,8 @@ function ProductsTable({ columns, data }) {
           </nav>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
-export default ProductsTable;
+export default UserOrdersTable;

@@ -8,4 +8,4 @@ const Avatar = ({value}) => {
     );
 }
 
-export default Avatar
+export default Avatar;

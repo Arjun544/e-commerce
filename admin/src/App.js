@@ -19,6 +19,9 @@ import Categories from "./pages/categories/Categories";
 import AddProduct from "./pages/AddProduct/AddProduct";
 import Banners from "./pages/Banners/Banners";
 import FlashDeal from "./pages/FlashDeal/FlashDeal";
+import Customers from "./pages/Customers/Customers";
+import CustomerDetails from "./pages/CustomerDetails/CustomerDetails";
+import Reviews from "./pages/Reviews/Reviews";
 
 export const AppContext = createContext(null);
 
@@ -91,25 +94,26 @@ function App() {
                     </div>
                   )
                 )}
-                <ProtectedRoute path="/" exact={true}>
+
+                <ProtectedRoute path="/" exact>
                   <Dashboard />
                 </ProtectedRoute>
                 <ProtectedRoute path="/orders">
                   <Orders />
                 </ProtectedRoute>
-                <ProtectedRoute path="/products" exact={true}>
+                <ProtectedRoute path="/products" exact>
                   <Products />
                 </ProtectedRoute>
                 <ProtectedRoute path="/categories">
                   <Categories />
                 </ProtectedRoute>
-                <ProtectedRoute path="/products/view/:id" exact={true}>
+                <ProtectedRoute path="/products/view/:id" exact>
                   <ProductDetail />
                 </ProtectedRoute>
-                <ProtectedRoute path="/products/add" exact={true}>
+                <ProtectedRoute path="/products/add" exact>
                   <AddProduct isEditing={false} />
                 </ProtectedRoute>
-                <ProtectedRoute path="/products/edit/:id" exact={true}>
+                <ProtectedRoute path="/products/edit/:id" exact>
                   <AddProduct isEditing={true} />
                 </ProtectedRoute>
                 <ProtectedRoute path="/banners">
@@ -117,6 +121,15 @@ function App() {
                 </ProtectedRoute>
                 <ProtectedRoute path="/flashDeal">
                   <FlashDeal />
+                </ProtectedRoute>
+                <ProtectedRoute path="/customers">
+                  <Customers />
+                </ProtectedRoute>
+                <ProtectedRoute path="/customers/view/:id" exact>
+                  <CustomerDetails />
+                </ProtectedRoute>
+                <ProtectedRoute path="/reviews" exact>
+                  <Reviews />
                 </ProtectedRoute>
               </div>
             </Switch>

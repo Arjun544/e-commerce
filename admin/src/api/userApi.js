@@ -1,4 +1,6 @@
 import axios from "axios";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 const api = axios.create();
 
 // List of all the endpoints
@@ -17,6 +19,34 @@ export const login = (email, password) =>
       },
     }
   );
+
+export const getUserById = (id) =>
+  api.get(`/api/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
+    },
+  });
+
+export const getUsers = () =>
+  api.get("/api/users/allUsers", {
+    headers: {
+      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
+    },
+  });
+
+export const deleteUser = (id, profileId) =>
+  api.delete(`/api/users/delete/${id}`, {
+    headers: {
+      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
+    },
+    data: { profileId: profileId },
+  });
 
 export const logout = () =>
   api.post(

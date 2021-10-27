@@ -56,6 +56,32 @@ export const addDealProducts = (id, product, products) =>
     }
   );
 
+export const removeDealProducts = (id, productId, productPrice) =>
+  api.patch(
+    `/api/deal/removeDealProduct/${id}`,
+    { productId, productPrice },
+    {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Accept: "application/json",
+      },
+    }
+  );
+
+  export const updateStatus = (id, status) =>
+    api.patch(
+      `/api/deal/updateStatus/${id}/${status}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${cookies.get("refreshToken")}`,
+          "Content-type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+
 export const deleteDeal = (id) =>
   api.delete(`/api/deal/delete/${id}`, {
     headers: {

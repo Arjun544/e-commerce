@@ -75,33 +75,60 @@ exports.updateDeal = async (req, res) => {
   }
 };
 
-exports.addDealProducts = async (req, res) => {
+exports.updateStatus = async (req, res) => {
   try {
-    // Update products discount and price
-    req.body.product.map(async (item) => {
-      const priceAfterDiscount =
-        item.price - (item.price * item.discount) / 100;
-
-      await Product.updateMany(
-        { _id: { $in: item.id } },
-        {
-          $set: {
-            onSale: true,
-            discount: item.discount,
-            totalPrice: priceAfterDiscount,
-          },
-        },
-        { multi: true }
-      );
-    });
-
-    await Deal.findOneAndUpdate(
-      { _id: req.params.id },
+    const deal = await Deal.findOneAndUpdate(
+      req.params.id,
       {
-        products: req.body.products,
+        status: req.params.status,
       },
       { new: true }
     );
+    socket.socket.emit("update-dealStatus", deal.status);
+    res.send({
+      success: true,
+      message: "Status has been updated",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.addDealProducts = async (req, res) => {
+  try {
+    const { product, products } = req.body;
+    // Add product
+    await Deal.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        products: products,
+      },
+      { new: true }
+    );
+
+    // Update discount
+    product.map(async (item) => {
+      const priceAfterDiscount =
+        item.price - (item.price * item.discount) / 100;
+
+      await Deal.findOneAndUpdate(
+        {
+          _id: req.params.id,
+          "products._id": item.id,
+        },
+        {
+          $set: {
+            "products.$.onSale": true,
+            "products.$.discount": item.discount,
+            "products.$.totalPrice": priceAfterDiscount,
+          },
+        }
+      );
+    });
 
     const deals = await Deal.find();
     socket.socket.emit("add-dealProducts", deals);
@@ -109,6 +136,46 @@ exports.addDealProducts = async (req, res) => {
     res.json({
       success: true,
       message: "Deal has been updated",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.removeDealProduct = async (req, res) => {
+  try {
+    // Update products discount and price
+
+    await Deal.findOneAndUpdate(
+      { _id: req.body.productId },
+      {
+        $set: {
+          onSale: false,
+          discount: 0,
+          totalPrice: req.body.productPrice,
+        },
+      },
+      { multi: true }
+    );
+
+    await Deal.findByIdAndUpdate(req.params.id, {
+      $pull: {
+        products: {
+          _id: req.body.productId,
+        },
+      },
+    });
+
+    const deals = await Deal.find();
+    socket.socket.emit("remove-dealProduct", deals);
+
+    res.json({
+      success: true,
+      message: "Deal has been removed",
     });
   } catch (error) {
     console.log(error);

@@ -13,6 +13,7 @@ const cartRoutes = require("./routes/cart_router");
 const paymentRoutes = require("./routes/payment_routes");
 const bannersRoutes = require("./routes/banner_routes");
 const dealRoutes = require("./routes/deal_routes");
+const reviewsRoutes = require("./routes/reviews_routes");
 const adminRoutes = require("./routes/admin_routes");
 
 const connectDB = require("./config/db_config");
@@ -54,6 +55,7 @@ app.use("/api/cart/", cartRoutes);
 app.use("/api/banners/", bannersRoutes);
 app.use("/api/deal/", dealRoutes);
 app.use("/api/payment/", paymentRoutes);
+app.use("/api/reviews/", reviewsRoutes);
 app.use("/api/admin/", adminRoutes);
 
 //Listening to port

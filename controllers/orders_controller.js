@@ -34,6 +34,8 @@ exports.addOrder = async (req, res) => {
       orderItems: orderItemsIdsResolved,
       shippingAddress1: req.body.shippingAddress1,
       shippingAddress2: req.body.shippingAddress2,
+      payment: req.body.payment,
+      deliveryType: req.body.deliveryType,
       city: req.body.city,
       zip: req.body.zip,
       country: req.body.country,

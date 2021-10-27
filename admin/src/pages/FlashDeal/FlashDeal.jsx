@@ -8,7 +8,13 @@ import Switch from "react-switch";
 import Loader from "react-loader-spinner";
 import dateFormat from "dateformat";
 import { useSnackbar } from "notistack";
-import { addDeal, deleteDeal, getDeals } from "../../api/dealApi";
+import {
+  addDeal,
+  deleteDeal,
+  getDeals,
+  removeDealProducts,
+  updateStatus,
+} from "../../api/dealApi";
 import { Accordion, AccordionItem } from "react-sanfona";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { ChevronUpIcon } from "@heroicons/react/solid";
@@ -16,6 +22,7 @@ import { AppContext } from "../../App";
 import AddDeal from "./components/AddDeal";
 import AddProductsDialogue from "./components/AddProductsDialogue";
 import { getProducts } from "../../api/productsApi";
+import Status from "./components/Status";
 
 const FlashDeal = () => {
   Date.prototype.addHours = function (h) {
@@ -28,8 +35,9 @@ const FlashDeal = () => {
   const [currentDeal, setCurrentDeal] = useState({});
   const [counterEnd, setCounterEnd] = useState("");
   const [editingDeal, setEditingDeal] = useState({});
-  const [statusValue, setStatusValue] = useState(false);
+  const [value, setValue] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isExpired, setIsExpired] = useState(false);
   const [isTileOpen, setIsTileOpen] = useState(false);
   const [addProductsDialogue, setAddProductsDialogue] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -47,12 +55,9 @@ const FlashDeal = () => {
       setIsInitLoading(false);
       setCounterEnd(data.deals.map((item) => item.endDate));
     };
+
     getAllDeals();
   }, []);
-
-  const handleStatus = (e) => {
-    e.preventDefault();
-  };
 
   const handleAddProducts = (e, deal) => {
     e.preventDefault();
@@ -81,8 +86,38 @@ const FlashDeal = () => {
     });
   };
 
-  const handleProductDelete = (e) => {
+  const handleProductDelete = async (
+    e,
+    index,
+    deal,
+    productId,
+    productPrice
+  ) => {
     e.preventDefault();
+    try {
+      await removeDealProducts(deal._id, productId, productPrice);
+      socket.current.on("remove-dealProduct", async (newDeals) => {
+        setDeals(newDeals);
+
+        // Update status off, if products are empty
+        if (newDeals[index].products.length === 0) {
+          await updateStatus(deal._id, false);
+          socket.current.on("update-dealStatus", (newValue) => {
+            setValue(newValue);
+          });
+        }
+      });
+      enqueueSnackbar("Product deleted", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+    } catch (error) {
+      console.log(error.response);
+      enqueueSnackbar("Something went wrong", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+    }
   };
 
   return (
@@ -135,9 +170,19 @@ const FlashDeal = () => {
           <div className="flex-col mt-12">
             <div className="flex items-center">
               {new Date(counterEnd[0]) < new Date() ? (
-                <span className="text-red-500 font-semibold text-md pt-5">
-                  Deal Expired
-                </span>
+                <div className="flex">
+                  <span className="text-red-500 font-semibold text-md pt-5">
+                    Deal Expired
+                  </span>
+                  {/* <div
+                    // onClick={(e) => handleAddProducts(e, deal)}
+                    className="flex items-center justify-center h-12 w-28 rounded-xl bg-darkBlue-light cursor-pointer transform hover:scale-95  transition duration-500 ease-in-out"
+                  >
+                    <span className="text-white font-semibold text-sm">
+                      Restart
+                    </span>
+                  </div> */}
+                </div>
               ) : (
                 <span className="text-black font-semibold text-md pt-5">
                   Deal Ends In
@@ -161,7 +206,7 @@ const FlashDeal = () => {
             </div>
 
             <Accordion
-              className="h-auto flex-col pt-3  items-start mb-6 "
+              className="h-auto flex-col pt-5  items-start mb-6 "
               isHovered={true}
             >
               {deals.map((deal) => {
@@ -213,20 +258,10 @@ const FlashDeal = () => {
                           <span className="text-black font-semibold mr-4">
                             Status
                           </span>
-                          <Switch
-                            checked={deal.status}
-                            onChange={handleStatus}
-                            onColor="#D1FAE5"
-                            onHandleColor="#10B981"
-                            handleDiameter={20}
-                            uncheckedIcon={false}
-                            checkedIcon={false}
-                            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.329)"
-                            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.062)"
-                            height={10}
-                            width={30}
-                            className="react-switch"
-                            id="material-switch"
+                          <Status
+                            value={value}
+                            setValue={setValue}
+                            deal={deal}
                           />
                         </div>
 
@@ -289,7 +324,8 @@ const FlashDeal = () => {
                                 onClick={(e) =>
                                   handleProductDelete(
                                     e,
-                                    deal._id,
+                                    index,
+                                    deal,
                                     item._id,
                                     item.price
                                   )

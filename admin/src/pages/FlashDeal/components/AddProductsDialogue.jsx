@@ -86,6 +86,7 @@ const AddProductsDialogue = ({
   const handleProductRemove = (e, product) => {
     e.preventDefault();
     setAddedProducts(addedProducts.filter((item) => item._id !== product._id));
+    
   };
 
   const calcDiscount = (price, discount) => {

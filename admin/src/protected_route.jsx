@@ -10,6 +10,7 @@ export const ProtectedRoute = ({ children, ...rest }) => {
       render={({ location }) => {
         return !isAuth && !user ? (
           <Redirect
+            exact
             to={{
               pathname: "/login",
               state: { from: location },

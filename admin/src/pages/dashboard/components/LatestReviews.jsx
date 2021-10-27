@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
-import { getRecentReviews } from "../../../api/productsApi";
+import { getRecentReviews } from "../../../api/reviewsApi";
 import ReactStars from "react-rating-stars-component";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

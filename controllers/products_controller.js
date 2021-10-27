@@ -446,6 +446,7 @@ exports.addReview = async (req, res) => {
     }
 
     const userById = await User.findById(userId).select("profile username");
+    const product = await Product.findById(req.params.id);
 
     const newReview = new Review({
       addedAt: Date.now(),
@@ -460,6 +461,7 @@ exports.addReview = async (req, res) => {
             user: userById,
             review: review,
             number: number,
+            product: product,
             addedAt: newReview,
           },
         },
@@ -471,6 +473,23 @@ exports.addReview = async (req, res) => {
     res.send({
       success: true,
       message: "Review has been added",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.getAllReviews = async (req, res) => {
+  try {
+    const totalReviews = await Product.find({}).distinct("reviews");
+
+    res.send({
+      success: true,
+      reviews: totalReviews,
     });
   } catch (error) {
     console.log(error);
