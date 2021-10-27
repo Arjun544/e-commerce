@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,6 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     SchedulerBinding.instance!.addPostFrameCallback((_) {
-      cartScreenController.cartSocketInit();
       cartScreenController.getCart();
     });
   }
@@ -251,8 +249,7 @@ class _CartWidgetState extends State<CartWidget> {
     return Column(
       children: widget.products.map((item) {
         widget.cartScreenController.productIds.add(item.product.id);
-        widget.cartScreenController.socket
-            .emit('updatedCart', 'product_${item.product.id}');
+
         return Row(
           children: [
             Obx(
@@ -378,20 +375,11 @@ class _CartWidgetState extends State<CartWidget> {
                                         );
                                       }).toList(),
                                       onChanged: (value) async {
-                                        widget.cartScreenController.socket
-                                            .on('updatedCart', (data) {
-                                          item.quantity = data['quantity'];
-                                          widget.cartScreenController.cartTotal
-                                              .add(data['totalGrand']);
-                                          item.quantity = value!;
-                                        });
                                         await widget.cartScreenController
                                             .updateQuantity(
                                           productId: item.id,
                                           newQuantity: value!,
                                         );
-
-                                        setState(() {});
                                       },
                                     ),
                                   ),

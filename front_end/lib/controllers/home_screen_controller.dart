@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import '../models/category_model.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,6 +14,7 @@ class HomeScreenController extends GetxController {
   List<String> favListIds = [];
   int _currentPage = 0;
   RxBool isLoading = false.obs;
+  late Socket socket;
 
   final StreamController<CategoryModel> categoriesStreamController =
       BehaviorSubject();
@@ -25,6 +27,7 @@ class HomeScreenController extends GetxController {
 
   @override
   void onReady() async {
+    cartSocketInit();
     await getData();
 
     Timer.periodic(const Duration(seconds: 4), (Timer timer) {
@@ -53,6 +56,23 @@ class HomeScreenController extends GetxController {
     featuredProductsStreamController.close();
     salesPageController.dispose();
     super.onClose();
+  }
+
+  void cartSocketInit() {
+    socket = io(
+        'http://192.168.0.107:4000',
+        // 'https://sell-corner.herokuapp.com/',
+        OptionBuilder()
+            .setTransports(['websocket']) // for Flutter or Dart VM
+            .disableAutoConnect()
+            .enableForceNewConnection() // disable auto-connection
+            .build());
+    socket.connect();
+    socket.onConnect((data) => print('sockeeeeeeeeet is connected'));
+
+    socket.on('connection', (_) => print('connected: ${socket.id}'));
+
+    print(socket.connected);
   }
 
   Future getData() async => await ApiProduct().getData(

@@ -63,8 +63,9 @@ const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
 
 const io = require("socket.io")(server, {
   transports: ["polling"],
+  autoConnect: true,
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
     credentials: true,
   },
 });

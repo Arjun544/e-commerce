@@ -17,22 +17,9 @@ class CartScreenController extends GetxController {
   List<String> productIds = [];
   RxList<CartItem> orderItems = <CartItem>[].obs;
   RxInt cartProductsLength = 0.obs;
-  late Socket socket;
+  
 
-  void cartSocketInit() {
-    socket = io(
-        // 'http://192.168.0.100:3000',
-        'https://sell-corner.herokuapp.com/',
-        OptionBuilder()
-            .setTransports(['websocket']) // for Flutter or Dart VM
-            .disableAutoConnect()
-            .enableForceNewConnection() // disable auto-connection
-            .build());
-    socket.connect();
-    socket.onConnect((data) => print('sockeeeeeeeeet is connected'));
-
-    print(socket.connected);
-  }
+ 
 
   Future addToCart({required String productId}) async {
     List<String> productIds = [];
