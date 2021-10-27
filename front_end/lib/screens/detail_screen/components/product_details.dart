@@ -55,7 +55,7 @@ class ProductDetails extends StatelessWidget {
 
                   if (product.reviews.isNotEmpty) {
                     controller.averageRating = product.reviews
-                            .map((m) => double.parse(m.number))
+                            .map((m) => double.parse(m.rating.toString()))
                             .reduce((a, b) => a + b) /
                         product.reviews.length;
                   }

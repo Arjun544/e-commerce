@@ -17,7 +17,7 @@ class SearchItem extends StatelessWidget {
     double averageRating = 0;
     if (product.reviews.isNotEmpty) {
       averageRating = product.reviews
-              .map((m) => double.parse(m.number))
+              .map((m) => double.parse(m.rating.toString()))
               .reduce((a, b) => a + b) /
           product.reviews.length;
     }
@@ -45,7 +45,7 @@ class SearchItem extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
-                      imageUrl: product.image,
+                      imageUrl: product.thumbnail,
                       fit: BoxFit.cover,
                       width: Get.width * 0.16,
                     ),

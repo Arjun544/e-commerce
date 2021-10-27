@@ -12,6 +12,10 @@ const categorySchema = mongoose.Schema({
   icon: {
     type: String,
   },
+  status: {
+    type: Boolean,
+    default: true,
+  },
   iconId: {
     type: String,
   },

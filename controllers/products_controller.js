@@ -119,7 +119,6 @@ exports.getAdminProducts = async (req, res) => {
   try {
     const productsList = await Product.find().populate("category");
     res.status(200).json({
-      success: true,
       products: productsList,
     });
   } catch (error) {

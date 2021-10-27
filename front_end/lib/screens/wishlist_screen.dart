@@ -269,7 +269,7 @@ class BuildItem extends StatelessWidget {
     double averageRating = 0;
     if (product.reviews.isNotEmpty) {
       averageRating = product.reviews
-              .map((m) => double.parse(m.number))
+              .map((m) => double.parse(m.rating.toString()))
               .reduce((a, b) => a + b) /
           product.reviews.length;
     }
@@ -279,7 +279,7 @@ class BuildItem extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         CachedNetworkImage(
-          imageUrl: product.image.toString(),
+          imageUrl: product.thumbnail.toString(),
           fit: BoxFit.contain,
           width: Get.width * 0.5,
         ),

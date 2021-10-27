@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/models/product_Model.dart';
 import '../../filter_products_screen/filter_products_screen.dart';
 import 'package:intl/intl.dart';
 import '../../../models/category_model.dart';
@@ -8,7 +9,7 @@ import '../../../utils/colors.dart';
 import 'package:get/get.dart';
 
 class AllCategories extends StatefulWidget {
-  final List<Category> categories;
+  final List<CategoryList> categories;
 
   const AllCategories({required this.categories});
 
@@ -202,11 +203,11 @@ class _AllCategoriesState extends State<AllCategories> {
                                               filterBy: widget
                                                   .categories[
                                                       selectedCategory.value]
-                                                  .subCategories[index]['name'],
+                                                  .subCategories[index].name,
                                               subCategory: widget
                                                   .categories[
                                                       selectedCategory.value]
-                                                  .subCategories[index]['name'],
+                                                  .subCategories[index].name,
                                             ),
                                           );
                                         },
@@ -232,7 +233,7 @@ class _AllCategoriesState extends State<AllCategories> {
                                                                   selectedCategory
                                                                       .value]
                                                               .subCategories[
-                                                          index]['name'],
+                                                          index].name,
                                                     ) ??
                                                     'No name',
                                                 style: const TextStyle(

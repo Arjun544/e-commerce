@@ -262,7 +262,7 @@ class CustomRatingButton extends StatelessWidget {
           double averageRating = 0;
           if (reviews.isNotEmpty) {
             averageRating = reviews
-                    .map((m) => double.parse(m.number))
+                    .map((m) => double.parse(m.rating.toString()))
                     .reduce((a, b) => a + b) /
                 reviews.length;
           }

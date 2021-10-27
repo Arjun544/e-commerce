@@ -93,7 +93,7 @@ class ReviewsSection extends StatelessWidget {
                                         ),
                                         Text(
                                           DateFormat.yMMMd().format(
-                                              reviews[index].addedAt.addedAt),
+                                              reviews[index].addedAt),
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.grey,
@@ -106,7 +106,7 @@ class ReviewsSection extends StatelessWidget {
                                 ),
                                 RatingBar.builder(
                                   initialRating:
-                                      double.parse(reviews[index].number),
+                                      double.parse(reviews[index].rating.toString()),
                                   updateOnDrag: false,
                                   ignoreGestures: true,
                                   itemSize: 12,

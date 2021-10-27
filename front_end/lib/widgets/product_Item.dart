@@ -25,7 +25,7 @@ class ProductItem extends StatelessWidget {
     double averageRating = 0;
     if (product.reviews.isNotEmpty) {
       averageRating = product.reviews
-              .map((m) => double.parse(m.number))
+              .map((m) => double.parse(m.rating.toString()))
               .reduce((a, b) => a + b) /
           product.reviews.length;
     }
@@ -46,7 +46,7 @@ class ProductItem extends StatelessWidget {
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: CachedNetworkImageProvider(
-                      product.image,
+                      product.thumbnail,
                     ),
                   ),
                 ),

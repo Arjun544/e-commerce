@@ -2,9 +2,7 @@ const mongoose = require("mongoose");
 
 const reviewSchema = mongoose.Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+    type: Object,
   },
   review: {
     type: String,
@@ -16,9 +14,7 @@ const reviewSchema = mongoose.Schema({
     max: 5,
   },
   product: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Product",
-    required: true,
+    type: Object,
   },
   addedAt: {
     type: Date,

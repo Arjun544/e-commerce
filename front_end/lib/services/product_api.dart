@@ -14,7 +14,7 @@ class ApiProduct {
     required StreamController arrivalController,
     required StreamController featuredController,
   }) async {
-    try {
+    // try {
       var arrivalResponse = await dio.get(
         baseUrl + 'products/newArrival',
         options: Options(
@@ -37,11 +37,11 @@ class ApiProduct {
       categoriesController.add(categoryModelFromJson(categoriesResponse.data));
       arrivalController.add(productModelFromJson(arrivalResponse.data));
       featuredController.add(productModelFromJson(featuredResponse.data));
-    } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
-      print(e);
-    }
+    // } catch (e) {
+    //   Get.snackbar('Something is wrong', e.toString(),
+    //       snackPosition: SnackPosition.TOP);
+    //   print(e);
+    // }
   }
 
   Future getSimilarProducts({

@@ -39,7 +39,7 @@ class CategoriesSection extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () => Get.to(() => AllCategories(
-                            categories: snapshot.data!.categories,
+                            categories: snapshot.data!.categoryList,
                           )),
                       child: const Text(
                         'View all',
@@ -54,9 +54,9 @@ class CategoriesSection extends StatelessWidget {
               ),
               GridView.builder(
                   shrinkWrap: true,
-                  itemCount: snapshot.data!.categories.length > 6
+                  itemCount: snapshot.data!.categoryList.length > 6
                       ? 6
-                      : snapshot.data!.categories.length,
+                      : snapshot.data!.categoryList.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       childAspectRatio: 1,
@@ -64,7 +64,7 @@ class CategoriesSection extends StatelessWidget {
                       mainAxisSpacing: 10),
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   itemBuilder: (context, index) {
-                    var category = snapshot.data!.categories[index];
+                    var category = snapshot.data!.categoryList[index];
                     return InkWell(
                       onTap: () => {
                         Get.to(

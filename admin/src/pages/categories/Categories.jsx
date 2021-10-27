@@ -168,6 +168,10 @@ const Categories = () => {
             timeout={3000} //3 secs
           />
         </div>
+      ) : categories.length === 0 ? (
+          <div className='flex w-full items-center justify-center mt-40'>
+            <span className='text-black font-semibold'>No Categories</span>
+        </div>
       ) : (
         <div className=" w-full h-full overflow-x-hidden max-w-full px-8 scrollbar scrollbar-thin hover:scrollbar-thumb-gray-900 scrollbar-thumb-gray-500 scrollbar-track-gray-300">
           {/* Table */}

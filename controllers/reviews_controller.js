@@ -16,12 +16,23 @@ exports.addReview = async (req, res) => {
     } else if (review.length < 3) {
       res.json("Review length can't be less than 3");
     }
+    const newUser = await User.findById(userId).select(
+      "-resetPasswordToken -resetPasswordExpires -emailToken -emailTokenExpires -password"
+    );
+    if (!newUser) {
+      return res.send("No user found");
+    }
+
+    const newProduct = await Product.findById(req.params.id);
+    if (!newProduct) {
+      return res.send("No product found");
+    }
 
     const newReview = new Review({
-      user: userId,
+      user: newUser,
       review: review,
       rating: rating,
-      product: req.params.id,
+      product: newProduct,
       addedAt: Date.now(),
     });
     await newReview.save();
@@ -52,7 +63,9 @@ exports.addReview = async (req, res) => {
 
 exports.getAllReviews = async (req, res) => {
   try {
-    const totalReviews = await Review.find().populate("User").populate('Product');
+    const totalReviews = await Review.find()
+      .populate("User")
+      .populate("Product");
 
     res.send({
       success: true,
@@ -74,8 +87,7 @@ exports.getRecentReviews = async (req, res) => {
       .populate("User")
       .populate("Product");
     const filteredReviews = totalReviews.filter(
-      (item) =>
-        item.addedAt.toISOString().split("T")[0] === currrentDate
+      (item) => item.addedAt.toISOString().split("T")[0] === currrentDate
     );
 
     res.send({ filteredReviews });
