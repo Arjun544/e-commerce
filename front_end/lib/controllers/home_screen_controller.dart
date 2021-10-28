@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:front_end/services/token_api.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import '../models/category_model.dart';
 import 'package:get/get.dart';
@@ -63,16 +65,12 @@ class HomeScreenController extends GetxController {
         'http://192.168.0.107:4000',
         // 'https://sell-corner.herokuapp.com/',
         OptionBuilder()
-            .setTransports(['websocket']) // for Flutter or Dart VM
+            .setTransports(['websocket', 'polling']) // for Flutter or Dart VM
             .disableAutoConnect()
-            .enableForceNewConnection() // disable auto-connection
+            .enableForceNewConnection()
             .build());
     socket.connect();
     socket.onConnect((data) => print('sockeeeeeeeeet is connected'));
-
-    socket.on('connection', (_) => print('connected: ${socket.id}'));
-
-    print(socket.connected);
   }
 
   Future getData() async => await ApiProduct().getData(

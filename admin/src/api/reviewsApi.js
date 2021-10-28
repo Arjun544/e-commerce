@@ -7,7 +7,7 @@ const api = axios.create();
 export const getAllReviews = () =>
   api.get("/api/reviews/get", {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -16,7 +16,7 @@ export const getAllReviews = () =>
 export const getRecentReviews = () =>
   api.get("/api/reviews/getRecentReviews", {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },

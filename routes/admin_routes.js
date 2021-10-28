@@ -10,6 +10,6 @@ const {
 
 router.post("/login", cleanBody, logIn);
 router.post("/logout", cleanBody, logout);
-router.get("/refresh", cleanBody, refreshToken);
+router.post("/refresh", cleanBody, refreshToken);
 
 module.exports = router;

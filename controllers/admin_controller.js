@@ -66,7 +66,9 @@ exports.logIn = async (req, res) => {
 
 exports.refreshToken = async (req, res) => {
   // get refresh token from cookie
-  const { refreshToken: refreshTokenFromCookie } = req.cookies;
+
+  const { refreshTokenFromCookie } = req.cookies;
+
   // check if token is valid
   let userData;
   try {

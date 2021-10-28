@@ -16,7 +16,7 @@ export const addBanner = (title, image, type, products) =>
     },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -26,7 +26,7 @@ export const addBanner = (title, image, type, products) =>
 export const getBanners = () =>
   api.get("/api/banners/get", {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -39,7 +39,7 @@ export const updateBanner = (id, title, image, imageId) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
     }
@@ -52,7 +52,7 @@ export const addBannerProducts = (id, product, products) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
     }
@@ -65,7 +65,7 @@ export const removeBannerProducts = (id, productId, productPrice) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
     }
@@ -77,7 +77,7 @@ export const updateStatus = (id, status) =>
     {},
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -87,7 +87,7 @@ export const updateStatus = (id, status) =>
 export const deleteBanner = (id, imageId) =>
   api.delete(`/api/banners/deleteBanner/${id}`, {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },

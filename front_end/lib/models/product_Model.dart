@@ -135,6 +135,7 @@ class Category {
     required this.id,
     required this.name,
     required this.icon,
+    required this.iconId,
     required this.v,
     required this.categoryId,
   });
@@ -144,6 +145,7 @@ class Category {
   String id;
   String name;
   String icon;
+  String iconId;
   int v;
   String categoryId;
 
@@ -154,6 +156,7 @@ class Category {
         id: json['_id'],
         name: json['name'],
         icon: json['icon'],
+        iconId: json['iconId'],
         v: json['__v'],
         categoryId: json['id'],
       );
@@ -165,6 +168,7 @@ class Category {
         '_id': id,
         'name': name,
         'icon': icon,
+        'iconId': iconId,
         '__v': v,
         'id': categoryId,
       };
@@ -356,15 +360,9 @@ class User {
     required this.city,
     required this.country,
     required this.active,
-    required this.resetPasswordToken,
-    required this.resetPasswordExpires,
-    required this.emailToken,
-    required this.emailTokenExpires,
     required this.id,
-    required this.apartment,
     required this.username,
     required this.email,
-    required this.password,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
@@ -373,20 +371,14 @@ class User {
   String profile;
   bool isAdmin;
   String street;
-  List<ShippingAddress> shippingAddress;
+  List<dynamic> shippingAddress;
   String zip;
   String city;
   String country;
   bool active;
-  dynamic resetPasswordToken;
-  dynamic resetPasswordExpires;
-  String emailToken;
-  dynamic emailTokenExpires;
   String id;
-  String apartment;
   String username;
   String email;
-  String password;
   DateTime createdAt;
   DateTime updatedAt;
   int v;
@@ -395,21 +387,15 @@ class User {
         profile: json['profile'],
         isAdmin: json['isAdmin'],
         street: json['street'],
-        shippingAddress: List<ShippingAddress>.from(
-            json['ShippingAddress'].map((x) => ShippingAddress.fromJson(x))),
+        shippingAddress:
+            List<dynamic>.from(json['ShippingAddress'].map((x) => x)),
         zip: json['zip'],
         city: json['city'],
         country: json['country'],
         active: json['active'],
-        resetPasswordToken: json['resetPasswordToken'],
-        resetPasswordExpires: json['resetPasswordExpires'],
-        emailToken: json['emailToken'],
-        emailTokenExpires: json['emailTokenExpires'],
         id: json['_id'],
-        apartment: json['apartment'],
         username: json['username'],
         email: json['email'],
-        password: json['password'],
         createdAt: DateTime.parse(json['createdAt']),
         updatedAt: DateTime.parse(json['updatedAt']),
         v: json['__v'],
@@ -419,60 +405,16 @@ class User {
         'profile': profile,
         'isAdmin': isAdmin,
         'street': street,
-        'ShippingAddress':
-            List<dynamic>.from(shippingAddress.map((x) => x.toJson())),
+        'ShippingAddress': List<dynamic>.from(shippingAddress.map((x) => x)),
         'zip': zip,
         'city': city,
         'country': country,
         'active': active,
-        'resetPasswordToken': resetPasswordToken,
-        'resetPasswordExpires': resetPasswordExpires,
-        'emailToken': emailToken,
-        'emailTokenExpires': emailTokenExpires,
         '_id': id,
-        'apartment': apartment,
         'username': username,
         'email': email,
-        'password': password,
         'createdAt': createdAt.toIso8601String(),
         'updatedAt': updatedAt.toIso8601String(),
         '__v': v,
-      };
-}
-
-class ShippingAddress {
-  ShippingAddress({
-    required this.id,
-    required this.address,
-    required this.city,
-    required this.country,
-    required this.phone,
-    required this.type,
-  });
-
-  String id;
-  String address;
-  String city;
-  String country;
-  String phone;
-  String type;
-
-  factory ShippingAddress.fromJson(Map<String, dynamic> json) =>
-      ShippingAddress(
-        id: json['id'],
-        address: json['address'],
-        city: json['city'],
-        country: json['country'],
-        phone: json['phone'],
-        type: json['type'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'address': address,
-        'city': city,
-        'country': country,
-        'phone': phone,
-        'type': type,
       };
 }

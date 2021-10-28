@@ -55,7 +55,7 @@ router.patch(
 );
 router.get("/allUsers", authMiddleware, cleanBody, getAllUsers);
 router.get("/count", authMiddleware, cleanBody, count);
-router.get("/:id", authMiddleware, cleanBody, getUserById);
+router.get("/:id", cleanBody, getUserById);
 router.patch("/update/:id", authMiddleware, cleanBody, updateUser);
 router.patch("/wishlist/:userId", authMiddleware, cleanBody, clearWishlist);
 router.delete("/delete/:id", authMiddleware, cleanBody, deleteUserById);

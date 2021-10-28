@@ -37,7 +37,6 @@ class Data {
     required this.country,
     required this.active,
     required this.id,
-    required this.apartment,
     required this.username,
     required this.email,
     required this.dataId,
@@ -51,7 +50,6 @@ class Data {
   String country;
   bool active;
   String id;
-  String apartment;
   String username;
   String email;
   String dataId;
@@ -66,7 +64,6 @@ class Data {
         country: json['country'],
         active: json['active'],
         id: json['_id'],
-        apartment: json['apartment'],
         username: json['username'],
         email: json['email'],
         dataId: json['id'],
@@ -82,7 +79,6 @@ class Data {
         'country': country,
         'active': active,
         '_id': id,
-        'apartment': apartment,
         'username': username,
         'email': email,
         'id': dataId,

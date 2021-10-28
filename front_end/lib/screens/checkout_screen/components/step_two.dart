@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../../../controllers/profile_screen_controller.dart';
 import '../../profile_screen/components/shipping_address.dart';
 import '../../../controllers/checkout_screen_controller.dart';
@@ -68,7 +69,13 @@ class StepTwo extends StatelessWidget {
                         //         .selectedShippingAddress.value]
                         //     .address
                         //     .toString());
-                        checkoutScreenController.activeStep.value += 1;
+                        currentUser!.data.shippingAddress.isEmpty
+                            ? EasyLoading.showToast(
+                                'No address',
+                                toastPosition: EasyLoadingToastPosition.top,
+                                maskType: EasyLoadingMaskType.clear,
+                              )
+                            : checkoutScreenController.activeStep.value += 1;
                       },
                     ),
                   ],

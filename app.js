@@ -62,10 +62,10 @@ app.use("/api/admin/", adminRoutes);
 const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
 
 const io = require("socket.io")(server, {
-  transports: ["polling"],
-  autoConnect: true,
+  allowEIO3: true,
+  transports: ["websocket", "polling", "flashsocket"],
   cors: {
-    origin: "*",
+    origin: "http://localhost:3000",
     credentials: true,
   },
 });
@@ -73,7 +73,6 @@ const io = require("socket.io")(server, {
 const socket = io.on("connection", (socket) => {
   console.log("socket server is connected");
   socket.on("updatedCart", (productId) => {
-    console.log(productId);
     socket.join(productId);
   });
   return socket;

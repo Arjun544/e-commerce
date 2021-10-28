@@ -22,9 +22,9 @@ class _StepOneState extends State<StepOne> {
     //Calculating total price of order items
     checkoutScreenController.orderItemsPrices =
         cartScreenController.orderItems.map((element) {
-      var item = element.product.discount > 0
-          ? element.product.totalPrice * element.quantity
-          : element.product.price * element.quantity;
+      var item = element.discount > 0
+          ? element.totalPrice * element.quantity
+          : element.price * element.quantity;
       return item;
     }).toList();
     checkoutScreenController.subTotal =
@@ -65,7 +65,7 @@ class _StepOneState extends State<StepOne> {
                             borderRadius: BorderRadius.circular(20),
                             child: CachedNetworkImage(
                               imageUrl: cartScreenController
-                                  .orderItems[index].product.image,
+                                  .orderItems[index].thumbnail,
                               fit: BoxFit.cover,
                               width: Get.width * 0.15,
                             ),
@@ -79,21 +79,21 @@ class _StepOneState extends State<StepOne> {
                             children: [
                               Text(
                                 cartScreenController
-                                    .orderItems[index].product.name,
+                                    .orderItems[index].name,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                               cartScreenController
-                                          .orderItems[index].product.discount >
+                                          .orderItems[index].discount >
                                       0
                                   ? Text(
-                                      '\$ ${cartScreenController.orderItems[index].product.totalPrice.toString()}',
+                                      '\$ ${cartScreenController.orderItems[index].totalPrice.toString()}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12),
                                     )
                                   : Text(
-                                      '\$ ${cartScreenController.orderItems[index].product.price.toString()}',
+                                      '\$ ${cartScreenController.orderItems[index].price.toString()}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12),

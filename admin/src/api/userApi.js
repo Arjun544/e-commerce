@@ -23,7 +23,7 @@ export const login = (email, password) =>
 export const getUserById = (id) =>
   api.get(`/api/users/${id}`, {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -32,7 +32,7 @@ export const getUserById = (id) =>
 export const getUsers = () =>
   api.get("/api/users/allUsers", {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -41,7 +41,7 @@ export const getUsers = () =>
 export const deleteUser = (id, profileId) =>
   api.delete(`/api/users/delete/${id}`, {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },

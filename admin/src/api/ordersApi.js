@@ -7,7 +7,7 @@ const api = axios.create();
 export const getUserOrders = (id) =>
   api.get(`/api/orders/userOrders/${id}`, {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },

@@ -38,7 +38,7 @@ class _AddressWidgetState extends State<AddressWidget> {
         ),
         widget.currentUser!.data.shippingAddress.isEmpty
             ? Padding(
-                padding: EdgeInsets.only(top: Get.height * 0.2),
+                padding: EdgeInsets.symmetric(vertical: Get.height * 0.2),
                 child: const Center(
                   child: Text(
                     'No Address',

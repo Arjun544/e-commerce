@@ -14,15 +14,12 @@ const {
   count,
   deleteProduct,
   multipleImages,
-  addReview,
   productsByCategory,
   filterByPrice,
-  getAllReviews,
   sortProducts,
   NewArrivalProducts,
   getSimilarProducts,
   searchProducts,
-  getRecentReviews,
   updateFeatured,
   updateStatus,
   getProducts,
@@ -35,13 +32,10 @@ router.post(
   cleanBody,
   addProduct
 );
-router.patch("/addReview/:id", authMiddleware, cleanBody, addReview);
 router.get("/getProducts", cleanBody, getProducts);
 router.get("/getAdminProducts", cleanBody, authMiddleware, getAdminProducts);
 router.get("/newArrival", cleanBody, NewArrivalProducts);
 router.get("/count", authMiddleware, cleanBody, count);
-router.get("/getRecentReviews", authMiddleware, cleanBody, getRecentReviews);
-router.get("/getAllReviews", authMiddleware, cleanBody, getAllReviews);
 router.get("/filterByPrice", authMiddleware, cleanBody, filterByPrice);
 router.patch(
   "/multipleImages/:id",

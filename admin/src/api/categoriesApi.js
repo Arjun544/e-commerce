@@ -12,7 +12,7 @@ export const addCategory = (name, icon) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
     }
@@ -25,7 +25,7 @@ export const addSubCategory = (id, name) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
     }
@@ -38,7 +38,7 @@ export const updateCategory = (id, name, icon, iconId) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
     }
@@ -51,7 +51,7 @@ export const updateSubCategory = (id, subCategoryId, name) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
     }
@@ -60,7 +60,7 @@ export const updateSubCategory = (id, subCategoryId, name) =>
 export const deleteCategory = (id, iconId) =>
   api.delete(`/api/categories/${id}`, {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -70,7 +70,7 @@ export const deleteCategory = (id, iconId) =>
 export const deleteSubCategory = (id, subCategoryId) =>
   api.delete(`/api/categories/subCategory/${id}`, {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -80,7 +80,7 @@ export const deleteSubCategory = (id, subCategoryId) =>
 export const getCategories = () =>
   api.get("/api/categories/get", {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },

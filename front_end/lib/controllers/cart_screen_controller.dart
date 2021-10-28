@@ -1,59 +1,46 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/cart_model.dart';
+import '../models/product_Model.dart';
+
 import '../utils/constants.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:socket_io_client/socket_io_client.dart';
-
-import '../models/cart_model.dart';
 import '../services/cart_api.dart';
 
 class CartScreenController extends GetxController {
-  final StreamController<CartModel> cartProductsStreamController =
-      BehaviorSubject();
+  var cartProducts = <CartModel>[].obs;
   StreamController cartTotal = BehaviorSubject();
-  RxDouble totalAfterDiscount = 0.0.obs;
-  List<String> productIds = [];
-  RxList<CartItem> orderItems = <CartItem>[].obs;
-  RxInt cartProductsLength = 0.obs;
-  
+  RxList<CartProduct> orderItems = <CartProduct>[].obs;
+  RxBool isOrderItemsSelected = false.obs;
+  RxInt orderItemsTotal = 0.obs;
 
- 
-
-  Future addToCart({required String productId}) async {
-    List<String> productIds = [];
-    productIds.insert(0, productId);
+  void addToCart(Product product) async {
     await ApiCart().addToCart(
-      productId: productId,
+      product: product,
       userId: getStorage.read('userId'),
     );
-    await firebaseFirestore
-        .collection('carts')
-        .doc(getStorage.read('userId'))
-        .set({
-      'productIds': FieldValue.arrayUnion([productId])
-    });
   }
 
   void getCart() async {
-    await ApiCart().getCart(
-        userId: getStorage.read('userId'),
-        controller: cartProductsStreamController);
+    var products = await ApiCart().getCart(
+      userId: getStorage.read('userId'),
+    );
+    if (products != null) {
+      cartProducts.value.add(products);
+    }
   }
 
   Future updateQuantity(
-          {required String productId, required int newQuantity}) async =>
+          {required String productId, required int value}) async =>
       await ApiCart().updateQuantity(
         productId: productId,
+        value: value,
         userId: getStorage.read('userId'),
-        newQuantity: newQuantity,
       );
 
-  Future deleteItem({required String id}) async =>
-      await ApiCart().removeItemFromCart(
-        id: id,
-      );
+  Future deleteItem({required String id, required String productId}) async =>
+      await ApiCart().removeItemFromCart(id: id, productId: productId);
 
   Future clearCart({required String userId}) async => await ApiCart().clearCart(
         userId: userId,

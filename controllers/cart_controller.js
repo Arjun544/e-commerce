@@ -1,35 +1,34 @@
 const Cart = require("../models/Cart");
 const CartItem = require("../models/CartItem");
 const mongoose = require("mongoose");
+const socket = require("../app");
+var ObjectID = require("mongodb").ObjectID;
 
 exports.addToCart = async (req, res) => {
   try {
-    const cartItemsIds = Promise.all(
-      req.body.cartItem.map(async (cartItem) => {
-        let newCartItem = new CartItem({
-          product: cartItem.productId,
-          userId: req.body.user,
-        });
+    const userCart = await Cart.findOne({ user: req.body.user });
 
-        newCartItem = await newCartItem.save();
-        return newCartItem._id;
-      })
-    ).catch(function (error) {
-      if (error.name == "ValidationError") {
-        return res.json({
-          error: true,
-          message: error.errors.quantity.message,
-        });
-      }
-    });
-
-    const cartItemsIdsResolved = await cartItemsIds;
-
-    let cart = new Cart({
-      cartItems: cartItemsIdsResolved,
-      user: req.body.user,
-    });
-    cart = await cart.save();
+    const ids = userCart.products.map((item) => item.id);
+    if (ids.includes(req.body.product.id)) {
+      await Cart.findOneAndUpdate(
+        {
+          user: req.body.user,
+          "products.id": req.body.product.id,
+        },
+        {
+          $inc: { "products.$.quantity": 1 },
+        }
+      );
+    } else {
+      await Cart.findOneAndUpdate(
+        { user: req.body.user },
+        {
+          $push: {
+            products: req.body.product,
+          },
+        }
+      );
+    }
 
     res.json({
       success: true,
@@ -50,46 +49,11 @@ exports.getCart = async (req, res) => {
       return res.status(400).send("Invalid cart id");
     }
 
-    const cartList = await Cart.find({ user: req.params.id })
-      .populate("cartItems")
-      .populate({
-        path: "cartItems",
-        populate: {
-          path: "product",
-          model: "Product",
-        },
-      })
-      .sort({ dateOrdered: -1 });
-
-    // cartList.map((item) => {
-    //   console.log(item.cartItems);
-    //  })
-    let finalProducts;
-    // Calculating total grand of cart items
-    const totalPrices = await Promise.all(
-      cartList.map((item) => {
-        const ItemsInCart = item.cartItems.map(async (it) => {
-          finalProducts = it;
-          await CartItem.findById(it._id).populate("product");
-        });
-        // console.log(ItemsInCart);
-        let totalPrice;
-        if (finalProducts.product.onSale === false) {
-          totalPrice = finalProducts.product.price * finalProducts.quantity;
-          return totalPrice;
-        } else {
-          totalPrice =
-            finalProducts.product.totalPrice * finalProducts.quantity;
-          return totalPrice;
-        }
-      })
-    );
-    const totalGrand = totalPrices.reduce((a, b) => a + b, 0);
-
-    res.send({
-      totalGrand: totalGrand,
-      cartList: cartList,
+    const cartList = await Cart.find({ user: req.params.id }).sort({
+      dateOrdered: -1,
     });
+
+    res.send(cartList[0]);
   } catch (error) {
     console.log(error);
     return res.json({
@@ -101,69 +65,46 @@ exports.getCart = async (req, res) => {
 
 exports.updateQuantity = async (req, res) => {
   try {
-    if (!req.body.userId || !req.body.newQuantity) {
+    if (!req.body.productId) {
       res.send({
         error: true,
         message: "Please provide all fields",
       });
     }
-    const cartItem = await CartItem.findByIdAndUpdate(
-      { _id: req.params.id },
+
+    const newProduct = await Cart.findOneAndUpdate(
       {
-        quantity: req.body.newQuantity,
+        user: req.params.id,
+        "products.id": req.body.productId,
+      },
+      {
+        $set: { "products.$.quantity": req.body.value },
       },
       { new: true }
-    )
-      .populate("product")
-      .select("quantity")
-      .sort({ dateOrdered: -1 });
-
-    const cartList = await Cart.find({ user: req.body.userId })
-      .populate("cartItems")
-      .populate({
-        path: "cartItems",
-        populate: {
-          path: "product",
-          model: "Product",
-        },
-      })
-      .sort({ dateOrdered: -1 });
-
-    // Calculating total grand of cart items
-    const totalPrices = await Promise.all(
-      cartList.map(async (item) => {
-        const newCartItem = await CartItem.findById(
-          item.cartItems[0]._id
-        ).populate("product");
-        let totalPrice;
-        if (newCartItem.product.onSale === false) {
-          totalPrice = newCartItem.product.price * newCartItem.quantity;
-          return totalPrice;
-        } else {
-          totalPrice = newCartItem.product.totalPrice * newCartItem.quantity;
-          return totalPrice;
-        }
-      })
     );
-    const totalGrand = totalPrices.reduce((a, b) => a + b, 0);
 
-    if (!cartItem) {
-      res.send({
-        error: true,
-        message: "Product not found in cart",
-      });
-    } else {
-      // emit event for upating new quantity
-      const eventEmitter = req.app.get("eventEmitter");
-      eventEmitter.emit("updatedCart", {
-        id: cartItem.product._id,
-        quantity: cartItem.quantity,
-        totalGrand: totalGrand,
-      });
-      return res.send({
-        message: "Quantity has been updated",
-      });
-    }
+    const updatedProduct = newProduct.products.filter(
+      (item) => item.id === req.body.productId
+    );
+
+    const prices = newProduct.products.map(
+      (item) => item.totalPrice * item.quantity
+    );
+    const totalFinal = prices.reduce((partial_sum, a) => partial_sum + a, 0);
+    socket.socket.on("total-price", (data) => {
+      console.log(data);
+    });
+
+    const eventEmitter = req.app.get("eventEmitter");
+    eventEmitter.emit("updatedCart", {
+      id: updatedProduct[0]._id,
+      quantity: updatedProduct[0].quantity,
+      totalGrand: totalFinal,
+    });
+
+    return res.send({
+      message: "Quantity has been updated",
+    });
   } catch (error) {
     console.log(error);
     return res.json({
@@ -173,23 +114,27 @@ exports.updateQuantity = async (req, res) => {
   }
 };
 
-exports.deleteFromCart = (req, res) => {
-  Cart.findByIdAndRemove(req.params.id)
-    .then(async (item) => {
-      if (item) {
-        await item.cartItems.map(async (cartItem) => {
-          await CartItem.findByIdAndRemove(cartItem);
-        });
-        return res.json("Product is removed");
-      } else {
-        return res
-          .status(404)
-          .json({ error: true, message: "Product not found!" });
-      }
-    })
-    .catch((err) => {
-      return res.status(500).json({ error: true, message: err });
+exports.deleteFromCart = async (req, res) => {
+  try {
+    const product = await Cart.findByIdAndUpdate(req.params.id, {
+      $pull: {
+        products: {
+          id: req.body.productId,
+        },
+      },
     });
+    if (!product) {
+      return res.send("No product found");
+    } else {
+      const cart = await Cart.find({ user: req.params.id }).sort({
+        dateOrdered: -1,
+      });
+      socket.socket.emit("delete-cartItem", cart);
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: true, message: error });
+  }
 };
 
 exports.clearCart = async (req, res) => {

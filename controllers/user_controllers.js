@@ -6,6 +6,7 @@ const Product = require("../models/Product");
 const { sendEmail } = require("../helpers/mailer");
 const cloudinary = require("cloudinary");
 const socket = require("../app");
+const Cart = require("../models/Cart");
 
 const userSchema = Joi.object().keys({
   username: Joi.string().required().min(2),
@@ -63,6 +64,12 @@ exports.register = async (req, res) => {
 
     const newUser = new User(result.value);
     await newUser.save();
+    const userCart = await User.find({ email: result.value.email });
+
+    const cart = new Cart({
+      user: userCart[0],
+    });
+    await cart.save();
 
     return res.status(200).json({
       success: true,
@@ -122,9 +129,7 @@ exports.logIn = async (req, res) => {
         userId: user.id,
         isAdmin: user.isAdmin,
       },
-      process.env.ACCESS_JWT_SECRET,
-
-      { expiresIn: "60s" }
+      process.env.ACCESS_JWT_SECRET
     );
     await user.save();
 
@@ -504,7 +509,9 @@ exports.deleteUserById = async (req, res) => {
     }
 
     if (!req.body.profileId) {
-      return res.status(500).json({ success: false, message: "All fields are required" });
+      return res
+        .status(500)
+        .json({ success: false, message: "All fields are required" });
     }
 
     console.log(req.params.id, req.body.profileId);

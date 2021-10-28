@@ -35,7 +35,7 @@ export const addProduct = (
     },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -48,7 +48,7 @@ export const uploadMultiImages = (id, images) =>
     { images },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -58,7 +58,7 @@ export const uploadMultiImages = (id, images) =>
 export const getProducts = () =>
   api.get("/api/products/getAdminProducts", {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -67,7 +67,7 @@ export const getProducts = () =>
 export const getProductById = (id) =>
   api.get(`/api/products/${id}`, {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -108,7 +108,7 @@ export const updateProduct = (
     },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -121,7 +121,7 @@ export const updateFeatured = (id, isFeatured) =>
     {},
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -134,7 +134,7 @@ export const updateStatus = (id, status) =>
     {},
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("refreshToken")}`,
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -144,7 +144,7 @@ export const updateStatus = (id, status) =>
 export const deleteProduct = (id, thumbnailId, imageIds) =>
   api.delete(`/api/products/delete/${id}`, {
     headers: {
-      Authorization: `Bearer ${cookies.get("refreshToken")}`,
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
