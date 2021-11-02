@@ -32,53 +32,83 @@ class ArrivalsSection extends StatelessWidget {
             return ArrivalsLoader();
           }
 
-          return Container(
-            height: Get.height * 0.24,
-            child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data!.products.length,
-                padding: const EdgeInsets.only(left: 15),
-                itemBuilder: (context, index) {
-                  Product product = snapshot.data!.products[index];
-                  return index == snapshot.data!.products.length
-                      ? Container(
-                          width: 80,
-                          margin: const EdgeInsets.only(right: 10),
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: const Text(
-                            'See All',
-                            textAlign: TextAlign.center,
+          return snapshot.data!.products.isEmpty
+              ? const SizedBox.shrink()
+              : Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 15, left: 15, bottom: 10, right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'New Arrivals',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15),
+                                fontWeight: FontWeight.bold, fontSize: 18),
                           ),
-                        )
-                      : GestureDetector(
-                          onTap: () {
-                            Get.to(() => DetailScreen(
-                                  product: product,
-                                ));
-                          },
-                          child: Container(
-                            width: Get.width * 0.55,
-                            margin: const EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: BuildItem(
-                              homeScreenController: homeScreenController,
-                              product: product,
-                            ),
+                          const Text(
+                            'View all',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Colors.grey),
                           ),
-                        );
-                }),
-          );
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: Get.height * 0.24,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data!.products.length,
+                          padding: const EdgeInsets.only(left: 15),
+                          itemBuilder: (context, index) {
+                            Product product = snapshot.data!.products[index];
+                            return index == snapshot.data!.products.length
+                                ? Container(
+                                    width: 80,
+                                    margin: const EdgeInsets.only(right: 10),
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    child: const Text(
+                                      'See All',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15),
+                                    ),
+                                  )
+                                : GestureDetector(
+                                    onTap: () {
+                                      Get.to(() => DetailScreen(
+                                            product: product,
+                                          ));
+                                    },
+                                    child: Container(
+                                      width: Get.width * 0.55,
+                                      margin: const EdgeInsets.only(right: 10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: BuildItem(
+                                        homeScreenController:
+                                            homeScreenController,
+                                        product: product,
+                                      ),
+                                    ),
+                                  );
+                          }),
+                    ),
+                  ],
+                );
         });
   }
 }

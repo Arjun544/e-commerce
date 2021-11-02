@@ -51,26 +51,7 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CategoriesSection(),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 15, left: 15, bottom: 10, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'New Arrivals',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                  const Text(
-                    'View all',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
+            
             ArrivalsSection(
               homeScreenController: homeScreenController,
               cartScreenController: cartScreenController,
