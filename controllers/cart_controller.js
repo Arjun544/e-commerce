@@ -30,6 +30,8 @@ exports.addToCart = async (req, res) => {
       );
     }
 
+    socket.socket.emit("cartCount", userCart.products.length);
+
     res.json({
       success: true,
       message: "Added to cart",
@@ -116,36 +118,55 @@ exports.updateQuantity = async (req, res) => {
 
 exports.deleteFromCart = async (req, res) => {
   try {
-    const product = await Cart.findByIdAndUpdate(req.params.id, {
-      $pull: {
-        products: {
-          id: req.body.productId,
-        },
-      },
-    });
-    if (!product) {
-      return res.send("No product found");
-    } else {
-      const cart = await Cart.find({ user: req.params.id }).sort({
-        dateOrdered: -1,
-      });
-      socket.socket.emit("delete-cartItem", cart);
-    }
+    console.log(req.params.id);
+    console.log(req.body.productId);
+    // const product = await Cart.findByIdAndUpdate(req.params.id, {
+    //   $pull: {
+    //     products: {
+    //       id: req.body.productId,
+    //     },
+    //   },
+    // });
+    // if (!product) {
+    //   return res.send("No product found");
+    // }
+
+    // const eventEmitter = req.app.get("eventEmitter");
+    // eventEmitter.emit("delete-cartItem", {
+    //   cart: cart[0],
+    // });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: true, message: error });
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.cartCount = async (req, res) => {
+  try {
+    const userCart = await Cart.findOne({ user: ObjectID(req.params.id) });
+
+    res.status(200).json(userCart.products.length);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: true, message: "Something went wrong" });
   }
 };
 
 exports.clearCart = async (req, res) => {
   try {
-    const cart = await Cart.deleteMany({
-      user: req.params.userId,
-    });
-    const cartItems = await CartItem.deleteMany({
-      userId: req.params.userId,
-    });
-    if (!cart && !cartItems) {
+    const cart = await Cart.findOneAndUpdate(
+      { user: req.params.id },
+      {
+        $set: {
+          products: [],
+        },
+      }
+    );
+
+    if (!cart) {
       res.send({
         error: true,
         message: "Cart not found for user",

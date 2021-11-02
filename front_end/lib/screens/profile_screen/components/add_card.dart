@@ -7,6 +7,7 @@ import 'package:flutter_credit_card/credit_card_widget.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:front_end/controllers/payment_controller.dart';
 import 'package:front_end/models/customer_model.dart';
+import 'package:front_end/models/userModel.dart';
 import 'package:front_end/utils/constants.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../utils/colors.dart';
@@ -39,21 +40,19 @@ class _AddCardState extends State<AddCard> {
 
   void onAddPressed() async {
     if (formKey.currentState!.validate()) {
-      CustomerModel customer = await paymentController.createCustomer(
-        name: cardHolderName.value,
+      UserModel? userModel =
+          await paymentController.rootScreenController.getCurrentUser();
+      await paymentController.addPaymentMethod(
+        customerId: userModel!.data.customerId,
         cardNumber: cardNumber.value,
         expMonth: expiryDate.value.split('/')[0].toString(),
         expYear: expiryDate.value.split('/')[1].toString(),
         cvc: cvvCode.value,
       );
-      log(customer.toString());
-      // await getStorage.write('customerId', customer.customer.id.toString());
-      // await getStorage.write(
-      //     'card', customer.customer.defaultSource.toString());
       Get.back();
+
       setState(() {
-        paymentController.getCustomerCard(
-            id: getStorage.read('customerId'), card: getStorage.read('card'));
+        paymentController.getCustomerCard();
       });
     } else {
       print('invalid!');

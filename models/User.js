@@ -42,6 +42,10 @@ const userSchema = mongoose.Schema(
       type: String,
       default: "",
     },
+    customerId: {
+      type: String,
+      default: "",
+    },
     active: {
       type: Boolean,
       default: false,

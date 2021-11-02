@@ -1,7 +1,10 @@
+import 'dart:developer';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/controllers/home_screen_controller.dart';
+import 'package:front_end/models/userModel.dart';
 import 'package:get/get.dart';
 
 import '../controllers/cart_screen_controller.dart';
@@ -27,6 +30,7 @@ class _RootScreenState extends State<RootScreen> {
   final CartScreenController cartScreenController = Get.find();
   final RegisterScreenController registerScreenController = Get.find();
   final ProfileScreenController profileScreenController = Get.find();
+  final HomeScreenController homeScreenController = Get.find();
 
   final List<Widget> children = [
     HomeScreen(),
@@ -40,6 +44,7 @@ class _RootScreenState extends State<RootScreen> {
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       if (getStorage.read('isLogin') == true) {
         await rootScreenController.getCurrentUser();
+        
       }
     });
   }
@@ -69,13 +74,23 @@ class _RootScreenState extends State<RootScreen> {
                 showBadge: rootScreenController.isBottomBarVisible.value
                     ? true
                     : false,
-                badgeContent: const Text(
-                  '0',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                      fontSize: 12),
-                ),
+                badgeContent: getStorage.read('isLogin') == true
+                    ? Obx(
+                        () => Text(
+                          homeScreenController.cartLength.value.toString(),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                              fontSize: 12),
+                        ),
+                      )
+                    : const Text(
+                        '0',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                            fontSize: 12),
+                      ),
                 badgeColor: Colors.white,
                 child: SvgPicture.asset(
                   'assets/images/Bag.svg',

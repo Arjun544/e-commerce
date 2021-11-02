@@ -1,9 +1,10 @@
 require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
-exports.createCustomer = async (req, res) => {
+exports.addPaymentMethods = async (req, res) => {
   try {
-    const token = await stripe.tokens.create({
+    const paymentMethod = await stripe.paymentMethods.create({
+      type: "card",
       card: {
         number: req.body.card.number,
         exp_month: req.body.card.exp_month,
@@ -11,19 +12,18 @@ exports.createCustomer = async (req, res) => {
         cvc: req.body.card.cvc,
       },
     });
-    const customer = await stripe.customers.create({
-      name: req.body.name,
-      description: "My Customer for SellCorner",
-      source: token.id,
+    await stripe.paymentMethods.attach(paymentMethod.id, {
+      customer: req.body.customerId,
     });
-    if (!customer) {
+
+    if (!paymentMethod) {
       return res.json({
         success: false,
-        message: "Couldn't create customer",
+        message: "Couldn't add paymentMethod",
       });
     } else {
       return res.json({
-        customer: customer,
+        card: paymentMethod,
       });
     }
   } catch (error) {
@@ -35,12 +35,12 @@ exports.createCustomer = async (req, res) => {
   }
 };
 
-exports.getCustomerCard = async (req, res) => {
+exports.getCustomerCards = async (req, res) => {
   try {
-    const card = await stripe.customers.retrieveSource(
-      req.params.id,
-      req.params.card
-    );
+    const card = await stripe.paymentMethods.list({
+      customer: req.params.id,
+      type: "card",
+    });
 
     if (!card) {
       return res.json({
@@ -63,27 +63,37 @@ exports.getCustomerCard = async (req, res) => {
 
 exports.payAmount = async (req, res) => {
   try {
-    const charge = await stripe.charges.create({
+    const charge = await stripe.paymentIntents.create({
       amount: req.body.amount,
-      description: "Order items from SellCorner",
-      currency: req.body.currency,
+      currency: "pkr",
+      description: "Order payment for SellCorner",
       customer: req.body.customer,
-      source: req.body.cardId,
+      payment_method: req.body.card,
+      payment_method_types: ["card"],
       shipping: {
-        name: req.body.name,
+        name: req.body.customerName,
         address: {
           line1: req.body.address,
-          postal_code: req.body.code,
           city: req.body.city,
-          state: req.body.state,
           country: req.body.country,
         },
       },
     });
-    if (!charge) {
+    const confirmpayment = await stripe.paymentIntents.confirm(charge.id, {
+      payment_method: req.body.card,
+      shipping: {
+        name: req.body.customerName,
+        address: {
+          line1: req.body.address,
+          city: req.body.city,
+          country: req.body.country,
+        },
+      },
+    });
+    if (!confirmpayment) {
       res.send({
         sucess: false,
-        message: "Payemnt did not succeed",
+        message: "Payment did not succeed",
       });
     } else {
       res.send("Payment successful");

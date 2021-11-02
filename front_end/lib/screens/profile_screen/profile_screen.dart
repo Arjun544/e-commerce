@@ -71,139 +71,129 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: getStorage.read('isLogin') == true
-              ? StreamBuilder<UserModel>(
-                  stream:
-                      rootScreenController.currentUserStreamController.stream,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const SizedBox();
-                    } else if (snapshot.data == null) {}
-                    UserModel? currentUser = snapshot.data;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Settings',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        ProfileTile(
-                            text: 'Edit Profile',
-                            icon: 'assets/images/Profile.svg',
-                            iconColor: Colors.green[300],
-                            onPressed: () {
-                              Get.to(
-                                () => EditProfile(
-                                  currentUser: currentUser,
-                                  profileScreenController:
-                                      profileScreenController,
-                                ),
-                              );
-                            }),
-                        ProfileTile(
-                          text: 'Password Reset',
-                          icon: 'assets/images/Lock.svg',
-                          iconColor: Colors.grey,
-                          onPressed: () async {
-                            await profileScreenController.forgetPassowrd(
-                                email: currentUser!.data.email);
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Settings',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    ProfileTile(
+                        text: 'Edit Profile',
+                        icon: 'assets/images/Profile.svg',
+                        iconColor: Colors.green[300],
+                        onPressed: () {
+                          Get.to(
+                            () => EditProfile(
+                              currentUser: profileScreenController.currentUser,
+                              profileScreenController: profileScreenController,
+                            ),
+                          );
+                        }),
+                    ProfileTile(
+                      text: 'Password Reset',
+                      icon: 'assets/images/Lock.svg',
+                      iconColor: Colors.grey,
+                      onPressed: () async {
+                        await profileScreenController.forgetPassowrd(
+                            email: profileScreenController
+                                .currentUser!.data.email);
 
-                            await Get.to(() => ResetPassword(
-                                  currentUserEmail: currentUser.data.email,
-                                ));
-                          },
-                        ),
-                        ProfileTile(
-                          text: 'Shipping Address',
-                          icon: 'assets/images/Location.svg',
-                          iconColor: Colors.orange[300],
-                          onPressed: () {
-                            Get.to(() => ShippingAddress());
-                          },
-                        ),
-                        ProfileTile(
-                          text: 'Payment Cards',
-                          icon: 'assets/images/Scan.svg',
-                          iconColor: Colors.teal[300],
-                          onPressed: () {
-                            Get.to(
-                              () => PaymentDetails(
-                                profileScreenController:
-                                    profileScreenController,
-                              ),
-                            );
-                          },
-                        ),
-                        ProfileTile(
-                          text: 'Order History',
-                          icon: 'assets/images/Invoice.svg',
-                          iconColor: Colors.purple[300],
-                          onPressed: () {},
-                        ),
-                        ProfileTile(
-                          text: 'Rate Us',
-                          icon: 'assets/images/Invoice.svg',
-                          iconColor: Colors.purple[300],
-                          onPressed: () {},
-                        ),
-                        ProfileTile(
-                          text: 'Logout',
-                          icon: 'assets/images/Logout.svg',
-                          iconColor: Colors.red[400],
-                          onPressed: () async {
-                            await EasyLoading.show(
-                                status: 'logging out...', dismissOnTap: false);
-                            await getStorage.write('isLogin', false);
-                            await getStorage.remove('userId');
-                            await EasyLoading.dismiss();
-                            setState(() {});
-                          },
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          height: Get.height * 0.15,
-                          decoration: BoxDecoration(
-                            color: Colors.green[400]!.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(30),
+                        await Get.to(() => ResetPassword(
+                              currentUserEmail: profileScreenController
+                                  .currentUser!.data.email,
+                            ));
+                      },
+                    ),
+                    ProfileTile(
+                      text: 'Shipping Address',
+                      icon: 'assets/images/Location.svg',
+                      iconColor: Colors.orange[300],
+                      onPressed: () {
+                        Get.to(() => ShippingAddress());
+                      },
+                    ),
+                    ProfileTile(
+                      text: 'Payment Cards',
+                      icon: 'assets/images/Scan.svg',
+                      iconColor: Colors.teal[300],
+                      onPressed: () {
+                        Get.to(
+                          () => PaymentDetails(
+                            profileScreenController: profileScreenController,
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        );
+                      },
+                    ),
+                    ProfileTile(
+                      text: 'Order History',
+                      icon: 'assets/images/Invoice.svg',
+                      iconColor: Colors.purple[300],
+                      onPressed: () {},
+                    ),
+                    ProfileTile(
+                      text: 'Rate Us',
+                      icon: 'assets/images/Invoice.svg',
+                      iconColor: Colors.purple[300],
+                      onPressed: () {},
+                    ),
+                    ProfileTile(
+                      text: 'Logout',
+                      icon: 'assets/images/Logout.svg',
+                      iconColor: Colors.red[400],
+                      onPressed: () async {
+                        await EasyLoading.show(
+                            status: 'logging out...', dismissOnTap: false);
+                        await getStorage.write('isLogin', false);
+                        await getStorage.remove('userId');
+                        await EasyLoading.dismiss();
+                        setState(() {});
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      height: Get.height * 0.15,
+                      decoration: BoxDecoration(
+                        color: Colors.green[400]!.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/images/Headphone.svg',
-                                    height: 30,
-                                    color: darkBlue.withOpacity(0.7),
-                                  ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  const Text(
-                                    'How can we help you?',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                ],
+                              SvgPicture.asset(
+                                'assets/images/Headphone.svg',
+                                height: 30,
+                                color: darkBlue.withOpacity(0.7),
                               ),
-                              CustomButton(
-                                height: 35,
-                                width: Get.width * 0.3,
-                                text: 'Send email',
-                                color: Colors.green[300],
-                                onPressed: () async {},
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              const Text(
+                                'How can we help you?',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    );
-                  })
+                          CustomButton(
+                            height: 35,
+                            width: Get.width * 0.3,
+                            text: 'Send email',
+                            color: Colors.green[300],
+                            onPressed: () async {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
               : const SettingsColumn(),
         ),
       ],

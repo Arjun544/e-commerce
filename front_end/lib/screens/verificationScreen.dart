@@ -96,12 +96,18 @@ class VerificationScreen extends StatelessWidget {
             ),
             Column(
               children: [
-                const Text(
-                  'Send Again',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17,
-                    color: Colors.green,
+                InkWell(
+                  onTap: () async {
+                    controller.pinController.clear();
+                    await controller.sendCode();
+                  },
+                  child: const Text(
+                    'Send Again',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      color: Colors.green,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 15),

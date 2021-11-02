@@ -18,6 +18,7 @@ const {
   getWishlist,
   clearWishlist,
   addShippingAddress,
+  sendCode,
   editShippingAddress,
   removeAddress,
   updateImage,
@@ -25,20 +26,11 @@ const {
 
 router.post("/login", cleanBody, logIn);
 router.post("/register", cleanBody, register);
+router.patch("/sendCode", cleanBody, sendCode);
 router.post("/wishlist", authMiddleware, cleanBody, getWishlist);
 router.patch("/activate", cleanBody, activate);
-router.patch(
-  "/forgotPassword",
-  authMiddleware,
-  cleanBody,
-  forgotPassword
-);
-router.patch(
-  "/resetPassword",
-  authMiddleware,
-  cleanBody,
-  resetPassword
-);
+router.patch("/forgotPassword", authMiddleware, cleanBody, forgotPassword);
+router.patch("/resetPassword", authMiddleware, cleanBody, resetPassword);
 router.patch("/addAddress/:id", authMiddleware, cleanBody, addShippingAddress);
 router.patch(
   "/editAddress/:id",

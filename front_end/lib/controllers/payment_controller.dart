@@ -1,26 +1,30 @@
 import 'dart:async';
+import 'dart:developer';
 
-import 'package:front_end/models/payment_card_model.dart';
-import 'package:front_end/services/payment.dart';
-import 'package:front_end/utils/constants.dart';
+import 'package:front_end/controllers/root_screen_controller.dart';
+import 'package:front_end/models/userModel.dart';
 
-import '../models/customer_model.dart';
+import '../models/payment_card_model.dart';
+import '../services/payment.dart';
+import '../utils/constants.dart';
+
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PaymentController extends GetxController {
-  final StreamController<PaymentCardModel> paymentCardStreamController =
+  final RootScreenController rootScreenController = Get.find();
+  final StreamController<PaymentModel> paymentCardStreamController =
       BehaviorSubject();
 
-  Future createCustomer({
-    required String name,
+  Future addPaymentMethod({
+    required String customerId,
     required String cardNumber,
     required String expMonth,
     required String expYear,
     required String cvc,
   }) async {
-    await ApiPayment().createCustomer(
-      name: name,
+    await ApiPayment().addPaymentMethod(
+      customerId: customerId,
       cardNumber: cardNumber,
       expMonth: expMonth,
       expYear: expYear,
@@ -28,10 +32,11 @@ class PaymentController extends GetxController {
     );
   }
 
-  Future getCustomerCard({
-    required String id,
-    required String card,
-  }) async =>
-      await ApiPayment().getCustomerCard(
-          id: id, card: card, controller: paymentCardStreamController);
+  Future getCustomerCard() async {
+    UserModel? userModel = await rootScreenController.getCurrentUser();
+    log(userModel.toString());
+    await ApiPayment().getCustomerCard(
+        id: userModel!.data.customerId,
+        controller: paymentCardStreamController);
+  }
 }

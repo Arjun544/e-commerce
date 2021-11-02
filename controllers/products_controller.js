@@ -1,7 +1,5 @@
 const Product = require("../models/Product");
 const Category = require("../models/Category");
-const User = require("../models/User");
-const Review = require("../models/Review");
 var ObjectID = require("mongodb").ObjectID;
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
@@ -297,6 +295,7 @@ exports.featuredProducts = async (req, res) => {
       status: true,
       isFeatured: true,
     }).populate("category");
+
     res.send({ products });
   } catch (error) {
     res.status(500).json({ error: true, message: "Can't get products" });

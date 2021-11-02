@@ -15,6 +15,7 @@ exports.addOrder = async (req, res) => {
         return newOrderItem._id;
       })
     );
+
     const orderItemsIdsResolved = await orderItemsIds;
 
     const totalPrices = await Promise.all(
@@ -28,16 +29,15 @@ exports.addOrder = async (req, res) => {
       })
     );
 
-    const totalPrice = totalPrices.reduce((a, b) => a + b, 0);
+    const totalPrice =
+      totalPrices.reduce((a, b) => a + b, 0) + req.body.deliveryFee;
 
     let order = new Order({
       orderItems: orderItemsIdsResolved,
-      shippingAddress1: req.body.shippingAddress1,
-      shippingAddress2: req.body.shippingAddress2,
+      shippingAddress: req.body.shippingAddress,
       payment: req.body.payment,
       deliveryType: req.body.deliveryType,
       city: req.body.city,
-      zip: req.body.zip,
       country: req.body.country,
       phone: req.body.phone,
       status: req.body.status,

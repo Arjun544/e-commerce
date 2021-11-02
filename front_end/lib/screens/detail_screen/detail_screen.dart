@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -113,13 +115,23 @@ class DetailScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Badge(
-                    badgeContent: const Text(
-                      '0',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                          fontSize: 12),
-                    ),
+                    badgeContent: getStorage.read('isLogin') == true
+                        ? Obx(
+                            () => Text(
+                              homeScreenController.cartLength.value.toString(),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                  fontSize: 12),
+                            ),
+                          )
+                        : const Text(
+                            '0',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green,
+                                fontSize: 12),
+                          ),
                     badgeColor: Colors.white,
                     position: BadgePosition.topEnd(top: 5, end: 5),
                     child: SvgPicture.asset(
@@ -137,6 +149,10 @@ class DetailScreen extends StatelessWidget {
                 color: darkBlue,
                 onPressed: () {
                   cartScreenController.addToCart(product);
+                  homeScreenController.socket.on('cartCount',
+                      (data) => homeScreenController.cartLength.value = data);
+                  // homeScreenController.cartLength.value = int.parse(data);
+                  homeScreenController.cartLength.refresh();
                 },
               ),
             ],

@@ -9,10 +9,18 @@ import 'package:rxdart/rxdart.dart';
 import '../services/cart_api.dart';
 
 class CartScreenController extends GetxController {
-  var cartProducts = <CartModel>[].obs;
+  var cartProducts = CartModel(
+          products: [],
+          id: '',
+          user: '',
+          dateOrdered: DateTime.now(),
+          v: 0,
+          cartModelId: '')
+      .obs;
   StreamController cartTotal = BehaviorSubject();
   RxList<CartProduct> orderItems = <CartProduct>[].obs;
   RxBool isOrderItemsSelected = false.obs;
+  RxBool isLoading = false.obs;
   RxInt orderItemsTotal = 0.obs;
 
   void addToCart(Product product) async {
@@ -23,12 +31,14 @@ class CartScreenController extends GetxController {
   }
 
   void getCart() async {
+    isLoading.value = true;
     var products = await ApiCart().getCart(
       userId: getStorage.read('userId'),
     );
     if (products != null) {
-      cartProducts.value.add(products);
+      cartProducts.value = products;
     }
+    isLoading.value = false;
   }
 
   Future updateQuantity(
@@ -39,10 +49,13 @@ class CartScreenController extends GetxController {
         userId: getStorage.read('userId'),
       );
 
-  Future deleteItem({required String id, required String productId}) async =>
+  Future deleteItem({
+    required String id,
+    required String productId,
+  }) async =>
       await ApiCart().removeItemFromCart(id: id, productId: productId);
 
-  Future clearCart({required String userId}) async => await ApiCart().clearCart(
-        userId: userId,
+  Future clearCart() async => await ApiCart().clearCart(
+        userId: getStorage.read('userId'),
       );
 }

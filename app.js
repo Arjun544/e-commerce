@@ -83,3 +83,7 @@ module.exports.socket = socket;
 eventEmitter.on("updatedCart", (data) => {
   io.to(`product_${data.id}`).emit("updatedCart", data);
 });
+
+// eventEmitter.on("delete-cartitem", (data) => {
+//   io.to(`product_${data.id}`).emit("delete-cartitem", data);
+// });

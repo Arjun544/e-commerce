@@ -21,6 +21,44 @@ class StepTwo extends StatelessWidget {
   final RootScreenController rootScreenController = Get.find();
   final ProfileScreenController profileScreenController = Get.find();
 
+  void onContinuePressed(UserModel? currentUser) {
+    if (currentUser!.data.shippingAddress.isEmpty) {
+      EasyLoading.showToast(
+        'Select an address',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+    } else {
+      checkoutScreenController.activeStep.value += 1;
+      checkoutScreenController.order['shippingAddress'] = currentUser
+          .data
+          .shippingAddress[
+              profileScreenController.selectedShippingAddress.value]
+          .address;
+      checkoutScreenController.order['city'] = currentUser
+          .data
+          .shippingAddress[
+              profileScreenController.selectedShippingAddress.value]
+          .city;
+      checkoutScreenController.order['shippingAddress'] = currentUser
+          .data
+          .shippingAddress[
+              profileScreenController.selectedShippingAddress.value]
+          .address;
+      checkoutScreenController.order['country'] = currentUser
+          .data
+          .shippingAddress[
+              profileScreenController.selectedShippingAddress.value]
+          .country;
+      checkoutScreenController.order['phone'] = currentUser
+          .data
+          .shippingAddress[
+              profileScreenController.selectedShippingAddress.value]
+          .phone;
+      
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -57,26 +95,13 @@ class StepTwo extends StatelessWidget {
                       isOrdering: true,
                       currentUser: currentUser,
                     ),
+                    //  SizedBox(height: Get.height*0.15),
                     CustomButton(
                       height: 50,
                       width: Get.width * 0.7,
                       text: 'Continue',
                       color: darkBlue,
-                      onPressed: () {
-                        // log(currentUser!
-                        //     .data
-                        //     .shippingAddress[profileScreenController
-                        //         .selectedShippingAddress.value]
-                        //     .address
-                        //     .toString());
-                        currentUser!.data.shippingAddress.isEmpty
-                            ? EasyLoading.showToast(
-                                'No address',
-                                toastPosition: EasyLoadingToastPosition.top,
-                                maskType: EasyLoadingMaskType.clear,
-                              )
-                            : checkoutScreenController.activeStep.value += 1;
-                      },
+                      onPressed: () => onContinuePressed(currentUser),
                     ),
                   ],
                 );

@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:front_end/controllers/root_screen_controller.dart';
+import 'package:front_end/models/userModel.dart';
 
 import '../utils/constants.dart';
 import 'package:get/get.dart';
@@ -8,12 +10,14 @@ import 'package:get/get.dart';
 import '../services/user_api.dart';
 
 class ProfileScreenController extends GetxController {
+  final RootScreenController rootScreenController = Get.find();
   final TextEditingController newPassController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
   RxInt currentAvatar = 0.obs;
   RxInt selectedShippingAddress = 0.obs;
   RxInt currentPaymentCard = 0.obs;
+  UserModel? currentUser;
 
   Future updateProfile(
           {required String userId,

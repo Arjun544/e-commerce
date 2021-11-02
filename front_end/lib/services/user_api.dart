@@ -40,8 +40,11 @@ class ApiUser {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }
@@ -76,8 +79,11 @@ class ApiUser {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }
@@ -109,8 +115,11 @@ class ApiUser {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }
@@ -152,8 +161,11 @@ class ApiUser {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }
@@ -179,6 +191,7 @@ class ApiUser {
           'type': type,
         },
         options: Options(
+          headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
           followRedirects: false,
           validateStatus: (status) {
             return status! < 500;
@@ -193,8 +206,11 @@ class ApiUser {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }
@@ -234,10 +250,12 @@ class ApiUser {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
-      
     }
   }
 }

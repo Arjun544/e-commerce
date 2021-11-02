@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -78,13 +79,11 @@ class _StepOneState extends State<StepOne> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                cartScreenController
-                                    .orderItems[index].name,
+                                cartScreenController.orderItems[index].name,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
-                              cartScreenController
-                                          .orderItems[index].discount >
+                              cartScreenController.orderItems[index].discount >
                                       0
                                   ? Text(
                                       '\$ ${cartScreenController.orderItems[index].totalPrice.toString()}',
@@ -147,7 +146,8 @@ class _StepOneState extends State<StepOne> {
                                       : false,
                                   activeColor: customYellow,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5)),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
                                   onChanged: (value) {
                                     checkoutScreenController
                                         .selectedDelivery.value = index;
@@ -303,6 +303,14 @@ class _StepOneState extends State<StepOne> {
                 color: darkBlue,
                 onPressed: () {
                   checkoutScreenController.activeStep.value += 1;
+                  checkoutScreenController.order = {
+                    'total': checkoutScreenController.subTotal,
+                    'items': cartScreenController.orderItems.length,
+                    'delivery': checkoutScreenController.selectedDelivery.value,
+                    'deliveryFees': deliveryOptions[
+                            checkoutScreenController.selectedDelivery.value]
+                        .price,
+                  };
                 },
               ),
             ],

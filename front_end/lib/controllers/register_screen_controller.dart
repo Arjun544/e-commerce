@@ -133,6 +133,7 @@ class RegisterScreenController extends GetxController {
           maskType: EasyLoadingMaskType.clear,
         );
       } else {
+        await EasyLoading.dismiss();
         await getStorage.write('userId', response.data['userId']);
         // Saving jwt token in local storage
         await getStorage.write('token', response.data['token']);
@@ -140,12 +141,50 @@ class RegisterScreenController extends GetxController {
         // Save login status
         await getStorage.write('isLogin', true);
         await EasyLoading.dismiss();
-        await Get.offAll(() => RootScreen());
+        response.data['isActive'] == false
+            ? await Get.to(() => VerificationScreen())
+            : await Get.offAll(() => RootScreen());
       }
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);
       print(e);
+    }
+  }
+
+  Future<void> sendCode() async {
+    await EasyLoading.show(status: 'Sending code...', dismissOnTap: false);
+
+    Map data = {
+      'email': emailController.text,
+    };
+    try {
+      var response = await dio.patch(
+        baseUrl + 'users/sendCode',
+        data: data,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
+      );
+
+      if (response.data['error'] == true) {
+        // ignore: unawaited_futures
+        EasyLoading.showToast(
+          response.data['message'],
+          toastPosition: EasyLoadingToastPosition.top,
+          maskType: EasyLoadingMaskType.clear,
+        );
+      } else {
+        await EasyLoading.dismiss();
+      }
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
+      await EasyLoading.dismiss();
     }
   }
 }

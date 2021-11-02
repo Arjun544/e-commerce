@@ -33,9 +33,34 @@ class ApiCart {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
+    }
+  }
+
+  Future<int> cartCount({
+    required String userId,
+  }) async {
+    try {
+      var response = await dio.get(
+        baseUrl + 'cart/cartCount/$userId',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
+        ),
+      );
+      return response.data;
+    } catch (e) {
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+      print(e);
+      throw Exception('Failed to load');
     }
   }
 
@@ -52,8 +77,11 @@ class ApiCart {
 
       return cartModelFromJson(response.data);
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
       throw Exception('Failed to load');
     }
@@ -77,8 +105,11 @@ class ApiCart {
         ),
       );
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+     await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }
@@ -87,8 +118,9 @@ class ApiCart {
     required String id,
     required String productId,
   }) async {
+    await EasyLoading.show(status: 'loading...', dismissOnTap: false);
     try {
-      var response = await dio.delete(
+      await dio.patch(
         baseUrl + 'cart/$id',
         data: {
           'productId': productId,
@@ -98,15 +130,13 @@ class ApiCart {
           headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
         ),
       );
-
+      await EasyLoading.dismiss();
+    } catch (e) {
       await EasyLoading.showToast(
-        response.data,
+        'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
         maskType: EasyLoadingMaskType.clear,
       );
-    } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
       print(e);
     }
   }
@@ -116,7 +146,13 @@ class ApiCart {
   }) async {
     await EasyLoading.show(status: 'Clearing...', dismissOnTap: false);
     try {
-      var response = await dio.delete(baseUrl + 'cart/clear/$userId');
+      var response = await dio.delete(
+        baseUrl + 'cart/clear/$userId',
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
+        ),
+      );
 
       await EasyLoading.dismiss();
       await EasyLoading.showToast(
@@ -125,8 +161,11 @@ class ApiCart {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+    await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }

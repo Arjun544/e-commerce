@@ -2,18 +2,21 @@ import 'dart:developer';
 
 import 'package:card_swiper/card_swiper.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/models/customer_model.dart';
-import 'package:front_end/models/payment_card_model.dart';
 import 'package:front_end/utils/constants.dart';
-import 'add_card.dart';
+import 'package:front_end/widgets/credit_card_widget.dart';
+import 'package:front_end/widgets/custom_button.dart';
+import 'package:front_end/widgets/social_btn.dart';
+import '../../../models/payment_card_model.dart';
 import '../../../controllers/payment_controller.dart';
 import '../../../controllers/profile_screen_controller.dart';
-import '../../../widgets/social_btn.dart';
 import '../../../utils/colors.dart';
 import 'package:get/get.dart';
+
+import 'add_card.dart';
 
 class PaymentDetails extends StatefulWidget {
   final ProfileScreenController profileScreenController;
@@ -29,14 +32,7 @@ class _PaymentDetailsState extends State<PaymentDetails> {
 
   @override
   void initState() {
-    log(getStorage.read('customerId').toString() +
-        '   ' +
-        getStorage.read('card').toString());
-    if (getStorage.read('customerId') != null &&
-        getStorage.read('card') != null) {
-      paymentController.getCustomerCard(
-          id: getStorage.read('customerId'), card: getStorage.read('card'));
-    }
+    paymentController.getCustomerCard();
 
     super.initState();
   }
@@ -66,17 +62,137 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                   'Your Cards',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
-                const SizedBox(
-                  width: 10,
+                InkWell(
+                  onTap: () {
+                    Get.to(
+                      () => const AddCard(),
+                    );
+                  },
+                  child: const Text(
+                    'Add',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.green,
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
           const SizedBox(
-            height: 40,
+            height: 30,
           ),
-          getStorage.read('customerId') != null
-              ? Padding(
+          getStorage.read('customerId') != 'Null'
+              ? StreamBuilder(
+                  stream: paymentController.paymentCardStreamController.stream,
+                  builder: (context, AsyncSnapshot<PaymentModel> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox.shrink();
+                    }
+                    log(snapshot.data.toString());
+                    return snapshot.data!.card.data.isEmpty
+                        ? Padding(
+                            padding: EdgeInsets.only(top: Get.height * 0.3),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'No Cards',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.grey[500]),
+                                  ),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  DottedBorder(
+                                    color: Colors.black,
+                                    dashPattern: [10, 10],
+                                    strokeWidth: 2,
+                                    strokeCap: StrokeCap.round,
+                                    borderType: BorderType.RRect,
+                                    radius: const Radius.circular(15),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.to(
+                                          () => const AddCard(),
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        width: Get.width * 0.4,
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          'Add Card',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.card.data.length,
+                              padding: const EdgeInsets.only(left: 15),
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CreditCard(
+                                      card: snapshot.data!.card.data[index],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          bottom: 20, right: 25),
+                                      child: Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: Container(
+                                              height: 50,
+                                              width: 50,
+                                              margin: const EdgeInsets.only(
+                                                  right: 10),
+                                              decoration: BoxDecoration(
+                                                color: customGrey,
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              child: const Icon(
+                                                CupertinoIcons.delete_simple,
+                                                color: Colors.red,
+                                                size: 25,
+                                              ),
+                                            ),
+                                          ),
+                                          CustomButton(
+                                            height: 50,
+                                            width: Get.width * 0.7,
+                                            text: 'Set as default',
+                                            color: customYellow,
+                                            onPressed: () {},
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          );
+                  })
+              : Padding(
                   padding: EdgeInsets.only(top: Get.height * 0.3),
                   child: Center(
                     child: Column(
@@ -86,110 +202,42 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
-                              color: Colors.grey[400]),
+                              color: Colors.grey[500]),
                         ),
                         const SizedBox(
                           height: 30,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            DottedBorder(
-                              color: Colors.black,
-                              dashPattern: [10, 10],
-                              strokeWidth: 2,
-                              strokeCap: StrokeCap.round,
-                              borderType: BorderType.RRect,
-                              radius: const Radius.circular(15),
-                              child: InkWell(
-                                onTap: () {
-                                  Get.to(
-                                    () => const AddCard(),
-                                  );
-                                },
-                                child: Container(
-                                  height: 40,
-                                  width: Get.width * 0.4,
-                                  alignment: Alignment.center,
-                                  child: const Text(
-                                    'Add Card',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
+                        DottedBorder(
+                          color: Colors.black,
+                          dashPattern: [10, 10],
+                          strokeWidth: 2,
+                          strokeCap: StrokeCap.round,
+                          borderType: BorderType.RRect,
+                          radius: const Radius.circular(15),
+                          child: InkWell(
+                            onTap: () {
+                              Get.to(
+                                () => const AddCard(),
+                              );
+                            },
+                            child: Container(
+                              height: 40,
+                              width: Get.width * 0.4,
+                              alignment: Alignment.center,
+                              child: const Text(
+                                'Add Card',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                 ),
                               ),
                             ),
-                            SocialButton(
-                              height: 50,
-                              width: Get.width * 0.27,
-                              text: 'Scan',
-                              icon: 'assets/images/Scan.svg',
-                              color: customYellow,
-                              iconColor: Colors.white,
-                              onPressed: () {},
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
                   ),
                 )
-              : StreamBuilder(
-                  stream: paymentController.paymentCardStreamController.stream,
-                  builder: (context, AsyncSnapshot<PaymentCardModel> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const SizedBox.shrink();
-                    }
-
-                    return SizedBox(
-                      height: 200,
-                      child: Swiper(
-                        itemCount: 1,
-                        itemWidth: Get.width,
-                        layout: SwiperLayout.STACK,
-                        loop: false,
-                        onIndexChanged: (current) {
-                          widget.profileScreenController.currentPaymentCard
-                              .value = current;
-                        },
-                        itemBuilder: (context, index) => Padding(
-                          padding: index ==
-                                  widget.profileScreenController
-                                      .currentPaymentCard.value
-                              ? const EdgeInsets.only(left: 15)
-                              : const EdgeInsets.all(0),
-                          child: CreditCardWidget(
-                            cardNumber:
-                                '************${snapshot.data!.card.last4}',
-                            expiryDate:
-                                snapshot.data!.card.expMonth.toString() +
-                                    '/' +
-                                    snapshot.data!.card.expYear.toString(),
-                            cardHolderName: '',
-                            cvvCode: '',
-                            showBackView: false,
-                            cardBgColor: darkBlue,
-                            cardType: CardType.visa,
-                            labelCardHolder: 'Card Holder',
-                            labelExpiredDate: 'Exp Date',
-                            obscureCardNumber: true,
-                            obscureCardCvv: true,
-                            height: 175,
-                            textStyle: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                            width: Get.width,
-                            animationDuration:
-                                const Duration(milliseconds: 1000),
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
         ],
       ),
     );

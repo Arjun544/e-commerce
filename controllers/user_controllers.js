@@ -7,6 +7,7 @@ const { sendEmail } = require("../helpers/mailer");
 const cloudinary = require("cloudinary");
 const socket = require("../app");
 const Cart = require("../models/Cart");
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const userSchema = Joi.object().keys({
   username: Joi.string().required().min(2),
@@ -62,8 +63,16 @@ exports.register = async (req, res) => {
     result.value.emailToken = code;
     result.value.emailTokenExpires = new Date(expiry);
 
+    // create customer for stripe payment
+    const customer = await stripe.customers.create({
+      name: result.value.username,
+      description: "My Customer for SellCorner",
+    });
+
     const newUser = new User(result.value);
+    console.log(newUser);
     await newUser.save();
+
     const userCart = await User.find({ email: result.value.email });
 
     const cart = new Cart({
@@ -71,11 +80,16 @@ exports.register = async (req, res) => {
     });
     await cart.save();
 
+    await User.findByIdAndUpdate(userCart[0]._id, {
+      $set: { customerId: customer.id },
+    });
+
     return res.status(200).json({
       success: true,
       message: "Registration Success",
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       error: true,
       message: "Cannot Register",
@@ -108,12 +122,12 @@ exports.logIn = async (req, res) => {
     }
 
     //2. Throw error if account is not activated
-    if (!user.active) {
-      return res.status(400).json({
-        error: true,
-        message: "You must verify your email to login",
-      });
-    }
+    // if (!user.active) {
+    //    res.status(400).json({
+    //     error: true,
+    //     message: "You must verify your email to login",
+    //   });
+    // }
 
     //3. Verify the password is valid
     const isValid = await User.comparePasswords(password, user.password);
@@ -136,6 +150,7 @@ exports.logIn = async (req, res) => {
     //Success
     return res.json({
       success: true,
+      isActive: user.active,
       token: token,
       userId: user.id,
       message: "User logged in successfully",
@@ -292,6 +307,40 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
+exports.sendCode = async (req, res) => {
+  try {
+    let code = Math.floor(100000 + Math.random() * 900000); //Generate random 6 digit code.
+    let expiry = Date.now() + 60 * 1000 * 10; //Set expiry 10 mins ahead from now
+
+    const sendCode = await sendEmail(req.body.email, code);
+
+    if (sendCode.error) {
+      return res.status(500).json({
+        error: true,
+        message: "Couldn't send verification email.",
+      });
+    }
+    await User.findOneAndUpdate(
+      { email: req.body.email },
+      {
+        $set: {
+          emailToken: code,
+          emailTokenExpires: new Date(expiry),
+        },
+      }
+    );
+    return res.status(200).json({
+      message: "Code has been sent",
+    });
+  } catch (error) {
+    console.error("reset-password-error", error);
+    return res.status(500).json({
+      error: true,
+      message: error.message,
+    });
+  }
+};
+
 // @desc    Get all users
 // @route   GET /user/login
 // @access  Public
@@ -330,9 +379,6 @@ exports.count = async (req, res) => {
 // @access  Public
 exports.getUserById = async (req, res) => {
   try {
-    if (!mongoose.isValidObjectId(req.params.id)) {
-      return res.status(400).send("Invalid user id");
-    }
 
     const user = await User.findById(req.params.id).select(
       "-resetPasswordToken -resetPasswordExpires -emailToken -emailTokenExpires -password -isAdmin -updatedAt -v -dataId -createdAt -__v"

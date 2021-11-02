@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -37,11 +38,21 @@ class RootScreenController extends GetxController {
           responseType: ResponseType.plain,
         ),
       );
-      log(response.data.toString());
+      if (response.statusCode == 400) {
+        await EasyLoading.showToast(
+          response.data,
+          toastPosition: EasyLoadingToastPosition.top,
+          maskType: EasyLoadingMaskType.clear,
+        );
+      }
       currentUserStreamController.add(userModelFromJson(response.data));
+      return userModelFromJson(response.data);
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }

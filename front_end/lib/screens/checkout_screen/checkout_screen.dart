@@ -63,6 +63,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ),
           Obx(
             () => DotStepper(
+              tappingEnabled: false,
               dotCount: 4,
               dotRadius: 15,
               lineConnectorsEnabled: true,

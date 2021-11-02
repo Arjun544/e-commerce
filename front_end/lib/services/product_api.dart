@@ -14,7 +14,7 @@ class ApiProduct {
     required StreamController arrivalController,
     required StreamController featuredController,
   }) async {
-    // try {
+    try {
       var arrivalResponse = await dio.get(
         baseUrl + 'products/newArrival',
         options: Options(
@@ -37,11 +37,14 @@ class ApiProduct {
       categoriesController.add(categoryModelFromJson(categoriesResponse.data));
       arrivalController.add(productModelFromJson(arrivalResponse.data));
       featuredController.add(productModelFromJson(featuredResponse.data));
-    // } catch (e) {
-    //   Get.snackbar('Something is wrong', e.toString(),
-    //       snackPosition: SnackPosition.TOP);
-    //   print(e);
-    // }
+    } catch (e) {
+     await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+      print(e);
+    }
   }
 
   Future getSimilarProducts({
@@ -58,8 +61,11 @@ class ApiProduct {
       );
       controller.add(productModelFromJson(response.data));
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+     await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }
@@ -89,8 +95,11 @@ class ApiProduct {
         controller.add(productModelFromJson(response.data));
       }
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }
@@ -111,8 +120,11 @@ class ApiProduct {
       searchController.add(productModelFromJson(response.data));
       await EasyLoading.dismiss();
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }

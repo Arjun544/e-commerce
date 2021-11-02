@@ -26,8 +26,11 @@ class ApiWishList {
 
       await EasyLoading.dismiss();
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }
@@ -52,8 +55,11 @@ class ApiWishList {
 
       await EasyLoading.dismiss();
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
     }
   }

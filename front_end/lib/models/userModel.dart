@@ -38,6 +38,7 @@ class Data {
     required this.active,
     required this.id,
     required this.username,
+    required this.customerId,
     required this.email,
     required this.dataId,
   });
@@ -51,6 +52,7 @@ class Data {
   bool active;
   String id;
   String username;
+  String customerId;
   String email;
   String dataId;
 
@@ -65,6 +67,7 @@ class Data {
         active: json['active'],
         id: json['_id'],
         username: json['username'],
+        customerId: json['customerId'],
         email: json['email'],
         dataId: json['id'],
       );
@@ -80,6 +83,7 @@ class Data {
         'active': active,
         '_id': id,
         'username': username,
+        'customerId': customerId,
         'email': email,
         'id': dataId,
       };

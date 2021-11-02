@@ -10,8 +10,8 @@ import '../utils/constants.dart';
 import 'package:get/get.dart';
 
 class ApiPayment {
-  Future<CustomerModel> createCustomer({
-    required String name,
+  Future addPaymentMethod({
+    required String customerId,
     required String cardNumber,
     required String expMonth,
     required String expYear,
@@ -20,9 +20,9 @@ class ApiPayment {
     await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
 
     var response = await dio.post(
-      baseUrl + 'payment/createCustomer',
+      baseUrl + 'payment/addPaymentMethods',
       data: {
-        'name': name,
+        'customerId': customerId,
         'card': {
           'number': cardNumber,
           'exp_year': expYear,
@@ -31,40 +31,87 @@ class ApiPayment {
         }
       },
       options: Options(
+        headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
         responseType: ResponseType.plain,
       ),
     );
     if (response.statusCode == 200) {
+      var data = customerModelFromJson(response.data);
+      await getStorage.write('customerId', data.card.data[0].customer);
       await EasyLoading.dismiss();
-      log(response.data.toString());
-      return customerModelFromJson(response.data);
     } else {
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+      await EasyLoading.dismiss();
       throw Exception('failed to load');
     }
   }
 
   Future getCustomerCard({
     required String id,
-    required String card,
     required StreamController controller,
   }) async {
     await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
 
     try {
       var response = await dio.get(
-        baseUrl + 'payment/getCustomerCard/$id/$card',
+        baseUrl + 'payment/getCustomerCards/$id',
         options: Options(
+          headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
           responseType: ResponseType.plain,
         ),
       );
 
-      controller.add(paymentCardModelFromJson(response.data));
+      controller.add(paymentModelFromJson(response.data));
 
       await EasyLoading.dismiss();
     } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
       print(e);
+    }
+  }
+
+  Future payAmount({
+    required int amount,
+    required String customer,
+    required String card,
+    required String customerName,
+    required String address,
+    required String city,
+    required String country,
+  }) async {
+    try {
+      await dio.post(
+        baseUrl + 'payment/pay',
+        data: {
+          'amount': amount,
+          'customer': customer,
+          'card': card,
+          'customerName': customerName,
+          'address': address,
+          'city': city,
+          'country': country,
+        },
+        options: Options(
+          headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
+          responseType: ResponseType.plain,
+        ),
+      );
+    } catch (e) {
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+      print(e);
+      await EasyLoading.dismiss();
     }
   }
 }
