@@ -35,9 +35,7 @@ class CartScreenController extends GetxController {
     var products = await ApiCart().getCart(
       userId: getStorage.read('userId'),
     );
-    if (products != null) {
-      cartProducts.value = products;
-    }
+    cartProducts.value = products;
     isLoading.value = false;
   }
 

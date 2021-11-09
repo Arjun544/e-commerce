@@ -1,14 +1,12 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/controllers/payment_controller.dart';
-import 'package:front_end/models/customer_model.dart';
-import 'package:front_end/models/userModel.dart';
-import 'package:front_end/utils/constants.dart';
+import '../../../controllers/payment_controller.dart';
+import '../../../models/userModel.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../utils/colors.dart';
 import 'package:get/get.dart';
@@ -40,15 +38,17 @@ class _AddCardState extends State<AddCard> {
 
   void onAddPressed() async {
     if (formKey.currentState!.validate()) {
+      await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
       UserModel? userModel =
           await paymentController.rootScreenController.getCurrentUser();
-      await paymentController.addPaymentMethod(
+      await paymentController.addCard(
         customerId: userModel!.data.customerId,
         cardNumber: cardNumber.value,
         expMonth: expiryDate.value.split('/')[0].toString(),
         expYear: expiryDate.value.split('/')[1].toString(),
         cvc: cvvCode.value,
       );
+      await EasyLoading.dismiss();
       Get.back();
 
       setState(() {

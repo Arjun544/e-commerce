@@ -1,10 +1,8 @@
-import 'dart:developer';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/controllers/home_screen_controller.dart';
-import 'package:front_end/models/userModel.dart';
+import '../controllers/home_screen_controller.dart';
 import 'package:get/get.dart';
 
 import '../controllers/cart_screen_controller.dart';

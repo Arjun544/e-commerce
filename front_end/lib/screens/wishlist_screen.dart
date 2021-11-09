@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ import '../controllers/wishlist_controller.dart';
 import '../models/product_Model.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
-import '../widgets/customDialogue.dart';
 import 'detail_screen/detail_screen.dart';
 
 class WishlistScreen extends StatefulWidget {
@@ -58,18 +56,14 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         width: 15,
                       )
                     : GestureDetector(
-                        onTap: getStorage.read('isLogin') == true
-                            ? () async {
-                                await wishListController.clearWishlist();
-                                wishListController.ids.clear();
-                                await sharedPreferences.remove('favListIds');
-                                setState(() {
-                                  wishListController.getWishlist();
-                                });
-                              }
-                            : () {
-                                AccessDialogue(context);
-                              },
+                        onTap: () async {
+                          await wishListController.clearWishlist();
+                          wishListController.ids.clear();
+                          await sharedPreferences.remove('favListIds');
+                          setState(() {
+                            wishListController.getWishlist();
+                          });
+                        },
                         child: const Text(
                           'Clear',
                           style: TextStyle(
@@ -203,34 +197,21 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                 )
                                               : const SizedBox.shrink(),
                                           IconButton(
-                                            onPressed:
-                                                getStorage.read('isLogin') ==
-                                                        true
-                                                    ? () async {
-                                                        log(homeScreenController
-                                                            .favListIds
-                                                            .toString());
-                                                        homeScreenController
-                                                            .favListIds
-                                                            .remove(product.id);
-                                                        log(homeScreenController
-                                                            .favListIds
-                                                            .toString());
-                                                        wishListController.ids
-                                                            .remove(product.id);
-                                                        await sharedPreferences
-                                                            .setStringList(
-                                                                'favListIds',
-                                                                homeScreenController
-                                                                    .favListIds);
-                                                        setState(() {
-                                                          wishListController
-                                                              .getWishlist();
-                                                        });
-                                                      }
-                                                    : () {
-                                                        AccessDialogue(context);
-                                                      },
+                                            onPressed: () async {
+                                              homeScreenController.favListIds
+                                                  .remove(product.id);
+                                              wishListController.ids
+                                                  .remove(product.id);
+                                              await sharedPreferences
+                                                  .setStringList(
+                                                      'favListIds',
+                                                      homeScreenController
+                                                          .favListIds);
+                                              setState(() {
+                                                wishListController
+                                                    .getWishlist();
+                                              });
+                                            },
                                             icon: Icon(
                                               Icons.delete_rounded,
                                               size: 20,

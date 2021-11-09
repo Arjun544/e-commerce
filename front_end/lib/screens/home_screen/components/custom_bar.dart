@@ -2,9 +2,10 @@ import 'package:badges/badges.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+
 import '../../../controllers/root_screen_controller.dart';
 import '../../../utils/colors.dart';
-import 'package:get/get.dart';
 
 class CustomBar extends StatelessWidget {
   final RootScreenController controller;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import '../../../widgets/product_Item.dart';
-import '../../../widgets/loaders/featured_loader.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/detail_screen_controller.dart';
 import '../../../controllers/home_screen_controller.dart';
 import '../../../models/product_Model.dart';
 import '../../../utils/colors.dart';
+import '../../../widgets/loaders/featured_loader.dart';
+import '../../../widgets/product_Item.dart';
 import '../../detail_screen/detail_screen.dart';
 
 class SimilarSection extends StatefulWidget {

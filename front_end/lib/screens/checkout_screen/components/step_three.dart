@@ -1,12 +1,15 @@
 import 'dart:developer';
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:front_end/controllers/checkout_screen_controller.dart';
-import 'package:front_end/controllers/payment_controller.dart';
-import 'package:front_end/models/payment_card_model.dart';
-import 'package:front_end/utils/colors.dart';
-import 'package:front_end/widgets/credit_card_widget.dart';
-import 'package:front_end/widgets/custom_button.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import '../../profile_screen/components/add_card.dart';
+import '../../../controllers/checkout_screen_controller.dart';
+import '../../../controllers/payment_controller.dart';
+import '../../../models/payment_card_model.dart';
+import '../../../utils/colors.dart';
+import '../../../widgets/credit_card_widget.dart';
+import '../../../widgets/custom_button.dart';
 import 'package:get/get.dart';
 
 class StepThree extends StatefulWidget {
@@ -106,59 +109,120 @@ class _StepThreeState extends State<StepThree> {
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           ),
                         ),
-                        SizedBox(
-                          width: Get.width,
-                          height: 200,
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.card.data.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return Row(
-                                  children: [
-                                    Obx(
-                                      () => Radio(
-                                        activeColor: customYellow,
-                                        toggleable: true,
-                                        value: index == 0 ? 0 : 1,
-                                        groupValue: checkoutScreenController
-                                            .currentCard.value,
-                                        onChanged: (value) async {
-                                          checkoutScreenController
-                                              .currentCard.value = index;
-
-                                          checkoutScreenController
-                                                  .order['card'] =
-                                              snapshot
-                                                  .data!.card.data[index].id;
-                                        },
+                        snapshot.data!.card.data.isEmpty
+                            ? Padding(
+                                padding: EdgeInsets.only(
+                                  top: Get.height * 0.1,
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    children: [
+                                      const Text(
+                                        'No Cards',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            color: Colors.grey),
                                       ),
-                                    ),
-                                    CreditCard(
-                                      card: snapshot.data!.card.data[index],
-                                    ),
-                                  ],
-                                );
-                              }),
-                        ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      DottedBorder(
+                                        color: Colors.black,
+                                        dashPattern: [10, 10],
+                                        strokeWidth: 2,
+                                        strokeCap: StrokeCap.round,
+                                        borderType: BorderType.RRect,
+                                        radius: const Radius.circular(15),
+                                        child: InkWell(
+                                          onTap: () {
+                                            Get.to(
+                                              () => const AddCard(),
+                                            );
+                                          },
+                                          child: Container(
+                                            height: 40,
+                                            width: Get.width * 0.4,
+                                            alignment: Alignment.center,
+                                            child: const Text(
+                                              'Add Card',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : SizedBox(
+                                width: Get.width,
+                                height: 200,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data!.card.data.length,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return Row(
+                                        children: [
+                                          Obx(
+                                            () => Radio(
+                                              activeColor: customYellow,
+                                              toggleable: true,
+                                              value: index == 0 ? 0 : 1,
+                                              groupValue:
+                                                  checkoutScreenController
+                                                      .currentCard.value,
+                                              onChanged: (value) async {
+                                                checkoutScreenController
+                                                    .currentCard.value = index;
+
+                                                checkoutScreenController
+                                                        .order['card'] =
+                                                    snapshot.data!.card
+                                                        .data[index].id;
+                                              },
+                                            ),
+                                          ),
+                                          CreditCard(
+                                            card:
+                                                snapshot.data!.card.data[index],
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                              ),
                         checkoutScreenController.selectedPayment.value == 1
                             ? Padding(
                                 padding: const EdgeInsets.only(top: 60),
                                 child: Center(
                                   child: CustomButton(
-                                    height: 50,
-                                    width: Get.width * 0.7,
-                                    text: 'Continue',
-                                    color: darkBlue,
-                                    onPressed: () => onCardContinuePressed(
-                                      snapshot.data!.card.data[
-                                          checkoutScreenController
-                                              .currentCard.value],
-                                    ),
-                                  ),
+                                      height: 50,
+                                      width: Get.width * 0.7,
+                                      text: 'Continue',
+                                      color: darkBlue,
+                                      onPressed: () {
+                                        if (snapshot.data!.card.data.isEmpty) {
+                                          EasyLoading.showToast(
+                                            'No card selected',
+                                            toastPosition:
+                                                EasyLoadingToastPosition.top,
+                                            maskType: EasyLoadingMaskType.clear,
+                                          );
+                                        } else {
+                                          onCardContinuePressed(
+                                            snapshot.data!.card.data[
+                                                checkoutScreenController
+                                                    .currentCard.value],
+                                          );
+                                        }
+                                      }),
                                 ),
                               )
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                       ],
                     );
                   })

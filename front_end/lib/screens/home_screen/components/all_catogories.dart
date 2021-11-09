@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/models/product_Model.dart';
 import '../../filter_products_screen/filter_products_screen.dart';
 import 'package:intl/intl.dart';
 import '../../../models/category_model.dart';

@@ -1,15 +1,11 @@
 import 'dart:developer';
 
-import 'package:card_swiper/card_swiper.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_credit_card/credit_card_widget.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/utils/constants.dart';
-import 'package:front_end/widgets/credit_card_widget.dart';
-import 'package:front_end/widgets/custom_button.dart';
-import 'package:front_end/widgets/social_btn.dart';
+import '../../../utils/constants.dart';
+import '../../../widgets/credit_card_widget.dart';
 import '../../../models/payment_card_model.dart';
 import '../../../controllers/payment_controller.dart';
 import '../../../controllers/profile_screen_controller.dart';
@@ -154,36 +150,34 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          bottom: 20, right: 25),
-                                      child: Row(
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {},
-                                            child: Container(
-                                              height: 50,
-                                              width: 50,
-                                              margin: const EdgeInsets.only(
-                                                  right: 10),
-                                              decoration: BoxDecoration(
-                                                color: customGrey,
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
-                                              child: const Icon(
-                                                CupertinoIcons.delete_simple,
-                                                color: Colors.red,
-                                                size: 25,
-                                              ),
-                                            ),
+                                        bottom: 20,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          await paymentController.deleteCard(
+                                            id: snapshot
+                                                .data!.card.data[index].id,
+                                          );
+                                          setState(() {
+                                            paymentController.getCustomerCard();
+                                          });
+                                        },
+                                        child: Container(
+                                          height: 50,
+                                          width: 50,
+                                          margin:
+                                              const EdgeInsets.only(right: 10),
+                                          decoration: BoxDecoration(
+                                            color: customGrey,
+                                            borderRadius:
+                                                BorderRadius.circular(20),
                                           ),
-                                          CustomButton(
-                                            height: 50,
-                                            width: Get.width * 0.7,
-                                            text: 'Set as default',
-                                            color: customYellow,
-                                            onPressed: () {},
+                                          child: const Icon(
+                                            CupertinoIcons.delete_simple,
+                                            color: Colors.red,
+                                            size: 25,
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ],

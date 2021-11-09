@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../models/product_Model.dart';
 import '../utils/constants.dart';
-import 'package:get/get.dart';
 
 class ApiWishList {
   Future getWishlist({

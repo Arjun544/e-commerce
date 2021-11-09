@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/screens/profile_screen/components/payment_details.dart';
+import 'components/payment_details.dart';
 import '../../widgets/draggable_scaffold.dart';
 import 'components/reset_password.dart';
 import 'components/shipping_address.dart';
@@ -45,7 +45,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       headerWidget: Container(
         child: Column(
           children: [
-            const TopHeader(text: 'Profile'),
+            const Padding(
+              padding: EdgeInsets.only(top: 45, left: 8),
+              child: TopHeader(text: 'Profile'),
+            ),
             const SizedBox(height: 30),
             getStorage.read('isLogin') == true
                 ? StreamBuilder<UserModel>(

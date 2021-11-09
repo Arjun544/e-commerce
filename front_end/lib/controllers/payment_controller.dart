@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:front_end/controllers/root_screen_controller.dart';
-import 'package:front_end/models/userModel.dart';
+import 'root_screen_controller.dart';
+import '../models/userModel.dart';
 
 import '../models/payment_card_model.dart';
-import '../services/payment.dart';
-import '../utils/constants.dart';
+import '../services/payment_api.dart';
 
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -16,14 +15,14 @@ class PaymentController extends GetxController {
   final StreamController<PaymentModel> paymentCardStreamController =
       BehaviorSubject();
 
-  Future addPaymentMethod({
+  Future addCard({
     required String customerId,
     required String cardNumber,
     required String expMonth,
     required String expYear,
     required String cvc,
   }) async {
-    await ApiPayment().addPaymentMethod(
+    await ApiPayment().addCard(
       customerId: customerId,
       cardNumber: cardNumber,
       expMonth: expMonth,
@@ -38,5 +37,11 @@ class PaymentController extends GetxController {
     await ApiPayment().getCustomerCard(
         id: userModel!.data.customerId,
         controller: paymentCardStreamController);
+  }
+
+  Future deleteCard({required String id}) async {
+    await ApiPayment().deleteCard(
+      id: id,
+    );
   }
 }

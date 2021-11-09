@@ -5,7 +5,6 @@ import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../utils/constants.dart';
-import 'package:get/get.dart';
 
 class ApiUser {
   Future updateProfile({

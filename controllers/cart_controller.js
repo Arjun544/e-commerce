@@ -120,21 +120,30 @@ exports.deleteFromCart = async (req, res) => {
   try {
     console.log(req.params.id);
     console.log(req.body.productId);
-    // const product = await Cart.findByIdAndUpdate(req.params.id, {
-    //   $pull: {
-    //     products: {
-    //       id: req.body.productId,
-    //     },
-    //   },
-    // });
-    // if (!product) {
-    //   return res.send("No product found");
-    // }
+    const product = await Cart.findByIdAndUpdate(req.params.id, {
+      $pull: {
+        products: {
+          id: req.body.productId,
+        },
+      },
+    });
+    if (!product) {
+      return res.send("No product found");
+    }
+
+    const cart = await Cart.find({ user: req.params.id }).sort({
+      dateOrdered: -1,
+    });
 
     // const eventEmitter = req.app.get("eventEmitter");
     // eventEmitter.emit("delete-cartItem", {
     //   cart: cart[0],
     // });
+
+    return res.status(200).json({
+      success: false,
+      message: "Cart item has been deleted",
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -172,7 +181,7 @@ exports.clearCart = async (req, res) => {
         message: "Cart not found for user",
       });
     } else {
-      res.send("Cart cleared");
+     return res.send("Cart cleared");
     }
   } catch (error) {
     return res.status(500).json({ error: true, message: error });

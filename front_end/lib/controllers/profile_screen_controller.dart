@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:front_end/controllers/root_screen_controller.dart';
-import 'package:front_end/models/userModel.dart';
+import 'root_screen_controller.dart';
+import '../models/userModel.dart';
 
 import '../utils/constants.dart';
 import 'package:get/get.dart';

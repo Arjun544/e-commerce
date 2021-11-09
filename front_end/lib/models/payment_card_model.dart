@@ -2,7 +2,6 @@
 //
 //     final paymentModel = paymentModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 PaymentModel paymentModelFromJson(String str) =>

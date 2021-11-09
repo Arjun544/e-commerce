@@ -1,7 +1,5 @@
-import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
@@ -14,7 +12,6 @@ import '../../controllers/cart_screen_controller.dart';
 import '../../controllers/home_screen_controller.dart';
 import '../../models/cart_model.dart';
 import '../../utils/colors.dart';
-import '../../utils/constants.dart';
 import '../../widgets/social_btn.dart';
 
 class CartScreen extends StatefulWidget {
@@ -86,7 +83,18 @@ class _CartScreenState extends State<CartScreen> {
                                     )
                                   : GestureDetector(
                                       onTap: () async {
+                                        await EasyLoading.show(
+                                            status: 'Clearing...',
+                                            dismissOnTap: false);
                                         await cartScreenController.clearCart();
+                                        await EasyLoading.dismiss();
+
+                                        await EasyLoading.showToast(
+                                          'Cart cleared',
+                                          toastPosition:
+                                              EasyLoadingToastPosition.top,
+                                          maskType: EasyLoadingMaskType.clear,
+                                        );
 
                                         cartScreenController.getCart();
                                       },
@@ -131,7 +139,9 @@ class _CartScreenState extends State<CartScreen> {
                                       .cartProducts.value.products;
                                   RxList total = [].obs;
                                   total.add(products
-                                      .map((e) => e.price * e.quantity)
+                                      .map((e) => e.discount > 0
+                                          ? e.totalPrice
+                                          : e.price * e.quantity)
                                       .toList());
                                   cartScreenController.cartTotal
                                       .add(total[0].fold(0, (p, c) => p + c));
@@ -299,7 +309,8 @@ class _CartWidgetState extends State<CartWidget> {
                   }
                 }
                 total.add(widget.cartScreenController.orderItems
-                    .map((e) => e.price * e.quantity)
+                    .map((e) =>
+                        e.discount > 0 ? e.totalPrice : e.price * e.quantity)
                     .toList());
                 widget.cartScreenController.orderItemsTotal.value =
                     total[0].fold(0, (p, c) => p + c);
@@ -380,6 +391,36 @@ class _CartWidgetState extends State<CartWidget> {
                                             fontWeight: FontWeight.bold,
                                             fontSize: 13),
                                       ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                widget.product.discount > 0
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            '${widget.product.discount}%',
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          const Text(
+                                            'OFF',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : const SizedBox.shrink(),
                               ],
                             ),
                           ],

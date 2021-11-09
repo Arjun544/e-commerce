@@ -1,7 +1,7 @@
 require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
-exports.addPaymentMethods = async (req, res) => {
+exports.addCard = async (req, res) => {
   try {
     const paymentMethod = await stripe.paymentMethods.create({
       type: "card",
@@ -31,6 +31,27 @@ exports.addPaymentMethods = async (req, res) => {
     return res.json({
       success: false,
       message: "Something went wrong",
+    });
+  }
+};
+
+exports.deleteCard = async (req, res) => {
+  try {
+    const card = await stripe.paymentMethods.detach(req.params.id);
+
+    if (!card) {
+      return res.json({
+        success: false,
+        message: "Couldn't delete card",
+      });
+    } else {
+      return res.json("Card deleted");
+    }
+  } catch (error) {
+    console.log(error.raw.message);
+    return res.json({
+      success: false,
+      message: error.raw.message,
     });
   }
 };

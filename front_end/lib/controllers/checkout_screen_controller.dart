@@ -1,15 +1,13 @@
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/controllers/cart_screen_controller.dart';
-import 'package:front_end/controllers/root_screen_controller.dart';
-import 'package:front_end/models/delivery_model.dart';
-import 'package:front_end/models/userModel.dart';
-import 'package:front_end/screens/checkout_screen/components/pay_success_dialogue.dart';
-import 'package:front_end/services/orders_api.dart';
-import 'package:front_end/services/payment.dart';
-import 'package:front_end/utils/constants.dart';
+import 'cart_screen_controller.dart';
+import 'root_screen_controller.dart';
+import '../models/delivery_model.dart';
+import '../models/userModel.dart';
+import '../screens/checkout_screen/components/pay_success_dialogue.dart';
+import '../services/orders_api.dart';
+import '../services/payment_api.dart';
 import 'package:get/get.dart';
 
 class CheckoutScreenController extends GetxController {

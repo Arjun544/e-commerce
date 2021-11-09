@@ -5,12 +5,14 @@ const authMiddleware = require("../middlewares/auth_middleware");
 
 
 const {
-  addPaymentMethods,
+  addCard,
+  deleteCard,
   getCustomerCards,
   payAmount,
 } = require("../controllers/payment_controller");
 
-router.post("/addPaymentMethods", authMiddleware, cleanBody, addPaymentMethods);
+router.post("/addCard", authMiddleware, cleanBody, addCard);
+router.post("/deleteCard/:id", authMiddleware, cleanBody, deleteCard);
 router.get(
   "/getCustomerCards/:id",
   authMiddleware,

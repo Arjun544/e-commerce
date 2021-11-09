@@ -1,16 +1,12 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:front_end/widgets/address_widget.dart';
+import '../../../widgets/address_widget.dart';
 import 'add_ship_address.dart';
-import '../../../widgets/delete_confirm.dart';
-import 'package:intl/intl.dart';
 import '../../../controllers/profile_screen_controller.dart';
 import '../../../controllers/root_screen_controller.dart';
 import '../../../models/userModel.dart';
 import 'top_header.dart';
-import '../../../utils/colors.dart';
 import 'package:get/get.dart';
 
 class ShippingAddress extends StatefulWidget {

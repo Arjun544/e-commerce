@@ -27,7 +27,7 @@ const {
 router.post("/login", cleanBody, logIn);
 router.post("/register", cleanBody, register);
 router.patch("/sendCode", cleanBody, sendCode);
-router.post("/wishlist", authMiddleware, cleanBody, getWishlist);
+router.post("/wishlist", cleanBody, getWishlist);
 router.patch("/activate", cleanBody, activate);
 router.patch("/forgotPassword", authMiddleware, cleanBody, forgotPassword);
 router.patch("/resetPassword", authMiddleware, cleanBody, resetPassword);
@@ -49,7 +49,7 @@ router.get("/allUsers", authMiddleware, cleanBody, getAllUsers);
 router.get("/count", authMiddleware, cleanBody, count);
 router.get("/:id", cleanBody, getUserById);
 router.patch("/update/:id", authMiddleware, cleanBody, updateUser);
-router.patch("/wishlist/:userId", authMiddleware, cleanBody, clearWishlist);
+router.patch("/wishlist/:userId", cleanBody, clearWishlist);
 router.delete("/delete/:id", authMiddleware, cleanBody, deleteUserById);
 
 module.exports = router;

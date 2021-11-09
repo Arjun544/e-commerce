@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:front_end/models/payment_card_model.dart';
-import 'package:front_end/utils/colors.dart';
+import '../controllers/root_screen_controller.dart';
+import '../models/userModel.dart';
+import 'package:intl/intl.dart';
+import '../models/payment_card_model.dart';
+import '../utils/colors.dart';
 import 'package:get/get.dart';
 
 class CreditCard extends StatelessWidget {
@@ -10,6 +13,7 @@ class CreditCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final RootScreenController rootScreenController = Get.find();
     return Container(
       width: Get.width * 0.9,
       height: Get.height * 0.25,
@@ -66,13 +70,22 @@ class CreditCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                card.billingDetails.name ?? 'None',
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-              ),
+              StreamBuilder<UserModel>(
+                  stream:
+                      rootScreenController.currentUserStreamController.stream,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox.shrink();
+                    }
+                    return Text(
+                      toBeginningOfSentenceCase(snapshot.data!.data.username) ??
+                          '',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    );
+                  }),
               Row(
                 children: [
                   const Text(

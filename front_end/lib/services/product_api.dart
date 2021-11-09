@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import '../models/category_model.dart';
-import 'package:get/get.dart';
 
+import '../models/category_model.dart';
 import '../models/product_Model.dart';
 import '../utils/constants.dart';
 

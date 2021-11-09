@@ -4,17 +4,18 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
-import '../home_screen/components/filter_bottomSheet.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
+
 import '../../controllers/filtered_products_screen_controller.dart';
 import '../../controllers/home_screen_controller.dart';
-import 'package:lottie/lottie.dart';
 import '../../models/product_Model.dart';
-import '../detail_screen/detail_screen.dart';
 import '../../utils/colors.dart';
 import '../../widgets/loaders/featured_loader.dart';
 import '../../widgets/product_Item.dart';
-import 'package:get/get.dart';
+import '../detail_screen/detail_screen.dart';
+import '../home_screen/components/filter_bottomSheet.dart';
 
 class FilterProductsScreen extends StatefulWidget {
   final String filterBy;

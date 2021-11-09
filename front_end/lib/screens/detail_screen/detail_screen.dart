@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +44,7 @@ class DetailScreen extends StatelessWidget {
           child: Column(
             children: [
               TopHeader(
-                productId: product.id,
+                productId: product.id, 
               ),
               const SizedBox(height: 10),
               ProductImages(

@@ -2,10 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:front_end/controllers/root_screen_controller.dart';
-import 'package:front_end/models/userModel.dart';
-import 'package:front_end/services/cart_api.dart';
-import 'package:front_end/utils/constants.dart';
+import '../services/cart_api.dart';
+import '../utils/constants.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import '../models/category_model.dart';
 import 'package:get/get.dart';

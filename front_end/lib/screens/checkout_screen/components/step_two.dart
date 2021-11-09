@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -55,7 +54,6 @@ class StepTwo extends StatelessWidget {
           .shippingAddress[
               profileScreenController.selectedShippingAddress.value]
           .phone;
-      
     }
   }
 

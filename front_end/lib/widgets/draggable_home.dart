@@ -5,8 +5,9 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../controllers/root_screen_controller.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../controllers/root_screen_controller.dart';
 
 class DraggableHome extends StatefulWidget {
   @override

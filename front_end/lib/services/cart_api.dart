@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/models/product_Model.dart';
-import 'package:get/get.dart';
+import '../models/product_Model.dart';
 
 import '../models/cart_model.dart';
 import '../utils/constants.dart';
@@ -105,7 +103,7 @@ class ApiCart {
         ),
       );
     } catch (e) {
-     await EasyLoading.showToast(
+      await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
         maskType: EasyLoadingMaskType.clear,
@@ -131,6 +129,11 @@ class ApiCart {
         ),
       );
       await EasyLoading.dismiss();
+      await EasyLoading.showToast(
+        'Item deleted',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
     } catch (e) {
       await EasyLoading.showToast(
         'Something went wrong',
@@ -144,24 +147,16 @@ class ApiCart {
   Future clearCart({
     required String userId,
   }) async {
-    await EasyLoading.show(status: 'Clearing...', dismissOnTap: false);
     try {
-      var response = await dio.delete(
+       await dio.delete(
         baseUrl + 'cart/clear/$userId',
         options: Options(
           responseType: ResponseType.plain,
           headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
         ),
       );
-
-      await EasyLoading.dismiss();
-      await EasyLoading.showToast(
-        response.data,
-        toastPosition: EasyLoadingToastPosition.top,
-        maskType: EasyLoadingMaskType.clear,
-      );
     } catch (e) {
-    await EasyLoading.showToast(
+      await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
         maskType: EasyLoadingMaskType.clear,

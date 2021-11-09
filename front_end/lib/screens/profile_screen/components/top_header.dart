@@ -12,7 +12,9 @@ class TopHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 45, right: 12, left: 10),
+      padding: const EdgeInsets.only(
+        right: 12,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

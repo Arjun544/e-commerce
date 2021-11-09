@@ -4,13 +4,13 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../controllers/root_screen_controller.dart';
-import '../../../models/userModel.dart';
 import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 import '../../../controllers/profile_screen_controller.dart';
+import '../../../controllers/root_screen_controller.dart';
+import '../../../models/userModel.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
 import 'top_header.dart';

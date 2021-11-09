@@ -2,7 +2,6 @@
 //
 //     final customerModel = customerModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 CustomerModel customerModelFromJson(String str) =>

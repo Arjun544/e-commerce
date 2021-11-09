@@ -1,4 +1,4 @@
-import 'package:front_end/controllers/payment_controller.dart';
+import 'controllers/payment_controller.dart';
 
 import 'controllers/checkout_screen_controller.dart';
 import 'controllers/filtered_products_screen_controller.dart';

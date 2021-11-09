@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:pinput/pin_put/pin_put.dart';
+
 import '../../../controllers/profile_screen_controller.dart';
 import '../../../controllers/register_screen_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/pass_textField.dart';
-import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'top_header.dart';
-import 'package:pinput/pin_put/pin_put.dart';
 
 class ResetPassword extends StatelessWidget {
   final String currentUserEmail;

@@ -5,16 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
-import 'package:image_picker/image_picker.dart';
-
-import '../../../widgets/customDialogue.dart';
 
 import '../../../controllers/profile_screen_controller.dart';
 import '../../../models/userModel.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/constants.dart';
+import '../../../widgets/customDialogue.dart';
 import '../../../widgets/custom_button.dart';
 import '../../register_screen/register_screen.dart';
 import 'avatar_bottomSheet.dart';

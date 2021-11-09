@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/controllers/cart_screen_controller.dart';
-import 'package:front_end/controllers/checkout_screen_controller.dart';
-import 'package:front_end/models/delivery_model.dart';
-import 'package:front_end/services/orders_api.dart';
-import 'package:front_end/utils/colors.dart';
-import 'package:front_end/widgets/custom_button.dart';
+import '../../../controllers/cart_screen_controller.dart';
+import '../../../controllers/checkout_screen_controller.dart';
+import '../../../models/delivery_model.dart';
+import '../../../utils/colors.dart';
+import '../../../widgets/custom_button.dart';
 import 'package:get/get.dart';
 
 class StepFour extends StatelessWidget {

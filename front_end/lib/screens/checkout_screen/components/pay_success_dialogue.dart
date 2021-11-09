@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/screens/root_screen.dart';
-import 'package:front_end/utils/colors.dart';
-import 'package:front_end/widgets/custom_button.dart';
+import '../../../controllers/cart_screen_controller.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../utils/colors.dart';
+import '../../../widgets/custom_button.dart';
 
 void PaySuccessDialogue(BuildContext context) {
   showGeneralDialog(
@@ -13,6 +14,7 @@ void PaySuccessDialogue(BuildContext context) {
     transitionDuration: const Duration(milliseconds: 150),
     context: context,
     pageBuilder: (_, __, ___) {
+      final CartScreenController cartScreenController = Get.find();
       return Align(
         alignment: Alignment.center,
         child: Container(
@@ -31,13 +33,28 @@ void PaySuccessDialogue(BuildContext context) {
                   height: Get.height * 0.17,
                   repeat: false,
                 ),
-                const Text(
-                  'Payment Sucessful',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                Column(
+                  children: [
+                    const Text(
+                      'Payment Sucessful',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      'Order placed',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black45,
+                      ),
+                    ),
+                  ],
                 ),
                 CustomButton(
                   height: 50,
@@ -45,9 +62,10 @@ void PaySuccessDialogue(BuildContext context) {
                   text: 'Back Home',
                   color: customYellow,
                   onPressed: () async {
-                    await Get.to(
-                      () => RootScreen(),
-                    );
+                    await cartScreenController.clearCart();
+                    Get.back();
+                    Get.back();
+                    Get.back();
                   },
                 ),
               ],

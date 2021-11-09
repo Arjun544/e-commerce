@@ -2,7 +2,6 @@
 //
 //     final categoryModel = categoryModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 CategoryModel categoryModelFromJson(String str) =>
@@ -19,11 +18,11 @@ class CategoryModel {
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
         categoryList: List<CategoryList>.from(
-            json["categoryList"].map((x) => CategoryList.fromJson(x))),
+            json['categoryList'].map((x) => CategoryList.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "categoryList": List<dynamic>.from(categoryList.map((x) => x.toJson())),
+        'categoryList': List<dynamic>.from(categoryList.map((x) => x.toJson())),
       };
 }
 
@@ -50,26 +49,26 @@ class CategoryList {
 
   factory CategoryList.fromJson(Map<String, dynamic> json) => CategoryList(
         subCategories: List<SubCategory>.from(
-            json["subCategories"].map((x) => SubCategory.fromJson(x))),
-        status: json["status"],
-        id: json["_id"],
-        name: json["name"],
-        icon: json["icon"],
-        v: json["__v"],
-        categoryListId: json["id"],
-        iconId: json["iconId"] == null ? null : json["iconId"],
+            json['subCategories'].map((x) => SubCategory.fromJson(x))),
+        status: json['status'],
+        id: json['_id'],
+        name: json['name'],
+        icon: json['icon'],
+        v: json['__v'],
+        categoryListId: json['id'],
+        iconId: json['iconId'],
       );
 
   Map<String, dynamic> toJson() => {
-        "subCategories":
+        'subCategories':
             List<dynamic>.from(subCategories.map((x) => x.toJson())),
-        "status": status,
-        "_id": id,
-        "name": name,
-        "icon": icon,
-        "__v": v,
-        "id": categoryListId,
-        "iconId": iconId == null ? null : iconId,
+        'status': status,
+        '_id': id,
+        'name': name,
+        'icon': icon,
+        '__v': v,
+        'id': categoryListId,
+        'iconId': iconId,
       };
 }
 
@@ -83,12 +82,12 @@ class SubCategory {
   String name;
 
   factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(
-        id: json["id"],
-        name: json["name"],
+        id: json['id'],
+        name: json['name'],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
+        'id': id,
+        'name': name,
       };
 }
