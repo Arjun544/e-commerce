@@ -61,9 +61,7 @@ exports.addOrder = async (req, res) => {
 
 exports.getOrders = async (req, res) => {
   try {
-    const orderList = await Order.find()
-      .populate("user", "name")
-      .sort({ dateOrdered: -1 });
+    const orderList = await Order.find().sort({ dateOrdered: -1 });
 
     res.send({
       sucess: true,
@@ -173,7 +171,7 @@ exports.count = async (req, res) => {
 };
 
 exports.userOrders = async (req, res) => {
-  const userOrderList = await Order.find({ user: req.params.id })
+  const userOrderList = await Order.find({ "user.id": req.params.id })
     .populate({
       path: "orderItems",
       populate: {

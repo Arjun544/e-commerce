@@ -164,15 +164,17 @@ function OrdersTable({ columns, data }) {
                                       return "text-red-500";
                                     if (cell.value === "Card")
                                       return "text-green-500";
-                                    if (cell === "Pending")
+                                    if (cell.value === "Free")
                                       return "text-customYellow-light";
-                                    if (cell.value === "Confirmed")
+                                    if (cell.value === "Express")
                                       return "text-green-500";
-                                    if (cell.value === "Delivered")
-                                      return "text-green-500";
+                                    if (cell.value === "Processing")
+                                      return "text-customYellow-light";
                                     if (cell.value === "Cancelled")
                                       return "text-red-500";
-                                    if (cell.value === "Express")
+                                    if (cell.value === "Completed")
+                                      return "text-green-500";
+                                    if (cell.value === "Out for delivery")
                                       return "text-green-500";
                                     else {
                                       return "text-gray-500";

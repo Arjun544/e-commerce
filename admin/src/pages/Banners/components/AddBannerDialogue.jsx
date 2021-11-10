@@ -27,8 +27,6 @@ const AddBannerDialogue = ({
   setIsEditing,
   setBanners,
   setAddBannerAlert,
-  input,
-  setInput,
 }) => {
   const { socket } = useContext(AppContext);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -38,7 +36,6 @@ const AddBannerDialogue = ({
 
   useEffect(() => {
     if (isEditing) {
-      setInput(editingBanner.title);
       setSelectedType(editingBanner.type);
       setFile(editingBanner.image);
     }
@@ -46,7 +43,7 @@ const AddBannerDialogue = ({
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    if (input.length === 0 || file === "") {
+    if ( file === "") {
       enqueueSnackbar("Fields can't be empty", {
         variant: "error",
         autoHideDuration: 2000,
@@ -59,13 +56,13 @@ const AddBannerDialogue = ({
     } else {
       try {
         setLoading(true);
-        await addBanner(input, file[0].getFileEncodeDataURL(), selectedType, []);
+        await addBanner(file[0].getFileEncodeDataURL(), selectedType, []);
         setLoading(false);
         setAddBannerAlert(false);
         socket.current.on("add-banner", (newBanners) => {
           setBanners(newBanners);
         });
-        setInput("");
+        
         setIsEditing(false);
         enqueueSnackbar("Banner added", {
           variant: "success",
@@ -77,7 +74,6 @@ const AddBannerDialogue = ({
           autoHideDuration: 2000,
         });
         setLoading(false);
-        setInput("");
         setIsEditing(false);
       }
     }
@@ -85,7 +81,7 @@ const AddBannerDialogue = ({
 
   const handleEdit = async (e) => {
     e.preventDefault();
-    if (input.length === 0 || file === "") {
+    if ( file === "") {
       enqueueSnackbar("Fields can't be empty", {
         variant: "error",
         autoHideDuration: 2000,
@@ -95,7 +91,6 @@ const AddBannerDialogue = ({
         setLoading(true);
         await updateBanner(
           editingBanner._id,
-          input,
           file[0].getFileEncodeDataURL(),
           editingBanner.imageId,
         );
@@ -104,7 +99,6 @@ const AddBannerDialogue = ({
         socket.current.on("edit-banner", (newBanners) => {
           setBanners(newBanners);
         });
-        setInput("");
         setIsEditing(false);
         enqueueSnackbar("Banner updated", {
           variant: "success",
@@ -116,7 +110,6 @@ const AddBannerDialogue = ({
           autoHideDuration: 2000,
         });
         setLoading(false);
-        setInput("");
         setIsEditing(false);
       }
     }
@@ -129,17 +122,7 @@ const AddBannerDialogue = ({
           {isEditing ? "Edit Banner" : "Add Banner"}
         </span>
       </div>
-      <div className="flex items-center justify-center">
-        <input
-          className="h-14 w-full rounded-2xl text-black bg-bgColor-light pl-4 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
-          placeholder={isEditing ? editingBanner.name : "Title"}
-          type="text"
-          value={input}
-          onChange={(e) => {
-            setInput(e.target.value);
-          }}
-        />
-      </div>
+     
       <TypesDropDown  selectedType={selectedType} setSelectedType={setSelectedType} ></TypesDropDown>
       <FilePond
         files={file}
@@ -161,7 +144,6 @@ const AddBannerDialogue = ({
           onClick={(e) => {
             e.preventDefault();
             setAddBannerAlert(false);
-            setInput("");
             setIsEditing(false);
           }}
           className="flex h-12 bg-red-500  shadow-sm border-none ml-4 w-32 rounded-xl  items-center justify-center cursor-pointer transform hover:scale-95  transition duration-500 ease-in-out"

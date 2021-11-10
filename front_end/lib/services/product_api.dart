@@ -37,7 +37,7 @@ class ApiProduct {
       arrivalController.add(productModelFromJson(arrivalResponse.data));
       featuredController.add(productModelFromJson(featuredResponse.data));
     } catch (e) {
-     await EasyLoading.showToast(
+      await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
         maskType: EasyLoadingMaskType.clear,
@@ -60,7 +60,7 @@ class ApiProduct {
       );
       controller.add(productModelFromJson(response.data));
     } catch (e) {
-     await EasyLoading.showToast(
+      await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
         maskType: EasyLoadingMaskType.clear,

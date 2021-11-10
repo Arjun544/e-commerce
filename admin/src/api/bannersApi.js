@@ -5,11 +5,10 @@ const cookies = new Cookies();
 const api = axios.create();
 
 // List of all the endpoints
-export const addBanner = (title, image, type, products) =>
+export const addBanner = (image, type, products) =>
   api.post(
     "/api/banners/add",
     {
-      title,
       image,
       type,
       products,
@@ -32,10 +31,10 @@ export const getBanners = () =>
     },
   });
 
-export const updateBanner = (id, title, image, imageId) =>
+export const updateBanner = (id, image, imageId) =>
   api.patch(
     `/api/banners/update/${id}`,
-    { title, image, imageId },
+    { image, imageId },
     {
       headers: {
         "Content-type": "application/json",

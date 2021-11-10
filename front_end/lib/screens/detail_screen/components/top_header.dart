@@ -11,7 +11,8 @@ import '../../../utils/constants.dart';
 
 class TopHeader extends StatelessWidget {
   final String productId;
-  TopHeader({required this.productId});
+  final bool isBannerProduct;
+  TopHeader({required this.productId, required this.isBannerProduct});
 
   final WishListController wishListController = Get.find();
   final HomeScreenController homeScreenController = Get.find();
@@ -32,46 +33,49 @@ class TopHeader extends StatelessWidget {
         const SizedBox(
           width: 15,
         ),
-        PreferenceBuilder<List<String>>(
-            preference:
-                sharedPreferences.getStringList('favListIds', defaultValue: []),
-            builder: (context, snapshot) {
-              wishListController.ids = snapshot;
-              return LikeButton(
-                mainAxisAlignment: MainAxisAlignment.end,
-                size: 20,
-                isLiked: snapshot.contains(productId) ? true : false,
-                circleColor: const CircleColor(
-                  start: Colors.pink,
-                  end: Colors.pink,
-                ),
-                bubblesColor: BubblesColor(
-                  dotPrimaryColor: Colors.pink,
-                  dotSecondaryColor: Colors.pink.withOpacity(0.5),
-                ),
-                likeBuilder: (bool isLiked) {
-                  return isLiked
-                      ? SvgPicture.asset(
-                          'assets/images/Heart.svg',
-                          color: Colors.pink,
-                        )
-                      : SvgPicture.asset(
-                          'assets/images/Heart-Outline.svg',
-                          color: Colors.black,
-                        );
-                },
-                onTap: (isLiked) async {
-                  isLiked
-                      ? homeScreenController.favListIds.remove(productId)
-                      : homeScreenController.favListIds.insert(0, productId);
-                  await sharedPreferences.setStringList(
-                    'favListIds',
-                    homeScreenController.favListIds,
+        !isBannerProduct
+            ? PreferenceBuilder<List<String>>(
+                preference: sharedPreferences
+                    .getStringList('favListIds', defaultValue: []),
+                builder: (context, snapshot) {
+                  wishListController.ids = snapshot;
+                  return LikeButton(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    size: 20,
+                    isLiked: snapshot.contains(productId) ? true : false,
+                    circleColor: const CircleColor(
+                      start: Colors.pink,
+                      end: Colors.pink,
+                    ),
+                    bubblesColor: BubblesColor(
+                      dotPrimaryColor: Colors.pink,
+                      dotSecondaryColor: Colors.pink.withOpacity(0.5),
+                    ),
+                    likeBuilder: (bool isLiked) {
+                      return isLiked
+                          ? SvgPicture.asset(
+                              'assets/images/Heart.svg',
+                              color: Colors.pink,
+                            )
+                          : SvgPicture.asset(
+                              'assets/images/Heart-Outline.svg',
+                              color: Colors.black,
+                            );
+                    },
+                    onTap: (isLiked) async {
+                      isLiked
+                          ? homeScreenController.favListIds.remove(productId)
+                          : homeScreenController.favListIds
+                              .insert(0, productId);
+                      await sharedPreferences.setStringList(
+                        'favListIds',
+                        homeScreenController.favListIds,
+                      );
+                      return !isLiked;
+                    },
                   );
-                  return !isLiked;
-                },
-              );
-            }),
+                })
+            : const SizedBox.shrink(),
       ],
     );
   }

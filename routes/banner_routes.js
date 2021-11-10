@@ -8,6 +8,7 @@ const upload = require("../config/multer");
 const {
   addBanner,
   getAdminBanners,
+  getUserBanners,
   deleteBanner,
   updateStatus,
   updateBanner,
@@ -23,6 +24,7 @@ router.post(
   addBanner
 );
 router.get("/get", authMiddleware, cleanBody, getAdminBanners);
+router.get("/getUserBanners", cleanBody, getUserBanners);
 router.patch(
   "/updateStatus/:id/:status",
   authMiddleware,

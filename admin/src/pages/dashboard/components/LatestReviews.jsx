@@ -14,9 +14,8 @@ const LatestReviews = () => {
       try {
         const { data } = await getRecentReviews();
         setRecentReviews(data.filteredReviews);
-        console.log(data.filteredReviews);
       } catch (error) {
-        console.log(error.response);
+        console.log(error);
       }
     };
     getReviews();

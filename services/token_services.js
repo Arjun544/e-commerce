@@ -4,24 +4,11 @@ const refreshTokenSecret = process.env.REFRESH_JWT_SECRET;
 const Token = require("../models/Token");
 class TokenService {
   generateTokens(payload) {
-    const accessToken = jwt.sign(payload, accessTokenSecret, {
-      expiresIn: "1m",
-    });
+    const accessToken = jwt.sign(payload, accessTokenSecret);
     const refreshToken = jwt.sign(payload, refreshTokenSecret, {
       expiresIn: "1y",
     });
     return { accessToken, refreshToken };
-  }
-
-  async storeRefreshToken(token, userId) {
-    try {
-      await Token.create({
-        token,
-        userId,
-      });
-    } catch (err) {
-      console.log(err.message);
-    }
   }
 
   async verifyAccessToken(token) {
@@ -43,8 +30,8 @@ class TokenService {
     return await Token.updateOne({ userId: userId }, { token: refreshToken });
   }
 
-  async removeToken(refreshToken) {
-    return await Token.deleteOne({ token: refreshToken });
+  async removeToken(acessToken) {
+    return await Token.deleteOne({ token: acessToken });
   }
 }
 

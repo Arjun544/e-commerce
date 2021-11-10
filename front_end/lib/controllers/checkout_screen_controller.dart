@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'cart_screen_controller.dart';
@@ -37,7 +36,7 @@ class CheckoutScreenController extends GetxController {
       deliveryFee: order['deliveryFees'],
       country: order['country'],
       phone: order['phone'],
-      user: currentUser!.data.id,
+      user: currentUser!.data,
     );
     if (order['payment'] == 1) {
       await ApiPayment().payAmount(

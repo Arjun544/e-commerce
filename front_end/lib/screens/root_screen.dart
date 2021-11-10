@@ -1,4 +1,3 @@
-
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -42,7 +41,8 @@ class _RootScreenState extends State<RootScreen> {
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       if (getStorage.read('isLogin') == true) {
         await rootScreenController.getCurrentUser();
-        
+        homeScreenController.cartLength.value = await homeScreenController
+            .cartCount(userId: getStorage.read('userId'));
       }
     });
   }

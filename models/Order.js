@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const User = require("../models/User");
 
 const orderSchema = mongoose.Schema({
   orderItems: [
@@ -43,8 +42,8 @@ const orderSchema = mongoose.Schema({
     type: Number,
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: User,
+    type: Object,
+    required: true,
   },
   dateOrdered: {
     type: Date,

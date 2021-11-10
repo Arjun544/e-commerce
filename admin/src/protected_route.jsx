@@ -3,12 +3,13 @@ import { Route, Redirect } from "react-router-dom";
 
 export const ProtectedRoute = ({ children, ...rest }) => {
   const { user, isAuth } = useSelector((state) => state.auth);
+  
   return (
     <Route
       {...rest}
       exact
       render={({ location }) => {
-        return !isAuth && !user ? (
+        return !user ? (
           <Redirect
             exact
             to={{
@@ -23,6 +24,8 @@ export const ProtectedRoute = ({ children, ...rest }) => {
     ></Route>
   );
 };
+
+
 
 export const GuestRoute = ({ children, ...rest }) => {
   const { isAuth } = useSelector((state) => state.auth);

@@ -4,6 +4,15 @@ const cookies = new Cookies();
 const api = axios.create();
 
 // List of all the endpoints
+export const getOrders = () =>
+  api.get("/api/orders/get", {
+    headers: {
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
+    },
+  });
+
 export const getUserOrders = (id) =>
   api.get(`/api/orders/userOrders/${id}`, {
     headers: {

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import Logo from "../../components/icons/Logo";
 import Loader from "react-loader-spinner";
 import { useDispatch } from "react-redux";
-import { setAuth } from "../../redux/authSlice";
+import { setAuth } from "../../redux/reducers/authSlice";
 import { login } from "../../api/userApi";
 
 const Login = () => {

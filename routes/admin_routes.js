@@ -5,11 +5,9 @@ const cleanBody = require("../middlewares/cleanBody");
 const {
   logIn,
   logout,
-  refreshToken,
 } = require("../controllers/admin_controller");
 
 router.post("/login", cleanBody, logIn);
 router.post("/logout", cleanBody, logout);
-router.post("/refresh", cleanBody, refreshToken);
 
 module.exports = router;

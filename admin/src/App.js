@@ -2,7 +2,7 @@ import { useState, createContext, useEffect, useRef } from "react";
 import "./App.css";
 import SideBar from "./components/SideBar";
 import Dashboard from "./pages/dashboard/Dashboard";
-import { BrowserRouter, Switch } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import { SnackbarProvider } from "notistack";
 import Grow from "@material-ui/core/Grow";
@@ -12,7 +12,6 @@ import Orders from "./pages/orders/Orders";
 import Products from "./pages/products/Products";
 import { ProtectedRoute } from "./protected_route";
 import { GuestRoute } from "./protected_route";
-import { RefreshHook } from "./hooks/refreshHook";
 import Loader from "react-loader-spinner";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import Categories from "./pages/categories/Categories";
@@ -26,10 +25,10 @@ import Reviews from "./pages/Reviews/Reviews";
 export const AppContext = createContext(null);
 
 function App() {
-  // calls refresh token endpoint
+  
   const socketUrl = io("http://localhost:4000");
   let socket = useRef(null);
-  const { refreshing } = RefreshHook();
+  
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +47,7 @@ function App() {
     });
   }, [socketUrl]);
 
-  return refreshing || isLoading ? (
+  return isLoading ? (
     <div className="flex w-full h-screen items-center justify-center bg-white">
       <Loader
         type="Puff"
@@ -79,6 +78,7 @@ function App() {
         }}
       >
         <div className=" w-screen h-screen m-0 box-border bg-white">
+        
           <BrowserRouter>
             <Switch>
               <GuestRoute exact path="/login">
@@ -98,13 +98,13 @@ function App() {
                 <ProtectedRoute path="/" exact>
                   <Dashboard />
                 </ProtectedRoute>
-                <ProtectedRoute path="/orders">
+                <ProtectedRoute path="/orders" exact>
                   <Orders />
                 </ProtectedRoute>
                 <ProtectedRoute path="/products" exact>
                   <Products />
                 </ProtectedRoute>
-                <ProtectedRoute path="/categories">
+                <ProtectedRoute path="/categories" exact>
                   <Categories />
                 </ProtectedRoute>
                 <ProtectedRoute path="/products/view/:id" exact>
@@ -116,13 +116,13 @@ function App() {
                 <ProtectedRoute path="/products/edit/:id" exact>
                   <AddProduct isEditing={true} />
                 </ProtectedRoute>
-                <ProtectedRoute path="/banners">
+                <ProtectedRoute path="/banners" exact>
                   <Banners />
                 </ProtectedRoute>
-                <ProtectedRoute path="/flashDeal">
+                <ProtectedRoute path="/flashDeal" exact>
                   <FlashDeal />
                 </ProtectedRoute>
-                <ProtectedRoute path="/customers">
+                <ProtectedRoute path="/customers" exact>
                   <Customers />
                 </ProtectedRoute>
                 <ProtectedRoute path="/customers/view/:id" exact>

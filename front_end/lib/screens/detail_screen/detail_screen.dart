@@ -1,4 +1,3 @@
-
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,8 +20,9 @@ import 'components/top_header.dart';
 
 class DetailScreen extends StatelessWidget {
   final Product product;
+  final bool isBannerProduct;
 
-  DetailScreen({required this.product});
+  DetailScreen({required this.product, this.isBannerProduct = false});
 
   final DetailScreenController detailScreenController =
       Get.put(DetailScreenController());
@@ -36,6 +36,7 @@ class DetailScreen extends StatelessWidget {
       curvedBodyRadius: 0,
       headerExpandedHeight: 0.5,
       title: TopHeader(
+        isBannerProduct: isBannerProduct,
         productId: product.id,
       ),
       headerWidget: Container(
@@ -44,7 +45,8 @@ class DetailScreen extends StatelessWidget {
           child: Column(
             children: [
               TopHeader(
-                productId: product.id, 
+                isBannerProduct: isBannerProduct,
+                productId: product.id,
               ),
               const SizedBox(height: 10),
               ProductImages(

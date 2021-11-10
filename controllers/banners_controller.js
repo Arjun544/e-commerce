@@ -6,9 +6,9 @@ const Product = require("../models/Product");
 
 exports.addBanner = async (req, res) => {
   try {
-    const { title, image, type } = req.body;
+    const { image, type } = req.body;
 
-    if (!title || !image || !type) {
+    if (!image || !type) {
       return res.send({
         success: false,
         message: "All fields are required",
@@ -19,7 +19,6 @@ exports.addBanner = async (req, res) => {
     const result = await cloudinary.uploader.upload(image);
     if (type === "General") {
       const banner = new Banner({
-        title: title,
         image: result.secure_url,
         imageId: result.public_id,
         type: type,
@@ -33,7 +32,6 @@ exports.addBanner = async (req, res) => {
       });
     } else {
       const banner = new Banner({
-        title: title,
         image: result.secure_url,
         imageId: result.public_id,
         type: type,
@@ -59,6 +57,21 @@ exports.addBanner = async (req, res) => {
   }
 };
 
+exports.getUserBanners = async (req, res) => {
+  try {
+    const banners = await Banner.find({ status: true });
+    res.status(200).json({
+      success: true,
+      banners: banners,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
 exports.getAdminBanners = async (req, res) => {
   try {
     const banners = await Banner.find();
@@ -116,7 +129,6 @@ exports.updateBanner = async (req, res) => {
       req.params.id,
       {
         $set: {
-          title: req.body.title,
           image: result.secure_url,
           imageId: result.public_id,
         },

@@ -7,7 +7,7 @@ import TableActions from "./components/table_actions";
 import TopBar from "../../components/TopBar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { setProducts } from "../../redux/productsSlice";
+import { setProducts } from "../../redux/reducers/productsSlice";
 import { getProducts } from "../../api/productsApi";
 import Loader from "react-loader-spinner";
 import Avatar from "./components/avatar";

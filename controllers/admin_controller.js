@@ -34,29 +34,21 @@ exports.logIn = async (req, res) => {
         message: "Invalid credentials",
       });
     }
-    const { accessToken, refreshToken } = tokenService.generateTokens({
+    const { accessToken } = tokenService.generateTokens({
       _id: admin._id,
       activated: false,
     });
-    await tokenService.storeRefreshToken(refreshToken, admin._id);
 
-    res.cookie("refreshToken", refreshToken, {
-      maxAge: 1000 * 60 * 60 * 24 * 30,
-      httpOnly: false,
-    });
-
-    res.cookie("accessToken", accessToken, {
-      maxAge: 1000 * 60 * 60 * 24 * 30,
-      httpOnly: false,
-    });
+    res.cookie("accessToken", accessToken);
 
     await admin.save();
     //Success
     return res.json({
-      user: admin,
+      user: { id: admin.id, profile: admin.profile, email: admin.email },
       auth: true,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       error: true,
       message: "Couldn't login. Please try again later.",
@@ -64,66 +56,11 @@ exports.logIn = async (req, res) => {
   }
 };
 
-exports.refreshToken = async (req, res) => {
-  // get refresh token from cookie
-
-  const { refreshTokenFromCookie } = req.cookies;
-
-  // check if token is valid
-  let userData;
-  try {
-    userData = await tokenService.verifyRefreshToken(refreshTokenFromCookie);
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid Token" });
-  }
-  // Check if token is in db
-  try {
-    const token = await tokenService.findRefreshToken(
-      userData._id,
-      refreshTokenFromCookie
-    );
-    if (!token) {
-      return res.status(401).json({ message: "Invalid token" });
-    }
-  } catch (err) {
-    return res.status(500).json({ message: "Internal error" });
-  }
-  // check if valid user
-  const user = await Admin.findOne({ _id: userData._id });
-  if (!user) {
-    return res.status(404).json({ message: "No user" });
-  }
-  // Generate new tokens
-  const { refreshToken, accessToken } = tokenService.generateTokens({
-    _id: userData._id,
-  });
-
-  // Update refresh token
-  try {
-    await tokenService.updateRefreshToken(userData._id, refreshToken);
-  } catch (err) {
-    return res.status(500).json({ message: "Internal error" });
-  }
-  // put in cookie
-  res.cookie("refreshToken", refreshToken, {
-    maxAge: 1000 * 60 * 60 * 24 * 30,
-    httpOnly: false,
-  });
-
-  res.cookie("accessToken", accessToken, {
-    maxAge: 1000 * 60 * 60 * 24 * 30,
-    httpOnly: false,
-  });
-  // response
-  res.json({ user: user, auth: true });
-};
-
 exports.logout = async (req, res) => {
-  const { refreshToken } = req.cookies;
+  const { accessToken } = req.cookies;
   // delete refresh token from db
-  await tokenService.removeToken(refreshToken);
+  await tokenService.removeToken(accessToken);
   // delete cookies
-  res.clearCookie("refreshToken");
   res.clearCookie("accessToken");
   res.json({ user: null, auth: false });
 };

@@ -13,10 +13,14 @@ import 'package:like_button/like_button.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class ProductItem extends StatelessWidget {
+  final bool isBannerProduct;
   final Product product;
   final HomeScreenController homeScreenController;
 
-  ProductItem({required this.product, required this.homeScreenController});
+  ProductItem(
+      {required this.product,
+      required this.homeScreenController,
+      this.isBannerProduct = false});
 
   final WishListController wishListController = Get.find();
 
@@ -90,44 +94,47 @@ class ProductItem extends StatelessWidget {
                           ),
                         )
                       : const SizedBox.shrink(),
-                  PreferenceBuilder<List<String>>(
-                      preference: sharedPreferences
-                          .getStringList('favListIds', defaultValue: []),
-                      builder: (context, snapshot) {
-                        wishListController.ids = snapshot;
-                        return LikeButton(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          size: 20,
-                          isLiked: snapshot.contains(product.id) ? true : false,
-                          circleColor: const CircleColor(
-                            start: Colors.pink,
-                            end: Colors.pink,
-                          ),
-                          bubblesColor: BubblesColor(
-                            dotPrimaryColor: Colors.pink,
-                            dotSecondaryColor: Colors.pink.withOpacity(0.5),
-                          ),
-                          likeBuilder: (bool isLiked) {
-                            return isLiked
-                                ? SvgPicture.asset(
-                                    'assets/images/Heart.svg',
-                                    color: Colors.pink,
-                                  )
-                                : SvgPicture.asset(
-                                    'assets/images/Heart-Outline.svg',
-                                    color: Colors.black,
-                                  );
-                          },
-                          onTap: (isLiked) async {
-                            snapshot.contains(product.id)
-                                ? snapshot.remove(product.id)
-                                : snapshot.add(product.id);
-                            await sharedPreferences.setStringList(
-                                'favListIds', snapshot);
-                            return !isLiked;
-                          },
-                        );
-                      }),
+                  !isBannerProduct
+                      ? PreferenceBuilder<List<String>>(
+                          preference: sharedPreferences
+                              .getStringList('favListIds', defaultValue: []),
+                          builder: (context, snapshot) {
+                            wishListController.ids = snapshot;
+                            return LikeButton(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              size: 20,
+                              isLiked:
+                                  snapshot.contains(product.id) ? true : false,
+                              circleColor: const CircleColor(
+                                start: Colors.pink,
+                                end: Colors.pink,
+                              ),
+                              bubblesColor: BubblesColor(
+                                dotPrimaryColor: Colors.pink,
+                                dotSecondaryColor: Colors.pink.withOpacity(0.5),
+                              ),
+                              likeBuilder: (bool isLiked) {
+                                return isLiked
+                                    ? SvgPicture.asset(
+                                        'assets/images/Heart.svg',
+                                        color: Colors.pink,
+                                      )
+                                    : SvgPicture.asset(
+                                        'assets/images/Heart-Outline.svg',
+                                        color: Colors.black,
+                                      );
+                              },
+                              onTap: (isLiked) async {
+                                snapshot.contains(product.id)
+                                    ? snapshot.remove(product.id)
+                                    : snapshot.add(product.id);
+                                await sharedPreferences.setStringList(
+                                    'favListIds', snapshot);
+                                return !isLiked;
+                              },
+                            );
+                          })
+                      : const SizedBox.shrink(),
                 ],
               ),
             ),

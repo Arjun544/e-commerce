@@ -6,7 +6,7 @@ import ArrowRightIcon from "../components/icons/ArrowRightIcon";
 import { useSelector } from "react-redux";
 import useOutsideClick from "../useOutsideClick";
 import { useDispatch } from "react-redux";
-import { setAuth } from "../redux/authSlice";
+import { setAuth } from "../redux/reducers/authSlice";
 import { logout } from "../api/userApi";
 import ArrowDownIcon from "./icons/ArrowDownIcon";
 

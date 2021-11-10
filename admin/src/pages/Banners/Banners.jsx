@@ -28,7 +28,6 @@ const Banners = () => {
   const [isTileOpen, setIsTileOpen] = useState(false);
   const [addBannerAlert, setAddBannerAlert] = useState(false);
   const [addProductsDialogue, setAddProductsDialogue] = useState(false);
-  const [input, setInput] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editingBanner, setEditingBanner] = useState({});
 
@@ -53,7 +52,7 @@ const Banners = () => {
     fetchBanners();
   }, []);
   const generalBanners = banners.filter((item) => item.type === "General");
-  const sellBanners = banners.filter((item) => item.type === "Sell");
+  const saleBanners = banners.filter((item) => item.type === "Sale");
 
   const handleAdd = () => {
     setAddBannerAlert(true);
@@ -118,8 +117,6 @@ const Banners = () => {
         <div className=" flex absolute z-50 left-0 w-screen h-screen bg-blue-light bg-opacity-0 backdrop-filter backdrop-blur-sm justify-center items-center">
           <AddBannerDialogue
             isEditing={isEditing}
-            input={input}
-            setInput={setInput}
             editingBanner={editingBanner}
             setIsEditing={setIsEditing}
             setBanners={setBanners}
@@ -197,14 +194,6 @@ const Banners = () => {
                                   src={banner.image}
                                   alt=""
                                 />
-                                <span
-                                  className={
-                                    "font-medium text-black overflow-hidden truncate w-32"
-                                  }
-                                >
-                                  {banner.title.charAt(0).toUpperCase() +
-                                    banner.title.slice(1)}
-                                </span>
                               </div>
                               <span className="text-black font-semibold mr-4">
                                 {banner.type}
@@ -242,17 +231,17 @@ const Banners = () => {
               </div>
             )}
 
-            {/* Sells Banners */}
+            {/* Sale Banners */}
 
-            {sellBanners.length !== 0 && (
+            {saleBanners.length !== 0 && (
               <div className="flex-col">
                 <span className="text-black text-md tracking-wide font-semibold">
-                  Sells
+                  Sale
                 </span>
-                {sellBanners.length === 0 ? (
+                {saleBanners.length === 0 ? (
                   <div className="flex items-center justify-center my-4">
                     <span className="text-gray-400 font-semibold">
-                      No Sell Banners
+                      No Sale Banners
                     </span>
                   </div>
                 ) : (
@@ -260,7 +249,7 @@ const Banners = () => {
                     className="h-auto flex-col pt-3  items-start mb-6 "
                     isHovered={true}
                   >
-                    {sellBanners.map((banner) => {
+                    {saleBanners.map((banner) => {
                       return (
                         <AccordionItem
                           key={banner._id}
@@ -279,14 +268,6 @@ const Banners = () => {
                                   src={banner.image}
                                   alt=""
                                 />
-                                <span
-                                  className={
-                                    "font-medium text-black overflow-hidden truncate w-32"
-                                  }
-                                >
-                                  {banner.title.charAt(0).toUpperCase() +
-                                    banner.title.slice(1)}
-                                </span>
                               </div>
                               <span className="text-black font-semibold mr-4">
                                 {banner.type}
@@ -296,7 +277,7 @@ const Banners = () => {
                                 <span className="text-black font-semibold mr-4">
                                   Status
                                 </span>
-                                <Status  banner={banner} />
+                                <Status banner={banner} />
                               </div>
 
                               <div

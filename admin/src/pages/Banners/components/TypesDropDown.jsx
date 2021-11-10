@@ -23,9 +23,9 @@ const TypesDropDown = ({ selectedType, setSelectedType }) => {
     setSelectedType("General");
   };
 
-  const handleSortSell = (e) => {
+  const handleSortSale = (e) => {
     e.preventDefault();
-    setSelectedType("Sell");
+    setSelectedType("Sale");
   };
 
   return (
@@ -45,7 +45,7 @@ const TypesDropDown = ({ selectedType, setSelectedType }) => {
             <div onClick={handleSortGeneral}>General</div>
           </span>
           <span className="font-semibold mb-1 pl-4 rounded-md text-gray-400 hover:text-black hover:bg-blue-light">
-            <div onClick={handleSortSell}>Sell</div>
+            <div onClick={handleSortSale}>Sale</div>
           </span>
         </div>
       )}

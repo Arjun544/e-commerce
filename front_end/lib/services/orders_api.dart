@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import '../models/userModel.dart';
 
 import '../utils/constants.dart';
 
@@ -15,7 +16,7 @@ class ApiOrders {
     required int deliveryFee,
     required String country,
     required String phone,
-    required String user,
+    required Data user,
   }) async {
     try {
       await dio.post(
@@ -29,14 +30,14 @@ class ApiOrders {
           'deliveryFee': deliveryFee,
           'country': country,
           'phone': phone,
-          'status': 'pending',
+          'status': 'Pending',
           'user': user,
         },
         options: Options(
             headers: {'Authorization': 'Bearer ${getStorage.read('token')}'}),
       );
     } catch (e) {
-     await EasyLoading.showToast(
+      await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
         maskType: EasyLoadingMaskType.clear,

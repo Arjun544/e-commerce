@@ -50,7 +50,6 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CategoriesSection(),
-            
             ArrivalsSection(
               homeScreenController: homeScreenController,
               cartScreenController: cartScreenController,
