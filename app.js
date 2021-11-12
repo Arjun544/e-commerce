@@ -65,7 +65,11 @@ const io = require("socket.io")(server, {
   allowEIO3: true,
   transports: ["polling", "websocket"],
   cors: {
-    origin: ["http://localhost:3000", "http://192.168.0.107:4000"],
+    origin: [
+      "http://localhost:3000",
+      "http://192.168.0.107:4000",
+      "https://sell-corner.herokuapp.com/",
+    ],
     credentials: true,
   },
 });
