@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:front_end/models/deal_model.dart';
+import 'package:front_end/services/deal_api.dart';
 import '../models/banner_model.dart';
 import '../services/banners_api.dart';
 import '../services/cart_api.dart';
@@ -16,11 +18,13 @@ class HomeScreenController extends GetxController {
   final PageController salesPageController = PageController(initialPage: 0);
   List<String> favListIds = [];
   int _currentPage = 0;
-  RxBool isLoading = false.obs;
+  RxBool isBannersLoading = false.obs;
+  RxBool isDealLoading = false.obs;
   late Socket socket;
   RxInt cartLength = 0.obs;
 
   var banners = BannerModel(success: true, banners: []).obs;
+  var deals = DealModel(success: true, deals: []).obs;
   final StreamController<CategoryModel> categoriesStreamController =
       BehaviorSubject();
   final StreamController<ProductModel> featuredProductsStreamController =
@@ -33,9 +37,12 @@ class HomeScreenController extends GetxController {
   @override
   void onReady() async {
     cartSocketInit();
-    isLoading.value = true;
+    isBannersLoading.value = true;
     banners.value = await BannersApi().getBanners();
-    isLoading.value = false;
+    isBannersLoading.value = false;
+    isDealLoading.value = true;
+    deals.value = await DealApi().getDeal();
+    isDealLoading.value = false;
     await getData();
 
     if (banners.value.banners.length > 1) {
@@ -69,12 +76,15 @@ class HomeScreenController extends GetxController {
   }
 
   void cartSocketInit() {
-    socket = io('http://192.168.0.107:4000',
+    socket = io(
+        'http://192.168.0.107:4000',
         // 'https://sell-corner.herokuapp.com/',
-        <String, dynamic>{
-          'transports': ['websocket'],
-          'autoConnect': false,
-        });
+        OptionBuilder()
+            .setTransports(['websocket']) // for Flutter or Dart VM
+            .disableAutoConnect() // disable auto-connection
+            .setExtraHeaders({'foo': 'bar'}) // optional
+            .build());
+
     socket.connect();
     socket.onConnect((data) => print('sockeeeeeeeeet is connected'));
   }

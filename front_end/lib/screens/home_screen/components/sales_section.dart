@@ -16,8 +16,8 @@ class SalesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => controller.isLoading.value
-          ? const BannerLoader()
+      () => controller.isBannersLoading.value
+          ?  BannerLoader(height: Get.height * 0.18,)
           : controller.banners.value.banners.isNotEmpty
               ? Flexible(
                   child: PageView.builder(

@@ -27,9 +27,25 @@ exports.addDeal = async (req, res) => {
   }
 };
 
-exports.getAdminDeals = async (req, res) => {
+exports.getAdminDeal = async (req, res) => {
   try {
     const deals = await Deal.find();
+    res.send({
+      success: true,
+      deals: deals,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.getUserDeal = async (req, res) => {
+  try {
+    const deals = await Deal.find({status: true});
     res.send({
       success: true,
       deals: deals,

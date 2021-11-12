@@ -5,7 +5,8 @@ const authMiddleware = require("../middlewares/auth_middleware");
 
 const {
   addDeal,
-  getAdminDeals,
+  getAdminDeal,
+  getUserDeal,
   updateDeal,
   deleteDeal,
   addDealProducts,
@@ -15,7 +16,8 @@ const {
 
 router.post("/add", authMiddleware, cleanBody, addDeal);
 
-router.get("/get", authMiddleware, cleanBody, getAdminDeals);
+router.get("/get", authMiddleware, cleanBody, getAdminDeal);
+router.get("/getUserDeal", cleanBody, getUserDeal);
 router.patch("/update/:id", authMiddleware, cleanBody, updateDeal);
 router.patch(
   "/updateStatus/:id/:status",

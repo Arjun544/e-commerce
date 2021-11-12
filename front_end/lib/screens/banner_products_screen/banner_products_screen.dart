@@ -16,10 +16,12 @@ import '../detail_screen/detail_screen.dart';
 class BannerProductsScreen extends StatelessWidget {
   final List<Product> products;
   final String banner;
+  final bool isDeal;
 
   BannerProductsScreen({
     required this.products,
-    required this.banner,
+    this.isDeal = false,
+    this.banner = '',
   });
   final HomeScreenController homeScreenController = Get.find();
   final RootScreenController rootScreenController = Get.find();
@@ -69,37 +71,36 @@ class BannerProductsScreen extends StatelessWidget {
                 const SizedBox(width: 20),
               ],
             ),
-            Container(
-              height: Get.height * 0.18,
-              width: Get.width,
-              margin: const EdgeInsets.only(top: 15),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: CachedNetworkImage(
-                  imageUrl: banner,
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
+            isDeal
+                ? Container(
+                    height: Get.height * 0.18,
+                    width: Get.width,
+                    margin: const EdgeInsets.only(top: 15),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: CachedNetworkImage(
+                        imageUrl: banner,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
           ],
         ),
       ),
       body: [
         products.isEmpty
-            ? Padding(
-                padding: const EdgeInsets.only(top: 80),
-                child: Column(
-                  children: [
-                    Lottie.asset('assets/empty.json', height: Get.height * 0.3),
-                    const Text(
-                      'No products',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black45),
-                    ),
-                  ],
-                ),
+            ? Column(
+                children: [
+                  Lottie.asset('assets/empty.json', height: Get.height * 0.3),
+                  const Text(
+                    'No products',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.black45),
+                  ),
+                ],
               )
             : StaggeredGridView.countBuilder(
                 shrinkWrap: true,

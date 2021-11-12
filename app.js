@@ -63,9 +63,9 @@ const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
 
 const io = require("socket.io")(server, {
   allowEIO3: true,
-  transports: ["websocket", "polling", "flashsocket"],
+  transports: ["polling", "websocket"],
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://192.168.0.107:4000"],
     credentials: true,
   },
 });

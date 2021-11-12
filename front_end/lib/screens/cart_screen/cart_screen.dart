@@ -280,9 +280,14 @@ class CartWidget extends StatefulWidget {
 
 class _CartWidgetState extends State<CartWidget> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     widget.homeScreenController.socket
         .emit('updatedCart', 'product_${widget.product.id}');
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(children: [
       Row(
         children: [

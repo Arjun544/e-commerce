@@ -57,13 +57,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  card_swiper:
-    dependency: "direct main"
-    description:
-      name: card_swiper
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.4"
   characters:
     dependency: transitive
     description:
@@ -588,6 +581,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slide_countdown:
+    dependency: "direct main"
+    description:
+      name: slide_countdown
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.7"
   smooth_page_indicator:
     dependency: "direct main"
     description:
@@ -601,14 +601,14 @@ packages:
       name: socket_io_client
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-beta.4-nullsafety.0"
+    version: "1.0.1"
   socket_io_common:
     dependency: transitive
     description:
       name: socket_io_common
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-beta.1-nullsafety.1"
+    version: "1.0.1"
   source_span:
     dependency: transitive
     description:
@@ -644,6 +644,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  stream_duration:
+    dependency: transitive
+    description:
+      name: stream_duration
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   streaming_shared_preferences:
     dependency: "direct main"
     description:
