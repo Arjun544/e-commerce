@@ -9,18 +9,18 @@ const FilterOrder = () => {
   const location = useLocation();
   const tableData = location.state.order;
 
-    const data = tableData.map((item) => ({
-      order: item,
-      date: item.dateOrdered,
-      customerName: item.user.username,
-      total: item.totalPrice,
-      status: item.status,
-      payment: item.payment,
-      country: item.country,
-      deliveryType: item.deliveryType,
-      phone: item.phone,
-      orderItems: item.orderItems,
-    }));
+  const data = tableData.map((item) => ({
+    order: item,
+    date: item.dateOrdered,
+    customerName: item.user.username,
+    total: item.totalPrice,
+    status: item.status,
+    payment: item.payment,
+    country: item.country,
+    deliveryType: item.deliveryType,
+    phone: item.phone,
+    orderItems: item.orderItems,
+  }));
 
   const columns = [
     {
@@ -73,15 +73,14 @@ const FilterOrder = () => {
       <TopBar />
       <div className="flex flex-col px-10 mt-6">
         <span className="text-black font-semibold text-xl mb-6">
-       
-          {switch (location.pathname.split("/")[3]) {
-          case 'completed':
-            Completed
-            break;
-        
-          default:
-            break;
-        }}
+          {(() => {
+            switch (location.pathname.split("/")[3]) {
+              case "completed":
+                break;
+              default:
+                break;
+            }
+          })()}
         </span>
         <OrdersTable columns={columns} data={data} />
       </div>
