@@ -71,7 +71,7 @@ class BannerProductsScreen extends StatelessWidget {
                 const SizedBox(width: 20),
               ],
             ),
-            isDeal
+            !isDeal
                 ? Container(
                     height: Get.height * 0.18,
                     width: Get.width,

@@ -8,13 +8,16 @@ import 'package:get/get.dart';
 
 class ProductImages extends StatelessWidget {
   final List<model.Image> images;
+  final String thumbnail;
   final DetailScreenController controller;
 
-  ProductImages({required this.controller, required this.images});
+  ProductImages(
+      {required this.controller,
+      required this.images,
+      required this.thumbnail});
 
   @override
   Widget build(BuildContext context) {
-    log(images.toString());
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -28,7 +31,9 @@ class ProductImages extends StatelessWidget {
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: CachedNetworkImageProvider(
-                  images[controller.currentImage.value].url,
+                  controller.currentImage.value == 5
+                      ? thumbnail
+                      : images[controller.currentImage.value].url,
                 ),
               ),
             ),
@@ -42,7 +47,7 @@ class ProductImages extends StatelessWidget {
                 height: 60,
                 margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.5),
+                  color: Colors.grey.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: ListView.builder(
@@ -73,7 +78,7 @@ class ProductImages extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                             child: CachedNetworkImage(
                               imageUrl: images[index].url,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),

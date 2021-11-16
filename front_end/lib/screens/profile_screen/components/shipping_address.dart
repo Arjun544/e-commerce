@@ -24,7 +24,10 @@ class _ShippingAddressState extends State<ShippingAddress> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(Get.width, 40),
-        child: const TopHeader(text: 'Shipping Address'),
+        child: const Padding(
+          padding: EdgeInsets.only(top: 40.0, left: 8, bottom: 6),
+          child: TopHeader(text: 'Shipping Address'),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),

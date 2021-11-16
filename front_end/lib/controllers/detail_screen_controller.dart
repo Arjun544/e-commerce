@@ -10,9 +10,10 @@ import 'package:rxdart/rxdart.dart';
 
 class DetailScreenController extends GetxController {
   ScrollController hideAddCartController = ScrollController();
-  final StreamController<ProductModel> similarProductsController = BehaviorSubject();
+  final StreamController<ProductModel> similarProductsController =
+      BehaviorSubject();
 
-  RxInt currentImage = 0.obs;
+  RxInt currentImage = 5.obs;
   RxInt selected = 0.obs;
   RxBool firstTap = false.obs;
   late double averageRating;

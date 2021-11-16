@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:front_end/models/trackOrder_model.dart';
+import '../models/order_model.dart';
 import '../models/userModel.dart';
 
 import '../utils/constants.dart';
@@ -44,6 +47,78 @@ class ApiOrders {
       );
       print(e);
       await EasyLoading.dismiss();
+    }
+  }
+
+  Future<OrderModel> getUserOrders({
+    required String userId,
+  }) async {
+    try {
+      var response = await dio.get(
+        baseUrl + 'orders/userOrders/$userId',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
+        ),
+      );
+
+      return OrderModel.fromJson(response.data);
+    } catch (e) {
+      await EasyLoading.showToast(
+        'Something went wrong',
+        duration: const Duration(seconds: 2),
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+      print(e);
+      throw Exception('Failed to load');
+    }
+  }
+
+  Future<void> updateStatus({
+    required String orderId,
+    required String status,
+  }) async {
+    try {
+      await dio.patch(
+        baseUrl + 'orders/$orderId',
+        data: {
+          'status': status,
+        },
+        options: Options(
+          headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
+        ),
+      );
+    } catch (e) {
+      await EasyLoading.showToast(
+        'Something went wrong',
+        duration: const Duration(seconds: 2),
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+      print(e);
+    }
+  }
+
+  Future<TrackOrderModel> getOrderById({
+    required String orderId,
+  }) async {
+    try {
+      var response = await dio.get(
+        baseUrl + 'orders/$orderId',
+        options: Options(
+          headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
+        ),
+      );
+      return TrackOrderModel.fromJson(response.data);
+    } catch (e) {
+      await EasyLoading.showToast(
+        'Something went wrong',
+        duration: const Duration(seconds: 2),
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+      print(e);
+      throw Exception('Failed to load');
     }
   }
 }

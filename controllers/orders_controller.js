@@ -79,7 +79,7 @@ exports.getOrders = async (req, res) => {
 exports.getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
-      .populate("user", "name")
+      .populate("user")
       .populate({
         path: "orderItems",
         populate: {
@@ -90,7 +90,7 @@ exports.getOrderById = async (req, res) => {
 
     res.send({
       success: true,
-      order: order,
+      orderList: order,
     });
   } catch (error) {
     console.log(error);
@@ -171,18 +171,28 @@ exports.count = async (req, res) => {
 };
 
 exports.userOrders = async (req, res) => {
-  const userOrderList = await Order.find({ "user.id": req.params.id })
-    .populate({
-      path: "orderItems",
-      populate: {
-        path: "product",
-        populate: "category",
-      },
-    })
-    .sort({ dateOrdered: -1 });
+  try {
+    const userOrderList = await Order.find({ "user.id": req.params.id })
+      .populate({
+        path: "orderItems",
+        populate: {
+          path: "product",
+          populate: "category",
+        },
+      })
+      .sort({ dateOrdered: -1 });
 
-  if (!userOrderList) {
-    res.status(500).json({ success: false });
+    if (!userOrderList) return res.status(400).send("No Orders");
+
+    res.send({
+      success: true,
+      orders: userOrderList,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
   }
-  res.send(userOrderList);
 };

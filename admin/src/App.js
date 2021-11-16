@@ -2,6 +2,7 @@ import { useState, createContext, useEffect, useRef } from "react";
 import "./App.css";
 import SideBar from "./components/SideBar";
 import Dashboard from "./pages/dashboard/Dashboard";
+import FilterOrder from "./pages/dashboard/components/FilterOrder";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import { SnackbarProvider } from "notistack";
@@ -25,13 +26,13 @@ import Reviews from "./pages/Reviews/Reviews";
 export const AppContext = createContext(null);
 
 function App() {
-  
   const socketUrl = io("http://localhost:4000");
   let socket = useRef(null);
-  
+
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
 
   useEffect(() => {
@@ -78,7 +79,6 @@ function App() {
         }}
       >
         <div className=" w-screen h-screen m-0 box-border bg-white">
-        
           <BrowserRouter>
             <Switch>
               <GuestRoute exact path="/login">
@@ -97,6 +97,9 @@ function App() {
 
                 <ProtectedRoute path="/" exact>
                   <Dashboard />
+                </ProtectedRoute>
+                <ProtectedRoute path="/dashboard/orders/:status" exact>
+                  <FilterOrder />
                 </ProtectedRoute>
                 <ProtectedRoute path="/orders" exact>
                   <Orders />

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
+import 'components/my_orders.dart';
 import 'components/payment_details.dart';
 import '../../widgets/draggable_scaffold.dart';
 import 'components/reset_password.dart';
@@ -38,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return DraggableScaffold(
       curvedBodyRadius: 0,
-      headerExpandedHeight: 0.31,
+      headerExpandedHeight: 0.6,
       title: const TopHeader(
         text: 'Profile',
       ),
@@ -67,6 +68,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 : UserImage(
                     controller: profileScreenController,
                   ),
+            const SizedBox(
+              height: 25,
+            ),
+            const MyOrders(),
           ],
         ),
       ),

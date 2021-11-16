@@ -75,8 +75,11 @@ class _EditProfileState extends State<AddShipAddress> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-         TopHeader(
-            text: widget.isEditing ? 'Edit Address' : 'Add Address'),
+        Padding(
+          padding: const EdgeInsets.only(top: 40.0, left: 8, bottom: 6),
+          child: TopHeader(
+              text: widget.isEditing ? 'Edit Address' : 'Add Address'),
+        ),
         const SizedBox(height: 20),
         GroupButton(
           spacing: 30,
@@ -214,7 +217,7 @@ class _EditProfileState extends State<AddShipAddress> {
           child: CustomButton(
             height: 60,
             width: Get.width * 0.8,
-            text: widget.isEditing ?'Edit' : 'Add',
+            text: widget.isEditing ? 'Edit' : 'Add',
             color: customYellow,
             onPressed: () async {
               if (addressController.text.isEmpty ||

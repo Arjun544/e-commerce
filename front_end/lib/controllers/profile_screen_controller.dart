@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:front_end/models/order_model.dart';
+import 'package:front_end/services/orders_api.dart';
+import 'package:front_end/services/reviews_api.dart';
 import 'root_screen_controller.dart';
 import '../models/userModel.dart';
 
@@ -14,10 +17,21 @@ class ProfileScreenController extends GetxController {
   final TextEditingController newPassController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
+  var Orders = OrderModel(success: true, orders: []).obs;
+  RxBool isLoading = false.obs;
   RxInt currentAvatar = 0.obs;
   RxInt selectedShippingAddress = 0.obs;
   RxInt currentPaymentCard = 0.obs;
   UserModel? currentUser;
+
+  void getOrders() async {
+    isLoading.value = true;
+    var orders = await ApiOrders().getUserOrders(
+      userId: getStorage.read('userId'),
+    );
+    Orders.value = orders;
+    isLoading.value = false;
+  }
 
   Future updateProfile(
           {required String userId,
@@ -78,6 +92,24 @@ class ProfileScreenController extends GetxController {
           country: country,
           phone: phone,
           type: type);
+
+  Future addReviews({
+    required String productId,
+    required String review,
+    required double rating,
+  }) async =>
+      await ApiReviews().addReviews(
+        userId: getStorage.read('userId'),
+        productId: productId,
+        review: review,
+        rating: rating,
+      );
+
+  Future updateOrderSttus({
+    required String orderId,
+    required String status,
+  }) async =>
+      await ApiOrders().updateStatus(orderId: orderId, status: status);
 
   List<String> avatars = [
     'assets/avatars/avatar 1.png',

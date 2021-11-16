@@ -17,6 +17,7 @@ exports.addToCart = async (req, res) => {
         },
         {
           $inc: { "products.$.quantity": 1 },
+          new: true,
         }
       );
     } else {
@@ -26,6 +27,7 @@ exports.addToCart = async (req, res) => {
           $push: {
             products: req.body.product,
           },
+          new: true,
         }
       );
     }
@@ -93,16 +95,17 @@ exports.updateQuantity = async (req, res) => {
       (item) => item.totalPrice * item.quantity
     );
     const totalFinal = prices.reduce((partial_sum, a) => partial_sum + a, 0);
-    socket.socket.on("total-price", (data) => {
-      console.log(data);
-    });
 
     const eventEmitter = req.app.get("eventEmitter");
-    eventEmitter.emit("updatedCart", {
+    socket.socket.emit("updatedCart", {
       id: updatedProduct[0]._id,
       quantity: updatedProduct[0].quantity,
       totalGrand: totalFinal,
     });
+
+    // eventEmitter.on("updatedCart", (data) => {
+    //   console.log(data);
+    // });
 
     return res.send({
       message: "Quantity has been updated",
@@ -181,7 +184,7 @@ exports.clearCart = async (req, res) => {
         message: "Cart not found for user",
       });
     } else {
-     return res.send("Cart cleared");
+      return res.send("Cart cleared");
     }
   } catch (error) {
     return res.status(500).json({ error: true, message: error });

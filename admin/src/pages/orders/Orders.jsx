@@ -3,28 +3,18 @@ import { AppContext } from "../../App";
 import OrdersTable from "./components/orders_table";
 import TableActions from "./components/table_actions";
 import TopBar from "../../components/TopBar";
-import { getOrders } from "../../api/ordersApi";
+import { useSelector } from "react-redux";
 
 const Orders = () => {
-  const { isBigScreen } = useContext(AppContext);
+  const { isBigScreen } =
+    useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedOrdersTab, setSelectedOrdersTab] = useState(0);
   const [tableData, setTableData] = useState([]);
-  const [selectedTab, setSelectedTab] = useState(0);
+  const { orders } = useSelector((state) => state.orders);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        setIsLoading(true);
-        const { data } = await getOrders();
-        setTableData(data.orderList);
-        console.log(data.orderList);
-        setIsLoading(false);
-      } catch (error) {
-        setIsLoading(false);
-        console.log(error.response);
-      }
-    };
-    fetchOrders();
+    setTableData(orders);
   }, []);
 
   const data = tableData.map((item) => ({
@@ -91,18 +81,17 @@ const Orders = () => {
       <TopBar />
       <div className="flex flex-col px-10">
         {/* Tabs */}
-
         <div className="flex items-center mb-6 w-full justify-center cursor-pointer pt-4">
-          <div className="tabs tabs-boxed w-3/4 flex items-center justify-between h-16 rounded-3xl px-5 bg-bgColor-light">
+          <div className="tabs tabs-boxed w-10/12 flex items-center justify-between h-16 rounded-3xl px-5 bg-bgColor-light">
             <a
               onClick={(e) => {
                 e.preventDefault();
-                setSelectedTab(0);
+                setSelectedOrdersTab(0);
               }}
               className={
-                selectedTab === 0
-                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-semibold  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                  : "tabs w-28 h-10 items-center justify-center font-semibold text-gray-400 tracking-wide"
+                selectedOrdersTab === 0
+                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                  : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
               }
             >
               All
@@ -110,12 +99,51 @@ const Orders = () => {
             <a
               onClick={(e) => {
                 e.preventDefault();
-                setSelectedTab(1);
+                setSelectedOrdersTab(1);
               }}
               className={
-                selectedTab === 1
-                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-semibold  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                  : "tabs w-28 h-10 items-center justify-center font-semibold text-gray-400 tracking-wide"
+                selectedOrdersTab === 1
+                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                  : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
+              }
+            >
+              Completed
+            </a>
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedOrdersTab(2);
+              }}
+              className={
+                selectedOrdersTab === 2
+                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                  : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
+              }
+            >
+              Confirmed
+            </a>
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedOrdersTab(3);
+              }}
+              className={
+                selectedOrdersTab === 3
+                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                  : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
+              }
+            >
+              Declined
+            </a>
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedOrdersTab(4);
+              }}
+              className={
+                selectedOrdersTab === 4
+                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                  : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
               }
             >
               Pending
@@ -123,12 +151,12 @@ const Orders = () => {
             <a
               onClick={(e) => {
                 e.preventDefault();
-                setSelectedTab(2);
+                setSelectedOrdersTab(5);
               }}
               className={
-                selectedTab === 2
-                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-semibold text-white  tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                  : "tabs w-28 h-10 items-center justify-center font-semibold text-gray-400 tracking-wide"
+                selectedOrdersTab === 5
+                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium text-white  tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                  : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
               }
             >
               Processing
@@ -137,49 +165,54 @@ const Orders = () => {
             <a
               onClick={(e) => {
                 e.preventDefault();
-                setSelectedTab(3);
+                setSelectedOrdersTab(6);
               }}
               className={
-                selectedTab === 3
-                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-semibold  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                  : "tabs w-28 h-10 items-center justify-center font-semibold text-gray-400 tracking-wide"
+                selectedOrdersTab === 6
+                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                  : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
               }
             >
               Delivered
             </a>
+
             <a
               onClick={(e) => {
                 e.preventDefault();
-                setSelectedTab(4);
+                setSelectedOrdersTab(7);
               }}
               className={
-                selectedTab === 4
-                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-semibold  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                  : "tabs w-28 h-10 items-center justify-center font-semibold text-gray-400 tracking-wide"
+                selectedOrdersTab === 7
+                  ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                  : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
               }
             >
-              Completed
+              Cancelled
             </a>
           </div>
         </div>
+
         {/* Views */}
         <OrdersTable
           columns={columns}
           data={(() => {
-            switch (selectedTab) {
+            switch (selectedOrdersTab) {
               case 0:
                 return data;
               case 1:
-                return data.filter((item) => item.status === "Pending");
-              case 2:
-                return data.filter((item) => item.status === "Processing");
-              case 3:
-                return data.filter(
-                  (item) => item.status === "Out for delivery"
-                );
-              case 4:
                 return data.filter((item) => item.status === "Completed");
-
+              case 2:
+                return data.filter((item) => item.status === "Confirmed");
+              case 3:
+                return data.filter((item) => item.status === "Declined");
+              case 4:
+                return data.filter((item) => item.status === "Pending");
+              case 5:
+                return data.filter((item) => item.status === "Procesing");
+              case 6:
+                return data.filter((item) => item.status === "Delivered");
+              case 7:
+                return data.filter((item) => item.status === "Cancelled");
               default:
                 return;
             }

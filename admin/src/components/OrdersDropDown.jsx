@@ -1,8 +1,9 @@
+import moment from "moment";
 import { useState, useRef } from "react";
 import useOutsideClick from "../useOutsideClick";
 import ArrowDownIcon from "./icons/ArrowDownIcon";
 
-const OrdersDropDown = () => {
+const OrdersDropDown = ({orders, setFilteredOrders }) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -22,16 +23,31 @@ const OrdersDropDown = () => {
   const handleSortAll = (e) => {
     e.preventDefault();
     setSelectedCategory("All");
+    setFilteredOrders(orders);
   };
 
   const handleSortWeek = (e) => {
     e.preventDefault();
     setSelectedCategory("Weekly");
+    setFilteredOrders(
+      orders.filter((order) =>
+        moment(new Date(new Date(order.dateOrdered).getTime())).isBetween(
+          moment(new Date(new Date().getTime() - 168 * 60 * 60 * 1000))
+        )
+      )
+    );
   };
 
   const handleSortMonth = (e) => {
     e.preventDefault();
     setSelectedCategory("Monthly");
+     setFilteredOrders(
+       orders.filter((order) =>
+         moment(new Date(new Date(order.dateOrdered).getTime())).isBetween(
+           moment(new Date(new Date().getTime() - 720 * 60 * 60 * 1000))
+         )
+       )
+     );
   };
 
   return (

@@ -27,6 +27,8 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     cartScreenController.getCart();
+    cartScreenController.orderItems.clear();
+    cartScreenController.isOrderItemsSelected.value = false;
   }
 
   Future<bool> _backPressed() async {
@@ -182,7 +184,6 @@ class _CartScreenState extends State<CartScreen> {
                                       homeScreenController:
                                           homeScreenController,
                                       product: products[index],
-                                      index: index,
                                     ),
                                   );
                                 }),
@@ -262,13 +263,11 @@ class _CartScreenState extends State<CartScreen> {
 }
 
 class CartWidget extends StatefulWidget {
-  final int index;
   final CartProduct product;
   final CartScreenController cartScreenController;
   final HomeScreenController homeScreenController;
 
   const CartWidget({
-    required this.index,
     required this.product,
     required this.cartScreenController,
     required this.homeScreenController,

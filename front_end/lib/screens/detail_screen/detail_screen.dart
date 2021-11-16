@@ -52,6 +52,7 @@ class DetailScreen extends StatelessWidget {
               ProductImages(
                 controller: detailScreenController,
                 images: product.images,
+                thumbnail: product.thumbnail,
               ),
             ],
           ),

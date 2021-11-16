@@ -62,15 +62,13 @@ app.use("/api/admin/", adminRoutes);
 const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
 
 const io = require("socket.io")(server, {
-  allowEIO3: true,
-  transports: ["polling", "websocket"],
+  transports: ["websocket"],
   cors: {
     origin: [
       "http://localhost:3000",
       "http://192.168.0.107:4000",
-      "https://sell-corner.herokuapp.com/",
+      // "https://sell-corner.herokuapp.com/",
     ],
-    credentials: true,
   },
 });
 

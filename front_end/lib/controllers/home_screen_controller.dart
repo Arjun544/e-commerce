@@ -77,8 +77,8 @@ class HomeScreenController extends GetxController {
 
   void cartSocketInit() {
     socket = io(
-        // 'http://192.168.0.107:4000',
-        'https://sell-corner.herokuapp.com/',
+        'http://192.168.0.107:4000',
+        // 'https://sell-corner.herokuapp.com/',
         OptionBuilder()
             .setTransports(['websocket']) // for Flutter or Dart VM
             .disableAutoConnect() // disable auto-connection

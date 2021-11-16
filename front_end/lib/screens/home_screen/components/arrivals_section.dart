@@ -145,7 +145,7 @@ class BuildItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                     image: CachedNetworkImageProvider(
                       product.thumbnail,
                     ),
@@ -153,45 +153,84 @@ class BuildItem extends StatelessWidget {
                 ),
               ),
             ),
-            PreferenceBuilder<List<String>>(
-                preference: sharedPreferences
-                    .getStringList('favListIds', defaultValue: []),
-                builder: (context, snapshot) {
-                  wishListController.ids = snapshot;
-                  return LikeButton(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    padding: const EdgeInsets.only(right: 15, top: 10),
-                    size: 20,
-                    isLiked: snapshot.contains(product.id) ? true : false,
-                    circleColor: const CircleColor(
-                      start: Colors.pink,
-                      end: Colors.pink,
-                    ),
-                    bubblesColor: BubblesColor(
-                      dotPrimaryColor: Colors.pink,
-                      dotSecondaryColor: Colors.pink.withOpacity(0.5),
-                    ),
-                    likeBuilder: (bool isLiked) {
-                      return isLiked
-                          ? SvgPicture.asset(
-                              'assets/images/Heart.svg',
-                              color: Colors.pink,
-                            )
-                          : SvgPicture.asset(
-                              'assets/images/Heart-Outline.svg',
-                              color: Colors.white,
-                            );
-                    },
-                    onTap: (isLiked) async {
-                      snapshot.contains(product.id)
-                          ? snapshot.remove(product.id)
-                          : snapshot.add(product.id);
-                      await sharedPreferences.setStringList(
-                          'favListIds', snapshot);
-                      return !isLiked;
-                    },
-                  );
-                }),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                product.discount > 0
+                    ? Container(
+                        height: 24,
+                        width: 70,
+                        margin: const EdgeInsets.only(top: 8, left: 8),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.redAccent,
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              '${product.discount}%',
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Text(
+                              'OFF',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                PreferenceBuilder<List<String>>(
+                    preference: sharedPreferences
+                        .getStringList('favListIds', defaultValue: []),
+                    builder: (context, snapshot) {
+                      wishListController.ids = snapshot;
+                      return LikeButton(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        padding: const EdgeInsets.only(right: 15, top: 10),
+                        size: 20,
+                        isLiked: snapshot.contains(product.id) ? true : false,
+                        circleColor: const CircleColor(
+                          start: Colors.pink,
+                          end: Colors.pink,
+                        ),
+                        bubblesColor: BubblesColor(
+                          dotPrimaryColor: Colors.pink,
+                          dotSecondaryColor: Colors.pink.withOpacity(0.5),
+                        ),
+                        likeBuilder: (bool isLiked) {
+                          return isLiked
+                              ? SvgPicture.asset(
+                                  'assets/images/Heart.svg',
+                                  color: Colors.pink,
+                                )
+                              : SvgPicture.asset(
+                                  'assets/images/Heart-Outline.svg',
+                                  color: Colors.black,
+                                );
+                        },
+                        onTap: (isLiked) async {
+                          snapshot.contains(product.id)
+                              ? snapshot.remove(product.id)
+                              : snapshot.add(product.id);
+                          await sharedPreferences.setStringList(
+                              'favListIds', snapshot);
+                          return !isLiked;
+                        },
+                      );
+                    }),
+              ],
+            ),
           ],
         ),
         Container(

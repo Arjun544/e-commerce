@@ -12,7 +12,7 @@ const orderSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  
+
   city: {
     type: String,
     required: true,
@@ -37,6 +37,10 @@ const orderSchema = mongoose.Schema({
   deliveryType: {
     type: String,
     required: true,
+  },
+  isPaid: {
+    type: Boolean,
+    default: false,
   },
   totalPrice: {
     type: Number,
