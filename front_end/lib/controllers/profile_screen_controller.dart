@@ -106,9 +106,11 @@ class ProfileScreenController extends GetxController {
       );
 
   Future skipReview({
+    required String id,
     required String productId,
   }) async =>
       await ApiReviews().skipReview(
+        id: id,
         productId: productId,
       );
 

@@ -1,5 +1,6 @@
 const socket = require("../app");
 const mongoose = require("mongoose");
+var ObjectID = require("mongodb").ObjectID;
 const Review = require("../models/Review");
 const Product = require("../models/Product");
 const User = require("../models/User");
@@ -69,14 +70,18 @@ exports.skipReview = async (req, res) => {
       return res.status(400).send("Invalid product id");
     }
 
-    const newProduct = await OrderItem.findById(req.params.id);
+    const newProduct = await OrderItem.findById(req.params.id).populate(
+      "product"
+    );
     if (!newProduct) {
-      return res.send("No product found");
+      return res.send("No Order found");
     }
-
-    await OrderItem.findByIdAndUpdate(req.params.id, {
-      isReviewed: true,
-    });
+    await OrderItem.updateOne(
+      { _id: req.params.id, product: req.body.productId },
+      {
+        isReviewed: true,
+      }
+    );
 
     res.send({
       success: true,

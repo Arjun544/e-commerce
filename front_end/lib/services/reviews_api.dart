@@ -33,11 +33,15 @@ class ApiReviews {
   }
 
   Future skipReview({
+    required String id,
     required String productId,
   }) async {
     try {
       await dio.patch(
-        baseUrl + 'reviews/skip/$productId',
+        baseUrl + 'reviews/skip/$id',
+        data: {
+          'productId': productId,
+        },
         options: Options(
           responseType: ResponseType.plain,
           headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
