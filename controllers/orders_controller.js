@@ -51,7 +51,7 @@ exports.getOrders = async (req, res) => {
     const orderList = await Order.find().sort({ dateOrdered: -1 });
 
     res.send({
-      sucess: true,
+      success: true,
       orderList: orderList,
     });
   } catch (error) {
