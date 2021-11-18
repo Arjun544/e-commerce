@@ -13,8 +13,7 @@ import 'components/login_view.dart';
 import 'components/signup_view.dart';
 
 class RegisterScreen extends StatelessWidget {
-  final RegisterScreenController registerScreenController =
-      Get.find();
+  final RegisterScreenController registerScreenController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +36,7 @@ class RegisterScreen extends StatelessWidget {
                 left: 0,
                 child: IconButton(
                   onPressed: () {
+                    Get.back();
                     Get.back();
                   },
                   icon: const Icon(

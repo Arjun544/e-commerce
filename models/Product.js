@@ -78,6 +78,10 @@ const productSchema = mongoose.Schema({
       default: {},
     },
   ],
+  isReviewed: {
+    type: Boolean,
+    default: false,
+  },
   isFeatured: {
     type: Boolean,
     default: false,

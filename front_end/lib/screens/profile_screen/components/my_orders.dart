@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:front_end/utils/constants.dart';
+import '../../../widgets/customDialogue.dart';
 import 'review_orders.dart';
 import 'track_order.dart';
 import '../../../utils/colors.dart';
@@ -21,9 +23,11 @@ class MyOrders extends StatelessWidget {
             children: [
               Expanded(
                 child: GestureDetector(
-                  onTap: () => Get.to(
-                    () => const ReceiveOrders(),
-                  ),
+                  onTap: () => getStorage.read('isLogin') == true
+                      ? Get.to(
+                          () => const ReceiveOrders(),
+                        )
+                      : AccessDialogue(context),
                   child: Container(
                     height: Get.height * 0.13,
                     margin: const EdgeInsets.only(right: 10),
@@ -53,9 +57,11 @@ class MyOrders extends StatelessWidget {
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () => Get.to(
-                    () => const ReviewOrders(),
-                  ),
+                  onTap: () => getStorage.read('isLogin') == true
+                      ? Get.to(
+                          () => const ReviewOrders(),
+                        )
+                      : AccessDialogue(context),
                   child: Container(
                     height: Get.height * 0.13,
                     padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -89,9 +95,11 @@ class MyOrders extends StatelessWidget {
             children: [
               Expanded(
                 child: GestureDetector(
-                  onTap: () => Get.to(
-                    () => const CencellationOrders(),
-                  ),
+                  onTap: () => getStorage.read('isLogin') == true
+                      ? Get.to(
+                          () => const CancellationOrders(),
+                        )
+                      : AccessDialogue(context),
                   child: Container(
                     height: Get.height * 0.13,
                     margin: const EdgeInsets.only(right: 10),
@@ -121,9 +129,11 @@ class MyOrders extends StatelessWidget {
               ),
               Expanded(
                 child: GestureDetector(
-                   onTap: () => Get.to(
-                    () => const TrackOrder(),
-                  ),
+                  onTap: () => getStorage.read('isLogin') == true
+                      ? Get.to(
+                          () => const TrackOrder(),
+                        )
+                      : AccessDialogue(context),
                   child: Container(
                     height: Get.height * 0.13,
                     padding: const EdgeInsets.symmetric(horizontal: 15),

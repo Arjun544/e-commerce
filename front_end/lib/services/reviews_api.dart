@@ -31,4 +31,25 @@ class ApiReviews {
       print(e);
     }
   }
+
+  Future skipReview({
+    required String productId,
+  }) async {
+    try {
+      await dio.patch(
+        baseUrl + 'reviews/skip/$productId',
+        options: Options(
+          responseType: ResponseType.plain,
+          headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
+        ),
+      );
+    } catch (e) {
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+      print(e);
+    }
+  }
 }

@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return DraggableScaffold(
       curvedBodyRadius: 0,
-      headerExpandedHeight: 0.6,
+      headerExpandedHeight: 0.62,
       title: const TopHeader(
         text: 'Profile',
       ),

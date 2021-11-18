@@ -57,7 +57,12 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                         ),
                       )
                     : profileScreenController.Orders.value.orders
-                            .where((element) => element.status == 'Completed')
+                            .where((element) =>
+                                element.status != 'Completed' &&
+                                element.orderItems
+                                    .where((item) =>
+                                        item.product.isReviewed == false)
+                                    .isNotEmpty)
                             .isEmpty
                         ? Center(
                             child: Padding(
@@ -82,8 +87,12 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                             scrollDirection: Axis.vertical,
                             itemCount: profileScreenController
                                 .Orders.value.orders
-                                .where(
-                                    (element) => element.status == 'Completed')
+                                .where((element) =>
+                                    element.status != 'Completed' &&
+                                    element.orderItems
+                                        .where((item) =>
+                                            item.product.isReviewed == false)
+                                        .isNotEmpty)
                                 .length,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 15),
@@ -91,7 +100,11 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                               var orders = profileScreenController
                                   .Orders.value.orders
                                   .where((element) =>
-                                      element.status == 'Completed')
+                                      element.status != 'Completed' &&
+                                      element.orderItems
+                                          .where((item) =>
+                                              item.product.isReviewed == false)
+                                          .isNotEmpty)
                                   .toList();
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -5,11 +5,13 @@ const authMiddleware = require("../middlewares/auth_middleware");
 
 const {
   addReview,
+  skipReview,
   getAllReviews,
   getRecentReviews,
 } = require("../controllers/reviews_controller");
 
 router.post("/add/:id", authMiddleware, cleanBody, addReview);
+router.patch("/skip/:id", authMiddleware, cleanBody, skipReview);
 router.get("/get", authMiddleware, cleanBody, getAllReviews);
 router.get("/getRecentReviews", authMiddleware, cleanBody, getRecentReviews);
 

@@ -41,6 +41,7 @@ exports.addReview = async (req, res) => {
       req.params.id,
       {
         $inc: { totalReviews: 1 },
+        isReviewed: true,
         $push: {
           reviews: newReview,
         },
@@ -51,6 +52,34 @@ exports.addReview = async (req, res) => {
     res.send({
       success: true,
       message: "Review has been added",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.skipReview = async (req, res) => {
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send("Invalid product id");
+    }
+
+    const newProduct = await Product.findById(req.params.id);
+    if (!newProduct) {
+      return res.send("No product found");
+    }
+
+    await Product.findByIdAndUpdate(req.params.id, {
+      isReviewed: true,
+    });
+
+    res.send({
+      success: true,
+      message: "Review has been skipped",
     });
   } catch (error) {
     console.log(error);

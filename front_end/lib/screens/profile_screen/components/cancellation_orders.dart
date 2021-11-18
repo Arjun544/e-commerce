@@ -10,14 +10,14 @@ import 'top_header.dart';
 import '../../../utils/colors.dart';
 import 'package:get/get.dart';
 
-class CencellationOrders extends StatefulWidget {
-  const CencellationOrders({Key? key}) : super(key: key);
+class CancellationOrders extends StatefulWidget {
+  const CancellationOrders({Key? key}) : super(key: key);
 
   @override
-  _CencellationOrdersState createState() => _CencellationOrdersState();
+  _CancellationOrdersState createState() => _CancellationOrdersState();
 }
 
-class _CencellationOrdersState extends State<CencellationOrders> {
+class _CancellationOrdersState extends State<CancellationOrders> {
   final ProfileScreenController profileScreenController = Get.find();
   @override
   void initState() {

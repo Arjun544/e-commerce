@@ -43,6 +43,17 @@ class _WriteReviewState extends State<WriteReview> {
     });
   }
 
+  Future<void> onSkipReview(String productId) async {
+    await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
+    await profileScreenController.skipReview(
+      productId: productId,
+    );
+    await EasyLoading.dismiss();
+    setState(() {
+      profileScreenController.getOrders();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -179,16 +190,30 @@ class _WriteReviewState extends State<WriteReview> {
                             ),
                           ),
                           SizedBox(height: Get.height * 0.04),
-                          CustomButton(
-                            height: 50,
-                            width: Get.width * 0.7,
-                            text: 'Add Review',
-                            color: darkBlue,
-                            onPressed: () => onAddReview(
-                              widget.order.orderItems[index].product.id,
-                              _reviewController[index].text,
-                              selectedRating,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomButton(
+                                height: 50,
+                                width: Get.width * 0.4,
+                                text: 'Skip Review',
+                                color: Colors.red,
+                                onPressed: () => onSkipReview(
+                                  widget.order.orderItems[index].product.id,
+                                ),
+                              ),
+                              CustomButton(
+                                height: 50,
+                                width: Get.width * 0.4,
+                                text: 'Add Review',
+                                color: darkBlue,
+                                onPressed: () => onAddReview(
+                                  widget.order.orderItems[index].product.id,
+                                  _reviewController[index].text,
+                                  selectedRating,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

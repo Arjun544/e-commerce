@@ -138,6 +138,7 @@ class OrderItemProduct {
     required this.discount,
     required this.totalReviews,
     required this.reviews,
+    required this.isReviewed,
     required this.isFeatured,
     required this.status,
     required this.id,
@@ -163,6 +164,7 @@ class OrderItemProduct {
   int totalReviews;
   List<Review> reviews;
   bool isFeatured;
+  bool isReviewed;
   bool status;
   String id;
   String name;
@@ -189,6 +191,7 @@ class OrderItemProduct {
         reviews:
             List<Review>.from(json['reviews'].map((x) => Review.fromJson(x))),
         isFeatured: json['isFeatured'],
+        isReviewed: json['isReviewed'],
         status: json['status'],
         id: json['_id'],
         name: json['name'],
