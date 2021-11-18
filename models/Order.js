@@ -3,16 +3,13 @@ const mongoose = require("mongoose");
 const orderSchema = mongoose.Schema({
   orderItems: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "OrderItem",
-      required: true,
+      type: Object,
     },
   ],
   shippingAddress: {
     type: String,
     required: true,
   },
-
   city: {
     type: String,
     required: true,
@@ -43,6 +40,9 @@ const orderSchema = mongoose.Schema({
     default: false,
   },
   totalPrice: {
+    type: Number,
+  },
+  deliveryFee: {
     type: Number,
   },
   user: {

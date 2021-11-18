@@ -4,7 +4,7 @@ var ObjectID = require("mongodb").ObjectID;
 const Review = require("../models/Review");
 const Product = require("../models/Product");
 const User = require("../models/User");
-const OrderItem = require("../models/OrderItem");
+const Order = require("../models/Order");
 
 exports.addReview = async (req, res) => {
   try {
@@ -66,22 +66,18 @@ exports.addReview = async (req, res) => {
 
 exports.skipReview = async (req, res) => {
   try {
-    if (!mongoose.isValidObjectId(req.params.id)) {
-      return res.status(400).send("Invalid product id");
-    }
-
-    const newProduct = await OrderItem.findById(req.params.id).populate(
-      "product"
-    );
-    if (!newProduct) {
-      return res.send("No Order found");
-    }
-    await OrderItem.updateOne(
-      { _id: req.params.id, product: req.body.productId },
+    const newItem = await OrderItem.findOneAndUpdate(
+      { _id: req.params.id },
       {
-        isReviewed: true,
+        $set: {
+          'product.isReviewed': true
+        },
+         new: true,
       }
-    );
+      
+    ).populate("product");
+
+    console.log(newItem);
 
     res.send({
       success: true,

@@ -52,6 +52,10 @@ class _WriteReviewState extends State<WriteReview> {
     );
     products.remove(products[index]);
     await EasyLoading.dismiss();
+    if (products.isEmpty) {
+      Get.back();
+    }
+
     setState(() {
       profileScreenController.getOrders();
     });
@@ -72,9 +76,14 @@ class _WriteReviewState extends State<WriteReview> {
               child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  itemCount: widget.order.orderItems.length,
+                  itemCount: widget.order.orderItems
+                      .where((element) => element.product.isReviewed == false)
+                      .length,
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   itemBuilder: (context, index) {
+                    var orderItems = widget.order.orderItems
+                        .where((element) => element.product.isReviewed == false)
+                        .toList();
                     _reviewController.add(TextEditingController());
                     return Container(
                       width: Get.width * 0.8,
@@ -91,8 +100,7 @@ class _WriteReviewState extends State<WriteReview> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: CachedNetworkImage(
-                                  imageUrl: widget.order.orderItems[index]
-                                      .product.thumbnail,
+                                  imageUrl: orderItems[index].product.thumbnail,
                                   fit: BoxFit.cover,
                                   width: Get.width * 0.14,
                                 ),
@@ -104,18 +112,18 @@ class _WriteReviewState extends State<WriteReview> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      toBeginningOfSentenceCase(widget
-                                              .order
-                                              .orderItems[index]
-                                              .product
-                                              .name) ??
+                                      toBeginningOfSentenceCase(
+                                              orderItems[index]
+                                                  .product
+                                                  .isReviewed
+                                                  .toString()) ??
                                           '',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14),
                                     ),
                                     Text(
-                                      '\$${widget.order.orderItems[index].product.totalPrice.toString()}',
+                                      '\$${orderItems[index].product.totalPrice.toString()}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12),
@@ -124,7 +132,7 @@ class _WriteReviewState extends State<WriteReview> {
                                       height: 10,
                                     ),
                                     Text(
-                                      '${toBeginningOfSentenceCase(widget.order.orderItems[index].product.subCategory)}',
+                                      '${toBeginningOfSentenceCase(orderItems[index].product.subCategory)}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12),
@@ -203,7 +211,7 @@ class _WriteReviewState extends State<WriteReview> {
                                 color: Colors.red,
                                 onPressed: () => onSkipReview(
                                   index,
-                                  widget.order.orderItems,
+                                  orderItems,
                                   widget.order.id,
                                 ),
                               ),
@@ -213,7 +221,7 @@ class _WriteReviewState extends State<WriteReview> {
                                 text: 'Add Review',
                                 color: darkBlue,
                                 onPressed: () => onAddReview(
-                                  widget.order.orderItems[index].product.id,
+                                  orderItems[index].product.id,
                                   _reviewController[index].text,
                                   selectedRating,
                                 ),

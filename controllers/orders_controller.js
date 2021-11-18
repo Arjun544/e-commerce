@@ -1,42 +1,29 @@
 const Order = require("../models/Order");
-const OrderItem = require("../models/OrderItem");
 
 exports.addOrder = async (req, res) => {
   try {
-    const orderItemsIds = Promise.all(
-      req.body.orderItems.map(async (orderItem) => {
-        let newOrderItem = new OrderItem({
-          quantity: orderItem.quantity,
-          product: orderItem.product,
-        });
-
-        newOrderItem = await newOrderItem.save();
-
-        return newOrderItem._id;
-      })
-    );
-
-    const orderItemsIdsResolved = await orderItemsIds;
-
     const totalPrices = await Promise.all(
-      orderItemsIdsResolved.map(async (orderItemId) => {
-        const orderItem = await OrderItem.findById(orderItemId).populate(
-          "product",
-          "price"
-        );
-        const totalPrice = orderItem.product.price * orderItem.quantity;
-        return totalPrice;
+      req.body.orderItems.map(async (item) => {
+        if (item.product.onSale === true && item.product.discount > 0) {
+          const totalPrice = item.product.totalPrice * item.product.quantity;
+          return totalPrice;
+        } else {
+          const totalPrice = item.product.price * item.product.quantity;
+          return totalPrice;
+        }
       })
     );
 
     const totalPrice =
       totalPrices.reduce((a, b) => a + b, 0) + req.body.deliveryFee;
+    console.log(totalPrice);
 
     let order = new Order({
-      orderItems: orderItemsIdsResolved,
+      orderItems: req.body.orderItems,
       shippingAddress: req.body.shippingAddress,
       payment: req.body.payment,
       deliveryType: req.body.deliveryType,
+      deliveryFee: req.body.deliveryFee,
       city: req.body.city,
       country: req.body.country,
       phone: req.body.phone,
@@ -78,15 +65,7 @@ exports.getOrders = async (req, res) => {
 
 exports.getOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id)
-      .populate("user")
-      .populate({
-        path: "orderItems",
-        populate: {
-          path: "product",
-          populate: "category",
-        },
-      });
+    const order = await Order.findById(req.params.id).populate("user");
 
     res.send({
       success: true,
@@ -127,24 +106,24 @@ exports.updateStatus = async (req, res) => {
 };
 
 exports.deleteOrder = async (req, res) => {
-  Order.findByIdAndRemove(req.params.id)
-    .then(async (order) => {
-      if (order) {
-        await order.orderItems.map(async (orderItem) => {
-          await OrderItem.findByIdAndRemove(orderItem);
-        });
-        return res
-          .status(200)
-          .json({ success: true, message: "the order is deleted!" });
-      } else {
-        return res
-          .status(404)
-          .json({ success: false, message: "order not found!" });
-      }
-    })
-    .catch((err) => {
-      return res.status(500).json({ success: false, error: err });
+  try {
+    const order = await Order.findByIdAndRemove(req.params.id);
+    if (!order) {
+      return res
+        .status(200)
+        .json({ success: true, message: "Order not found!" });
+    } else {
+      return res
+        .status(200)
+        .json({ success: true, message: "Order is deleted!" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      success: false,
+      message: "Something went wrong",
     });
+  }
 };
 
 exports.totalSales = async (req, res) => {
@@ -172,15 +151,9 @@ exports.count = async (req, res) => {
 
 exports.userOrders = async (req, res) => {
   try {
-    const userOrderList = await Order.find({ "user.id": req.params.id })
-      .populate({
-        path: "orderItems",
-        populate: {
-          path: "product",
-          populate: "category",
-        },
-      })
-      .sort({ dateOrdered: -1 });
+    const userOrderList = await Order.find({ "user.id": req.params.id }).sort({
+      dateOrdered: -1,
+    });
 
     if (!userOrderList) return res.status(400).send("No Orders");
 

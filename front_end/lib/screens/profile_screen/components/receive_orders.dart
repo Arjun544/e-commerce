@@ -264,8 +264,10 @@ class ProductCard extends StatelessWidget {
                     ),
                     Text(
                       'x${product.product.quantity.toString()}',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 13),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
                     ),
                   ],
                 ),

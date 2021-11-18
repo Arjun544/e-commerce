@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -57,12 +59,7 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                         ),
                       )
                     : profileScreenController.Orders.value.orders
-                            .where((element) =>
-                                element.status == 'Completed' &&
-                                element.orderItems
-                                    .where((item) =>
-                                        item.product.isReviewed == false)
-                                    .isNotEmpty)
+                            .where((element) => element.status == 'Completed')
                             .isEmpty
                         ? Center(
                             child: Padding(
@@ -87,24 +84,32 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                             scrollDirection: Axis.vertical,
                             itemCount: profileScreenController
                                 .Orders.value.orders
-                                .where((element) =>
-                                    element.status == 'Completed' &&
-                                    element.orderItems
-                                        .where((item) =>
-                                            item.product.isReviewed == false)
-                                        .isNotEmpty)
+                                .where(
+                                    (element) => element.status == 'Completed')
+                                .where((item) => item.orderItems
+                                    .where((element) =>
+                                        element.product.isReviewed == false)
+                                    .isNotEmpty)
                                 .length,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 15),
                             itemBuilder: (context, index) {
+                              log(profileScreenController.Orders.value.orders
+                                  .where((element) =>
+                                      element.status == 'Completed')
+                                  .where((item) => item.orderItems
+                                      .where((element) =>
+                                          element.product.isReviewed == false)
+                                      .isNotEmpty)
+                                  .toList()[0]
+                                  .orderItems[0]
+                                  .product
+                                  .name
+                                  .toString());
                               var orders = profileScreenController
                                   .Orders.value.orders
                                   .where((element) =>
-                                      element.status == 'Completed' &&
-                                      element.orderItems
-                                          .where((item) =>
-                                              item.product.isReviewed == false)
-                                          .isNotEmpty)
+                                      element.status == 'Completed')
                                   .toList();
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -176,7 +181,12 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: ProductCard(
-                                      products: orders[index].orderItems,
+                                      products: orders[index]
+                                          .orderItems
+                                          .where((element) =>
+                                              element.product.isReviewed ==
+                                              false)
+                                          .toList(),
                                     ),
                                   ),
                                 ],
