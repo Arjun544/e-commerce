@@ -58,7 +58,7 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                       )
                     : profileScreenController.Orders.value.orders
                             .where((element) =>
-                                element.status != 'Completed' &&
+                                element.status == 'Completed' &&
                                 element.orderItems
                                     .where((item) =>
                                         item.product.isReviewed == false)
@@ -88,7 +88,7 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                             itemCount: profileScreenController
                                 .Orders.value.orders
                                 .where((element) =>
-                                    element.status != 'Completed' &&
+                                    element.status == 'Completed' &&
                                     element.orderItems
                                         .where((item) =>
                                             item.product.isReviewed == false)
@@ -100,7 +100,7 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                               var orders = profileScreenController
                                   .Orders.value.orders
                                   .where((element) =>
-                                      element.status != 'Completed' &&
+                                      element.status == 'Completed' &&
                                       element.orderItems
                                           .where((item) =>
                                               item.product.isReviewed == false)

@@ -43,11 +43,12 @@ class _WriteReviewState extends State<WriteReview> {
     });
   }
 
-  Future<void> onSkipReview(String productId) async {
+  Future<void> onSkipReview(int index, List<OrderItem> products) async {
     await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
     await profileScreenController.skipReview(
-      productId: productId,
+      productId: products[index].id,
     );
+    products.remove(products[index]);
     await EasyLoading.dismiss();
     setState(() {
       profileScreenController.getOrders();
@@ -199,7 +200,8 @@ class _WriteReviewState extends State<WriteReview> {
                                 text: 'Skip Review',
                                 color: Colors.red,
                                 onPressed: () => onSkipReview(
-                                  widget.order.orderItems[index].product.id,
+                                  index,
+                                  widget.order.orderItems,
                                 ),
                               ),
                               CustomButton(

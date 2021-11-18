@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Review = require("../models/Review");
 const Product = require("../models/Product");
 const User = require("../models/User");
+const OrderItem = require("../models/OrderItem");
 
 exports.addReview = async (req, res) => {
   try {
@@ -73,7 +74,7 @@ exports.skipReview = async (req, res) => {
       return res.send("No product found");
     }
 
-    await Product.findByIdAndUpdate(req.params.id, {
+    await OrderItem.findByIdAndUpdate(req.params.id, {
       isReviewed: true,
     });
 
