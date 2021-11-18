@@ -69,7 +69,7 @@ exports.skipReview = async (req, res) => {
       return res.status(400).send("Invalid product id");
     }
 
-    const newProduct = await Product.findById(req.params.id);
+    const newProduct = await OrderItem.findById(req.params.id);
     if (!newProduct) {
       return res.send("No product found");
     }
