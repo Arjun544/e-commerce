@@ -20,6 +20,7 @@ import {
   SortUpIcon,
   SortDownIcon,
 } from "../../../components/pagination_icons";
+import { useHistory } from "react-router-dom";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -48,6 +49,7 @@ function GlobalFilter({
 }
 
 function OrdersTable({ columns, data }) {
+  const history = useHistory();
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
@@ -80,6 +82,12 @@ function OrdersTable({ columns, data }) {
     useSortBy,
     usePagination // new
   );
+
+  const onOrderClick = (e, order) => {
+    e.preventDefault();
+    e.stopPropagation();
+    history.push(`/orders/view/${order.id}`);
+  };
 
   // Render the UI for your table
   return (
@@ -157,9 +165,17 @@ function OrdersTable({ columns, data }) {
                             >
                               {cell.column.Cell.name === "defaultRenderer" ? (
                                 <div
+                                  onClick={(e) => {
+                                    cell.column.Header === "Id" &&
+                                      onOrderClick(e, cell.row.original.order);
+                                  }}
                                   className={`text-sm font-semibold  ${(() => {
-                                    if (cell.column.Header === "Order")
+                                    if (cell.column.Header === "Id")
                                       return "text-green-500 cursor-pointer";
+                                    if (cell.value === "Paid")
+                                      return "text-green-500";
+                                    if (cell.value === "Unpaid")
+                                      return "text-red-500";
                                     if (cell.value === "Cash")
                                       return "text-red-500";
                                     if (cell.value === "Card")
@@ -168,14 +184,18 @@ function OrdersTable({ columns, data }) {
                                       return "text-customYellow-light";
                                     if (cell.value === "Express")
                                       return "text-green-500";
-                                    if (cell.value === "Processing")
-                                      return "text-customYellow-light";
-                                    if (cell.value === "Cancelled")
-                                      return "text-red-500";
                                     if (cell.value === "Completed")
                                       return "text-green-500";
-                                    if (cell.value === "Out for delivery")
+                                    if (cell.value === "Pending")
+                                      return "text-customYellow-light";
+                                    if (cell.value === "Confirmed")
                                       return "text-green-500";
+                                    if (cell.value === "Rejected")
+                                      return "text-red-500";
+                                    if (cell.value === "Delivered")
+                                      return "text-green-500";
+                                    if (cell.value === "Cancelled")
+                                      return "text-red-500";
                                     else {
                                       return "text-gray-500";
                                     }

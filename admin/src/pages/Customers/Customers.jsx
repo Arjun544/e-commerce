@@ -30,7 +30,7 @@ const Customers = () => {
 
   const data = tableData.map((item) => ({
     user: item,
-    image: item.profile,
+    image: item.profile.image,
     name: item.username,
     email: item.email,
     date: item.createdAt,
@@ -50,11 +50,20 @@ const Customers = () => {
     {
       Header: "Image",
       accessor: "image",
-      Cell: (props) => (
-        <div>
-          <img className="h-12 w-12 rounded-full object-cover" src={props.cell.value} alt="" />
-        </div>
-      ),
+      Cell: (props) =>
+        props.cell.value ? (
+          <img
+            className="h-12 w-12 rounded-full object-cover"
+            src={props.cell.value}
+            alt=""
+          />
+        ) : (
+          <img
+            className="h-12 w-12 rounded-full object-cover"
+            src="https://schooloflanguages.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
+            alt=""
+          />
+        ),
     },
     {
       Header: "Name",

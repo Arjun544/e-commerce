@@ -15,8 +15,7 @@ import { createBrowserHistory } from "history";
 const SideBar = () => {
   const history = useHistory();
   const createHistory = createBrowserHistory();
-  const [selectedSideBar, setSelectedSideBar] = useState(0);
-  const { isSideBarOpen, isBigScreen, isMenuOpen, setIsMenuOpen } =
+  const {selectedSideBar, setSelectedSideBar, isSideBarOpen, isBigScreen, isMenuOpen, setIsMenuOpen } =
     useContext(AppContext);
 
   useEffect(() => {

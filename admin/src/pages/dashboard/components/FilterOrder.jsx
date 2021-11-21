@@ -3,10 +3,12 @@ import OrdersTable from "../../orders/components/orders_table";
 import TableActions from "../../orders/components/table_actions";
 import TopBar from "../../../components/TopBar";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useHistory, useLocation } from "react-router";
+import { Breadcrumb, Breadcrumbs } from "react-rainbow-components";
 
 const FilterOrder = () => {
   const location = useLocation();
+  const history = useHistory();
   const tableData = location.state.order;
 
   const data = tableData.map((item) => ({
@@ -71,17 +73,33 @@ const FilterOrder = () => {
   return (
     <div className="flex flex-col w-full h-full overflow-y-auto overflow-x-hidden  bg-white">
       <TopBar />
-      <div className="flex flex-col px-10 mt-6">
-        <span className="text-black font-semibold text-xl mb-6">
-          {(() => {
-            switch (location.pathname.split("/")[3]) {
-              case "completed":
-                break;
-              default:
-                break;
-            }
-          })()}
-        </span>
+      <div className="flex flex-col px-10">
+        <Breadcrumbs className='my-6'>
+          <Breadcrumb label="Dashboard" onClick={() => history.goBack()} />
+          <Breadcrumb
+            label={(() => {
+              switch (location.pathname.split("/")[3]) {
+                case "completed":
+                  return "Completed Orders";
+                case "pending":
+                  return "Pending Orders";
+                case "confirmed":
+                  return "Confirmed Orders";
+                case "rejected":
+                  return "Rejected Orders";
+                case "processing":
+                  return "Processing Orders";
+                case "delivered":
+                  return "Delivered Orders";
+                case "cancelled":
+                  return "Cancelled Orders";
+                default:
+                  break;
+              }
+            })()}
+          />
+        </Breadcrumbs>
+
         <OrdersTable columns={columns} data={data} />
       </div>
     </div>

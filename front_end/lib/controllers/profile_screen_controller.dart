@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:front_end/models/order_model.dart';
-import 'package:front_end/services/orders_api.dart';
-import 'package:front_end/services/reviews_api.dart';
+import '../models/order_model.dart';
+import '../services/orders_api.dart';
+import '../services/reviews_api.dart';
 import 'root_screen_controller.dart';
 import '../models/userModel.dart';
 
@@ -17,7 +17,7 @@ class ProfileScreenController extends GetxController {
   final TextEditingController newPassController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
-  var Orders = OrderModel(success: true, orders: []).obs;
+  var Orders = OrderModel(success: true, orderList: []).obs;
   RxBool isLoading = false.obs;
   RxInt currentAvatar = 0.obs;
   RxInt selectedShippingAddress = 0.obs;
@@ -94,12 +94,14 @@ class ProfileScreenController extends GetxController {
           type: type);
 
   Future addReviews({
+    required String orderId,
     required String productId,
     required String review,
     required double rating,
   }) async =>
       await ApiReviews().addReviews(
         userId: getStorage.read('userId'),
+        orderId: orderId,
         productId: productId,
         review: review,
         rating: rating,

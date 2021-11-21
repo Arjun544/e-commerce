@@ -14,7 +14,7 @@ import '../../../models/order_model.dart';
 import 'top_header.dart';
 
 class WriteReview extends StatefulWidget {
-  final Order order;
+  final OrderList order;
   const WriteReview({Key? key, required this.order}) : super(key: key);
 
   @override
@@ -28,19 +28,27 @@ class _WriteReviewState extends State<WriteReview> {
   double selectedRating = 0;
 
   Future<void> onAddReview(
-      String productId, String review, double rating) async {
-    await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
-    await profileScreenController.addReviews(
-      productId: productId,
-      review: review,
-      rating: selectedRating,
-    );
-    selectedRating = 0;
-    await EasyLoading.dismiss();
-    Get.back();
-    setState(() {
-      profileScreenController.getOrders();
-    });
+      String orderId, String productId, String review, double rating) async {
+    if (review.isEmpty) {
+      await EasyLoading.showToast("Review can't be empty",
+          duration: const Duration(seconds: 2),
+          toastPosition: EasyLoadingToastPosition.top,
+          maskType: EasyLoadingMaskType.clear);
+    } else {
+      await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
+      await profileScreenController.addReviews(
+        orderId: orderId,
+        productId: productId,
+        review: review,
+        rating: selectedRating,
+      );
+      selectedRating = 0;
+      await EasyLoading.dismiss();
+      Get.back();
+      setState(() {
+        profileScreenController.getOrders();
+      });
+    }
   }
 
   Future<void> onSkipReview(
@@ -77,12 +85,12 @@ class _WriteReviewState extends State<WriteReview> {
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   itemCount: widget.order.orderItems
-                      .where((element) => element.product.isReviewed == false)
+                      .where((element) => element.isReviewed == false)
                       .length,
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   itemBuilder: (context, index) {
                     var orderItems = widget.order.orderItems
-                        .where((element) => element.product.isReviewed == false)
+                        .where((element) => element.isReviewed == false)
                         .toList();
                     _reviewController.add(TextEditingController());
                     return Container(
@@ -100,7 +108,7 @@ class _WriteReviewState extends State<WriteReview> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: CachedNetworkImage(
-                                  imageUrl: orderItems[index].product.thumbnail,
+                                  imageUrl: orderItems[index].thumbnail,
                                   fit: BoxFit.cover,
                                   width: Get.width * 0.14,
                                 ),
@@ -114,7 +122,6 @@ class _WriteReviewState extends State<WriteReview> {
                                     Text(
                                       toBeginningOfSentenceCase(
                                               orderItems[index]
-                                                  .product
                                                   .isReviewed
                                                   .toString()) ??
                                           '',
@@ -123,7 +130,7 @@ class _WriteReviewState extends State<WriteReview> {
                                           fontSize: 14),
                                     ),
                                     Text(
-                                      '\$${orderItems[index].product.totalPrice.toString()}',
+                                      '\$${orderItems[index].totalPrice.toString()}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12),
@@ -132,7 +139,7 @@ class _WriteReviewState extends State<WriteReview> {
                                       height: 10,
                                     ),
                                     Text(
-                                      '${toBeginningOfSentenceCase(orderItems[index].product.subCategory)}',
+                                      '${toBeginningOfSentenceCase(orderItems[index].subCategory)}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12),
@@ -221,7 +228,8 @@ class _WriteReviewState extends State<WriteReview> {
                                 text: 'Add Review',
                                 color: darkBlue,
                                 onPressed: () => onAddReview(
-                                  orderItems[index].product.id,
+                                  widget.order.id,
+                                  orderItems[index].id,
                                   _reviewController[index].text,
                                   selectedRating,
                                 ),

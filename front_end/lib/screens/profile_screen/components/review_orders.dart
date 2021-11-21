@@ -58,8 +58,11 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                           child: const CircularProgressIndicator(),
                         ),
                       )
-                    : profileScreenController.Orders.value.orders
+                    : profileScreenController.Orders.value.orderList
                             .where((element) => element.status == 'Completed')
+                            .where((item) => item.orderItems
+                                .where((element) => element.isReviewed == false)
+                                .isNotEmpty)
                             .isEmpty
                         ? Center(
                             child: Padding(
@@ -69,7 +72,7 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                                   Lottie.asset('assets/empty.json',
                                       height: Get.height * 0.3),
                                   const Text(
-                                    'No Orders',
+                                    'No Orders to review',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
@@ -83,31 +86,30 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
                             itemCount: profileScreenController
-                                .Orders.value.orders
+                                .Orders.value.orderList
                                 .where(
                                     (element) => element.status == 'Completed')
                                 .where((item) => item.orderItems
                                     .where((element) =>
-                                        element.product.isReviewed == false)
+                                        element.isReviewed == false)
                                     .isNotEmpty)
                                 .length,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 15),
                             itemBuilder: (context, index) {
-                              log(profileScreenController.Orders.value.orders
+                              log(profileScreenController.Orders.value.orderList
                                   .where((element) =>
                                       element.status == 'Completed')
                                   .where((item) => item.orderItems
                                       .where((element) =>
-                                          element.product.isReviewed == false)
+                                          element.isReviewed == false)
                                       .isNotEmpty)
                                   .toList()[0]
                                   .orderItems[0]
-                                  .product
                                   .name
                                   .toString());
                               var orders = profileScreenController
-                                  .Orders.value.orders
+                                  .Orders.value.orderList
                                   .where((element) =>
                                       element.status == 'Completed')
                                   .toList();
@@ -184,8 +186,7 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                                       products: orders[index]
                                           .orderItems
                                           .where((element) =>
-                                              element.product.isReviewed ==
-                                              false)
+                                              element.isReviewed == false)
                                           .toList(),
                                     ),
                                   ),

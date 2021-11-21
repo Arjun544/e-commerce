@@ -5,6 +5,7 @@ import 'package:cupertino_stepper/cupertino_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/models/order_model.dart';
 import 'package:group_button/group_button.dart';
 import 'package:im_stepper/stepper.dart';
 import '../../../models/trackOrder_model.dart';
@@ -28,12 +29,13 @@ class _TrackOrderState extends State<TrackOrder> {
   void onTrackOrder() async {
     if (idController.text.isNotEmpty) {
       await EasyLoading.show(
-          status: 'Cancelling',
+          status: 'Loading',
           dismissOnTap: false,
           maskType: EasyLoadingMaskType.clear);
       order = await ApiOrders().getOrderById(orderId: idController.text);
       await EasyLoading.dismiss();
-      log(order.toString());
+      FocusScope.of(context).requestFocus(FocusNode());
+      setState(() {});
     }
   }
 
@@ -50,13 +52,14 @@ class _TrackOrderState extends State<TrackOrder> {
                 child: TopHeader(text: 'Track Order'),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
+                padding: const EdgeInsets.only(left: 15, right: 0, top: 15),
                 child: Column(
                   children: [
                     Container(
                       height: 50,
                       width: Get.width,
                       padding: const EdgeInsets.only(left: 10, right: 10),
+                      margin: const EdgeInsets.only(right: 18),
                       decoration: BoxDecoration(
                         color: customGrey,
                         borderRadius: BorderRadius.circular(15),
@@ -129,7 +132,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                         fontSize: 16),
                                   ),
                                   Text(
-                                    order!.orderList.id.toString(),
+                                    order!.orderList.id,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
@@ -171,9 +174,10 @@ class _TrackOrderState extends State<TrackOrder> {
                                         padding:
                                             const EdgeInsets.only(right: 20),
                                         decoration: BoxDecoration(
-                                            color: customGrey,
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
+                                          color: customGrey,
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -187,7 +191,6 @@ class _TrackOrderState extends State<TrackOrder> {
                                                     imageUrl: order!
                                                         .orderList
                                                         .orderItems[index]
-                                                        .product
                                                         .thumbnail,
                                                     fit: BoxFit.cover,
                                                     width: Get.width * 0.15,
@@ -206,7 +209,6 @@ class _TrackOrderState extends State<TrackOrder> {
                                                       order!
                                                           .orderList
                                                           .orderItems[index]
-                                                          .product
                                                           .name,
                                                       style: const TextStyle(
                                                           fontWeight:
@@ -217,11 +219,10 @@ class _TrackOrderState extends State<TrackOrder> {
                                                                 .orderList
                                                                 .orderItems[
                                                                     index]
-                                                                .product
                                                                 .discount >
                                                             0
                                                         ? Text(
-                                                            '\$ ${order!.orderList.orderItems[index].product.totalPrice.toString()}',
+                                                            '\$ ${order!.orderList.orderItems[index].totalPrice.toString()}',
                                                             style: const TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
@@ -229,7 +230,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                                                 fontSize: 12),
                                                           )
                                                         : Text(
-                                                            '\$ ${order!.orderList.orderItems[index].product.price.toString()}',
+                                                            '\$ ${order!.orderList.orderItems[index].price.toString()}',
                                                             style: const TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
@@ -241,7 +242,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                               ],
                                             ),
                                             Text(
-                                              'x ${order!.orderList.orderItems[index].product.quantity.toString()}',
+                                              'x ${order!.orderList.orderItems[index].quantity.toString()}',
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 12),

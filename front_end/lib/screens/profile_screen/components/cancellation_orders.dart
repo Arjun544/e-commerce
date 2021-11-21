@@ -56,7 +56,7 @@ class _CancellationOrdersState extends State<CancellationOrders> {
                           child: const CircularProgressIndicator(),
                         ),
                       )
-                    : profileScreenController.Orders.value.orders
+                    : profileScreenController.Orders.value.orderList
                             .where((element) => element.status == 'Cancelled')
                             .isEmpty
                         ? Center(
@@ -81,7 +81,7 @@ class _CancellationOrdersState extends State<CancellationOrders> {
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
                             itemCount: profileScreenController
-                                .Orders.value.orders
+                                .Orders.value.orderList
                                 .where(
                                     (element) => element.status == 'Cancelled')
                                 .length,
@@ -89,7 +89,7 @@ class _CancellationOrdersState extends State<CancellationOrders> {
                                 horizontal: 16, vertical: 15),
                             itemBuilder: (context, index) {
                               var orders = profileScreenController
-                                  .Orders.value.orders
+                                  .Orders.value.orderList
                                   .where((element) =>
                                       element.status == 'Cancelled')
                                   .toList();

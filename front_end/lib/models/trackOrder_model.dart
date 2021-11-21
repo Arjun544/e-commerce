@@ -36,10 +36,12 @@ class OrderList {
   OrderList({
     required this.orderItems,
     required this.status,
+    required this.isPaid,
     required this.id,
     required this.shippingAddress,
     required this.payment,
     required this.deliveryType,
+    required this.deliveryFee,
     required this.city,
     required this.country,
     required this.phone,
@@ -52,10 +54,12 @@ class OrderList {
 
   List<OrderItem> orderItems;
   String status;
+  bool isPaid;
   String id;
   String shippingAddress;
   String payment;
   String deliveryType;
+  int deliveryFee;
   String city;
   String country;
   String phone;
@@ -69,10 +73,12 @@ class OrderList {
         orderItems: List<OrderItem>.from(
             json['orderItems'].map((x) => OrderItem.fromJson(x))),
         status: json['status'],
+        isPaid: json['isPaid'],
         id: json['_id'],
         shippingAddress: json['shippingAddress'],
         payment: json['payment'],
         deliveryType: json['deliveryType'],
+        deliveryFee: json['deliveryFee'],
         city: json['city'],
         country: json['country'],
         phone: json['phone'],
@@ -83,13 +89,17 @@ class OrderList {
         orderListId: json['id'],
       );
 
+  get length => null;
+
   Map<String, dynamic> toJson() => {
         'orderItems': List<dynamic>.from(orderItems.map((x) => x.toJson())),
         'status': status,
+        'isPaid': isPaid,
         '_id': id,
         'shippingAddress': shippingAddress,
         'payment': payment,
         'deliveryType': deliveryType,
+        'deliveryFee': deliveryFee,
         'city': city,
         'country': country,
         'phone': phone,
@@ -103,34 +113,6 @@ class OrderList {
 
 class OrderItem {
   OrderItem({
-    required this.id,
-    required this.quantity,
-    required this.product,
-    required this.v,
-  });
-
-  String id;
-  int quantity;
-  Product product;
-  int v;
-
-  factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
-        id: json['_id'],
-        quantity: json['quantity'],
-        product: Product.fromJson(json['product']),
-        v: json['__v'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        '_id': id,
-        'quantity': quantity,
-        'product': product.toJson(),
-        '__v': v,
-      };
-}
-
-class Product {
-  Product({
     required this.quantity,
     required this.fullDescription,
     required this.images,
@@ -141,6 +123,7 @@ class Product {
     required this.totalReviews,
     required this.reviews,
     required this.isFeatured,
+    required this.isReviewed,
     required this.status,
     required this.id,
     required this.name,
@@ -152,7 +135,7 @@ class Product {
     required this.countInStock,
     required this.dateCreated,
     required this.v,
-    required this.productId,
+    required this.orderItemId,
   });
 
   int quantity;
@@ -165,6 +148,7 @@ class Product {
   int totalReviews;
   List<dynamic> reviews;
   bool isFeatured;
+  bool isReviewed;
   bool status;
   String id;
   String name;
@@ -176,9 +160,9 @@ class Product {
   int countInStock;
   DateTime dateCreated;
   int v;
-  String productId;
+  String orderItemId;
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
         quantity: json['quantity'],
         fullDescription: json['fullDescription'],
         images: List<Image>.from(json['images'].map((x) => Image.fromJson(x))),
@@ -189,6 +173,7 @@ class Product {
         totalReviews: json['totalReviews'],
         reviews: List<dynamic>.from(json['reviews'].map((x) => x)),
         isFeatured: json['isFeatured'],
+        isReviewed: json['isReviewed'],
         status: json['status'],
         id: json['_id'],
         name: json['name'],
@@ -200,7 +185,7 @@ class Product {
         countInStock: json['countInStock'],
         dateCreated: DateTime.parse(json['dateCreated']),
         v: json['__v'],
-        productId: json['id'],
+        orderItemId: json['id'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -214,6 +199,7 @@ class Product {
         'totalReviews': totalReviews,
         'reviews': List<dynamic>.from(reviews.map((x) => x)),
         'isFeatured': isFeatured,
+        'isReviewed': isReviewed,
         'status': status,
         '_id': id,
         'name': name,
@@ -225,7 +211,7 @@ class Product {
         'countInStock': countInStock,
         'dateCreated': dateCreated.toIso8601String(),
         '__v': v,
-        'id': productId,
+        'id': orderItemId,
       };
 }
 

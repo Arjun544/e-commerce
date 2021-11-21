@@ -105,7 +105,7 @@ const Dashboard = () => {
       <div className="flex my-6 px-6">
         {/* DashBoard  */}
         <div className={`flex flex-col w-full mr-6`}>
-          <div className="flex  justify-between">
+          <div className="flex items-center justify-between">
             <div className="flex flex-col">
               <span className="text-black font-semibold text-xl tracking-wide">
                 Dashboard
@@ -117,7 +117,7 @@ const Dashboard = () => {
 
             <div
               onClick={onTodaysOrdersClick}
-              className="flex relative h-12 bg-darkBlue-light  shadow-sm border-none ml-4 w-40 rounded-xl hover:bg-Grey-dark items-center justify-center cursor-pointer"
+              className="flex relative h-12 bg-darkBlue-light shadow-sm border-none ml-4 w-40 rounded-xl hover:bg-Grey-dark items-center justify-center cursor-pointer"
             >
               <span className="font-semibold text-sm text-white">
                 Today's Orders

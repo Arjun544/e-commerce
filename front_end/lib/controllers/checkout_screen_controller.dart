@@ -25,10 +25,7 @@ class CheckoutScreenController extends GetxController {
     await EasyLoading.show(status: 'Paying...', dismissOnTap: false);
     UserModel? currentUser = await rootScreenController.getCurrentUser();
     await ApiOrders().addOrder(
-      order: cartScreenController.orderItems
-          .map((element) =>
-              {'quantity': element.quantity, 'product': element.id})
-          .toList(),
+      orderItems: cartScreenController.orderItems,
       shippingAddress: order['shippingAddress'],
       city: order['city'],
       payment: order['payment'] == 0 ? 'Cash' : 'Card',

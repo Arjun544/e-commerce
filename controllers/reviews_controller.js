@@ -25,7 +25,7 @@ exports.addReview = async (req, res) => {
       return res.send("No user found");
     }
 
-    const newProduct = await Product.findById(req.params.id);
+    const newProduct = await Product.findById(req.body.productId);
     if (!newProduct) {
       return res.send("No product found");
     }
@@ -39,18 +39,24 @@ exports.addReview = async (req, res) => {
     });
     await newReview.save();
 
-    await Product.findByIdAndUpdate(
-      req.params.id,
-      {
-        $inc: { totalReviews: 1 },
-        isReviewed: true,
-        $push: {
-          reviews: newReview,
-        },
+    await Product.findByIdAndUpdate(req.params.id, {
+      $inc: { totalReviews: 1 },
+      $push: {
+        reviews: newReview,
       },
-      { new: true }
+    });
+    // update in specific product of order
+    await Order.updateOne(
+      {
+        _id: req.params.id,
+        "orderItems.id": req.body.productId,
+      },
+      {
+        $set: {
+          "orderItems.$.isReviewed": true,
+        },
+      }
     );
-
     res.send({
       success: true,
       message: "Review has been added",
@@ -66,18 +72,17 @@ exports.addReview = async (req, res) => {
 
 exports.skipReview = async (req, res) => {
   try {
-    const newItem = await OrderItem.findOneAndUpdate(
-      { _id: req.params.id },
+    await Order.updateOne(
+      {
+        _id: req.params.id,
+        "orderItems.id": req.body.productId,
+      },
       {
         $set: {
-          'product.isReviewed': true
+          "orderItems.$.isReviewed": true,
         },
-         new: true,
       }
-      
-    ).populate("product");
-
-    console.log(newItem);
+    );
 
     res.send({
       success: true,

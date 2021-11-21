@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import Loader from "react-loader-spinner";
 import { getUserById } from "../../api/userApi";
@@ -13,13 +13,15 @@ import { AppContext } from "../../App";
 import { getUserOrders } from "../../api/ordersApi";
 import UserOrdersTable from "./components/UserOrdersTable";
 import ItemCard from "./components/ItemCard";
+import { Breadcrumb, Breadcrumbs } from "react-rainbow-components";
 
 const CustomerDetails = () => {
   const { isBigScreen } = useContext(AppContext);
   const params = useParams();
+  const history = useHistory();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [user, setUser] = useState([]);
-  const [tableData, setTableData] = useState([]);
+  const [customer, setCustomer] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const userId = params.id;
 
@@ -27,10 +29,10 @@ const CustomerDetails = () => {
     const getData = async () => {
       try {
         setIsLoading(true);
-        const { data } = await getUserById(userId);
+        const  userData  = await getUserById(userId);
         const response = await getUserOrders(userId);
-        setTableData(response.data);
-        setUser(data.data);
+        setUser(userData.data.data);
+        setCustomer(response.data.orderList);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -44,7 +46,7 @@ const CustomerDetails = () => {
     getData();
   }, []);
 
-  const data = tableData.map((item) => ({
+  const data = customer.map((item) => ({
     order: item,
     amount: item.totalPrice,
     products: item.orderItems.length,
@@ -100,7 +102,12 @@ const CustomerDetails = () => {
   return (
     <div className="flex flex-col w-full h-full mt-30 overflow-y-auto overflow-x-hidden bg-white">
       <TopBar />
-
+      <div className="flex ml-10 my-6">
+        <Breadcrumbs>
+          <Breadcrumb label="Customers" onClick={() => history.goBack()} />
+          <Breadcrumb label="Customer Detail" />
+        </Breadcrumbs>
+      </div>
       {isLoading || user.length === 0 ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
           <Loader
@@ -120,11 +127,19 @@ const CustomerDetails = () => {
                 isBigScreen ? "w-1/2 mr-6" : "w-full mb-6"
               } min-w-min rounded-3xl bg-bgColor-light  hover:shadow-sm`}
             >
-              <img
-                className="h-14 w-14 rounded-2xl object-cover mb-5"
-                src={user.profile}
-                alt=""
-              />
+              {user.profile ? (
+                <img
+                  className="h-12 w-12 mb-6 rounded-full object-cover"
+                  src={user.profile}
+                  alt=""
+                />
+              ) : (
+                <img
+                  className="h-12 w-12 mb-6 rounded-full object-cover"
+                  src="https://schooloflanguages.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
+                  alt=""
+                />
+              )}
               <div className="flex items-center mb-3">
                 <PersonIcon className="fill-grey h-5 w-5 mr-2" />
                 <span className="text-black font-semibold text-sm">

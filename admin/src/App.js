@@ -22,6 +22,7 @@ import FlashDeal from "./pages/FlashDeal/FlashDeal";
 import Customers from "./pages/Customers/Customers";
 import CustomerDetails from "./pages/CustomerDetails/CustomerDetails";
 import Reviews from "./pages/Reviews/Reviews";
+import OrderDetails from "./pages/OrderDetails/OrderDetails";
 
 export const AppContext = createContext(null);
 
@@ -29,6 +30,7 @@ function App() {
   const socketUrl = io("http://localhost:4000");
   let socket = useRef(null);
 
+  const [selectedSideBar, setSelectedSideBar] = useState(0);
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -76,6 +78,8 @@ function App() {
           isMenuOpen,
           setIsMenuOpen,
           setIsLoading,
+          selectedSideBar,
+          setSelectedSideBar,
         }}
       >
         <div className=" w-screen h-screen m-0 box-border bg-white">
@@ -103,6 +107,9 @@ function App() {
                 </ProtectedRoute>
                 <ProtectedRoute path="/orders" exact>
                   <Orders />
+                </ProtectedRoute>
+                <ProtectedRoute path="/orders/view/:id" exact>
+                  <OrderDetails />
                 </ProtectedRoute>
                 <ProtectedRoute path="/products" exact>
                   <Products />

@@ -1,22 +1,21 @@
 const Order = require("../models/Order");
+const socket = require("../app");
 
 exports.addOrder = async (req, res) => {
   try {
     const totalPrices = await Promise.all(
       req.body.orderItems.map(async (item) => {
-        if (item.product.onSale === true && item.product.discount > 0) {
-          const totalPrice = item.product.totalPrice * item.product.quantity;
+        if (item.onSale === true && item.discount > 0) {
+          const totalPrice = item.totalPrice * item.quantity;
           return totalPrice;
         } else {
-          const totalPrice = item.product.price * item.product.quantity;
+          const totalPrice = item.price * item.quantity;
           return totalPrice;
         }
       })
     );
-
     const totalPrice =
       totalPrices.reduce((a, b) => a + b, 0) + req.body.deliveryFee;
-    console.log(totalPrice);
 
     let order = new Order({
       orderItems: req.body.orderItems,
@@ -35,7 +34,7 @@ exports.addOrder = async (req, res) => {
 
     res.json({
       success: true,
-      orders: order,
+      // orders: order,
     });
   } catch (error) {
     console.log(error);
@@ -65,7 +64,7 @@ exports.getOrders = async (req, res) => {
 
 exports.getOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).populate("user");
+    const order = await Order.findById(req.params.id);
 
     res.send({
       success: true,
@@ -82,19 +81,37 @@ exports.getOrderById = async (req, res) => {
 
 exports.updateStatus = async (req, res) => {
   try {
-    const order = await Order.findByIdAndUpdate(
-      req.params.id,
-      {
-        status: req.body.status,
-      },
-      { new: true }
-    );
+    let newOrder;
+    if (req.body.status !== "") {
+      newOrder = await Order.findByIdAndUpdate(
+        req.params.id,
+        {
+          status: req.body.status,
+        },
+        { new: true }
+      );
+    } else {
+      newOrder = await Order.findByIdAndUpdate(
+        req.params.id,
+        {
+          isPaid: req.body.paidStatus,
+        },
+        { new: true }
+      );
+    }
 
-    if (!order) return res.status(400).send("the order cannot be update!");
+    if (!newOrder) return res.status(400).send("the order cannot be update!");
+
+    if (req.body.isSettingOrders === true) {
+      const orderList = await Order.find().sort({ dateOrdered: -1 });
+      socket.socket.emit("update-orderStatus", orderList);
+    } else if (req.body.isSettingOrders === false) {
+      socket.socket.emit("update-orderStatus", newOrder);
+    }
 
     res.send({
       success: true,
-      order: order,
+      message: "Status has been updated",
     });
   } catch (error) {
     console.log(error);
@@ -159,7 +176,7 @@ exports.userOrders = async (req, res) => {
 
     res.send({
       success: true,
-      orders: userOrderList,
+      orderList: userOrderList,
     });
   } catch (error) {
     console.log(error);

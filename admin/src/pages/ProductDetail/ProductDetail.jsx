@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import TopBar from "../../components/TopBar";
 import { getProductById } from "../../api/productsApi";
+import Lottie from "lottie-react";
+import empty from "../../assets/images/empty";
 import Loader from "react-loader-spinner";
 import ProductOverview from "./components/product_overview";
 import ReactStars from "react-rating-stars-component";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { Breadcrumb, Breadcrumbs } from "react-rainbow-components";
 
 const ProductDetail = () => {
   const params = useParams();
+  const history = useHistory();
   const [selectedTab, setSelectedTab] = useState(0);
   const [product, setProduct] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,10 +43,15 @@ const ProductDetail = () => {
     averageRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
   }
   return (
-    <div className="flex flex-col w-full h-full mt-30 overflow-y-auto overflow-x-hidden  bg-white">
+    <div className="flex flex-col w-full h-full mt-30 overflow-y-auto overflow-x-hidden bg-white">
       <TopBar />
-
-      {isLoading || product.length === 0 ? (
+      <div className="flex ml-10 my-6">
+        <Breadcrumbs>
+          <Breadcrumb label="Products" onClick={() => history.goBack()} />
+          <Breadcrumb label="Product Detail" />
+        </Breadcrumbs>
+      </div>
+      {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
           <Loader
             type="Puff"
@@ -51,6 +60,11 @@ const ProductDetail = () => {
             width={50}
             timeout={3000} //3 secs
           />
+        </div>
+      ) : product.length === 0 ? (
+        <div className="flex flex-col items-center justify-center m-auto">
+          <Lottie className="h-40" animationData={empty} />
+          <span className="font-bold text-gray-300">No product found</span>
         </div>
       ) : (
         <div className="flex h-full flex-col px-8 mb-10 bg-white">

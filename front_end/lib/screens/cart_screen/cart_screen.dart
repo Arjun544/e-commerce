@@ -341,14 +341,16 @@ class _CartWidgetState extends State<CartWidget> {
                       children: [
                         Row(
                           children: [
+                            const SizedBox(width: 10),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: CachedNetworkImage(
                                 imageUrl: widget.product.thumbnail,
                                 fit: BoxFit.cover,
-                                width: Get.width * 0.2,
+                                width: Get.width * 0.14,
                               ),
                             ),
+                            const SizedBox(width: 10),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,

@@ -137,30 +137,30 @@ const OrderStats = () => {
               </span>
             </div>
           </div>
-          {/* Declined */}
+          {/* Rejected */}
           <div
             onClick={() => {
-              filteredOrders.filter((item) => item.status === "Declined")
+              filteredOrders.filter((item) => item.status === "Rejected")
                 .length > 0 &&
                 history.push({
-                  pathname: "/dashboard/orders/declined",
+                  pathname: "/dashboard/orders/rejected",
                   state: {
                     order: filteredOrders.filter(
-                      (item) => item.status === "Declined"
+                      (item) => item.status === "Rejected"
                     ),
                   },
                 });
             }}
             className="flex items-center cursor-pointer"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-indigo-100 bg-opacity-40">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-red-100 bg-opacity-40">
               <DeclinedIcon className="fill-lightRed h-8 w-8" />
             </div>
             <div className="flex flex-col item justify-center">
-              <span className="text-Grey-dark font-bold text-sm">Declined</span>
+              <span className="text-Grey-dark font-bold text-sm">Rejected</span>
               <span className="text-red-500 font-semibold text-xl">
                 {
-                  filteredOrders.filter((order) => order.status === "Declined")
+                  filteredOrders.filter((order) => order.status === "Rejected")
                     .length
                 }
               </span>
@@ -214,7 +214,7 @@ const OrderStats = () => {
             }}
             className="flex items-center cursor-pointer"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-red-100 bg-opacity-40">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-green-100 bg-opacity-40">
               <DeliveredIcon className="fill-lightGreen h-8 w-8" />
             </div>
             <div className="flex flex-col item justify-center">

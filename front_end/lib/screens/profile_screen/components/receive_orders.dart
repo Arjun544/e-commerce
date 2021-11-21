@@ -76,7 +76,7 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
                           child: const CircularProgressIndicator(),
                         ),
                       )
-                    : profileScreenController.Orders.value.orders
+                    : profileScreenController.Orders.value.orderList
                             .where((element) =>
                                 element.status != 'Completed' &&
                                 element.status != 'Cancelled')
@@ -103,7 +103,7 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
                             itemCount: profileScreenController
-                                .Orders.value.orders
+                                .Orders.value.orderList
                                 .where((element) =>
                                     element.status != 'Completed' &&
                                     element.status != 'Cancelled')
@@ -112,7 +112,7 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
                                 horizontal: 16, vertical: 15),
                             itemBuilder: (context, index) {
                               var orders = profileScreenController
-                                  .Orders.value.orders
+                                  .Orders.value.orderList
                                   .where((element) =>
                                       element.status != 'Completed' &&
                                       element.status != 'Cancelled')
@@ -226,7 +226,7 @@ class ProductCard extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: CachedNetworkImage(
-                            imageUrl: product.product.thumbnail,
+                            imageUrl: product.thumbnail,
                             fit: BoxFit.cover,
                             width: Get.width * 0.14,
                           ),
@@ -239,13 +239,13 @@ class ProductCard extends StatelessWidget {
                             children: [
                               Text(
                                 toBeginningOfSentenceCase(
-                                        product.product.name) ??
+                                        product.name) ??
                                     '',
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 14),
                               ),
                               Text(
-                                '\$${product.product.totalPrice.toString()}',
+                                '\$${product.totalPrice.toString()}',
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 12),
                               ),
@@ -253,7 +253,7 @@ class ProductCard extends StatelessWidget {
                                 height: 10,
                               ),
                               Text(
-                                '${toBeginningOfSentenceCase(product.product.subCategory)}',
+                                '${toBeginningOfSentenceCase(product.subCategory)}',
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 12),
                               ),
@@ -263,8 +263,8 @@ class ProductCard extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      'x${product.product.quantity.toString()}',
-                      style: TextStyle(
+                      'x${product.quantity.toString()}',
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 13,
                       ),

@@ -115,6 +115,7 @@ class Product {
         'totalReviews': totalReviews,
         'reviews': List<dynamic>.from(reviews.map((x) => x.toJson())),
         'isFeatured': isFeatured,
+        'isReviewed': isReviewed,
         'status': status,
         '_id': id,
         'name': name,

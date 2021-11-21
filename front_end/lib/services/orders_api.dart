@@ -3,7 +3,9 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:front_end/models/cart_model.dart';
 import 'package:front_end/models/trackOrder_model.dart';
+import '../models/order_model.dart';
 import '../models/order_model.dart';
 import '../models/userModel.dart';
 
@@ -11,7 +13,7 @@ import '../utils/constants.dart';
 
 class ApiOrders {
   Future addOrder({
-    required List<Map<String, dynamic>> order,
+    required List<CartProduct> orderItems,
     required String shippingAddress,
     required String city,
     required String payment,
@@ -25,7 +27,7 @@ class ApiOrders {
       await dio.post(
         baseUrl + 'orders/add',
         data: {
-          'orderItems': order,
+          'orderItems': orderItems,
           'shippingAddress': shippingAddress,
           'city': city,
           'payment': payment,

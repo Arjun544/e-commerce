@@ -57,6 +57,7 @@ class CartProduct {
     required this.totalReviews,
     required this.reviews,
     required this.isFeatured,
+    required this.isReviewed,
     required this.status,
     required this.id,
     required this.name,
@@ -81,6 +82,7 @@ class CartProduct {
   int totalReviews;
   List<Review> reviews;
   bool isFeatured;
+  bool isReviewed;
   bool status;
   String id;
   String name;
@@ -106,6 +108,7 @@ class CartProduct {
         reviews:
             List<Review>.from(json['reviews'].map((x) => Review.fromJson(x))),
         isFeatured: json['isFeatured'],
+        isReviewed: json['isReviewed'],
         status: json['status'],
         id: json['_id'],
         name: json['name'],
@@ -131,6 +134,7 @@ class CartProduct {
         'totalReviews': totalReviews,
         'reviews': List<dynamic>.from(reviews.map((x) => x.toJson())),
         'isFeatured': isFeatured,
+        'isReviewed': isReviewed,
         'status': status,
         '_id': id,
         'name': name,
@@ -357,6 +361,7 @@ class ReviewProduct {
         'totalReviews': totalReviews,
         'reviews': List<dynamic>.from(reviews.map((x) => x)),
         'isFeatured': isFeatured,
+        'isReviewed': isReviewed,
         'status': status,
         '_id': id,
         'name': name,
