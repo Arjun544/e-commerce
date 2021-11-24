@@ -5,14 +5,12 @@ import Status from "./components/status";
 import ProductsTable from "./components/products_table";
 import TableActions from "./components/table_actions";
 import TopBar from "../../components/TopBar";
-// import { useDispatch } from "react-redux";
 import { setProducts } from "../../redux/reducers/productsSlice";
 import { getProducts } from "../../api/productsApi";
 import Loader from "react-loader-spinner";
 import Avatar from "./components/avatar";
 
 const Products = () => {
-  // const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [tableData, setTableData] = useState([]);
   const { isBigScreen } = useContext(AppContext);
@@ -21,7 +19,6 @@ const Products = () => {
       try {
         setIsLoading(true);
         const { data } = await getProducts();
-        // dispatch(setProducts(data.products));
         setTableData(data.products);
         setIsLoading(false);
       } catch (error) {

@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 const api = axios.create();
 
-export const getAllReviews = () => {
+export const getAllReviews = () =>
   api.get("/api/reviews/get", {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
@@ -12,7 +12,6 @@ export const getAllReviews = () => {
       Accept: "application/json",
     },
   });
-}
 
 
 export const getRecentReviews = () =>

@@ -1,7 +1,24 @@
 import ReactApexCharts from "react-apexcharts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const OverviewChart = () => {
+  const { customers } = useSelector((state) => state.customers);
+  const { products } = useSelector((state) => state.products);
+  const { orders } = useSelector((state) => state.orders);
+  const { categories } = useSelector((state) => state.categories);
+  const [series, setSeries] = useState([
+    customers.length,
+    products.length,
+    orders.length,
+    categories.length,
+  ]);
+  
+
+  useEffect(() => {
+    setSeries([customers.length, products.length, orders.length, categories.length]);
+  }, [customers, products, orders, categories]);
+
   const [options, setOptions] = useState({
     chart: {
       width: 350,
@@ -10,7 +27,7 @@ const OverviewChart = () => {
     dataLabels: {
       enabled: false,
     },
-    labels: ["Customers", "Product", "Order", "Category"],
+    labels: ["Customers", "Products", "Orders", "Categories"],
     plotOptions: {
       pie: {
         startAngle: -90,
@@ -50,7 +67,6 @@ const OverviewChart = () => {
       },
     ],
   });
-  const [series, setSeries] = useState([44, 55, 41, 17]);
 
   return (
     <div className="flex flex-col w-full h-full">

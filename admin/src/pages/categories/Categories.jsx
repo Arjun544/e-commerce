@@ -169,8 +169,8 @@ const Categories = () => {
           />
         </div>
       ) : categories.length === 0 ? (
-          <div className='flex w-full items-center justify-center mt-40'>
-            <span className='text-black font-semibold'>No Categories</span>
+        <div className="flex w-full items-center justify-center mt-40">
+          <span className="text-black font-semibold">No Categories</span>
         </div>
       ) : (
         <div className=" w-full h-full overflow-x-hidden max-w-full px-8 scrollbar scrollbar-thin hover:scrollbar-thumb-gray-900 scrollbar-thumb-gray-500 scrollbar-track-gray-300">
@@ -228,34 +228,47 @@ const Categories = () => {
                   }
                   expanded={category === 1}
                 >
-                  <div className="flex flex-wrap h-auto bg-bgColor-light bg-opacity-50 w-full p-6">
+                  <div className="flex flex-col  h-auto bg-bgColor-light bg-opacity-50 w-full px-6">
                     {category.subCategories.length === 0 ? (
-                      <span className="text-gray-400 font-semibold">
+                      <span className="text-gray-400 font-semibold my-4">
                         No sub categories
                       </span>
                     ) : (
-                      category.subCategories.map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex w-64 h-16 mr-8 mb-6  bg-blue-light bg-opacity-30 rounded-2xl items-center justify-between px-6 shadow-sm"
-                        >
-                          <span className="text-black font-semibold capitalize">
-                            {item.name}
-                          </span>
-                          <div className="flex">
-                            <EditIcon
-                              onClick={(e) => handleSubCategoryEdit(e, item)}
-                              className="mr-2 h-5 w-5 cursor-pointer fill-grey hover:fill-green"
-                            />
-                            <DeleteIcon
-                              onClick={(e) =>
-                                handleSubCategoryDelete(e, category._id, item)
-                              }
-                              className="cursor-pointer h-5 w-5 fill-grey hover:fill-red"
-                            />
-                          </div>
+                      <div className='flex flex-col'>
+                        <span className="font-semibold my-4">
+                          Subcategories
+                        </span>
+                        <div className="flex items-center flex-wrap">
+                          {category.subCategories.map((item, index) => (
+                            <div
+                              key={index}
+                              className="flex w-64 h-16 mr-8 mb-6  bg-blue-light bg-opacity-30 rounded-2xl items-center justify-between px-6 shadow-sm"
+                            >
+                              <span className="text-black font-semibold capitalize">
+                                {item.name}
+                              </span>
+                              <div className="flex">
+                                <EditIcon
+                                  onClick={(e) =>
+                                    handleSubCategoryEdit(e, item)
+                                  }
+                                  className="mr-2 h-5 w-5 cursor-pointer fill-grey hover:fill-green"
+                                />
+                                <DeleteIcon
+                                  onClick={(e) =>
+                                    handleSubCategoryDelete(
+                                      e,
+                                      category._id,
+                                      item
+                                    )
+                                  }
+                                  className="cursor-pointer h-5 w-5 fill-grey hover:fill-red"
+                                />
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      ))
+                      </div>
                     )}
                   </div>
                 </AccordionItem>

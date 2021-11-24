@@ -35,7 +35,7 @@ const Orders = () => {
     total: item.totalPrice,
     status: item.status,
     payment: item.payment,
-    paid: item.isPaid ? '{Paid}': 'Unpaid',
+    paid: item.isPaid ? "Paid" : "Unpaid",
     deliveryType: item.deliveryType,
     phone: item.phone,
     orderItems: item.orderItems.length,
@@ -92,7 +92,9 @@ const Orders = () => {
     {
       Header: "Actions",
       accessor: "order",
-      Cell: (props) => <TableActions order={props.cell.value} setOrders={ setOrders }/>,
+      Cell: (props) => (
+        <TableActions order={props.cell.value} setOrders={setOrders} />
+      ),
     },
   ];
 

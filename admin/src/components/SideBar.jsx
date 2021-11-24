@@ -52,7 +52,7 @@ const SideBar = () => {
   return (
     <div
       className={`flex-col ${
-        isSideBarOpen ? "w-72" : "w-20"
+        isSideBarOpen ? "w-60" : "w-20"
       } h-full pt-5 bg-darkBlue-light transition-width duration-400  ease`}
     >
       {isBigScreen ? (
@@ -64,7 +64,7 @@ const SideBar = () => {
           <Logo color={"#ffff"} />
           {isSideBarOpen && (
             <div>
-              <span className="text-lg font-semibold ml-2 tracking-wider">
+              <span className="text-lg text-white font-semibold ml-2 tracking-wider">
                 Sell
               </span>
               <span className="text-lg font-semibold text-customYellow-light tracking-wider">

@@ -46,7 +46,7 @@ const ProductOverview = ({ product, averageRating }) => {
               {product.countInStock}
             </span>
           </div>
-          {product.onSale && product.discount >0 ? (
+          {product.onSale && product.discount > 0 ? (
             <div className="flex">
               <span className="text-gray-300 line-through font-semibold text-base mr-2">
                 ${product.price}
@@ -65,20 +65,24 @@ const ProductOverview = ({ product, averageRating }) => {
         <span className="text-gray-500 font-semibold text-base">
           {product.description}
         </span>
-
-        <ReactStars
-          classNames="mr-2"
-          value={averageRating}
-          count={5}
-          edit={false}
-          size={24}
-          isHalf={true}
-          emptyIcon={<i className="far fa-star"></i>}
-          halfIcon={<i className="fa fa-star-half-alt"></i>}
-          fullIcon={<i className="fa fa-star"></i>}
-          color="#575757a9"
-          activeColor="#ffd700"
-        />
+        <div className="flex">
+          <ReactStars
+            classNames="mr-2"
+            value={averageRating}
+            count={5}
+            edit={false}
+            size={24}
+            isHalf={true}
+            emptyIcon={<i className="far fa-star"></i>}
+            halfIcon={<i className="fa fa-star-half-alt"></i>}
+            fullIcon={<i className="fa fa-star"></i>}
+            color="#575757a9"
+            activeColor="#ffd700"
+          />
+          <span className="text-black font-semibold text-lg pt-1">
+            {averageRating}
+          </span>
+        </div>
       </div>
     </div>
   );

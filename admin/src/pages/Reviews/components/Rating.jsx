@@ -4,11 +4,11 @@ import ReactStars from "react-rating-stars-component";
 const Rating = ({rating}) => {
     return (
       <ReactStars
-        classNames="mr-2"
+        classNames=""
         value={rating}
         count={5}
         edit={false}
-        size={30}
+        size={25}
         isHalf={true}
         emptyIcon={<i className="far fa-star"></i>}
         halfIcon={<i className="fa fa-star-half-alt"></i>}

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import moment from "moment";
 import {
   useTable,
   useFilters,
@@ -19,7 +20,8 @@ import {
   SortUpIcon,
   SortDownIcon,
 } from "../../../components/pagination_icons";
-
+import { useHistory } from "react-router-dom";
+import { AppContext } from "../../../App";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -34,51 +36,29 @@ function GlobalFilter({
   }, 200);
 
   return (
-    <div className="flex flex-col">
-      <span className="text-black font-semibold text-lg mb-4">
-        Top Products
-      </span>
-      <input
-        type="text"
-        className="rounded-xl py-2 px-10 mt-2 text-white placeholder-white bg-Grey-dark border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        value={value || ""}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder={`Search in ${count} products...`}
-      />
-    </div>
+    <input
+      type="text"
+      className="rounded-xl py-2 px-10 mt-2 text-white placeholder-white bg-Grey-dark border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+      value={value || ""}
+      onChange={(e) => {
+        setValue(e.target.value);
+        onChange(e.target.value);
+      }}
+      placeholder={`Search in ${count} reviews...`}
+    />
   );
 }
 
-export function AvatarCell({ value, column, row }) {
-  return (
-    <div className="flex items-center">
-      <div className="flex-shrink-0 h-10 w-10">
-        <img
-          className="h-10 w-10 rounded-full"
-          src={row.original[column.imgAccessor]}
-          alt=""
-        />
-      </div>
-      <div className="ml-4">
-        <div className="text-sm font-medium text-gray-900">{value}</div>
-      </div>
-    </div>
-  );
-}
-
-function TopProductsTable({ columns, data }) {
+function ReviewsTable({ columns, data }) {
+  const history = useHistory();
+  const { setSelectedSideBar } = useContext(AppContext);
+  // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    page, // Instead of using 'rows', we'll use page,
-    // which has only the rows for the active page
-
-    // The rest of these things are super handy, too ;)
+    page,
     canPreviousPage,
     canNextPage,
     pageOptions,
@@ -87,24 +67,40 @@ function TopProductsTable({ columns, data }) {
     nextPage,
     previousPage,
     setPageSize,
-
     state,
     preGlobalFilteredRows,
+
     setGlobalFilter,
   } = useTable(
     {
       columns,
       data,
     },
+
     useFilters, // useFilters!
     useGlobalFilter,
     useSortBy,
     usePagination // new
   );
+
+  const onNameClick = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedSideBar(6);
+    history.push(`/customers/view/${id}`);
+  };
+
+  const onProductClick = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedSideBar(2);
+    history.push(`/products/view/${id}`);
+  };
+
   // Render the UI for your table
   return (
-    <>
-      <div className="sm:flex sm:gap-x-2">
+    <div>
+      <div className=" sm:flex sm:gap-x-2">
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
           globalFilter={state.globalFilter}
@@ -160,11 +156,15 @@ function TopProductsTable({ columns, data }) {
                   ))}
                 </thead>
                 <tbody {...getTableBodyProps()} className="bg-white">
+                  <div className="flex"></div>
                   {page.map((row, i) => {
                     // new
                     prepareRow(row);
                     return (
-                      <tr className="bg-bgColor-light" {...row.getRowProps()}>
+                      <tr
+                        className={`bg-white shadow-md hover:bg-gray-100 text-gray-500 text-sm font-semibold`}
+                        {...row.getRowProps()}
+                      >
                         {row.cells.map((cell) => {
                           return (
                             <td
@@ -173,8 +173,36 @@ function TopProductsTable({ columns, data }) {
                               role="cell"
                             >
                               {cell.column.Cell.name === "defaultRenderer" ? (
-                                <div className="text-sm text-gray-500">
-                                  {cell.render("Cell")}
+                                <div
+                                  onClick={(e) => {
+                                    if (cell.column.Header === "Product") {
+                                      onProductClick(
+                                        e,
+                                        cell.row.original.review.product._id
+                                      );
+                                    } else if (
+                                      cell.column.Header === "Customer"
+                                    ) {
+                                      onNameClick(
+                                        e,
+                                        cell.row.original.review.user._id
+                                      );
+                                    } 
+                                  }}
+                                  className={`text-sm font-semibold  ${(() => {
+                                    if (
+                                      cell.column.Header === "Customer" ||
+                                      cell.column.Header === "Product"
+                                    )
+                                      return "text-green-500 cursor-pointer";
+                                    else {
+                                      return "text-gray-500";
+                                    }
+                                  })()}`}
+                                >
+                                  {cell.column.Header === "Date"
+                                    ? moment(cell.value).format("ll")
+                                    : cell.render("Cell")}
                                 </div>
                               ) : (
                                 cell.render("Cell")
@@ -264,8 +292,8 @@ function TopProductsTable({ columns, data }) {
           </nav>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
-export default TopProductsTable;
+export default ReviewsTable;

@@ -37,14 +37,14 @@ const OrdersMenu = ({ isOrderMenuOpen, setIsOrderMenuOpen }) => {
         {orders
           .filter((items) =>
             moment(new Date(new Date(items.dateOrdered).getTime())).isBetween(
-              moment(new Date(new Date().getTime() - 12 * 60 * 60 * 1000))
+              moment(new Date(new Date().getTime() - 24 * 60 * 60 * 1000))
             )
           )
           .map((order, index) => (
             <div
               key={index}
               onClick={(e) => onOrderClick(e, order._id)}
-              className="flex items-center justify-between h-24 w-full mb-4 bg-white rounded-3xl px-4 shadow-sm cursor-pointer  hover:shadow-md"
+              className="flex items-center justify-between h-24 w-full mb-4 bg-white rounded-3xl px-4 shadow-sm cursor-pointer hover:shadow-md"
             >
               <div className="flex">
                 {order.user.profile ? (

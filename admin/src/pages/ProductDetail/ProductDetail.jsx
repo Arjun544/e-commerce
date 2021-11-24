@@ -7,8 +7,6 @@ import empty from "../../assets/images/empty";
 import Loader from "react-loader-spinner";
 import ProductOverview from "./components/product_overview";
 import ReactStars from "react-rating-stars-component";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { Breadcrumb, Breadcrumbs } from "react-rainbow-components";
 
 const ProductDetail = () => {
@@ -36,10 +34,9 @@ const ProductDetail = () => {
     getProduct();
   }, []);
 
-  console.log(product);
   //calculating avg rating from all ratings
   if (product.totalReviews > 0) {
-    const ratings = product.reviews.map((review) => parseFloat(review.number));
+    const ratings = product.reviews.map((review) => parseFloat(review.rating));
     averageRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
   }
   return (
@@ -47,7 +44,7 @@ const ProductDetail = () => {
       <TopBar />
       <div className="flex ml-10 my-6">
         <Breadcrumbs>
-          <Breadcrumb label="Products" onClick={() => history.goBack()} />
+          <Breadcrumb label="Products" onClick={() => history.push('/products')} />
           <Breadcrumb label="Product Detail" />
         </Breadcrumbs>
       </div>
@@ -72,7 +69,7 @@ const ProductDetail = () => {
           <ProductOverview product={product} averageRating={averageRating} />
 
           {/* Product desc */}
-          <div className="flex flex-grow bg-bgColor-light p-4 rounded-2xl">
+          <div className="flex bg-bgColor-light p-4 rounded-2xl">
             <div className="flex flex-col w-full px-5">
               {/* Tabs */}
               <div className="tabs tabs-boxed flex w-1/5 items-center justify-between h-16 rounded-3xl cursor-pointer">
@@ -105,51 +102,36 @@ const ProductDetail = () => {
               </div>
               {/* Tab Views */}
               {selectedTab === 0 ? (
-                <ReactQuill
-                  className="editor"
-                  readOnly={true}
-                  value={product.fullDescription}
-                  theme={"snow"}
-                ></ReactQuill>
+                <span className="font-semibold text-black">
+                  {product.fullDescription}
+                </span>
+              ) : product.reviews.length === 0 ? (
+                <span className="font-semibold">No reviews</span>
               ) : (
                 <div className="flex flex-col h-full w-full ">
-                  <span className="text-black font-semibold text-2xl mb-4">
-                    {averageRating}
-                  </span>
-                  <div className="flex items-center ">
-                    <ReactStars
-                      classNames="mr-2"
-                      value={averageRating}
-                      count={5}
-                      edit={false}
-                      size={30}
-                      isHalf={true}
-                      emptyIcon={<i className="far fa-star"></i>}
-                      halfIcon={<i className="fa fa-star-half-alt"></i>}
-                      fullIcon={<i className="fa fa-star"></i>}
-                      color="#575757a9"
-                      activeColor="#ffd700"
-                    />
-                    <span className="text-black font-semibold text-lg pt-1">
-                      ({product.totalReviews})
-                    </span>
-                  </div>
-
                   {product.reviews.map((review) => {
                     return (
                       <div className="flex mb-4 bg-white p-4 items-start justify-start rounded-2xl mt-3">
-                        <img
-                          className="h-12 w-12 rounded-full object-cover mt-1"
-                          src={review.user.profile}
-                          alt=""
-                        />
+                        {review.user.profile ? (
+                          <img
+                            className="h-12 w-12 rounded-full object-cover mt-1"
+                            src={review.user.profile}
+                            alt=""
+                          />
+                        ) : (
+                          <img
+                            className="h-12 w-12 rounded-full object-cover"
+                            src="https://schooloflanguages.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
+                            alt=""
+                          />
+                        )}
                         <div className="flex flex-col ml-3">
                           <span className="text-black font-semibold text-base capitalize">
                             {review.user.username}
                           </span>
                           <ReactStars
                             classNames="mb-2"
-                            value={review.number}
+                            value={review.rating}
                             count={5}
                             edit={false}
                             size={20}

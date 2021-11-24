@@ -10,20 +10,30 @@ import { AvatarCell } from "./components/TopProductsTable";
 import TopBar from "../../components/TopBar";
 import AllOrders from "./components/AllOrders";
 import LatestReviews from "./components/LatestReviews";
-import CustomerReviews from "./components/CustomerReviews";
-import ActivityOverview from "./components/ActivityOverview";
+import AllReviews from "./components/AllReviews";
+import ProductsSold from "./components/ProductsSold";
 import TopCustomers from "./components/TopCustomers";
 import OrderStats from "./components/OrderStats";
 import { getOrders } from "../../api/ordersApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setOrders } from "../../redux/reducers/ordersSlice";
 import OrderStatsLoader from "../../components/loaders/OrderStatsLoader";
+import { getUsers } from "../../api/userApi";
+import { setCustomers } from "../../redux/reducers/customersSlice";
+import { setProducts } from "../../redux/reducers/productsSlice";
+import { getProducts } from "../../api/productsApi";
+import { setcategories } from "../../redux/reducers/categoriesSlice";
+import { getCategories } from "../../api/categoriesApi";
+import Avatar from "../products/components/avatar";
+import { getAllReviews } from "../../api/reviewsApi";
 
 const Dashboard = () => {
   const { isBigScreen } = useContext(AppContext);
   const dispatch = useDispatch();
+  const [reviews, setReviews] = useState([]);
   const [isOrderMenuOpen, setIsOrderMenuOpen] = useState(false);
   const [isOrdersLoading, setIsOrdersLoading] = useState(false);
+  const [isCustomersLoading, setIsCustomersLoading] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -37,59 +47,105 @@ const Dashboard = () => {
         console.log(error.response);
       }
     };
+    const fetchCustomers = async () => {
+      try {
+        setIsCustomersLoading(true);
+        const { data } = await getUsers();
+        dispatch(setCustomers({ customers: data.data }));
+        setIsCustomersLoading(false);
+      } catch (error) {
+        setIsCustomersLoading(false);
+        console.log(error.response);
+      }
+    };
+    const fetchProducts = async () => {
+      try {
+        setIsCustomersLoading(true);
+        const { data } = await getProducts();
+        dispatch(setProducts({ products: data.products }));
+        setIsCustomersLoading(false);
+      } catch (error) {
+        setIsCustomersLoading(false);
+        console.log(error.response);
+      }
+    };
+    const fetchCategories = async () => {
+      try {
+        setIsCustomersLoading(true);
+        const { data } = await getCategories();
+        dispatch(setcategories(data.categoryList));
+        setIsCustomersLoading(false);
+      } catch (error) {
+        setIsCustomersLoading(false);
+        console.log(error.response);
+      }
+    };
+    const fetchReviews = async () => {
+      try {
+        setIsCustomersLoading(true);
+        const { data } = await getAllReviews();
+        setReviews(data.reviews);
+        setIsCustomersLoading(false);
+      } catch (error) {
+        setIsCustomersLoading(false);
+        console.log(error.response);
+      }
+    };
     fetchOrders();
+    fetchCustomers();
+    fetchProducts();
+    fetchCategories();
+    fetchReviews();
   }, []);
 
   const onTodaysOrdersClick = (e) => {
     e.preventDefault();
     setIsOrderMenuOpen(true);
   };
+  const { products } = useSelector((state) => state.products);
 
-  const data = [
-    {
-      name: "Jane Cooper",
-      price: 27,
-      dateAdded: Date.now(),
-      rating: "2.5",
-      imgUrl:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-    },
-    {
-      name: "Jane Cooper",
-      price: 27,
-      dateAdded: Date.now(),
-      rating: "2.5",
-      imgUrl:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-    },
-    {
-      name: "Jane Cooper",
-      price: 27,
-      rating: "2.5",
-      dateAdded: Date.now(),
-      imgUrl:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-    },
-  ];
+  const productsData = products
+    .slice(0, 5)
+    .sort(function (a, b) {
+      if (a.totalReviews > b.totalReviews) return -1;
+      if (a.totalReviews < b.totalReviews) return 1;
+      return 0;
+    })
+    .map((item) => ({
+      product: item,
+      image: item.thumbnail,
+      name: item.name,
+      date: item.dateCreated,
+      price: item.price,
+    }));
 
-  const columns = [
+  const productsColumns = [
+    {
+      Header: "No",
+      maxWidth: 10,
+      accessor: "",
+      Cell: (row) => {
+        return <div>{row.row.index + 1}</div>;
+      },
+      disableSortBy: true,
+      disableFilters: true,
+    },
+    {
+      Header: "Image",
+      accessor: "image",
+      Cell: (props) => <Avatar value={props.cell.value} />,
+    },
     {
       Header: "Name",
       accessor: "name",
-      Cell: AvatarCell,
-      imgAccessor: "imgUrl",
     },
     {
-      Header: "Date added",
-      accessor: "dateAdded",
+      Header: "Date",
+      accessor: "date",
     },
     {
       Header: "Price",
       accessor: "price",
-    },
-    {
-      Header: "Rating",
-      accessor: "rating",
     },
   ];
 
@@ -127,7 +183,7 @@ const Dashboard = () => {
           {/* Orders stats */}
           {isOrdersLoading ? <OrderStatsLoader /> : <OrderStats />}
           {/*  */}
-          <div className="flex mt-12">
+          <div className={`flex mt-12 ${!isBigScreen && "flex-col"}`}>
             <div
               className={`h-full flex-grow ${
                 isBigScreen ? "mr-6" : "mb-6"
@@ -137,7 +193,9 @@ const Dashboard = () => {
             </div>
 
             <div
-              className={`flex h-full flex-grow-0 w-1/3 bg-bgColor-light rounded-3xl p-6 shadow-sm`}
+              className={`flex h-full flex-grow-0  bg-bgColor-light rounded-3xl p-6 shadow-sm ${
+                isBigScreen ? "w-1/3" : "w-full"
+              }`}
             >
               <OverviewChart />
             </div>
@@ -160,10 +218,14 @@ const Dashboard = () => {
                 isBigScreen ? "mr-6" : "mb-6"
               }`}
             >
-              <CustomerReviews />
+              <AllReviews reviews={reviews}/>
             </div>
             {/* Latest Reviews*/}
-            <div className="h-full w-1/3 bg-bgColor-light rounded-3xl p-6 shadow-sm">
+            <div
+              className={`h-full bg-bgColor-light rounded-3xl p-6 shadow-sm ${
+                isBigScreen ? "w-1/3" : "w-full"
+              }`}
+            >
               <LatestReviews />
             </div>
           </div>
@@ -181,23 +243,27 @@ const Dashboard = () => {
               <CustomersPaymentChart />
             </div>
             {/* ActivityOverview */}
-            <div className="h-full w-1/3 bg-bgColor-light rounded-3xl p-6 shadow-sm">
-              <ActivityOverview />
+            <div
+              className={`h-full bg-bgColor-light rounded-3xl p-6 shadow-sm ${
+                isBigScreen ? "w-1/3" : "w-full"
+              }`}
+            >
+              <ProductsSold />
             </div>
           </div>
 
           {/* Top Products */}
-          <div className="flex mt-12">
+          <div className={`flex mt-12 ${!isBigScreen && "flex-col"}`}>
             <div
-              className={`h-full w-1/2 bg-bgColor-light rounded-3xl p-6 shadow-sm ${
-                isBigScreen ? "mr-8" : "mb-6"
+              className={`bg-bgColor-light rounded-3xl p-6 shadow-sm ${
+                isBigScreen ? "w-1/2 mr-8" : "w-full mb-6"
               }`}
             >
               <TopCustomers />
             </div>
 
-            <div className="flex flex-col flex-grow h-full w-full bg-bgColor-light rounded-3xl p-6 shadow-sm">
-              <TopProductsTable columns={columns} data={data} />
+            <div className="flex flex-col w-full bg-bgColor-light rounded-3xl p-6 shadow-sm">
+              <TopProductsTable columns={productsColumns} data={productsData} />
             </div>
           </div>
         </div>

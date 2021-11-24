@@ -39,7 +39,7 @@ exports.addReview = async (req, res) => {
     });
     await newReview.save();
 
-    await Product.findByIdAndUpdate(req.params.id, {
+    await Product.findByIdAndUpdate(req.body.productId, {
       $inc: { totalReviews: 1 },
       $push: {
         reviews: newReview,
@@ -54,6 +54,10 @@ exports.addReview = async (req, res) => {
       {
         $set: {
           "orderItems.$.isReviewed": true,
+        },
+        $inc: { totalReviews: 1 },
+        $push: {
+          reviews: newReview,
         },
       }
     );
@@ -99,10 +103,7 @@ exports.skipReview = async (req, res) => {
 
 exports.getAllReviews = async (req, res) => {
   try {
-    const totalReviews = await Review.find()
-      .populate("User")
-      .populate("Product");
-
+    const totalReviews = await Review.find();
     res.send({
       success: true,
       reviews: totalReviews,
@@ -119,9 +120,7 @@ exports.getAllReviews = async (req, res) => {
 exports.getRecentReviews = async (req, res) => {
   try {
     const currrentDate = new Date().toISOString().split("T")[0];
-    const totalReviews = await Review.find()
-      .populate("User")
-      .populate("Product");
+    const totalReviews = await Review.find();
     const filteredReviews = totalReviews.filter(
       (item) => item.addedAt.toISOString().split("T")[0] === currrentDate
     );

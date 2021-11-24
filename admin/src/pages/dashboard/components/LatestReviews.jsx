@@ -43,18 +43,26 @@ const LatestReviews = () => {
             return (
               <div className="flex">
                 <div className="flex">
-                  <img
-                    className="h-12 w-12 rounded-full object-cover mt-1"
-                    src={review.user.profile}
-                    alt=""
-                  />
+                  {review.user.profile ? (
+                    <img
+                      className="h-12 w-12 rounded-full object-cover mt-1"
+                      src={review.user.profile}
+                      alt=""
+                    />
+                  ) : (
+                    <img
+                      className="h-12 w-12 rounded-full object-cover"
+                      src="https://schooloflanguages.sa.edu.au/wp-content/uploads/2017/11/placeholder-profile-sq.jpg"
+                      alt=""
+                    />
+                  )}
                   <div className="flex flex-col ml-4">
                     <span className="text-black font-semibold text-base capitalize">
                       {review.user.username}
                     </span>
                     <ReactStars
                       classNames="mb-2"
-                      value={review.number}
+                      value={review.rating}
                       count={5}
                       edit={false}
                       size={20}

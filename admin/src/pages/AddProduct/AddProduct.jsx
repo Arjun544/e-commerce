@@ -4,7 +4,6 @@ import Switch from "react-switch";
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
 import { useHistory, useParams } from "react-router-dom";
-import CustomEditor from "./components/CustomEditor";
 import { getCategories } from "../../api/categoriesApi";
 import Loader from "react-loader-spinner";
 import CategoriesDropDown from "./components/CategoriesDropDown";
@@ -16,6 +15,8 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import ReactTooltip from "react-tooltip";
 import CustomButon from "../../components/custom_button";
+import { Textarea } from "react-rainbow-components";
+import styled from "styled-components";
 import {
   addProduct,
   uploadMultiImages,
@@ -45,6 +46,7 @@ const AddProduct = ({ isEditing }) => {
   const [images, setImages] = useState([]);
   const [isFeatured, setIsFeatured] = useState(false);
   const [isOnSale, setIsOnSale] = useState(false);
+  const [inputCount, setInputCount] = useState(0);
   const [subCategories, setSubCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
@@ -203,7 +205,7 @@ const AddProduct = ({ isEditing }) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full mt-30 overflow-y-auto overflow-x-hidden  bg-white">
+    <div className="flex flex-col w-full h-full mt-30 overflow-y-auto overflow-x-hidden bg-white scrollbar scrollbar-thin hover:scrollbar-thumb-gray-900 scrollbar-thumb-gray-500 scrollbar-track-gray-300">
       <TopBar />
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
@@ -279,7 +281,7 @@ const AddProduct = ({ isEditing }) => {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center mb-4 mt-8">
+                <div className="flex items-center my-6">
                   {/* IsFeatured */}
                   <div className="flex  mr-20 items-center">
                     <span className="font-semibold text-gray-400 tracking-wide mr-6">
@@ -403,9 +405,19 @@ const AddProduct = ({ isEditing }) => {
               </div>
             </div>
             <div className="bg-bgColor-light text-black font-semibold rounded-2xl mb-2">
-              <CustomEditor
-                input={isEditing ? editingProduct.fullDescription : input}
-                setInput={setInput}
+              <Textarea
+                label=""
+                rows={4}
+                onChange={(event) => {
+                  setInput(event.target.value);
+                  setInputCount(event.target.value.length);
+                }}
+                maxLength={200}
+                placeholder="Full description"
+                footer={
+                  <span className="text-gray-400 text-sm ml-4 mb-2">{`${inputCount}/${200}`}</span>
+                }
+                className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
               />
             </div>
             {!input && (

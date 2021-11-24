@@ -29,7 +29,7 @@ const Customers = () => {
   }, []);
 
   const data = tableData.map((item) => ({
-    user: item,
+    review: item,
     image: item.profile.image,
     name: item.username,
     email: item.email,
@@ -74,7 +74,7 @@ const Customers = () => {
       accessor: "email",
     },
     {
-      Header: "Date",
+      Header: "Date Created",
       accessor: "date",
     },
 

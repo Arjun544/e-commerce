@@ -5,6 +5,7 @@ import Rating from "./components/Rating";
 import TableAction from "./components/TableAction";
 import { getAllReviews } from "../../api/reviewsApi";
 import Loader from "react-loader-spinner";
+import ReviewsTable from "./components/ReviewsTable";
 
 const Reviews = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +16,6 @@ const Reviews = () => {
       try {
         setIsLoading(true);
         const { data } = await getAllReviews();
-        console.log(data.reviews);
         setTableData(data.reviews);
         setIsLoading(false);
       } catch (error) {
@@ -28,11 +28,11 @@ const Reviews = () => {
 
   const data = tableData.map((item) => ({
     review: item,
-    product: item.product,
+    product: item.product.name,
     customerName: item.user.username,
-    date: item.addedAt.addedAt,
-    review: item.review,
-    rating: item.number,
+    date: item.addedAt,
+    reviewText: item.review,
+    rating: item.rating,
   }));
 
   const columns = [
@@ -60,21 +60,12 @@ const Reviews = () => {
     },
     {
       Header: "Review",
-      accessor: "review",
+      accessor: "reviewText",
     },
     {
       Header: "Rating",
       accessor: "rating",
       Cell: (props) => <Rating rating={props.cell.value} />,
-    },
-    {
-      Header: "Actions",
-      Cell: (props) => (
-        <TableAction
-          review={props.cell.row.original.review}
-          setTableData={setTableData}
-        />
-      ),
     },
   ];
 
@@ -94,7 +85,7 @@ const Reviews = () => {
         </div>
       ) : (
         <div className="px-10">
-          {/* <ProductsTable columns={columns} data={data} /> */}
+          <ReviewsTable columns={columns} data={data} />
         </div>
       )}
     </div>

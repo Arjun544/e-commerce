@@ -264,7 +264,7 @@ const Banners = () => {
                             >
                               <div className="flex items-center justify-center">
                                 <img
-                                  className="h-10 w-10 rounded-2xl mr-6 ml-4 object-contain"
+                                  className="h-20 w-20 rounded-2xl mr-6 ml-4 object-contain"
                                   src={banner.image}
                                   alt=""
                                 />

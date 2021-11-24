@@ -170,10 +170,7 @@ function CustomersTable({ columns, data }) {
                                 <div
                                   onClick={(e) => {
                                     cell.column.Header === "Name" &&
-                                      onUserClick(
-                                        e,
-                                        cell.row.original.user
-                                      );
+                                      onUserClick(e, cell.row.original.user);
                                   }}
                                   className={`text-sm font-semibold  ${(() => {
                                     if (cell.column.Header === "Name")
@@ -197,7 +194,7 @@ function CustomersTable({ columns, data }) {
                                     }
                                   })()}`}
                                 >
-                                  {cell.column.Header === "Date"
+                                  {cell.column.Header === "Date Created"
                                     ? moment(cell.value).format("ll")
                                     : cell.render("Cell")}
                                 </div>

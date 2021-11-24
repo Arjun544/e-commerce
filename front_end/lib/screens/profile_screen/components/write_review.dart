@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/controllers/profile_screen_controller.dart';
+import '../../../controllers/profile_screen_controller.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
 import 'package:get/get.dart';
