@@ -18,7 +18,7 @@ class ControllersBinding implements Bindings {
     Get.lazyPut<RootScreenController>(() => RootScreenController());
     Get.lazyPut<RegisterScreenController>(() => RegisterScreenController());
     Get.lazyPut<HomeScreenController>(() => HomeScreenController());
-    Get.lazyPut<CartScreenController>(() => CartScreenController());
+    Get.lazyPut<CartScreenController>(() => CartScreenController(), fenix: true);
     Get.lazyPut<DetailScreenController>(() => DetailScreenController());
     Get.lazyPut<WishListController>(() => WishListController());
     Get.lazyPut<ProfileScreenController>(() => ProfileScreenController());

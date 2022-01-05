@@ -26,11 +26,13 @@ import { setcategories } from "../../redux/reducers/categoriesSlice";
 import { getCategories } from "../../api/categoriesApi";
 import Avatar from "../products/components/avatar";
 import { getAllReviews } from "../../api/reviewsApi";
+import RatingStars from "./components/RatingStars";
 
 const Dashboard = () => {
   const { isBigScreen } = useContext(AppContext);
   const dispatch = useDispatch();
   const [reviews, setReviews] = useState([]);
+  const { products } = useSelector((state) => state.products);
   const [isOrderMenuOpen, setIsOrderMenuOpen] = useState(false);
   const [isOrdersLoading, setIsOrdersLoading] = useState(false);
   const [isCustomersLoading, setIsCustomersLoading] = useState(false);
@@ -102,7 +104,6 @@ const Dashboard = () => {
     e.preventDefault();
     setIsOrderMenuOpen(true);
   };
-  const { products } = useSelector((state) => state.products);
 
   const productsData = products
     .slice(0, 5)
@@ -117,6 +118,7 @@ const Dashboard = () => {
       name: item.name,
       date: item.dateCreated,
       price: item.price,
+      ratings: item.reviews.map((e) => parseFloat(e.rating)),
     }));
 
   const productsColumns = [
@@ -146,6 +148,18 @@ const Dashboard = () => {
     {
       Header: "Price",
       accessor: "price",
+    },
+    {
+      Header: "Ratings",
+      accessor: "ratings",
+      Cell: (props) => (
+        <span className="text-gray-500">
+          {isNaN(parseFloat(props.cell.value))
+            ? "none"
+            : props.cell.value.reduce((a, b) => a + b, 0) /
+              props.cell.value.length}
+        </span>
+      ),
     },
   ];
 
@@ -218,7 +232,7 @@ const Dashboard = () => {
                 isBigScreen ? "mr-6" : "mb-6"
               }`}
             >
-              <AllReviews reviews={reviews}/>
+              <AllReviews reviews={reviews} />
             </div>
             {/* Latest Reviews*/}
             <div

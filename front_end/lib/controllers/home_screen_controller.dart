@@ -77,7 +77,7 @@ class HomeScreenController extends GetxController {
 
   void cartSocketInit() {
     socket = io(
-        'http://192.168.0.102:4000',
+        'http://192.168.0.100:4000',
         // 'https://sell-corner.herokuapp.com/',
         OptionBuilder()
             .setTransports(['websocket']) // for Flutter or Dart VM

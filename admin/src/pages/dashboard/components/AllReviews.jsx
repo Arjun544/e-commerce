@@ -33,9 +33,7 @@ const AllReviews = ({ reviews }) => {
     dataLabels: {
       enabled: false,
     },
-
     colors: ["#33d656"],
-
     legend: {
       show: false,
     },
@@ -137,7 +135,7 @@ const AllReviews = ({ reviews }) => {
         <div className="flex items-center">
           <ReactStars
             classNames="mr-2"
-            value={averageRating}
+            value={averageRating ?? 0}
             count={5}
             edit={false}
             size={25}

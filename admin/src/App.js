@@ -23,6 +23,7 @@ import Customers from "./pages/Customers/Customers";
 import CustomerDetails from "./pages/CustomerDetails/CustomerDetails";
 import Reviews from "./pages/Reviews/Reviews";
 import OrderDetails from "./pages/OrderDetails/OrderDetails";
+import Notification from "./pages/Notification/Notification";
 
 export const AppContext = createContext(null);
 
@@ -140,6 +141,9 @@ function App() {
                 </ProtectedRoute>
                 <ProtectedRoute path="/reviews" exact>
                   <Reviews />
+                </ProtectedRoute>
+                <ProtectedRoute path="/notification" exact>
+                  <Notification />
                 </ProtectedRoute>
               </div>
             </Switch>

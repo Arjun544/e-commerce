@@ -11,6 +11,7 @@ import FlashIcon from "./icons/FlashIcon";
 import Logo from "./icons/Logo";
 import PersonIcon from "./icons/PersonIcon";
 import { createBrowserHistory } from "history";
+import NotificationIcon from "./icons/NotificationIcon";
 
 const SideBar = () => {
   const history = useHistory();
@@ -43,6 +44,9 @@ const SideBar = () => {
         break;
       case "/reviews":
         setSelectedSideBar(7);
+        break;
+      case "/notification":
+        setSelectedSideBar(8);
         break;
       default:
         break;
@@ -307,6 +311,30 @@ const SideBar = () => {
               } ml-3 text-sm font-semibold tracking-wider`}
             >
               Reviews
+            </span>
+          )}
+        </div>
+
+        {/* Notification */}
+        <div
+          onClick={(e) => {
+            setSelectedSideBar(8);
+            history.push("/notification");
+          }}
+          className={`flex w-${
+            isSideBarOpen ? "48" : "42"
+          }  items-center py-3 ${
+            isSideBarOpen ? "px-6" : "px-3"
+          } rounded-2xl hover:bg-lightGrey-light cursor-pointer transform hover:scale-90 transition duration-500 ease-in-out`}
+        >
+          <NotificationIcon color={selectedSideBar === 8 ? "#EC981A" : "#fff"} />
+          {isSideBarOpen && (
+            <span
+              className={`${
+                selectedSideBar === 8 ? "text-customYellow-light" : "text-white"
+              } ml-3 text-sm font-semibold tracking-wider`}
+            >
+              Notification
             </span>
           )}
         </div>

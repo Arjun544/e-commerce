@@ -15,6 +15,7 @@ const bannersRoutes = require("./routes/banner_routes");
 const dealRoutes = require("./routes/deal_routes");
 const reviewsRoutes = require("./routes/reviews_routes");
 const adminRoutes = require("./routes/admin_routes");
+const notificationRoutes = require("./routes/notification_routes");
 
 const connectDB = require("./config/db_config");
 
@@ -57,6 +58,7 @@ app.use("/api/deal/", dealRoutes);
 app.use("/api/payment/", paymentRoutes);
 app.use("/api/reviews/", reviewsRoutes);
 app.use("/api/admin/", adminRoutes);
+app.use("/api/notification/", notificationRoutes);
 
 //Listening to port
 const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
@@ -66,7 +68,7 @@ const io = require("socket.io")(server, {
   cors: {
     origin: [
       "http://localhost:3000",
-      "http://192.168.0.102:4000",
+      "http://192.168.0.101:4000",
       // "https://sell-corner.herokuapp.com/",
     ],
   },

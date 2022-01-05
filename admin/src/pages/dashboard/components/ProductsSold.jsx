@@ -1,52 +1,45 @@
-import React, { useState } from "react";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import ReactApexCharts from "react-apexcharts";
+import { useSelector } from "react-redux";
 
 const ProductsSold = () => {
-  const [series, setSeries] = useState([
-    {
-      name: "Inflation",
-      data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2],
-    },
-  ]);
+  const { orders } = useSelector((state) => state.orders);
+
+  const getYearlyProductsSold = (month) => {
+    const productsSold = orders
+      .filter(
+        (order) =>
+          order.status === "Completed" &&
+          order.isPaid === true &&
+          moment(new Date(order.dateOrdered).getTime()).format("M") === month
+      )
+      .map((item) => item.orderItems.map((e) => e.quantity))
+      .map((c) => c.reduce((a, b) => a + b, 0))
+      .reduce((a, b) => a + b, 0);
+    return productsSold;
+  };
 
   const [options, setOptions] = useState({
     chart: {
-      height: 100,
-      type: "bar",
       zoom: {
         enabled: false,
       },
-      sparkline: {
-        enabled: true,
-      },
+      height: 350,
+      type: "line",
       toolbar: {
         show: false,
       },
     },
-
-    plotOptions: {
-      bar: {
-        dataLabels: {
-          position: "top",
-        },
-      },
-    },
+    colors: ["#3359d6"],
     dataLabels: {
-      enabled: true,
-      style: {
-        colors: ["#333"],
-      },
-      offsetY: -20,
+      enabled: false,
     },
-    legend: {
+    grid: {
       show: false,
     },
     tooltip: {
       enabled: false,
-    },
-
-    grid: {
-      show: false,
     },
     stroke: {
       curve: "smooth",
@@ -54,8 +47,35 @@ const ProductsSold = () => {
     },
     xaxis: {
       type: "category",
-      categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-      
+      axisTicks: {
+        show: false,
+      },
+      axisBorder: {
+        show: false,
+      },
+      labels: {
+        hideOverlappingLabels: false,
+        style: {
+          colors: ['#000'],
+          fontSize: "12px",
+          fontWeight: 600,
+        },
+      },
+      tickPlacement: "on",
+      categories: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "July",
+        "Aug",
+        "Sept",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
     },
     yaxis: {
       show: false,
@@ -78,6 +98,47 @@ const ProductsSold = () => {
       },
     },
   });
+
+  const [series, setSeries] = useState([
+    {
+      name: "Inflation",
+      data: [],
+    },
+  ]);
+
+  useEffect(() => {
+    const JanProductsSold = getYearlyProductsSold("1");
+    const FebProductsSold = getYearlyProductsSold("2");
+    const MarProductsSold = getYearlyProductsSold("3");
+    const AprProductsSold = getYearlyProductsSold("4");
+    const MayProductsSold = getYearlyProductsSold("5");
+    const JunProductsSold = getYearlyProductsSold("6");
+    const JulProductsSold = getYearlyProductsSold("7");
+    const AugProductsSold = getYearlyProductsSold("8");
+    const SepEarning = getYearlyProductsSold("9");
+    const OctProductsSold = getYearlyProductsSold("10");
+    const NovProductsSold = getYearlyProductsSold("11");
+    const DecProductsSold = getYearlyProductsSold("12");
+    setSeries([
+      {
+        name: "Inflation",
+        data: [
+          JanProductsSold,
+          FebProductsSold,
+          MarProductsSold,
+          AprProductsSold,
+          MayProductsSold,
+          JunProductsSold,
+          JulProductsSold,
+          AugProductsSold,
+          SepEarning,
+          OctProductsSold,
+          NovProductsSold,
+          DecProductsSold,
+        ],
+      },
+    ]);
+  }, [orders]);
 
   return (
     <div id="chart" className="flex flex-col">

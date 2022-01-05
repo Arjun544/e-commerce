@@ -47,11 +47,7 @@ router.get("/sorting", authMiddleware, cleanBody, sortProducts);
 router.get("/featured", cleanBody, featuredProducts);
 router.get("/:id", authMiddleware, cleanBody, getProductById);
 router.get("/search/:query", authMiddleware, cleanBody, searchProducts);
-router.get(
-  "/similar/:category/:currentId",
-  cleanBody,
-  getSimilarProducts
-);
+router.get("/similar/:category/:currentId", cleanBody, getSimilarProducts);
 router.get("/byCategory/:categoryId", cleanBody, productsByCategory);
 router.patch("/update/:id", authMiddleware, cleanBody, updateProduct);
 router.patch(

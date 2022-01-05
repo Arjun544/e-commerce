@@ -12,37 +12,27 @@ const CustomersPaymentChart = () => {
   }
 
   const [options, setOptions] = useState({
+    series: [42, 47],
     chart: {
       width: 300,
-      type: "radialBar",
+      type: "polarArea",
     },
     dataLabels: {
       enabled: false,
     },
     labels: ["Cash", "Card"],
     plotOptions: {
-      pie: {
-        startAngle: -90,
-        endAngle: 270,
+      polarArea: {
+        rings: {
+          strokeWidth: 0,
+        },
+        spokes: {
+          strokeWidth: 0,
+        },
       },
-    },
-
-    fill: {
-      type: "gradient",
     },
     legend: {
       position: "bottom",
-      formatter: function (val, opts) {
-        return (
-          '<div class="flex-col w-full ml-2">' +
-          "<span class='text-black font-semibold text-sm mr-2'>" +
-          opts.w.globals.series[opts.seriesIndex] +
-          "</span>" +
-          "<span class='text-black font-semibold'>" +
-          "k" +
-          "</span>"
-        );
-      },
     },
 
     responsive: [
@@ -59,12 +49,19 @@ const CustomersPaymentChart = () => {
       },
     ],
   });
-  const [series, setSeries] = useState([0, 0]);
+  const [series, setSeries] = useState([
+    {
+      name: "data",
+      data: [0, 0],
+    },
+  ]);
 
   useEffect(() => {
     setSeries([
-      percentage(cashOrders, orders.length),
-      percentage(cardOrders, orders.length),
+      {
+        name: "data",
+        data: [42, 47],
+      },
     ]);
   }, [cashOrders, cardOrders]);
 
@@ -74,7 +71,7 @@ const CustomersPaymentChart = () => {
       <ReactApexCharts
         options={options}
         series={series}
-        type="radialBar"
+        type="polarArea"
         height={300}
       />
     </div>

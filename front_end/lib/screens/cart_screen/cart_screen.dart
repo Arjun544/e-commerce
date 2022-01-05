@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
@@ -142,7 +145,7 @@ class _CartScreenState extends State<CartScreen> {
                                   RxList total = [].obs;
                                   total.add(products
                                       .map((e) => e.discount > 0
-                                          ? e.totalPrice
+                                          ? e.totalPrice * e.quantity
                                           : e.price * e.quantity)
                                       .toList());
                                   cartScreenController.cartTotal
@@ -431,57 +434,80 @@ class _CartWidgetState extends State<CartWidget> {
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            InkWell(
+                              onTap: () async {
+                                log('pressed +');
+                                if (widget.product.quantity < 5) {
+                                  await widget.cartScreenController
+                                      .updateQuantity(
+                                    productId: widget.product.id,
+                                    value: widget.product.quantity + 1,
+                                  );
+
+                                  widget.homeScreenController.socket
+                                      .on('updatedCart', (data) {
+                                    widget.product.quantity =
+                                        int.parse(data['quantity'].toString());
+                                    widget.cartScreenController.cartTotal
+                                        .add(data['totalGrand']);
+                                  });
+                                  widget.cartScreenController
+                                      .isOrderItemsSelected.value = false;
+                                  widget.cartScreenController.orderItems
+                                      .clear();
+                                  setState(() {});
+                                }
+                              },
+                              child: const Icon(
+                                Icons.add_rounded,
+                                size: 20,
+                              ),
+                            ),
                             Container(
-                              width: 60,
-                              height: 40,
+                              width: 30,
+                              height: 30,
+                              margin: const EdgeInsets.symmetric(vertical: 6),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              child: DropdownButtonHideUnderline(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 14.0, right: 6),
-                                  child: DropdownButton<int>(
-                                    value: widget.product.quantity,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87),
-                                    isExpanded: true,
-                                    iconEnabledColor: Colors.black,
-                                    items:
-                                        <int>[1, 2, 3, 4, 5].map((int value) {
-                                      return DropdownMenuItem<int>(
-                                        value: value,
-                                        child: Text(value.toString()),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) async {
-                                      await widget.cartScreenController
-                                          .updateQuantity(
-                                        productId: widget.product.id,
-                                        value: value!,
-                                      );
+                              child: Text(
+                                widget.product.quantity.toString(),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                log('pressed -');
+                                if (widget.product.quantity != 1) {
+                                  await widget.cartScreenController
+                                      .updateQuantity(
+                                    productId: widget.product.id,
+                                    value: widget.product.quantity - 1,
+                                  );
 
-                                      widget.homeScreenController.socket
-                                          .on('updatedCart', (data) {
-                                        widget.product.quantity = int.parse(
-                                            data['quantity'].toString());
-                                        widget.cartScreenController.cartTotal
-                                            .add(data['totalGrand']);
-                                      });
-                                      widget.cartScreenController
-                                          .isOrderItemsSelected.value = false;
-                                      widget.cartScreenController.orderItems
-                                          .clear();
-                                      setState(() {});
-                                    },
-                                  ),
-                                ),
+                                  widget.homeScreenController.socket
+                                      .on('updatedCart', (data) {
+                                    widget.product.quantity =
+                                        int.parse(data['quantity'].toString());
+                                    widget.cartScreenController.cartTotal
+                                        .add(data['totalGrand']);
+                                  });
+                                  widget.cartScreenController
+                                      .isOrderItemsSelected.value = false;
+                                  widget.cartScreenController.orderItems
+                                      .clear();
+                                  setState(() {});
+                                }
+                              },
+                              child: const Icon(
+                                Icons.remove_rounded,
+                                size: 20,
                               ),
                             ),
                           ],

@@ -1,5 +1,8 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:badges/badges.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import '../controllers/home_screen_controller.dart';
 import 'package:get/get.dart';
@@ -8,6 +11,7 @@ import '../controllers/cart_screen_controller.dart';
 import '../controllers/profile_screen_controller.dart';
 import '../controllers/register_screen_controller.dart';
 import '../controllers/root_screen_controller.dart';
+import '../main.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
 import '../widgets/customDialogue.dart';
@@ -38,6 +42,53 @@ class _RootScreenState extends State<RootScreen> {
   @override
   void initState() {
     super.initState();
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        await AwesomeNotifications().createNotification(
+          content: message.data['image'] == null
+              ? NotificationContent(
+                  id: 10,
+                  channelKey: channel.id,
+                  title: notification.title,
+                  body: notification.body,
+                )
+              : NotificationContent(
+                  id: 10,
+                  channelKey: channel.id,
+                  body: notification.body,
+                  bigPicture: message.data['image'],
+                  notificationLayout: NotificationLayout.BigPicture,
+                ),
+        );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title ?? ''),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(notification.body ?? ''),
+                      Text(message.messageId ?? ''),
+                    ],
+                  ),
+                ),
+              );
+            });
+      }
+    });
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       if (getStorage.read('isLogin') == true) {
         await rootScreenController.getCurrentUser();

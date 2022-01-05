@@ -47,7 +47,6 @@ function GlobalFilter({
         }}
         placeholder={`Search in ${count} users...`}
       />
-     
     </div>
   );
 }
@@ -85,10 +84,10 @@ function CustomersTable({ columns, data }) {
     usePagination // new
   );
 
-  const onUserClick = (e, user) => {
+  const onUserClick = (e, userId) => {
     e.preventDefault();
     e.stopPropagation();
-    history.push(`/customers/view/${user._id}`);
+    history.push(`/customers/view/${userId}`);
   };
 
   // Render the UI for your table
@@ -170,7 +169,10 @@ function CustomersTable({ columns, data }) {
                                 <div
                                   onClick={(e) => {
                                     cell.column.Header === "Name" &&
-                                      onUserClick(e, cell.row.original.user);
+                                      onUserClick(
+                                        e,
+                                        cell.row.original.review._id
+                                      );
                                   }}
                                   className={`text-sm font-semibold  ${(() => {
                                     if (cell.column.Header === "Name")

@@ -29,7 +29,7 @@ const CustomerDetails = () => {
     const getData = async () => {
       try {
         setIsLoading(true);
-        const  userData  = await getUserById(userId);
+        const userData = await getUserById(userId);
         const response = await getUserOrders(userId);
         setUser(userData.data.data);
         setCustomer(response.data.orderList);
@@ -37,10 +37,16 @@ const CustomerDetails = () => {
       } catch (error) {
         setIsLoading(false);
         console.log(error.response);
-        enqueueSnackbar("Something went wrong", {
-          variant: "error",
-          autoHideDuration: 2000,
-        });
+        error.response.data.success === false &&
+        error.response.data.msg === "User not found"
+          ? enqueueSnackbar("No user found", {
+              variant: "error",
+              autoHideDuration: 2000,
+            })
+          : enqueueSnackbar("Something went wrong", {
+              variant: "error",
+              autoHideDuration: 2000,
+            });
       }
     };
     getData();
@@ -205,7 +211,15 @@ const CustomerDetails = () => {
           </div>
           {/* Orders */}
           <span className="text-black font-semibold my-4">Orders</span>
-          <UserOrdersTable columns={columns} data={data} />
+          {customer.length !== 0 ? (
+            <UserOrdersTable columns={columns} data={data} />
+          ) : (
+            <div className="flex items-center justify-center">
+              <span className="text-gray-500 font-semibold my-4">
+                No Orders yet
+              </span>
+            </div>
+          )}
         </div>
       )}
     </div>
