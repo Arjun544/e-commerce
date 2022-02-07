@@ -2,7 +2,6 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:badges/badges.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import '../controllers/home_screen_controller.dart';
 import 'package:get/get.dart';
@@ -11,7 +10,6 @@ import '../controllers/cart_screen_controller.dart';
 import '../controllers/profile_screen_controller.dart';
 import '../controllers/register_screen_controller.dart';
 import '../controllers/root_screen_controller.dart';
-import '../main.dart';
 import '../utils/colors.dart';
 import '../utils/constants.dart';
 import '../widgets/customDialogue.dart';
@@ -51,13 +49,13 @@ class _RootScreenState extends State<RootScreen> {
           content: message.data['image'] == null
               ? NotificationContent(
                   id: 10,
-                  channelKey: channel.id,
+                  channelKey: 'noti_key',
                   title: notification.title,
                   body: notification.body,
                 )
               : NotificationContent(
                   id: 10,
-                  channelKey: channel.id,
+                  channelKey: 'noti_key',
                   body: notification.body,
                   bigPicture: message.data['image'],
                   notificationLayout: NotificationLayout.BigPicture,

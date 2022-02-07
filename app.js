@@ -17,6 +17,21 @@ const reviewsRoutes = require("./routes/reviews_routes");
 const adminRoutes = require("./routes/admin_routes");
 const notificationRoutes = require("./routes/notification_routes");
 
+const server = require("http").createServer(app);
+
+// Sooket Connection
+const io = require("socket.io")(server, {
+  transports: ["polling"],
+  cors: {
+    origin: [
+      "http://localhost:3000",
+      "http://192.168.0.101:4000",
+      // "https://sell-corner.herokuapp.com/",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  },
+});
+
 const connectDB = require("./config/db_config");
 
 const PORT = process.env.PORT || 4000;
@@ -60,20 +75,6 @@ app.use("/api/reviews/", reviewsRoutes);
 app.use("/api/admin/", adminRoutes);
 app.use("/api/notification/", notificationRoutes);
 
-//Listening to port
-const server = app.listen(PORT, console.log(`Listening on port ${PORT}.`));
-
-const io = require("socket.io")(server, {
-  transports: ["websocket", "polling"],
-  cors: {
-    origin: [
-      "http://localhost:3000",
-      "http://192.168.0.101:4000",
-      // "https://sell-corner.herokuapp.com/",
-    ],
-  },
-});
-
 const socket = io.on("connection", (socket) => {
   console.log("socket server is connected");
   socket.on("updatedCart", (productId) => {
@@ -88,6 +89,5 @@ eventEmitter.on("updatedCart", (data) => {
   io.to(`product_${data.id}`).emit("updatedCart", data);
 });
 
-// eventEmitter.on("delete-cartitem", (data) => {
-//   io.to(`product_${data.id}`).emit("delete-cartitem", data);
-// });
+//Listening to port
+server.listen(PORT, console.log(`Listening on port ${PORT}.`));

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
+import 'package:front_end/screens/cart_screen/components/QuantityDropDown.dart';
 import '../checkout_screen/checkout_screen.dart';
 import '../../widgets/loaders/cart_screen_loader.dart';
 import 'package:get/get.dart';
@@ -140,6 +141,7 @@ class _CartScreenState extends State<CartScreen> {
                                 padding: const EdgeInsets.only(
                                     right: 15, left: 15, bottom: 80),
                                 itemBuilder: (context, index) {
+                                  // calc total price
                                   var products = cartScreenController
                                       .cartProducts.value.products;
                                   RxList total = [].obs;
@@ -281,13 +283,6 @@ class CartWidget extends StatefulWidget {
 }
 
 class _CartWidgetState extends State<CartWidget> {
-  @override
-  void initState() {
-    widget.homeScreenController.socket
-        .emit('updatedCart', 'product_${widget.product.id}');
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -434,85 +429,15 @@ class _CartWidgetState extends State<CartWidget> {
                             ),
                           ],
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            InkWell(
-                              onTap: () async {
-                                log('pressed +');
-                                if (widget.product.quantity < 5) {
-                                  await widget.cartScreenController
-                                      .updateQuantity(
-                                    productId: widget.product.id,
-                                    value: widget.product.quantity + 1,
-                                  );
-
-                                  widget.homeScreenController.socket
-                                      .on('updatedCart', (data) {
-                                    widget.product.quantity =
-                                        int.parse(data['quantity'].toString());
-                                    widget.cartScreenController.cartTotal
-                                        .add(data['totalGrand']);
-                                  });
-                                  widget.cartScreenController
-                                      .isOrderItemsSelected.value = false;
-                                  widget.cartScreenController.orderItems
-                                      .clear();
-                                  setState(() {});
-                                }
-                              },
-                              child: const Icon(
-                                Icons.add_rounded,
-                                size: 20,
-                              ),
-                            ),
-                            Container(
-                              width: 30,
-                              height: 30,
-                              margin: const EdgeInsets.symmetric(vertical: 6),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                widget.product.quantity.toString(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                log('pressed -');
-                                if (widget.product.quantity != 1) {
-                                  await widget.cartScreenController
-                                      .updateQuantity(
-                                    productId: widget.product.id,
-                                    value: widget.product.quantity - 1,
-                                  );
-
-                                  widget.homeScreenController.socket
-                                      .on('updatedCart', (data) {
-                                    widget.product.quantity =
-                                        int.parse(data['quantity'].toString());
-                                    widget.cartScreenController.cartTotal
-                                        .add(data['totalGrand']);
-                                  });
-                                  widget.cartScreenController
-                                      .isOrderItemsSelected.value = false;
-                                  widget.cartScreenController.orderItems
-                                      .clear();
-                                  setState(() {});
-                                }
-                              },
-                              child: const Icon(
-                                Icons.remove_rounded,
-                                size: 20,
-                              ),
-                            ),
-                          ],
-                        ),
                       ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                    width: 60,
+                    child: QuantityDropDown(
+                      cartScreenController: widget.cartScreenController,
+                      item: widget.product,
                     ),
                   ),
                 ],

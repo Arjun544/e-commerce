@@ -13,8 +13,8 @@ router.post("/send", cleanBody, authMiddleware, sendFirebaseNotification);
 router.post(
   "/sendToAllUsers",
   cleanBody,
-  authMiddleware,
   upload.single("image"),
+  authMiddleware,
   sendToAllUsers
 );
 

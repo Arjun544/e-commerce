@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:front_end/models/deal_model.dart';
-import 'package:front_end/services/deal_api.dart';
+import '../models/deal_model.dart';
+import '../services/deal_api.dart';
 import '../models/banner_model.dart';
 import '../services/banners_api.dart';
 import '../services/cart_api.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 import '../models/category_model.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -20,7 +19,6 @@ class HomeScreenController extends GetxController {
   int _currentPage = 0;
   RxBool isBannersLoading = false.obs;
   RxBool isDealLoading = false.obs;
-  late Socket socket;
   RxInt cartLength = 0.obs;
 
   var banners = BannerModel(success: true, banners: []).obs;
@@ -36,7 +34,6 @@ class HomeScreenController extends GetxController {
 
   @override
   void onReady() async {
-    cartSocketInit();
     isBannersLoading.value = true;
     banners.value = await BannersApi().getBanners();
     isBannersLoading.value = false;
@@ -73,20 +70,6 @@ class HomeScreenController extends GetxController {
     featuredProductsStreamController.close();
     salesPageController.dispose();
     super.onClose();
-  }
-
-  void cartSocketInit() {
-    socket = io(
-        'http://192.168.0.100:4000',
-        // 'https://sell-corner.herokuapp.com/',
-        OptionBuilder()
-            .setTransports(['websocket']) // for Flutter or Dart VM
-            .disableAutoConnect() // disable auto-connection
-            .setExtraHeaders({'foo': 'bar'}) // optional
-            .build());
-
-    socket.connect();
-    socket.onConnect((data) => print('sockeeeeeeeeet is connected'));
   }
 
   Future getData() async => await ApiProduct().getData(

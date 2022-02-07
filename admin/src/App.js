@@ -40,7 +40,10 @@ function App() {
 
   useEffect(() => {
     socket.current = io(socketUrl, {
-      autoConnect: false,
+      "force new connection": true,
+      reconnectionAttempt: "Infinity",
+      timeout: 10000,
+      transports: ["polling"],
     });
     socket.current.on("connection", () => {
       console.log("connected to server");
@@ -49,7 +52,7 @@ function App() {
     socket.current.on("disconnect", () => {
       console.log("Socket disconnecting");
     });
-  }, [socketUrl]);
+  }, []);
 
   return isLoading ? (
     <div className="flex w-full h-screen items-center justify-center bg-white">

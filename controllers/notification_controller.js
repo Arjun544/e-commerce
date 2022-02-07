@@ -1,6 +1,6 @@
 const Notification = require("../models/Notification");
 const { admin } = require("../config/firebase-config");
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 exports.sendFirebaseNotification = async (req, res) => {
   const notification_options = {
@@ -58,6 +58,7 @@ exports.sendToAllUsers = async (req, res) => {
           title,
           body,
         },
+
         topic: "AllUsers",
       };
       await admin.messaging().send(message);
@@ -68,6 +69,7 @@ exports.sendToAllUsers = async (req, res) => {
     } else {
       const result = await cloudinary.uploader.upload(
         image,
+        { timeout: 60000 },
         (error, result) => {
           console.log(result, error);
         }

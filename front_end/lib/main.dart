@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
@@ -14,13 +13,6 @@ import 'controllers_binding.dart';
 import 'screens/splash_screen.dart';
 import 'utils/colors.dart';
 import 'utils/constants.dart';
-
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'high_importance_channel', 'High Importance Notifications',
-    importance: Importance.high, playSound: true);
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -41,14 +33,13 @@ void main() async {
       null,
       [
         NotificationChannel(
-            channelGroupKey: channel.groupId,
-            channelKey: channel.id,
-            channelName: channel.name,
-            channelDescription: channel.description ?? '',
-            defaultColor: const Color(0xFF9D50DD),
-            ledColor: Colors.white,
-            
-            ),
+          channelGroupKey: 'notiGroup_key',
+          channelKey: 'noti_key',
+          channelName: 'notiChannel_name',
+          channelDescription: 'notiChannel_desc',
+          defaultColor: const Color(0xFF9D50DD),
+          ledColor: Colors.white,
+        ),
       ]);
   AwesomeNotifications()
       .actionStream

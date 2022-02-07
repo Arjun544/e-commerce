@@ -151,10 +151,7 @@ class DetailScreen extends StatelessWidget {
                 color: darkBlue,
                 onPressed: () {
                   cartScreenController.addToCart(product);
-                  homeScreenController.socket.on('cartCount',
-                      (data) => homeScreenController.cartLength.value = data);
-                  // homeScreenController.cartLength.value = int.parse(data);
-                  homeScreenController.cartLength.refresh();
+                  homeScreenController.cartLength += 1;
                 },
               ),
             ],
