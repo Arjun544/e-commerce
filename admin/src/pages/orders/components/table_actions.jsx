@@ -17,7 +17,6 @@ const TableActions = ({ order, setOrders }) => {
 
   const handleAcceptOrder = async (e) => {
     e.preventDefault();
-    // console.log(order);
     await updateStatus(order._id, "Confirmed", false, true);
     socket.current.on("update-orderStatus", (newOrder) => {
       setOrders(newOrder);
@@ -45,11 +44,11 @@ const TableActions = ({ order, setOrders }) => {
         <div className="flex flex-col absolute z-50 h-auto w-32 rounded-2xl mt-1 py-1 bg-white shadow-md">
           <div
             onClick={
-              order.status === "Cancelled" ||
-              order.status === "Completed" ||
-              order.status === "Confirmed" ||
-              order.status === "Processing" ||
-              order.status === "Delivered"
+              order?.status === "Cancelled" ||
+              order?.status === "Completed" ||
+              order?.status === "Confirmed" ||
+              order?.status === "Processing" ||
+              order?.status === "Delivered"
                 ? null
                 : handleAcceptOrder
             }

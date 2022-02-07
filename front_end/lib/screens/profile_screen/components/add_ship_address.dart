@@ -147,7 +147,6 @@ class _EditProfileState extends State<AddShipAddress> {
               child: InternationalPhoneNumberInput(
                 onInputChanged: (PhoneNumber number) {
                   phone = number.phoneNumber!;
-                  log(phone);
                 },
                 onInputValidated: (bool value) {},
                 selectorConfig: const SelectorConfig(

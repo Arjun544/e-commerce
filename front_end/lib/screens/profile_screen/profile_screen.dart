@@ -44,6 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         text: 'Profile',
       ),
       headerWidget: Container(
+        color: Colors.white,
         child: Column(
           children: [
             const Padding(

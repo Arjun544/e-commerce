@@ -79,18 +79,11 @@ const OrderStats = () => {
           </div>
           {/* Pending */}
           <div
-            onClick={() => {
-              filteredOrders.filter((item) => item.status === "Pending")
-                .length > 0 &&
-                history.push({
-                  pathname: "/dashboard/orders/pending",
-                  state: {
-                    order: filteredOrders.filter(
-                      (item) => item.status === "Pending"
-                    ),
-                  },
-                });
-            }}
+            onClick={() =>
+              history.push({
+                pathname: "/orders",
+              })
+            }
             className="flex items-center cursor-pointer"
           >
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-customYellow-light bg-opacity-20">

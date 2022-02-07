@@ -21,7 +21,6 @@ const Orders = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     fetchOrders();
@@ -47,7 +46,6 @@ const Orders = () => {
       maxWidth: 10,
       accessor: "",
       Cell: (row) => {
-        console.log(row.row);
         return <div>{row.row.index + 1}</div>;
       },
       disableSortBy: true,

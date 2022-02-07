@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:front_end/screens/cart_screen/components/QuantityDropDown.dart';
+import 'package:front_end/screens/cart_screen/components/TotalCounter.dart';
 import '../checkout_screen/checkout_screen.dart';
 import '../../widgets/loaders/cart_screen_loader.dart';
 import 'package:get/get.dart';
@@ -30,7 +31,16 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
-    cartScreenController.getCart();
+    cartScreenController.getCart().then((_) {
+      var products = cartScreenController.cartProducts.value.products;
+      RxList total = [].obs;
+      total.add(products
+          .map((e) =>
+              e.discount > 0 ? e.totalPrice * e.quantity : e.price * e.quantity)
+          .toList());
+      cartScreenController.cartTotal.value = total[0].fold(0, (p, c) => p + c);
+    });
+
     cartScreenController.orderItems.clear();
     cartScreenController.isOrderItemsSelected.value = false;
   }
@@ -144,14 +154,6 @@ class _CartScreenState extends State<CartScreen> {
                                   // calc total price
                                   var products = cartScreenController
                                       .cartProducts.value.products;
-                                  RxList total = [].obs;
-                                  total.add(products
-                                      .map((e) => e.discount > 0
-                                          ? e.totalPrice * e.quantity
-                                          : e.price * e.quantity)
-                                      .toList());
-                                  cartScreenController.cartTotal
-                                      .add(total[0].fold(0, (p, c) => p + c));
 
                                   RxInt currentQuantity = 0.obs;
                                   currentQuantity.value =
@@ -194,71 +196,7 @@ class _CartScreenState extends State<CartScreen> {
                                 }),
                       ],
                     ),
-                    cartScreenController.cartProducts.value.products.isEmpty
-                        ? const SizedBox.shrink()
-                        : Container(
-                            height: 70,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            margin: const EdgeInsets.only(
-                                right: 20, left: 20, bottom: 10),
-                            decoration: BoxDecoration(
-                              color: darkBlue,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                StreamBuilder(
-                                    stream:
-                                        cartScreenController.cartTotal.stream,
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const SizedBox();
-                                      }
-
-                                      return Obx(
-                                        () => Text(
-                                          cartScreenController
-                                                  .isOrderItemsSelected.value
-                                              ? '${cartScreenController.orderItemsTotal.value.toString()}'
-                                              : '${snapshot.data.toString()}',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                              color: Colors.white),
-                                        ),
-                                      );
-                                    }),
-                                Obx(
-                                  () => SocialButton(
-                                    height: 45,
-                                    width: Get.width * 0.4,
-                                    text: 'Check out',
-                                    icon: 'assets/images/Logout.svg',
-                                    color: cartScreenController
-                                            .orderItems.isNotEmpty
-                                        ? customYellow
-                                        : Colors.grey.withOpacity(0.5),
-                                    iconColor: Colors.white,
-                                    onPressed: () {
-                                      cartScreenController.orderItems.isNotEmpty
-                                          ? Get.to(
-                                              () => CheckoutScreen(),
-                                            )
-                                          : EasyLoading.showToast(
-                                              'Select items to check out',
-                                              toastPosition:
-                                                  EasyLoadingToastPosition.top,
-                                              maskType:
-                                                  EasyLoadingMaskType.clear,
-                                            );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                    TotalCounter(cartScreenController: cartScreenController),
                   ],
                 ),
         ),
@@ -432,13 +370,9 @@ class _CartWidgetState extends State<CartWidget> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 40,
-                    width: 60,
-                    child: QuantityDropDown(
-                      cartScreenController: widget.cartScreenController,
-                      item: widget.product,
-                    ),
+                  QuantityDropDown(
+                    cartScreenController: widget.cartScreenController,
+                    item: widget.product,
                   ),
                 ],
               ),

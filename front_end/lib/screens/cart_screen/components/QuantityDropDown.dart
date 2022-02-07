@@ -19,52 +19,101 @@ class QuantityDropDown extends StatefulWidget {
 }
 
 class _QuantityDropDownState extends State<QuantityDropDown> {
+  int quantity = 0;
+  @override
+  void initState() {
+    quantity = widget.item.quantity;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 14.0, right: 6),
-          child: DropdownButton<int>(
-            value: widget.item.quantity,
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.black87),
-            isExpanded: true,
-            iconEnabledColor: Colors.black,
-            items: <int>[1, 2, 3, 4, 5].map((int value) {
-              return DropdownMenuItem<int>(
-                value: value,
-                child: Text(value.toString()),
-              );
-            }).toList(),
-            onChanged: (value) async {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        InkWell(
+          onTap: () async {
+            if (quantity < 5) {
               await widget.cartScreenController.updateQuantity(
                 productId: widget.item.id,
-                value: value!,
+                value: widget.item.quantity + 1,
               );
 
-              RxList total = [].obs;
+              quantity++;
 
-              total.add(widget.item.discount > 0
-                  ? widget.item.totalPrice * value
-                  : widget.item.price * value);
-
-              log(widget.cartScreenController.cartTotal.toString());
-              log(total.toString());
-              setState(() {
-                widget.item.quantity = value;
-                // widget.cartScreenController.cartTotal.add(total.value);
-                widget.cartScreenController.isOrderItemsSelected.value = false;
-                widget.cartScreenController.orderItems.clear();
-              });
-            },
+              int total;
+              total = widget.item.discount > 0
+                  ? widget.item.totalPrice * widget.item.quantity
+                  : widget.item.price * widget.item.quantity;
+              widget.cartScreenController.cartTotal.value += total;
+              widget.cartScreenController.isOrderItemsSelected.value = false;
+              widget.cartScreenController.orderItems.clear();
+              setState(() {});
+            }
+          },
+          child: const Icon(
+            Icons.add_rounded,
+            size: 20,
           ),
         ),
-      ),
+        Container(
+          width: 30,
+          height: 30,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: customYellow,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Text(
+            quantity.toString(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        InkWell(
+          onTap: () async {
+            if (quantity != 1) {
+              await widget.cartScreenController.updateQuantity(
+                productId: widget.item.id,
+                value: widget.item.quantity - 1,
+              );
+              quantity--;
+
+              int total;
+              total = widget.item.discount > 0
+                  ? widget.item.totalPrice * widget.item.quantity
+                  : widget.item.price * widget.item.quantity;
+              widget.cartScreenController.cartTotal.value -= total;
+              widget.cartScreenController.isOrderItemsSelected.value = false;
+              widget.cartScreenController.orderItems.clear();
+              setState(() {});
+            }
+          },
+          child: const Icon(
+            Icons.remove_rounded,
+            size: 20,
+          ),
+        ),
+      ],
     );
   }
 }
+
+
+// onChanged: (value) async {
+//               await widget.cartScreenController.updateQuantity(
+//                 productId: widget.item.id,
+//                 value: value!,
+//               );
+//               int total;
+//               total = widget.item.discount > 0
+//                   ? widget.item.totalPrice * value
+//                   : widget.item.price * value;
+
+//               setState(() {
+//                 widget.item.quantity = value;
+//                 widget.cartScreenController.cartTotal.value += total;
+//                 widget.cartScreenController.isOrderItemsSelected.value = false;
+//                 widget.cartScreenController.orderItems.clear();
+//               });
+//             },

@@ -31,7 +31,6 @@ class ApiPayment {
       ),
     );
     if (response.statusCode == 200) {
-      log(response.data);
     } else {
       await EasyLoading.showToast(
         'Something went wrong',

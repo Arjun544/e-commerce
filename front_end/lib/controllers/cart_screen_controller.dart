@@ -17,7 +17,7 @@ class CartScreenController extends GetxController {
           v: 0,
           cartModelId: '')
       .obs;
-  StreamController cartTotal = BehaviorSubject();
+  RxInt cartTotal = 0.obs;
   RxList<CartProduct> orderItems = <CartProduct>[].obs;
   RxBool isOrderItemsSelected = false.obs;
   RxBool isLoading = false.obs;
@@ -30,7 +30,7 @@ class CartScreenController extends GetxController {
     );
   }
 
-  void getCart() async {
+  Future getCart() async {
     isLoading.value = true;
     var products = await ApiCart().getCart(
       userId: getStorage.read('userId'),

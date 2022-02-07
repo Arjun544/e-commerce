@@ -97,17 +97,6 @@ class _ReviewOrdersState extends State<ReviewOrders> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 15),
                             itemBuilder: (context, index) {
-                              log(profileScreenController.Orders.value.orderList
-                                  .where((element) =>
-                                      element.status == 'Completed')
-                                  .where((item) => item.orderItems
-                                      .where((element) =>
-                                          element.isReviewed == false)
-                                      .isNotEmpty)
-                                  .toList()[0]
-                                  .orderItems[0]
-                                  .name
-                                  .toString());
                               var orders = profileScreenController
                                   .Orders.value.orderList
                                   .where((element) =>

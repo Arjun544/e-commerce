@@ -44,7 +44,6 @@ class RegisterScreenController extends GetxController {
         ),
       );
 
-      log(response.data.toString());
       if (response.data['error'] == true) {
         // ignore: unawaited_futures
         EasyLoading.showToast(
@@ -81,7 +80,6 @@ class RegisterScreenController extends GetxController {
         ),
       );
 
-      log(response.data.toString());
       if (response.data['error'] == true) {
         await EasyLoading.showToast(
           response.data['message'],

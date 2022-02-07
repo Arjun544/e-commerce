@@ -27,14 +27,12 @@ class _StepThreeState extends State<StepThree> {
     checkoutScreenController.order['payment'] =
         checkoutScreenController.selectedPayment.value;
     checkoutScreenController.order['card'] = card.id;
-    log(checkoutScreenController.order.toString());
   }
 
   void onContinuePressed() {
     checkoutScreenController.activeStep.value += 1;
     checkoutScreenController.order['payment'] =
         checkoutScreenController.selectedPayment.value;
-    log(checkoutScreenController.order.toString());
   }
 
   @override

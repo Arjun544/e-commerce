@@ -48,7 +48,6 @@ class _FilterProductsScreenState extends State<FilterProductsScreen> {
         : filteredProductsScreenController.getFilteredProducts(
             id: widget.categoryId, hasQueryParam: false);
 
-    log('rebuild');
     super.initState();
   }
 

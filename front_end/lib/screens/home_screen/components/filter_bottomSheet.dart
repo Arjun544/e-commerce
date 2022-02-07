@@ -269,7 +269,6 @@ class CustomRatingButton extends StatelessWidget {
           return averageRating;
         }
 
-        log(selectedRating.toString());
         if (selectedRating >= 0 && selectedRating <= 2) {
           controller.sortedProductsStreamController.add(controller
               .filteredProducts.reversed
@@ -347,8 +346,6 @@ class PriceSlider extends StatelessWidget {
       onDragCompleted: (value, one, two) {
         startPrice = one;
         endPrice = two;
-        log(one.toString());
-        log(two.toString());
         controller.sortedProductsStreamController.add(controller
             .filteredProducts
             .where((element) =>

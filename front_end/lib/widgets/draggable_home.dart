@@ -2,7 +2,6 @@ library draggable_home;
 
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:rxdart/rxdart.dart';
@@ -146,7 +145,7 @@ class _DraggableHomeState extends State<DraggableHome> {
     return Scaffold(
       extendBody: true,
       backgroundColor:
-          widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+          Colors.white,
       drawer: widget.drawer,
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
@@ -174,19 +173,16 @@ class _DraggableHomeState extends State<DraggableHome> {
             // isFullyCollapsed
             if ((isFullyExpanded.value) &&
                 notification.metrics.extentBefore > 100) {
-              log('scrolled');
               isFullyExpanded.add(false);
             }
             //isFullyCollapsed
             if (notification.metrics.extentBefore >
                 expandedHeight - AppBar().preferredSize.height - 40) {
               if (!(isFullyCollapsed.value)) {
-                log('scrolled down');
                 isFullyCollapsed.add(true);
               }
             } else {
               if ((isFullyCollapsed.value)) {
-                log('scrolled up');
                 isFullyCollapsed.add(false);
               }
             }
@@ -304,7 +300,7 @@ class _DraggableHomeState extends State<DraggableHome> {
       height: widget.curvedBodyRadius,
       decoration: BoxDecoration(
         color:
-            widget.backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+           Colors.white,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(widget.curvedBodyRadius),
         ),
@@ -324,8 +320,7 @@ class _DraggableHomeState extends State<DraggableHome> {
                 height: MediaQuery.of(context).size.height -
                     topHeight -
                     bottomPadding,
-                color: widget.backgroundColor ??
-                    Theme.of(context).scaffoldBackgroundColor,
+                color: Colors.white,
               ),
               Column(
                 children: [

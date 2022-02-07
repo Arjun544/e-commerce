@@ -33,7 +33,6 @@ class PaymentController extends GetxController {
 
   Future getCustomerCard() async {
     UserModel? userModel = await rootScreenController.getCurrentUser();
-    log(userModel.toString());
     await ApiPayment().getCustomerCard(
         id: userModel!.data.customerId,
         controller: paymentCardStreamController);

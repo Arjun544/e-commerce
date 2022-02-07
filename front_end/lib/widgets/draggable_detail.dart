@@ -173,19 +173,16 @@ class _DraggableDetailState extends State<DraggableDetail> {
             // isFullyCollapsed
             if ((isFullyExpanded.value) &&
                 notification.metrics.extentBefore > 100) {
-              log('scrolled');
               isFullyExpanded.add(false);
             }
             //isFullyCollapsed
             if (notification.metrics.extentBefore >
                 expandedHeight - AppBar().preferredSize.height - 40) {
               if (!(isFullyCollapsed.value)) {
-                log('scrolled down');
                 isFullyCollapsed.add(true);
               }
             } else {
               if ((isFullyCollapsed.value)) {
-                log('scrolled up');
                 isFullyCollapsed.add(false);
               }
             }

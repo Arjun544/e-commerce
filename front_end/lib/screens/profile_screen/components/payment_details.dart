@@ -86,7 +86,6 @@ class _PaymentDetailsState extends State<PaymentDetails> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const SizedBox.shrink();
                     }
-                    log(snapshot.data.toString());
                     return snapshot.data!.card.data.isEmpty
                         ? Padding(
                             padding: EdgeInsets.only(top: Get.height * 0.3),
