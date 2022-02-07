@@ -115,7 +115,7 @@ const SideBar = () => {
       <div
         className={`flex flex-col items-${
           isSideBarOpen ? "start" : "center"
-        } mt-16`}
+        } mt-8`}
       >
         {/* Dashboard */}
 

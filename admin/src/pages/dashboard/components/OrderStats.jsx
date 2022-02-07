@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom";
 
 const OrderStats = () => {
   const history = useHistory();
-  const { isBigScreen, setSelectedSideBar, setSelectedOrdersTab } =
+  const { isBigScreen, setSelectedSideBar } =
     useContext(AppContext);
   const { orders } = useSelector((state) => state.orders);
   const [filteredOrders, setFilteredOrders] = useState([]);
@@ -48,18 +48,7 @@ const OrderStats = () => {
         >
           {/*  Completed */}
           <div
-            onClick={() => {
-              filteredOrders.filter((item) => item.status === "Completed")
-                .length > 0 &&
-                history.push({
-                  pathname: "/dashboard/orders/completed",
-                  state: {
-                    order: filteredOrders.filter(
-                      (item) => item.status === "Completed"
-                    ),
-                  },
-                });
-            }}
+            onClick={() => history.push("/orders")}
             className="flex items-center cursor-pointer"
           >
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-green-100 bg-opacity-40">
@@ -79,11 +68,10 @@ const OrderStats = () => {
           </div>
           {/* Pending */}
           <div
-            onClick={() =>
-              history.push({
-                pathname: "/orders",
-              })
-            }
+            onClick={() => {
+              history.push("/orders");
+              setSelectedSideBar(1);
+            }}
             className="flex items-center cursor-pointer"
           >
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl mr-4 bg-customYellow-light bg-opacity-20">
@@ -102,16 +90,8 @@ const OrderStats = () => {
           {/* Confirmed */}
           <div
             onClick={() => {
-              filteredOrders.filter((item) => item.status === "Confirmed")
-                .length > 0 &&
-                history.push({
-                  pathname: "/dashboard/orders/confirmed",
-                  state: {
-                    order: filteredOrders.filter(
-                      (item) => item.status === "Confirmed"
-                    ),
-                  },
-                });
+              history.push("/orders");
+              setSelectedSideBar(1);
             }}
             className="flex items-center cursor-pointer"
           >
@@ -133,16 +113,8 @@ const OrderStats = () => {
           {/* Rejected */}
           <div
             onClick={() => {
-              filteredOrders.filter((item) => item.status === "Rejected")
-                .length > 0 &&
-                history.push({
-                  pathname: "/dashboard/orders/rejected",
-                  state: {
-                    order: filteredOrders.filter(
-                      (item) => item.status === "Rejected"
-                    ),
-                  },
-                });
+              history.push("/orders");
+              setSelectedSideBar(1);
             }}
             className="flex items-center cursor-pointer"
           >
@@ -162,16 +134,8 @@ const OrderStats = () => {
           {/*Processing  */}
           <div
             onClick={() => {
-              filteredOrders.filter((item) => item.status === "Processing")
-                .length > 0 &&
-                history.push({
-                  pathname: "/dashboard/orders/processing",
-                  state: {
-                    order: filteredOrders.filter(
-                      (item) => item.status === "Processing"
-                    ),
-                  },
-                });
+              history.push("/orders");
+              setSelectedSideBar(1);
             }}
             className="flex items-center cursor-pointer"
           >
@@ -194,16 +158,8 @@ const OrderStats = () => {
           {/* Delivered */}
           <div
             onClick={() => {
-              filteredOrders.filter((item) => item.status === "Delivered")
-                .length > 0 &&
-                history.push({
-                  pathname: "/dashboard/orders/delivered",
-                  state: {
-                    order: filteredOrders.filter(
-                      (item) => item.status === "Delivered"
-                    ),
-                  },
-                });
+              history.push("/orders");
+              setSelectedSideBar(1);
             }}
             className="flex items-center cursor-pointer"
           >
@@ -225,16 +181,8 @@ const OrderStats = () => {
           {/* Cancelled */}
           <div
             onClick={() => {
-              filteredOrders.filter((item) => item.status === "Cancelled")
-                .length > 0 &&
-                history.push({
-                  pathname: "/dashboard/orders/cancelled",
-                  state: {
-                    order: filteredOrders.filter(
-                      (item) => item.status === "Cancelled"
-                    ),
-                  },
-                });
+              history.push("/orders");
+              setSelectedSideBar(1);
             }}
             className="flex items-center cursor-pointer"
           >
