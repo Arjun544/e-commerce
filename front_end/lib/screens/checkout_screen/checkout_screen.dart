@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../controllers/checkout_screen_controller.dart';
-import 'package:im_stepper/stepper.dart';
-import '../../utils/colors.dart';
 import 'package:get/get.dart';
+import 'package:im_stepper/stepper.dart';
 
+import '../../controllers/checkout_screen_controller.dart';
+import '../../utils/colors.dart';
 import 'components/step_four.dart';
 import 'components/step_one.dart';
 import 'components/step_three.dart';

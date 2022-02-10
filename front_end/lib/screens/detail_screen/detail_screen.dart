@@ -40,6 +40,7 @@ class DetailScreen extends StatelessWidget {
         productId: product.id,
       ),
       headerWidget: Container(
+        color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.only(top: 45, right: 12, left: 10),
           child: Column(

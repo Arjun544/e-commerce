@@ -3,10 +3,10 @@ import 'package:badges/badges.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../controllers/home_screen_controller.dart';
 import 'package:get/get.dart';
 
 import '../controllers/cart_screen_controller.dart';
+import '../controllers/home_screen_controller.dart';
 import '../controllers/profile_screen_controller.dart';
 import '../controllers/register_screen_controller.dart';
 import '../controllers/root_screen_controller.dart';
@@ -100,6 +100,7 @@ class _RootScreenState extends State<RootScreen> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
+        backgroundColor: Colors.white,
         extendBody: true,
         body: children[rootScreenController.currentIndex.value],
         floatingActionButton: Obx(

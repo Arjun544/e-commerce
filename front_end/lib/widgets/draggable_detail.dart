@@ -1,12 +1,11 @@
 library draggable_home;
 
-import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../controllers/detail_screen_controller.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../controllers/detail_screen_controller.dart';
 
 class DraggableDetail extends StatefulWidget {
   @override

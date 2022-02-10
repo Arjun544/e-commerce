@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'AllArrivalsSection.dart';
 import '../../../widgets/loaders/arrival_loader.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -25,91 +26,108 @@ class ArrivalsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: homeScreenController.arrivalProductsStreamController.stream,
-        builder: (context, AsyncSnapshot<ProductModel> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return ArrivalsLoader();
-          }
+    return Column(
+      children: [
+        StreamBuilder(
+            stream: homeScreenController.arrivalProductsStreamController.stream,
+            builder: (context, AsyncSnapshot<ProductModel> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return ArrivalsLoader();
+              }
 
-          return snapshot.data!.products.isEmpty
-              ? const SizedBox.shrink()
-              : Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 15, left: 15, bottom: 10, right: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'New Arrivals',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18),
+              return snapshot.data!.results.isEmpty
+                  ? const SizedBox.shrink()
+                  : Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 15, left: 15, bottom: 10, right: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'New Arrivals',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              InkWell(
+                                onTap: () => Get.to(
+                                  () => AllArrivalsSection(
+                                    homeScreenController: homeScreenController,
+                                    cartScreenController: cartScreenController,
+                                  ),
+                                ),
+                                child: const Text(
+                                  'View all',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.grey),
+                                ),
+                              ),
+                            ],
                           ),
-                          const Text(
-                            'View all',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: Get.height * 0.24,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data!.products.length,
-                          padding: const EdgeInsets.only(left: 15),
-                          itemBuilder: (context, index) {
-                            Product product = snapshot.data!.products[index];
-                            return index == snapshot.data!.products.length
-                                ? Container(
-                                    width: 80,
-                                    margin: const EdgeInsets.only(right: 10),
-                                    alignment: Alignment.center,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.withOpacity(0.3),
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    child: const Text(
-                                      'See All',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
-                                  )
-                                : GestureDetector(
-                                    onTap: () {
-                                      Get.to(() => DetailScreen(
+                        ),
+                        Container(
+                          height: Get.height * 0.24,
+                          alignment: Alignment.centerLeft,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.results.length,
+                              padding: const EdgeInsets.only(left: 15),
+                              itemBuilder: (context, index) {
+                                Product product = snapshot.data!.results[index];
+                                return index == snapshot.data!.results.length
+                                    ? Container(
+                                        width: 80,
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        alignment: Alignment.center,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.withOpacity(0.3),
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        child: const Text(
+                                          'See All',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15),
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          Get.to(() => DetailScreen(
+                                                product: product,
+                                              ));
+                                        },
+                                        child: Container(
+                                          width: Get.width * 0.55,
+                                          margin:
+                                              const EdgeInsets.only(right: 10),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.2),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: BuildItem(
+                                            homeScreenController:
+                                                homeScreenController,
                                             product: product,
-                                          ));
-                                    },
-                                    child: Container(
-                                      width: Get.width * 0.55,
-                                      margin: const EdgeInsets.only(right: 10),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.withOpacity(0.2),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: BuildItem(
-                                        homeScreenController:
-                                            homeScreenController,
-                                        product: product,
-                                      ),
-                                    ),
-                                  );
-                          }),
-                    ),
-                  ],
-                );
-        });
+                                          ),
+                                        ),
+                                      );
+                              }),
+                        ),
+                      ],
+                    );
+            }),
+      ],
+    );
   }
 }
 

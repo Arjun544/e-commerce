@@ -47,11 +47,26 @@ exports.addOrder = async (req, res) => {
 
 exports.getOrders = async (req, res) => {
   try {
-    const orderList = await Order.find().sort({ dateOrdered: -1 });
-
-    res.send({
-      success: true,
-      orderList: orderList,
+    var query = {};
+    var options = {
+      sort: { dateOrdered: -1 },
+      page: req.query.page ?? 1,
+      limit: req.query.limit ?? 10,
+      pagination: req.query.pagination === "true" ? true : false,
+    };
+    await Order.paginate(query, options, function (err, result) {
+      if (err) {
+        return res.status(500).json({ error: true, message: err.message });
+      } else {
+        return res.send({
+          page: result.page,
+          hasNextPage: result.hasNextPage,
+          hasPrevPage: result.hasPrevPage,
+          total_pages: result.totalPages,
+          total_results: result.totalDocs,
+          results: result.docs,
+        });
+      }
     });
   } catch (error) {
     console.log(error);

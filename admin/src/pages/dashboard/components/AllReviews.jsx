@@ -3,19 +3,22 @@ import ReactApexCharts from "react-apexcharts";
 import { useState } from "react";
 import ChatIcon from "../../../components/icons/ChatIcon";
 import ReactStars from "react-rating-stars-component";
-import { useSelector } from "react-redux";
 import moment from "moment";
+import { useMemo } from "react";
 
 const AllReviews = ({ reviews }) => {
-  const getMonthlyReviews = (month) => {
-    const result = reviews.filter(
-      (review) =>
-        moment(new Date(review.addedAt).getTime()).format("M") === month
-    ).length;
-    return result;
-  };
-  //calculating avg rating from all ratings
+  const getMonthlyReviews = useMemo(
+    () => (month) => {
+      const result = reviews.filter(
+        (review) =>
+          moment(new Date(review.addedAt).getTime()).format("M") === month
+      ).length;
+      return result;
+    },
+    [reviews]
+  );
 
+  //calculating avg rating from all ratings
   const ratings = reviews.map((review) => parseFloat(review.rating));
   const averageRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
 
@@ -112,20 +115,7 @@ const AllReviews = ({ reviews }) => {
         ],
       },
     ]);
-  }, [
-    janReviews,
-    febReviews,
-    marReviews,
-    aprReviews,
-    mayReviews,
-    junReviews,
-    julReviews,
-    augReviews,
-    sepReviews,
-    octReviews,
-    novReviews,
-    decReviews,
-  ]);
+  }, [reviews, averageRating]);
 
   return (
     <div className="flex flex-col justify-between">
@@ -135,7 +125,7 @@ const AllReviews = ({ reviews }) => {
         <div className="flex items-center">
           <ReactStars
             classNames="mr-2"
-            value={averageRating ?? 0}
+            value={averageRating}
             count={5}
             edit={false}
             size={25}

@@ -4,17 +4,21 @@ import { useState, useEffect } from "react";
 import CartIcon from "../../../components/icons/CartIcon";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { useMemo } from "react";
 
 const AllOrders = () => {
   const { orders } = useSelector((state) => state.orders);
 
-  const getMonthlyOrders = (month) => {
-    const result = orders.filter(
-      (order) =>
-        moment(new Date(order.dateOrdered).getTime()).format("M") === month
-    ).length;
-    return result;
-  };
+  const getMonthlyOrders = useMemo(
+    () => (month) => {
+      const result = orders.filter(
+        (order) =>
+          moment(new Date(order.dateOrdered).getTime()).format("M") === month
+      ).length;
+      return result;
+    },
+    [orders]
+  );
 
   const [options, setOptions] = useState({
     chart: {

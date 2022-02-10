@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/colors.dart';
+
 class CustomButton extends StatelessWidget {
   final double height;
   final double width;
@@ -7,6 +9,7 @@ class CustomButton extends StatelessWidget {
   final String text;
   final Color? color;
   final Color? textColor;
+  final bool isDisable;
   final VoidCallback onPressed;
 
   const CustomButton(
@@ -16,20 +19,21 @@ class CustomButton extends StatelessWidget {
       required this.width,
       required this.text,
       this.textColor = Colors.white,
+      this.isDisable = false,
       required this.onPressed,
       required this.color})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onPressed,
       child: Container(
         height: height,
         width: width,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: color,
+          color: isDisable ? customGrey : color,
           borderRadius: BorderRadius.circular(15),
         ),
         child: Text(

@@ -98,7 +98,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const SizedBox();
                       }
-                      return snapshot.data!.products.isEmpty
+                      return snapshot.data!.results.isEmpty
                           ? Padding(
                               padding: const EdgeInsets.only(top: 80),
                               child: Column(
@@ -122,11 +122,11 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               mainAxisSpacing: 15,
                               padding: const EdgeInsets.only(
                                   right: 15, left: 15, bottom: 20, top: 20),
-                              itemCount: snapshot.data!.products.length,
+                              itemCount: snapshot.data!.results.length,
                               physics: const NeverScrollableScrollPhysics(),
                               itemBuilder: (context, index) {
                                 Product product =
-                                    snapshot.data!.products[index];
+                                    snapshot.data!.results[index];
                                 return GestureDetector(
                                   onTap: () {
                                     Get.off(() => DetailScreen(

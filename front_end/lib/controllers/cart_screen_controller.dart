@@ -5,7 +5,6 @@ import '../models/product_Model.dart';
 
 import '../utils/constants.dart';
 import 'package:get/get.dart';
-import 'package:rxdart/rxdart.dart';
 import '../services/cart_api.dart';
 
 class CartScreenController extends GetxController {

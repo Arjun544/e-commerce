@@ -55,14 +55,17 @@ export const uploadMultiImages = (id, images) =>
     }
   );
 
-export const getProducts = () =>
-  api.get("/api/products/getAdminProducts", {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
-    },
-  });
+export const getProducts = (page, limit, pagination) =>
+  api.get(
+    `/api/products/getAdminProducts?page=${page}&limit=${limit}&pagination=${pagination}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
 
 export const getProductById = (id) =>
   api.get(`/api/products/${id}`, {

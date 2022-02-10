@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const orderSchema = mongoose.Schema({
   orderItems: [
@@ -62,5 +63,7 @@ orderSchema.virtual("id").get(function () {
 orderSchema.set("toJSON", {
   virtuals: true,
 });
+
+orderSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Order", orderSchema);

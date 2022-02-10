@@ -20,6 +20,15 @@ class DetailScreenController extends GetxController {
 
   RxBool isAddCartVisible = true.obs;
 
+  Future handleSimilarProductsPagination(
+      {required int page, required productId, required categoryId}) async {
+    await ApiProduct().getSimilarProducts(
+        page: page,
+        categoryId: categoryId,
+        productId: productId,
+        controller: similarProductsController);
+  }
+
   void updateAddCartStatus(val) {
     isAddCartVisible.value = val;
   }
@@ -28,10 +37,12 @@ class DetailScreenController extends GetxController {
     currentImage.value = newImage;
   }
 
-  Future getSimilarProducts({required categoryId, required currentId}) async {
+  Future getSimilarProducts(
+      {required int page, required productId, required categoryId}) async {
     await ApiProduct().getSimilarProducts(
-        currentId: currentId,
+        page: page,
         categoryId: categoryId,
+        productId: productId,
         controller: similarProductsController);
   }
 }

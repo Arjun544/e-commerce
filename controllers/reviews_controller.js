@@ -103,10 +103,26 @@ exports.skipReview = async (req, res) => {
 
 exports.getAllReviews = async (req, res) => {
   try {
-    const totalReviews = await Review.find();
-    res.send({
-      success: true,
-      reviews: totalReviews,
+    var query = {};
+    var options = {
+      sort: { addedAt: -1 },
+      page: req.query.page ?? 1,
+      limit: req.query.limit ?? 10,
+      pagination: req.query.pagination === "true" ? true : false,
+    };
+    await Review.paginate(query, options, function (err, result) {
+      if (err) {
+        return res.status(500).json({ error: true, message: err.message });
+      } else {
+        return res.send({
+          page: result.page,
+          hasNextPage: result.hasNextPage,
+          hasPrevPage: result.hasPrevPage,
+          total_pages: result.totalPages,
+          total_results: result.totalDocs,
+          results: result.docs,
+        });
+      }
     });
   } catch (error) {
     console.log(error);

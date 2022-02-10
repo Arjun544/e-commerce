@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:front_end/utils/constants.dart';
+import '../../../utils/constants.dart';
 import '../../../widgets/customDialogue.dart';
 import 'review_orders.dart';
 import 'track_order.dart';

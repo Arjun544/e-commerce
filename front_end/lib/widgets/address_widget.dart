@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
 import '../controllers/profile_screen_controller.dart';
 import '../controllers/root_screen_controller.dart';
 import '../models/userModel.dart';
 import '../screens/profile_screen/components/add_ship_address.dart';
 import '../utils/colors.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-
 import 'delete_confirm.dart';
 
 class AddressWidget extends StatefulWidget {

@@ -11,18 +11,38 @@ String productModelToJson(ProductModel data) => json.encode(data.toJson());
 
 class ProductModel {
   ProductModel({
-    required this.products,
+    required this.page,
+    required this.hasNextPage,
+    required this.hasPrevPage,
+    required this.totalPages,
+    required this.totalResults,
+    required this.results,
   });
 
-  List<Product> products;
+  final int? page;
+  final bool? hasNextPage;
+  final bool? hasPrevPage;
+  final int? totalPages;
+  final int? totalResults;
+  final List<Product> results;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-        products: List<Product>.from(
-            json['products'].map((x) => Product.fromJson(x))),
+        page: json['page'],
+        hasNextPage: json['hasNextPage'],
+        hasPrevPage: json['hasPrevPage'],
+        totalPages: json['total_pages'],
+        totalResults: json['total_results'],
+        results:
+            List<Product>.from(json['results'].map((x) => Product.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        'products': List<dynamic>.from(products.map((x) => x.toJson())),
+        'page': page,
+        'hasNextPage': hasNextPage,
+        'hasPrevPage': hasPrevPage,
+        'total_pages': totalPages,
+        'total_results': totalResults,
+        'results': List<dynamic>.from(results.map((x) => x.toJson())),
       };
 }
 

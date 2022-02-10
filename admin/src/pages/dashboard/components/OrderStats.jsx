@@ -21,6 +21,7 @@ const OrderStats = () => {
   useEffect(() => {
     setFilteredOrders(orders);
   }, []);
+  
   return (
     <div
       className={

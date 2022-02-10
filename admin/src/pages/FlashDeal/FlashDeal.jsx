@@ -50,8 +50,8 @@ const FlashDeal = () => {
       setIsInitLoading(true);
       const { data } = await getDeals();
       setDeals(data.deals);
-      const response = await getProducts();
-      setProducts(response.data.products);
+      const response = await getProducts(false);
+      setProducts(response.data.results);
       setIsInitLoading(false);
       setCounterEnd(data.deals.map((item) => item.endDate));
     };

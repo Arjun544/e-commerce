@@ -4,14 +4,17 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 const api = axios.create();
 
-export const getAllReviews = () =>
-  api.get("/api/reviews/get", {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
-    },
-  });
+export const getAllReviews = (page, limit, pagination) =>
+  api.get(
+    `/api/reviews/get?page=${page}&limit=${limit}&pagination=${pagination}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
 
 
 export const getRecentReviews = () =>

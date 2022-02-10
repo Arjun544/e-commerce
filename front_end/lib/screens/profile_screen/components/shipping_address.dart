@@ -1,13 +1,14 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import '../../../widgets/address_widget.dart';
-import 'add_ship_address.dart';
+import 'package:get/get.dart';
+
 import '../../../controllers/profile_screen_controller.dart';
 import '../../../controllers/root_screen_controller.dart';
 import '../../../models/userModel.dart';
+import '../../../widgets/address_widget.dart';
+import 'add_ship_address.dart';
 import 'top_header.dart';
-import 'package:get/get.dart';
 
 class ShippingAddress extends StatefulWidget {
   @override

@@ -40,7 +40,9 @@ class HomeScreenController extends GetxController {
     isDealLoading.value = true;
     deals.value = await DealApi().getDeal();
     isDealLoading.value = false;
-    await getData();
+    await getCategories();
+    await getNewArrivalProducts(page: 1);
+    await getFeaturedProducts(page: 1);
 
     if (banners.value.banners.length > 1) {
       Timer.periodic(const Duration(seconds: 4), (Timer timer) {
@@ -72,17 +74,36 @@ class HomeScreenController extends GetxController {
     super.onClose();
   }
 
-  Future getData() async => await ApiProduct().getData(
+  void handleNewArrivalsPagination(int value) async {
+    await getNewArrivalProducts(page: value);
+  }
+
+  void handleFeaturedPagination(int value) async {
+    await getFeaturedProducts(page: value);
+  }
+
+  Future getCategories() async => await ApiProduct().getCategories(
         categoriesController: categoriesStreamController,
+      );
+
+  Future getNewArrivalProducts({required int page}) async =>
+      await ApiProduct().getNewArrivalProducts(
+        page: page,
         arrivalController: arrivalProductsStreamController,
+      );
+
+  Future getFeaturedProducts({required int page}) async =>
+      await ApiProduct().getFeaturedProducts(
+        page: page,
         featuredController: featuredProductsStreamController,
       );
 
   Future cartCount({required String userId}) async =>
       await ApiCart().cartCount(userId: userId);
 
-  Future searchProduct({required String query}) async =>
+  Future searchProduct({required int page, required String query}) async =>
       await ApiProduct().searchProduct(
+        page: page,
         query: query,
         searchController: searchStreamController,
       );

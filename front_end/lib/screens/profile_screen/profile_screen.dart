@@ -1,15 +1,7 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
-import 'components/my_orders.dart';
-import 'components/payment_details.dart';
-import '../../widgets/draggable_scaffold.dart';
-import 'components/reset_password.dart';
-import 'components/shipping_address.dart';
-import '../../utils/constants.dart';
-import '../../widgets/customDialogue.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/home_screen_controller.dart';
@@ -17,9 +9,16 @@ import '../../controllers/profile_screen_controller.dart';
 import '../../controllers/root_screen_controller.dart';
 import '../../models/userModel.dart';
 import '../../utils/colors.dart';
+import '../../utils/constants.dart';
+import '../../widgets/customDialogue.dart';
 import '../../widgets/custom_button.dart';
+import '../../widgets/draggable_scaffold.dart';
 import 'components/edit_profile.dart';
+import 'components/my_orders.dart';
+import 'components/payment_details.dart';
 import 'components/profile_tile.dart';
+import 'components/reset_password.dart';
+import 'components/shipping_address.dart';
 import 'components/top_header.dart';
 import 'components/user_image.dart';
 

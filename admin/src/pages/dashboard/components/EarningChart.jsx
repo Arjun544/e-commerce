@@ -1,5 +1,5 @@
 import ReactApexCharts from "react-apexcharts";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 // 8640
@@ -7,18 +7,21 @@ import moment from "moment";
 const EarningChart = () => {
   const { orders } = useSelector((state) => state.orders);
 
-  const getMonthlyEarning = (month) => {
-    const earnings = orders
-      .filter(
-        (order) =>
-          order.status === "Completed" &&
-          order.isPaid === true &&
-          moment(new Date(order.dateOrdered).getTime()).format("M") === month
-      )
-      .map((item) => item.totalPrice)
-      .reduce((a, b) => a + b, 0);
-    return earnings;
-  };
+  const getMonthlyEarning = useMemo(
+    () => (month) => {
+      const earnings = orders
+        .filter(
+          (order) =>
+            order.status === "Completed" &&
+            order.isPaid === true &&
+            moment(new Date(order.dateOrdered).getTime()).format("M") === month
+        )
+        .map((item) => item.totalPrice)
+        .reduce((a, b) => a + b, 0);
+      return earnings;
+    },
+    [orders]
+  );
 
   const [options, setOptions] = useState({
     chart: {
@@ -84,8 +87,6 @@ const EarningChart = () => {
     },
   ]);
 
-  
-
   useEffect(() => {
     const JanEarning = getMonthlyEarning("1");
     const FebEarning = getMonthlyEarning("2");
@@ -122,7 +123,9 @@ const EarningChart = () => {
 
   return (
     <div className="flex flex-col">
-      <span className="text-black font-semibold text-lg mb-2">Annual Earnings</span>
+      <span className="text-black font-semibold text-lg mb-2">
+        Annual Earnings
+      </span>
       <ReactApexCharts
         options={options}
         series={series}

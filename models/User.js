@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const mongoosePaginate = require("mongoose-paginate-v2");
+
 const userSchema = mongoose.Schema(
   {
     username: {
@@ -85,6 +87,8 @@ userSchema.virtual("id").get(function () {
 userSchema.set("toJSON", {
   virtuals: true,
 });
+
+userSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Users", userSchema);
 

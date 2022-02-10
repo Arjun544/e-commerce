@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const reviewSchema = mongoose.Schema({
   user: {
@@ -21,5 +22,7 @@ const reviewSchema = mongoose.Schema({
     default: Date.now,
   },
 });
+
+reviewSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Review", reviewSchema);

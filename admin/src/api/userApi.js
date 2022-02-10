@@ -29,14 +29,17 @@ export const getUserById = (id) =>
     },
   });
 
-export const getUsers = () =>
-  api.get("/api/users/allUsers", {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
-    },
-  });
+export const getUsers = (page, limit, pagination) =>
+  api.get(
+    `/api/users/allUsers?page=${page}&limit=${limit}&pagination=${pagination}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
 
 export const deleteUser = (id, profileId) =>
   api.delete(`/api/users/delete/${id}`, {

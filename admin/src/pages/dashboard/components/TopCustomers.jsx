@@ -10,7 +10,7 @@ const TopCustomers = () => {
         Top Customers
       </span>
 
-      {customers.slice(0, 5).map((customer, index) => (
+      {customers.slice(0, 10).map((customer, index) => (
         <div
           key={index}
           className="flex items-center justify-between h-24 mb-4 w-full bg-white rounded-3xl px-4 shadow-sm hover:shadow-md"

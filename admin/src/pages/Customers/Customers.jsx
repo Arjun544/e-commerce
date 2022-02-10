@@ -11,14 +11,15 @@ import { Avatar } from "./components/Avatar";
 const Customers = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const [tableData, setTableData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tableData, setTableData] = useState({});
   const { isBigScreen } = useContext(AppContext);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         setIsLoading(true);
-        const { data } = await getUsers();
-        setTableData(data.data);
+        const { data } = await getUsers(currentPage, 10, true);
+        setTableData(data);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -26,15 +27,18 @@ const Customers = () => {
       }
     };
     fetchUsers();
-  }, []);
+  }, [currentPage]);
 
-  const data = tableData.map((item) => ({
-    review: item,
-    image: item.profile.image,
-    name: item.username,
-    email: item.email,
-    date: item.createdAt,
-  }));
+  const data =
+    !isLoading &&
+    tableData.results !== undefined &&
+    tableData?.results.map((item) => ({
+      review: item,
+      image: item.profile.image,
+      name: item.username,
+      email: item.email,
+      date: item.createdAt,
+    }));
 
   const columns = [
     {
@@ -105,7 +109,17 @@ const Customers = () => {
         </div>
       ) : (
         <div className="px-10">
-          <CustomersTable columns={columns} data={data} />
+          {!isLoading && tableData.results !== undefined && (
+            <CustomersTable
+              columns={columns}
+              data={data}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+              totalPages={tableData.total_pages}
+              hasNextPage={tableData.hasNextPage}
+              hasPrevPage={tableData.hasPrevPage}
+            />
+          )}
         </div>
       )}
     </div>

@@ -8,25 +8,10 @@ import '../models/product_Model.dart';
 import '../utils/constants.dart';
 
 class ApiProduct {
-  Future getData({
+  Future getCategories({
     required StreamController categoriesController,
-    required StreamController arrivalController,
-    required StreamController featuredController,
   }) async {
     try {
-      var arrivalResponse = await dio.get(
-        baseUrl + 'products/newArrival',
-        options: Options(
-          responseType: ResponseType.plain,
-        ),
-      );
-      var featuredResponse = await dio.get(
-        baseUrl + 'products/featured',
-        options: Options(
-          responseType: ResponseType.plain,
-        ),
-      );
-
       var categoriesResponse = await dio.get(
         baseUrl + 'categories/get',
         options: Options(
@@ -34,7 +19,49 @@ class ApiProduct {
         ),
       );
       categoriesController.add(categoryModelFromJson(categoriesResponse.data));
+    } catch (e) {
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+      print(e);
+    }
+  }
+
+  Future getNewArrivalProducts({
+    required int page,
+    required StreamController arrivalController,
+  }) async {
+    try {
+      var arrivalResponse = await dio.get(
+        baseUrl + 'products/newArrival?page=$page&limit=10',
+        options: Options(
+          responseType: ResponseType.plain,
+        ),
+      );
       arrivalController.add(productModelFromJson(arrivalResponse.data));
+    } catch (e) {
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+      print(e);
+    }
+  }
+
+  Future getFeaturedProducts({
+    required int page,
+    required StreamController featuredController,
+  }) async {
+    try {
+      var featuredResponse = await dio.get(
+        baseUrl + 'products/featured?page=$page&limit=10',
+        options: Options(
+          responseType: ResponseType.plain,
+        ),
+      );
       featuredController.add(productModelFromJson(featuredResponse.data));
     } catch (e) {
       await EasyLoading.showToast(
@@ -47,13 +74,14 @@ class ApiProduct {
   }
 
   Future getSimilarProducts({
+    required int page,
     required String categoryId,
-    required String currentId,
+    required String productId,
     required StreamController controller,
   }) async {
     try {
       var response = await dio.get(
-        baseUrl + 'products/similar/$categoryId/$currentId',
+        baseUrl + 'products/similar/$categoryId/$productId?page=$page&limit=10',
         options: Options(
           responseType: ResponseType.plain,
         ),
@@ -105,26 +133,27 @@ class ApiProduct {
 
   Future searchProduct({
     required String query,
+    required int page,
     required StreamController searchController,
   }) async {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
 
-    try {
-      var response = await dio.get(
-        baseUrl + 'products/search/$query',
-        options: Options(
-          responseType: ResponseType.plain,
-        ),
-      );
-      searchController.add(productModelFromJson(response.data));
-      await EasyLoading.dismiss();
-    } catch (e) {
-      await EasyLoading.showToast(
-        'Something went wrong',
-        toastPosition: EasyLoadingToastPosition.top,
-        maskType: EasyLoadingMaskType.clear,
-      );
-      print(e);
-    }
+    // try {
+    var response = await dio.get(
+      baseUrl + 'products/search/$query?page=$page&limit=5',
+      options: Options(
+        responseType: ResponseType.plain,
+      ),
+    );
+    searchController.add(productModelFromJson(response.data));
+    await EasyLoading.dismiss();
+    // } catch (e) {
+    //   await EasyLoading.showToast(
+    //     'Something went wrong',
+    //     toastPosition: EasyLoadingToastPosition.top,
+    //     maskType: EasyLoadingMaskType.clear,
+    //   );
+    //   print(e);
+    // }
   }
 }

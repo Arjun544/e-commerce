@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Nunito',
         primaryColor: Colors.white,
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
         scaffoldBackgroundColor: Colors.white,
         dividerColor: Colors.transparent,
         textSelectionTheme: TextSelectionThemeData(

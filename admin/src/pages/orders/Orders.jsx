@@ -9,36 +9,40 @@ import { getOrders } from "../../api/ordersApi";
 const Orders = () => {
   const { isBigScreen } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrdersTab, setSelectedOrdersTab] = useState(0);
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState({});
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         setIsLoading(true);
-        const { data } = await getOrders();
-        setOrders(data.orderList);
+        const { data } = await getOrders(currentPage, 10, true);
+        setOrders(data);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
       }
     };
     fetchOrders();
-  }, []);
+  }, [currentPage]);
 
-  const data = orders.map((item) => ({
-    order: item,
-    id: item.id,
-    date: item.dateOrdered,
-    customerName: item.user.username,
-    total: item.totalPrice,
-    status: item.status,
-    payment: item.payment,
-    paid: item.isPaid ? "Paid" : "Unpaid",
-    deliveryType: item.deliveryType,
-    phone: item.phone,
-    orderItems: item.orderItems.length,
-  }));
+  const data =
+    !isLoading &&
+    orders.results !== undefined &&
+    orders?.results.map((item) => ({
+      order: item,
+      id: item.id,
+      date: item.dateOrdered,
+      customerName: item.user.username,
+      total: item.totalPrice,
+      status: item.status,
+      payment: item.payment,
+      paid: item.isPaid ? "Paid" : "Unpaid",
+      deliveryType: item.deliveryType,
+      phone: item.phone,
+      orderItems: item.orderItems.length,
+    }));
 
   const columns = [
     {
@@ -224,31 +228,38 @@ const Orders = () => {
           </div>
 
           {/* Views */}
-          <OrdersTable
-            columns={columns}
-            data={(() => {
-              switch (selectedOrdersTab) {
-                case 0:
-                  return data;
-                case 1:
-                  return data.filter((item) => item.status === "Completed");
-                case 2:
-                  return data.filter((item) => item.status === "Confirmed");
-                case 3:
-                  return data.filter((item) => item.status === "Rejected");
-                case 4:
-                  return data.filter((item) => item.status === "Pending");
-                case 5:
-                  return data.filter((item) => item.status === "Procesing");
-                case 6:
-                  return data.filter((item) => item.status === "Delivered");
-                case 7:
-                  return data.filter((item) => item.status === "Cancelled");
-                default:
-                  return;
-              }
-            })()}
-          />
+          {!isLoading && orders.results !== undefined && (
+            <OrdersTable
+              columns={columns}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+              totalPages={orders.total_pages}
+              hasNextPage={orders.hasNextPage}
+              hasPrevPage={orders.hasPrevPage}
+              data={(() => {
+                switch (selectedOrdersTab) {
+                  case 0:
+                    return data;
+                  case 1:
+                    return data.filter((item) => item.status === "Completed");
+                  case 2:
+                    return data.filter((item) => item.status === "Confirmed");
+                  case 3:
+                    return data.filter((item) => item.status === "Rejected");
+                  case 4:
+                    return data.filter((item) => item.status === "Pending");
+                  case 5:
+                    return data.filter((item) => item.status === "Procesing");
+                  case 6:
+                    return data.filter((item) => item.status === "Delivered");
+                  case 7:
+                    return data.filter((item) => item.status === "Cancelled");
+                  default:
+                    return;
+                }
+              })()}
+            />
+          )}
         </div>
       )}
     </div>

@@ -14,7 +14,7 @@ exports.searchProducts = async (req, res) => {
     if (!products) {
       return res.json("No products found");
     } else {
-      return res.json({ products });
+      return res.json({ results: products });
     }
   } catch (error) {
     console.log(error);
@@ -115,9 +115,27 @@ exports.getProducts = async (req, res) => {
 
 exports.getAdminProducts = async (req, res) => {
   try {
-    const productsList = await Product.find().populate("category");
-    res.status(200).json({
-      products: productsList,
+    var query = {};
+    var options = {
+      sort: { dateCreated: -1 },
+      page: req.query.page ?? 1,
+      limit: req.query.limit ?? 10,
+      pagination: req.query.pagination === "true" ? true : false,
+      populate: "category",
+    };
+    await Product.paginate(query, options, function (err, result) {
+      if (err) {
+        return res.status(500).json({ error: true, message: err.message });
+      } else {
+        return res.send({
+          page: result.page,
+          hasNextPage: result.hasNextPage,
+          hasPrevPage: result.hasPrevPage,
+          total_pages: result.totalPages,
+          total_results: result.totalDocs,
+          results: result.docs,
+        });
+      }
     });
   } catch (error) {
     console.log(error);
@@ -151,22 +169,31 @@ exports.getProductById = async (req, res) => {
 
 exports.getSimilarProducts = async (req, res) => {
   try {
-    const products = await Product.find({
+    var query = {
       category: req.params.category,
       status: true,
-      _id: { $ne: ObjectID(req.params.currentId) },
-    }).populate("category");
-
-    if (!products) {
-      res.json({
-        error: true,
-        message: "Mo products found",
-      });
-    } else {
-      res.status(200).json({
-        products: products,
-      });
-    }
+      _id: { $ne: ObjectID(req.params.productId) },
+    };
+    var options = {
+      sort: { dateCreated: -1 },
+      page: req.query.page ?? 1,
+      limit: req.query.limit ?? 10,
+      populate: "category",
+    };
+    await Product.paginate(query, options, function (err, result) {
+      if (err) {
+        return res.status(500).json({ error: true, message: err.message });
+      } else {
+        return res.send({
+          page: result.page,
+          hasNextPage: result.hasNextPage,
+          hasPrevPage: result.hasPrevPage,
+          total_pages: result.totalPages,
+          total_results: result.totalDocs,
+          results: result.docs,
+        });
+      }
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -179,16 +206,30 @@ exports.getSimilarProducts = async (req, res) => {
 exports.NewArrivalProducts = async (req, res) => {
   // Getting new arrivals in last 2 days
   var start = new Date(new Date().getTime() - 48 * 60 * 60 * 1000);
-
-  const products = await Product.find({
+  var query = {
     status: true,
     dateCreated: { $gte: start },
-  }).populate("category");
-
-  if (!products) {
-    res.status(500).json({ success: false });
-  }
-  res.send({ products });
+  };
+  var options = {
+    sort: { dateCreated: -1 },
+    page: req.query.page ?? 1,
+    limit: req.query.limit ?? 10,
+    populate: "category",
+  };
+  await Product.paginate(query, options, function (err, result) {
+    if (err) {
+      return res.status(500).json({ error: true, message: err.message });
+    } else {
+      return res.send({
+        page: result.page,
+        hasNextPage: result.hasNextPage,
+        hasPrevPage: result.hasPrevPage,
+        total_pages: result.totalPages,
+        total_results: result.totalDocs,
+        results: result.docs,
+      });
+    }
+  });
 };
 
 exports.filterByPrice = async (req, res) => {
@@ -212,28 +253,56 @@ exports.filterByPrice = async (req, res) => {
 exports.productsByCategory = async (req, res) => {
   try {
     // If query params is avaliable then get products by both category & subcategory
-    let products;
     if (req.query.subCategory) {
-      products = await Product.find({
+      var query = {
         category: req.params.categoryId,
         subCategory: req.query.subCategory,
-      }).populate("category");
+      };
+      var options = {
+        sort: { dateCreated: -1 },
+        page: req.query.page ?? 1,
+        limit: req.query.limit ?? 10,
+        populate: "category",
+      };
+      await Product.paginate(query, options, function (err, result) {
+        if (err) {
+          return res.status(500).json({ error: true, message: err.message });
+        } else {
+          return res.send({
+            page: result.page,
+            hasNextPage: result.hasNextPage,
+            hasPrevPage: result.hasPrevPage,
+            total_pages: result.totalPages,
+            total_results: result.totalDocs,
+            results: result.docs,
+          });
+        }
+      });
     }
     // get by only category
     else {
-      products = await Product.find({
+      var query = {
         category: req.params.categoryId,
-      }).populate("category");
-    }
-
-    if (!products) {
-      res.json({
-        error: true,
-        message: "Mo products found",
-      });
-    } else {
-      res.status(200).json({
-        products: products,
+      };
+      var options = {
+        sort: { dateCreated: -1 },
+        page: req.query.page ?? 1,
+        limit: req.query.limit ?? 10,
+        populate: "category",
+      };
+      await Product.paginate(query, options, function (err, result) {
+        if (err) {
+          return res.status(500).json({ error: true, message: err.message });
+        } else {
+          return res.send({
+            page: result.page,
+            hasNextPage: result.hasNextPage,
+            hasPrevPage: result.hasPrevPage,
+            total_pages: result.totalPages,
+            total_results: result.totalDocs,
+            results: result.docs,
+          });
+        }
       });
     }
   } catch (error) {
@@ -291,12 +360,30 @@ exports.sortProducts = async (req, res) => {
 
 exports.featuredProducts = async (req, res) => {
   try {
-    const products = await Product.find({
+    var query = {
       status: true,
       isFeatured: true,
-    }).populate("category");
-
-    res.send({ products });
+    };
+    var options = {
+      sort: { dateCreated: -1 },
+      page: req.query.page ?? 1,
+      limit: req.query.limit ?? 10,
+      populate: "category",
+    };
+    await Product.paginate(query, options, function (err, result) {
+      if (err) {
+        return res.status(500).json({ error: true, message: err.message });
+      } else {
+        return res.send({
+          page: result.page,
+          hasNextPage: result.hasNextPage,
+          hasPrevPage: result.hasPrevPage,
+          total_pages: result.totalPages,
+          total_results: result.totalDocs,
+          results: result.docs,
+        });
+      }
+    });
   } catch (error) {
     res.status(500).json({ error: true, message: "Can't get products" });
   }

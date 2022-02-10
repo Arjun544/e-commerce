@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '../../../widgets/PaginationWidget.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/detail_screen_controller.dart';
@@ -31,7 +32,7 @@ class _SimilarSectionState extends State<SimilarSection> {
   @override
   void initState() {
     widget.detailScreenController.getSimilarProducts(
-        categoryId: widget.categoryId, currentId: widget.currentId);
+        page: 1, categoryId: widget.categoryId, productId: widget.currentId);
     super.initState();
   }
 
@@ -43,43 +44,59 @@ class _SimilarSectionState extends State<SimilarSection> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const FeaturedLoader();
           }
-          return StaggeredGridView.countBuilder(
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              crossAxisSpacing: 15,
-              mainAxisSpacing: 15,
-              padding: const EdgeInsets.only(bottom: 10, top: 15),
-              itemCount: snapshot.data!.products.length,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                Product product = snapshot.data!.products[index];
-                return GestureDetector(
-                  onTap: () {
-                    Get.back();
-                    Get.to(
-                      () => DetailScreen(
-                        product: product,
+          return Column(
+            children: [
+              StaggeredGridView.countBuilder(
+                  shrinkWrap: true,
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15,
+                  padding: const EdgeInsets.only(bottom: 10, top: 15),
+                  itemCount: snapshot.data!.results.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    Product product = snapshot.data!.results[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Get.back();
+                        Get.to(
+                          () => DetailScreen(
+                            product: product,
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 7),
+                        decoration: const BoxDecoration(
+                          color: customGrey,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        ),
+                        child: ProductItem(
+                          homeScreenController: widget.homeScreenController,
+                          product: product,
+                        ),
                       ),
                     );
                   },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 7),
-                    decoration: const BoxDecoration(
-                      color: customGrey,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                    child: ProductItem(
-                      homeScreenController: widget.homeScreenController,
-                      product: product,
-                    ),
-                  ),
-                );
-              },
-              staggeredTileBuilder: (index) {
-                return StaggeredTile.count(1, index.isEven ? 1.6 : 1.6);
-              });
+                  staggeredTileBuilder: (index) {
+                    return StaggeredTile.count(1, index.isEven ? 1.6 : 1.6);
+                  }),
+              PaginationWidget(
+                 currentPage: snapshot.data?.page ?? 0,
+                totalPages: snapshot.data?.totalPages ?? 0,
+                hasNext: snapshot.data?.hasNextPage ?? false,
+                hasPrev: snapshot.data?.hasPrevPage ?? false,
+                onChanged: (value) {
+                  widget.detailScreenController.handleSimilarProductsPagination(
+                      page: value!,
+                      productId: widget.currentId,
+                      categoryId: widget.categoryId);
+                },
+              ),
+            ],
+          );
         });
   }
 }

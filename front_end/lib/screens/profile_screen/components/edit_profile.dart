@@ -2,12 +2,12 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../utils/constants.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/profile_screen_controller.dart';
 import '../../../models/userModel.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/constants.dart';
 import '../../../widgets/custom_button.dart';
 import 'top_header.dart';
 

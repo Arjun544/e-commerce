@@ -2,7 +2,6 @@
 //
 //     final trackOrderModel = trackOrderModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 TrackOrderModel trackOrderModelFromJson(String str) =>
@@ -89,7 +88,7 @@ class OrderList {
         orderListId: json['id'],
       );
 
-  get length => null;
+  Null get length => null;
 
   Map<String, dynamic> toJson() => {
         'orderItems': List<dynamic>.from(orderItems.map((x) => x.toJson())),

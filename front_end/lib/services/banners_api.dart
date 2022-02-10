@@ -1,3 +1,4 @@
+
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../models/banner_model.dart';
@@ -12,7 +13,6 @@ class BannersApi {
           responseType: ResponseType.plain,
         ),
       );
-
       return bannerModelFromJson(response.data);
     } catch (e) {
       await EasyLoading.showToast(

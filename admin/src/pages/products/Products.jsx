@@ -9,17 +9,20 @@ import { setProducts } from "../../redux/reducers/productsSlice";
 import { getProducts } from "../../api/productsApi";
 import Loader from "react-loader-spinner";
 import Avatar from "./components/avatar";
+import { useSelector } from "react-redux";
 
 const Products = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [tableData, setTableData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tableData, setTableData] = useState({});
   const { isBigScreen } = useContext(AppContext);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const { data } = await getProducts();
-        setTableData(data.products);
+        const { data } = await getProducts(currentPage, 10, true);
+        setTableData(data);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -27,14 +30,15 @@ const Products = () => {
       }
     };
     fetchProducts();
-  }, []);
+  }, [currentPage]);
 
-  const data = tableData.map((item) => ({
+  const data = !isLoading && tableData.results !== undefined && tableData?.results.map((item) => ({
     product: item,
     image: item.thumbnail,
     name: item.name,
     date: item.dateCreated,
     price: item.price,
+    category: item.category.name,
     featured: item.isFeatured,
     status: item.status,
   }));
@@ -66,6 +70,10 @@ const Products = () => {
     {
       Header: "Price",
       accessor: "price",
+    },
+    {
+      Header: "Category",
+      accessor: "category",
     },
     {
       Header: "Featured",
@@ -106,7 +114,17 @@ const Products = () => {
         </div>
       ) : (
         <div className="px-10">
-          <ProductsTable columns={columns} data={data} />
+          {!isLoading && tableData.results !== undefined && (
+            <ProductsTable
+              columns={columns}
+              data={data}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+              totalPages={tableData.total_pages}
+              hasNextPage={tableData.hasNextPage}
+              hasPrevPage={tableData.hasPrevPage}
+            />
+          )}
         </div>
       )}
     </div>

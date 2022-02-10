@@ -1,24 +1,28 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { useMemo } from "react";
 import ReactApexCharts from "react-apexcharts";
 import { useSelector } from "react-redux";
 
 const ProductsSold = () => {
   const { orders } = useSelector((state) => state.orders);
 
-  const getYearlyProductsSold = (month) => {
-    const productsSold = orders
-      .filter(
-        (order) =>
-          order.status === "Completed" &&
-          order.isPaid === true &&
-          moment(new Date(order.dateOrdered).getTime()).format("M") === month
-      )
-      .map((item) => item.orderItems.map((e) => e.quantity))
-      .map((c) => c.reduce((a, b) => a + b, 0))
-      .reduce((a, b) => a + b, 0);
-    return productsSold;
-  };
+  const getYearlyProductsSold = useMemo(
+    () => (month) => {
+      const productsSold = orders
+        .filter(
+          (order) =>
+            order.status === "Completed" &&
+            order.isPaid === true &&
+            moment(new Date(order.dateOrdered).getTime()).format("M") === month
+        )
+        .map((item) => item.orderItems.map((e) => e.quantity))
+        .map((c) => c.reduce((a, b) => a + b, 0))
+        .reduce((a, b) => a + b, 0);
+      return productsSold;
+    },
+    [orders]
+  );
 
   const [options, setOptions] = useState({
     chart: {

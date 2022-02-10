@@ -1,10 +1,8 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:front_end/controllers/cart_screen_controller.dart';
-import 'package:front_end/models/cart_model.dart';
-import 'package:front_end/utils/colors.dart';
-import 'package:get/get_rx/get_rx.dart';
+import '../../../controllers/cart_screen_controller.dart';
+import '../../../models/cart_model.dart';
+import '../../../utils/colors.dart';
 
 class QuantityDropDown extends StatefulWidget {
   final CartScreenController cartScreenController;
@@ -98,22 +96,3 @@ class _QuantityDropDownState extends State<QuantityDropDown> {
     );
   }
 }
-
-
-// onChanged: (value) async {
-//               await widget.cartScreenController.updateQuantity(
-//                 productId: widget.item.id,
-//                 value: value!,
-//               );
-//               int total;
-//               total = widget.item.discount > 0
-//                   ? widget.item.totalPrice * value
-//                   : widget.item.price * value;
-
-//               setState(() {
-//                 widget.item.quantity = value;
-//                 widget.cartScreenController.cartTotal.value += total;
-//                 widget.cartScreenController.isOrderItemsSelected.value = false;
-//                 widget.cartScreenController.orderItems.clear();
-//               });
-//             },

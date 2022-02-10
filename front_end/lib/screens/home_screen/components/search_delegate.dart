@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../controllers/home_screen_controller.dart';
@@ -66,7 +68,7 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     if (query.length > 2) {
-      homeScreenController.searchProduct(query: query);
+      homeScreenController.searchProduct(page: 1, query: query);
     }
     if (query.length < 3) {
       return Column(
@@ -87,7 +89,7 @@ class CustomSearchDelegate extends SearchDelegate {
             return const SizedBox();
           }
 
-          return snapshot.data!.products.isEmpty
+          return snapshot.data!.results.isEmpty
               ? const Center(
                   child: Text(
                     'No Products found',
@@ -104,7 +106,7 @@ class CustomSearchDelegate extends SearchDelegate {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${snapshot.data!.products.length} products ',
+                        '${snapshot.data!.results.length} products ',
                         style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 18,
@@ -113,12 +115,13 @@ class CustomSearchDelegate extends SearchDelegate {
                       ),
                       Expanded(
                         child: ListView.builder(
-                            itemCount: snapshot.data!.products.length,
+                            itemCount: snapshot.data!.results.length,
                             padding: const EdgeInsets.only(top: 15),
                             itemBuilder: (context, index) {
+                              log(snapshot.data!.results[index].toString());
                               return SearchItem(
                                 query: query,
-                                product: snapshot.data!.products[index],
+                                product: snapshot.data!.results[index],
                               );
                             }),
                       ),

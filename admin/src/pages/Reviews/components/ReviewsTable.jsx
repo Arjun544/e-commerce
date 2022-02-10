@@ -49,7 +49,15 @@ function GlobalFilter({
   );
 }
 
-function ReviewsTable({ columns, data }) {
+function ReviewsTable({
+  columns,
+  data,
+  setCurrentPage,
+  currentPage,
+  totalPages,
+  hasNextPage,
+  hasPrevPage,
+}) {
   const history = useHistory();
   const { setSelectedSideBar } = useContext(AppContext);
   // Use the state and functions returned from useTable to build your UI
@@ -59,14 +67,6 @@ function ReviewsTable({ columns, data }) {
     headerGroups,
     prepareRow,
     page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
     state,
     preGlobalFilteredRows,
 
@@ -76,7 +76,6 @@ function ReviewsTable({ columns, data }) {
       columns,
       data,
     },
-
     useFilters, // useFilters!
     useGlobalFilter,
     useSortBy,
@@ -95,6 +94,19 @@ function ReviewsTable({ columns, data }) {
     e.stopPropagation();
     setSelectedSideBar(2);
     history.push(`/products/view/${id}`);
+  };
+
+  const handleNextPage = (e) => {
+    e.preventDefault();
+    if (hasNextPage) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+  const handlePreviousPage = (e) => {
+    e.preventDefault();
+    if (hasPrevPage) {
+      setCurrentPage((prev) => prev - 1);
+    }
   };
 
   // Render the UI for your table
@@ -187,7 +199,7 @@ function ReviewsTable({ columns, data }) {
                                         e,
                                         cell.row.original.review.user._id
                                       );
-                                    } 
+                                    }
                                   }}
                                   className={`text-sm font-semibold  ${(() => {
                                     if (
@@ -220,76 +232,54 @@ function ReviewsTable({ columns, data }) {
         </div>
       </div>
       {/* Pagination */}
-      <div className="py-3 flex items-center justify-between">
-        <div className="flex-1 flex justify-between sm:hidden">
-          <Button onClick={() => previousPage()} disabled={!canPreviousPage}>
-            Previous
-          </Button>
-          <Button onClick={() => nextPage()} disabled={!canNextPage}>
-            Next
-          </Button>
+      <div className="flex items-center justify-between my-6 gap-2">
+        <div className="flex items-center gap-2">
+          <span className="text-gray-700">Page</span>
+          <span className="text-black font-bold">{currentPage}</span>
+          <span className="text-gray-700">of</span>
+          <span className="text-black font-bold">{totalPages}</span>
         </div>
-        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-          <div className="flex gap-x-2 items-baseline">
-            <span className="text-sm text-gray-700">
-              Page <span className="font-medium">{state.pageIndex + 1}</span> of{" "}
-              <span className="font-medium">{pageOptions.length}</span>
-            </span>
-            <label>
-              <select
-                className="mt-1 block w-full cursor-pointer bg-Grey-dark px-4 text-black font-semibold text-sm rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                value={state.pageSize}
-                onChange={(e) => {
-                  setPageSize(Number(e.target.value));
-                }}
-              >
-                {[5, 10, 20].map((pageSize) => (
-                  <option key={pageSize} value={pageSize}>
-                    Show {pageSize}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-
-          <nav
-            className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
-            aria-label="Pagination"
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setCurrentPage(1)}
+            className={`${
+              currentPage !== 1
+                ? "bg-black"
+                : "bg-gray-300 hover:cursor-not-allowed"
+            } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
           >
-            <PageButton
-              className="rounded-l-md"
-              onClick={() => gotoPage(0)}
-              disabled={!canPreviousPage}
-            >
-              <span className="sr-only">First</span>
-              <ChevronDoubleLeftIcon
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </PageButton>
-            <PageButton
-              onClick={() => previousPage()}
-              disabled={!canPreviousPage}
-            >
-              <span className="sr-only">Previous</span>
-              <ArrowLeftIcon color={"#888888"} />
-            </PageButton>
-            <PageButton onClick={() => nextPage()} disabled={!canNextPage}>
-              <span className="sr-only">Next</span>
-              <ArrowRightIcon color={"#888888"} />
-            </PageButton>
-            <PageButton
-              className="rounded-r-md"
-              onClick={() => gotoPage(pageCount - 1)}
-              disabled={!canNextPage}
-            >
-              <span className="sr-only">Last</span>
-              <ChevronDoubleRightIcon
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </PageButton>
-          </nav>
+            First Page
+          </button>
+          <button
+            onClick={(e) => handlePreviousPage(e)}
+            className={`${
+              hasPrevPage
+                ? "bg-customYellow-light"
+                : "bg-gray-300 hover:cursor-not-allowed"
+            } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
+          >
+            Previous
+          </button>
+          <button
+            onClick={(e) => handleNextPage(e)}
+            className={`${
+              hasNextPage
+                ? "bg-customYellow-light"
+                : "bg-gray-300 hover:cursor-not-allowed"
+            } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
+          >
+            Next
+          </button>
+          <button
+            onClick={() => setCurrentPage(totalPages)}
+            className={`${
+              currentPage < totalPages
+                ? "bg-black"
+                : "bg-gray-300 hover:cursor-not-allowed"
+            } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
+          >
+            Last Page
+          </button>
         </div>
       </div>
     </div>

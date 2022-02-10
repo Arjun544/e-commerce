@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../models/product_Model.dart';
-import '../../../utils/colors.dart';
-import '../../../controllers/detail_screen_controller.dart';
 import 'package:get/get.dart';
 
+import '../../../controllers/detail_screen_controller.dart';
+import '../../../models/product_Model.dart';
+import '../../../utils/colors.dart';
 import 'reviews_section.dart';
 
 class ProductDetails extends StatelessWidget {

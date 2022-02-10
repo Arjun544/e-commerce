@@ -1,16 +1,16 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import '../../../controllers/profile_screen_controller.dart';
-import '../../profile_screen/components/shipping_address.dart';
+import 'package:get/get.dart';
+
 import '../../../controllers/checkout_screen_controller.dart';
-import '../../../utils/colors.dart';
-import '../../../widgets/custom_button.dart';
+import '../../../controllers/profile_screen_controller.dart';
 import '../../../controllers/root_screen_controller.dart';
 import '../../../models/userModel.dart';
+import '../../../utils/colors.dart';
 import '../../../widgets/address_widget.dart';
-import 'package:get/get.dart';
+import '../../../widgets/custom_button.dart';
+import '../../profile_screen/components/shipping_address.dart';
 
 class StepTwo extends StatelessWidget {
   final CheckoutScreenController checkoutScreenController;

@@ -35,14 +35,14 @@ const Dashboard = () => {
   const { products } = useSelector((state) => state.products);
   const [isOrderMenuOpen, setIsOrderMenuOpen] = useState(false);
   const [isOrdersLoading, setIsOrdersLoading] = useState(false);
-  const [isCustomersLoading, setIsCustomersLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         setIsOrdersLoading(true);
-        const { data } = await getOrders();
-        dispatch(setOrders({ orders: data.orderList }));
+        const { data } = await getOrders(false);
+        dispatch(setOrders({ orders: data.results }));
         setIsOrdersLoading(false);
       } catch (error) {
         setIsOrdersLoading(false);
@@ -51,45 +51,45 @@ const Dashboard = () => {
     };
     const fetchCustomers = async () => {
       try {
-        setIsCustomersLoading(true);
-        const { data } = await getUsers();
-        dispatch(setCustomers({ customers: data.data }));
-        setIsCustomersLoading(false);
+        setIsLoading(true);
+        const { data } = await getUsers(false);
+        dispatch(setCustomers({ customers: data.results }));
+        setIsLoading(false);
       } catch (error) {
-        setIsCustomersLoading(false);
+        setIsLoading(false);
         console.log(error.response);
       }
     };
     const fetchProducts = async () => {
       try {
-        setIsCustomersLoading(true);
-        const { data } = await getProducts();
-        dispatch(setProducts({ products: data.products }));
-        setIsCustomersLoading(false);
+        setIsLoading(true);
+        const { data } = await getProducts(false);
+        dispatch(setProducts({ products: data.results }));
+        setIsLoading(false);
       } catch (error) {
-        setIsCustomersLoading(false);
+        setIsLoading(false);
         console.log(error.response);
       }
     };
     const fetchCategories = async () => {
       try {
-        setIsCustomersLoading(true);
+        setIsLoading(true);
         const { data } = await getCategories();
         dispatch(setcategories(data.categoryList));
-        setIsCustomersLoading(false);
+        setIsLoading(false);
       } catch (error) {
-        setIsCustomersLoading(false);
+        setIsLoading(false);
         console.log(error.response);
       }
     };
     const fetchReviews = async () => {
       try {
-        setIsCustomersLoading(true);
-        const { data } = await getAllReviews();
-        setReviews(data.reviews);
-        setIsCustomersLoading(false);
+        setIsLoading(true);
+        const { data } = await getAllReviews(false);
+        setReviews(data.results);
+        setIsLoading(false);
       } catch (error) {
-        setIsCustomersLoading(false);
+        setIsLoading(false);
         console.log(error.response);
       }
     };
@@ -106,7 +106,7 @@ const Dashboard = () => {
   };
 
   const productsData = products
-    .slice(0, 5)
+    .slice(0, 10)
     .sort(function (a, b) {
       if (a.totalReviews > b.totalReviews) return -1;
       if (a.totalReviews < b.totalReviews) return 1;
@@ -277,7 +277,12 @@ const Dashboard = () => {
             </div>
 
             <div className="flex flex-col w-full bg-bgColor-light rounded-3xl p-6 shadow-sm">
-              <TopProductsTable columns={productsColumns} data={productsData} />
+              {!isLoading && products !== undefined && (
+                <TopProductsTable
+                  columns={productsColumns}
+                  data={productsData}
+                />
+              )}
             </div>
           </div>
         </div>

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'root_screen_controller.dart';
 import '../models/userModel.dart';

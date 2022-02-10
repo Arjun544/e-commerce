@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
-import '../controllers/register_screen_controller.dart';
-import '../utils/colors.dart';
-import '../widgets/custom_button.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pinput/pin_put/pin_put.dart';
+
+import '../controllers/register_screen_controller.dart';
+import '../utils/colors.dart';
+import '../widgets/custom_button.dart';
 
 class VerificationScreen extends StatelessWidget {
   final RegisterScreenController controller =

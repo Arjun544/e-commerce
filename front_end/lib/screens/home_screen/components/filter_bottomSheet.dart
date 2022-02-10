@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:another_xlider/another_xlider.dart';
 import 'package:flutter/material.dart';

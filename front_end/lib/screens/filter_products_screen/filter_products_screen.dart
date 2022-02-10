@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -225,7 +224,7 @@ class _FilterProductsScreenState extends State<FilterProductsScreen> {
                             child: FeaturedLoader(),
                           );
                         }
-                        return snapshot.data!.products.isEmpty
+                        return snapshot.data!.results.isEmpty
                             ? Padding(
                                 padding: const EdgeInsets.only(top: 80),
                                 child: Column(
@@ -250,12 +249,12 @@ class _FilterProductsScreenState extends State<FilterProductsScreen> {
                                     mainAxisSpacing: 15,
                                     padding: const EdgeInsets.only(
                                         right: 12, left: 12, bottom: 20),
-                                    itemCount: snapshot.data!.products.length,
+                                    itemCount: snapshot.data!.results.length,
                                     physics:
                                         const NeverScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
                                       Product product =
-                                          snapshot.data!.products[index];
+                                          snapshot.data!.results[index];
                                       filteredProductsScreenController
                                           .filteredProducts
                                           .add(product);

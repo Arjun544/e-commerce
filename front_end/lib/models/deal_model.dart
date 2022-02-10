@@ -2,7 +2,6 @@
 //
 //     final dealModel = dealModelFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 import 'product_Model.dart';

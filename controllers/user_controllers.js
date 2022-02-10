@@ -346,13 +346,28 @@ exports.sendCode = async (req, res) => {
 // @access  Public
 exports.getAllUsers = async (req, res) => {
   try {
-    const user = await User.find().select(
-      "-resetPasswordToken -resetPasswordExpires -emailToken -emailTokenExpires -password"
-    );
-    res.status(200).json({
-      success: true,
-      count: user.length,
-      data: user,
+    var query = {};
+    var options = {
+      select:
+        "-resetPasswordToken -resetPasswordExpires -emailToken -emailTokenExpires -password",
+      sort: { createdAt: -1 },
+      page: req.query.page ?? 1,
+      limit: req.query.limit ?? 10,
+      pagination: req.query.pagination === "true" ? true : false,
+    };
+    await User.paginate(query, options, function (err, result) {
+      if (err) {
+        return res.status(500).json({ error: true, message: err.message });
+      } else {
+        return res.send({
+          page: result.page,
+          hasNextPage: result.hasNextPage,
+          hasPrevPage: result.hasPrevPage,
+          total_pages: result.totalPages,
+          total_results: result.totalDocs,
+          results: result.docs,
+        });
+      }
     });
   } catch (error) {
     return res.status(500).json({
@@ -379,7 +394,6 @@ exports.count = async (req, res) => {
 // @access  Public
 exports.getUserById = async (req, res) => {
   try {
-
     const user = await User.findById(req.params.id).select(
       "-resetPasswordToken -resetPasswordExpires -emailToken -emailTokenExpires -password -isAdmin -updatedAt -v -dataId -createdAt -__v"
     );

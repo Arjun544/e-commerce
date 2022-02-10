@@ -1,15 +1,9 @@
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
-import 'package:front_end/screens/cart_screen/components/QuantityDropDown.dart';
-import 'package:front_end/screens/cart_screen/components/TotalCounter.dart';
-import '../checkout_screen/checkout_screen.dart';
-import '../../widgets/loaders/cart_screen_loader.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -17,7 +11,9 @@ import '../../controllers/cart_screen_controller.dart';
 import '../../controllers/home_screen_controller.dart';
 import '../../models/cart_model.dart';
 import '../../utils/colors.dart';
-import '../../widgets/social_btn.dart';
+import '../../widgets/loaders/cart_screen_loader.dart';
+import 'components/QuantityDropDown.dart';
+import 'components/TotalCounter.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -112,7 +108,7 @@ class _CartScreenState extends State<CartScreen> {
                                           maskType: EasyLoadingMaskType.clear,
                                         );
 
-                                        cartScreenController.getCart();
+                                        await cartScreenController.getCart();
                                       },
                                       child: const Text(
                                         'Clear',
@@ -179,7 +175,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 .cartProducts.value.id,
                                             productId: products[index].id,
                                           );
-                                          cartScreenController.getCart();
+                                          await cartScreenController.getCart();
                                         },
                                         color: Colors.red,
                                         backgroundRadius: 20,

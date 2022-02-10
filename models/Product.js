@@ -1,6 +1,8 @@
 const { number } = require("joi");
 const mongoose = require("mongoose");
 const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
+const mongoosePaginate = require("mongoose-paginate-v2");
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const productSchema = mongoose.Schema({
   name: {
@@ -107,5 +109,8 @@ productSchema.set("toJSON", {
 productSchema.plugin(mongoose_fuzzy_searching, {
   fields: ["name"],
 });
+
+productSchema.plugin(mongoosePaginate);
+productSchema.plugin(aggregatePaginate);
 
 module.exports = mongoose.model("Product", productSchema);

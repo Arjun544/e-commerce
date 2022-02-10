@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../utils/colors.dart';
 import 'package:get/get.dart';
+
+import '../utils/colors.dart';
 
 void customSnackBar(String title,String msg) {
   return Get.snackbar(

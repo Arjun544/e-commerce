@@ -1,15 +1,14 @@
-import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../../filter_products_screen/filter_products_screen.dart';
-import '../../../utils/colors.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
 import '../../../controllers/home_screen_controller.dart';
 import '../../../models/category_model.dart';
+import '../../../utils/colors.dart';
 import '../../../widgets/loaders/category_loader.dart';
-import 'package:get/get.dart';
-
+import '../../filter_products_screen/filter_products_screen.dart';
 import 'all_catogories.dart';
 
 class CategoriesSection extends StatelessWidget {

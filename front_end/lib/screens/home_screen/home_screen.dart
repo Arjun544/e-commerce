@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/screens/banner_products_screen/banner_products_screen.dart';
-import 'package:front_end/screens/home_screen/components/deal_section.dart';
-import 'package:front_end/widgets/loaders/banner_loader.dart';
+import '../banner_products_screen/banner_products_screen.dart';
+import 'components/deal_section.dart';
+import '../../widgets/loaders/banner_loader.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/cart_screen_controller.dart';
@@ -24,6 +24,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DraggableHome(
+      backgroundColor: Colors.white,
       controller: rootScreenController,
       curvedBodyRadius: 0,
       headerExpandedHeight: 0.3,

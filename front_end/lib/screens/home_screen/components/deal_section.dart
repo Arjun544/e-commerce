@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../controllers/home_screen_controller.dart';
-import '../../../utils/colors.dart';
 import 'package:get/get.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+
+import '../../../controllers/home_screen_controller.dart';
+import '../../../utils/colors.dart';
 
 class DealSection extends StatelessWidget {
   final HomeScreenController controller;

@@ -1,16 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import '../models/order_model.dart';
-import '../services/orders_api.dart';
-import '../services/reviews_api.dart';
-import 'root_screen_controller.dart';
-import '../models/userModel.dart';
-
-import '../utils/constants.dart';
 import 'package:get/get.dart';
 
+import '../models/order_model.dart';
+import '../models/userModel.dart';
+import '../services/orders_api.dart';
+import '../services/reviews_api.dart';
 import '../services/user_api.dart';
+import '../utils/constants.dart';
+import 'root_screen_controller.dart';
 
 class ProfileScreenController extends GetxController {
   final RootScreenController rootScreenController = Get.find();

@@ -1,12 +1,13 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../../../controllers/cart_screen_controller.dart';
-import '../../../widgets/custom_button.dart';
-import '../../../models/delivery_model.dart';
-import '../../../controllers/checkout_screen_controller.dart';
-import '../../../utils/colors.dart';
 import 'package:get/get.dart';
+
+import '../../../controllers/cart_screen_controller.dart';
+import '../../../controllers/checkout_screen_controller.dart';
+import '../../../models/delivery_model.dart';
+import '../../../utils/colors.dart';
+import '../../../widgets/custom_button.dart';
 
 class StepOne extends StatefulWidget {
   @override

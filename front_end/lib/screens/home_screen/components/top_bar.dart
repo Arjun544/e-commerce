@@ -48,10 +48,11 @@ class TopBar extends StatelessWidget {
             const SizedBox(width: 20),
             getStorage.read('isLogin') == true
                 ? StreamBuilder<UserModel>(
-                    stream:
-                        rootScreenController.currentUserStreamController.stream,
+                    stream: rootScreenController
+                        .currentUserStreamController.stream,
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return const CircleAvatar(radius: 20);
                       } else if (snapshot.data == null) {}
                       UserModel? currentUser = snapshot.data;
