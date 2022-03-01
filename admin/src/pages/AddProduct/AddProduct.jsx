@@ -16,7 +16,6 @@ import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import ReactTooltip from "react-tooltip";
 import CustomButon from "../../components/custom_button";
 import { Textarea } from "react-rainbow-components";
-import styled from "styled-components";
 import {
   addProduct,
   uploadMultiImages,
@@ -383,7 +382,7 @@ const AddProduct = ({ isEditing }) => {
                 <ReactTooltip
                   place="top"
                   type="info"
-                  effect="float"
+                  effect="solid"
                   offset={{ top: 5 }}
                 />
                 <div className="mt-4">

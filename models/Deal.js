@@ -5,14 +5,6 @@ const dealSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  startDate: {
-    type: Date,
-    required: true,
-  },
-  endDate: {
-    type: Date,
-    required: true,
-  },
   status: {
     type: Boolean,
     default: false,

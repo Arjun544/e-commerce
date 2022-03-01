@@ -40,6 +40,7 @@ function App() {
   useEffect(() => {
     socket.current = io(socketUrl, {
       "force new connection": true,
+      autoConnect: false,
       reconnectionAttempt: "Infinity",
       timeout: 10000,
       transports: ["polling"],

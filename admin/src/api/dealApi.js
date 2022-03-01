@@ -5,13 +5,12 @@ const cookies = new Cookies();
 const api = axios.create();
 
 // List of all the endpoints
-export const addDeal = (title, startDate, endDate) =>
+export const addDeal = (title, products) =>
   api.post(
     "/api/deal/add",
     {
       title,
-      startDate,
-      endDate,
+      products,
     },
     {
       headers: {

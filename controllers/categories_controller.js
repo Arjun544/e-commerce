@@ -141,6 +141,7 @@ exports.updateCategory = async (req, res) => {
           name: req.body.name,
           icon: result.secure_url,
           iconId: result.public_id,
+          status: req.body.status,
         },
       },
       { new: true }
@@ -156,6 +157,29 @@ exports.updateCategory = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.updateStatus = async (req, res) => {
+  try {
+    const category = await Category.findOneAndUpdate(
+      req.params.id,
+      {
+        status: req.params.status,
+      },
+      { new: true }
+    );
+    socket.socket.emit("update-categoryStatus", category.status);
+    res.send({
+      success: true,
+      message: "status has been updated",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
       success: false,
       message: "Something went wrong",
     });

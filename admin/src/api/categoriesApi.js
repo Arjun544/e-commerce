@@ -18,6 +18,19 @@ export const addCategory = (name, icon) =>
     }
   );
 
+export const updateStatus = (id, status) =>
+  api.patch(
+    `/api/categories/updateStatus/${id}/${status}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+
 export const addSubCategory = (id, name) =>
   api.patch(
     `/api/categories/addSubCategory/${id}`,

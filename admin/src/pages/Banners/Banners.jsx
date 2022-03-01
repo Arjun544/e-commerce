@@ -37,8 +37,8 @@ const Banners = () => {
         setIsLoading(true);
         const { data } = await getBanners();
         setBanners(data.banners);
-        const response = await getProducts();
-        setProducts(response.data.products);
+        const response = await getProducts(false);
+        setProducts(response.data.results);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);

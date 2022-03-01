@@ -3,7 +3,6 @@ import ProductsDropDown from "../../Banners/components/ProductsDropDown";
 import Loader from "react-loader-spinner";
 import { useSnackbar } from "notistack";
 import DeleteIcon from "../../../components/icons/DeleteIcon";
-import { addBannerProducts } from "../../../api/bannersApi";
 import { AppContext } from "../../../App";
 import { addDealProducts } from "../../../api/dealApi";
 const AddProductsDialogue = ({
@@ -145,7 +144,7 @@ const AddProductsDialogue = ({
           ) : (
             addedProducts.map((product, index) => (
               <div
-                key={index}
+                key={product.id}
                 className="flex w-64 h-14 mr-4 mb-4 mt-3 bg-white rounded-2xl items-center justify-between px-6 shadow-sm"
               >
                 <div className="flex">

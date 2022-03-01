@@ -4,14 +4,15 @@ const Product = require("../models/Product");
 
 exports.addDeal = async (req, res) => {
   try {
-    const { title, startDate, endDate } = req.body;
+    const { title, products } = req.body;
+
+    if (!title) return res.status(400).send("Title is required");
 
     const deal = new Deal({
       title,
-      startDate,
-      endDate,
     });
     await deal.save();
+
     const deals = await Deal.find();
     socket.socket.emit("add-deal", deals);
     res.send({
@@ -45,7 +46,7 @@ exports.getAdminDeal = async (req, res) => {
 
 exports.getUserDeal = async (req, res) => {
   try {
-    const deals = await Deal.find({status: true});
+    const deals = await Deal.find({ status: true });
     res.send({
       success: true,
       deals: deals,
@@ -61,15 +62,13 @@ exports.getUserDeal = async (req, res) => {
 
 exports.updateDeal = async (req, res) => {
   try {
-    const { title, startDate, endDate } = req.body;
+    const { title } = req.body;
 
     const deal = await Deal.findByIdAndUpdate(
       req.params.id,
       {
         $set: {
           title: title,
-          startDate: startDate,
-          endDate: endDate,
         },
       },
       { new: true }

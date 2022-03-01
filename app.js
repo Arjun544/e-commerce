@@ -22,6 +22,7 @@ const server = require("http").createServer(app);
 // Sooket Connection
 const io = require("socket.io")(server, {
   transports: ["polling"],
+  autoConnect: true,
   cors: {
     origin: [
       "http://localhost:3000",

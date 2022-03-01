@@ -41,7 +41,7 @@ const ProductsDropDown = ({
       ref={ref}
       onClick={toggleMenu}
       className={
-        "flex relative h-14 mr-4 bg-bgColor-light shadow-sm border-none px-4 w-full rounded-xl hover:bg-opacity-70 items-center justify-between cursor-pointer"
+        "flex relative h-14 mr-4 bg-white shadow-sm border-none px-4 w-full rounded-xl hover:bg-opacity-70 items-center justify-between cursor-pointer"
       }
     >
       <span className="font-semibold text-sm text-black">
@@ -75,7 +75,7 @@ const ProductsDropDown = ({
                 products.filter(filterNames).map((product, index) => {
                   return (
                     <div
-                      id={index}
+                      id={product.id}
                       onClick={(e) => handleSort(e, product)}
                       className="flex items-center hover:bg-blue-light py-2 rounded-md"
                     >
@@ -98,7 +98,7 @@ const ProductsDropDown = ({
               products.map((product, index) => {
                 return (
                   <div
-                    id={index}
+                    id={product.id}
                     onClick={(e) => handleSort(e, product)}
                     className="flex items-center hover:bg-blue-light py-2 rounded-md"
                   >

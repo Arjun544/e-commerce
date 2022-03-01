@@ -15,6 +15,7 @@ import { ChevronUpIcon } from "@heroicons/react/solid";
 import AddCategoryDialogue from "./components/AddCategoryDialogue";
 import AddSubCategoryDialogue from "./components/AddSubCategoryDialogue";
 import { Accordion, AccordionItem } from "react-sanfona";
+import CategoryStatus from "./components/CategoryStatus";
 
 const Categories = () => {
   const { isBigScreen, socket } = useContext(AppContext);
@@ -208,6 +209,7 @@ const Categories = () => {
                         </span>
                       </div>
                       <div className="flex items-center">
+                        <CategoryStatus category={category}  />
                         <div className="flex items-end mr-6">
                           <EditIcon
                             onClick={(e) => handleCategoryEdit(e, category)}

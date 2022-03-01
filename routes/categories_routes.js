@@ -14,6 +14,7 @@ const {
   updateSubCategory,
   deleteCategory,
   deleteSubCategory,
+  updateStatus,
 } = require("../controllers/categories_controller");
 
 router.post(
@@ -30,7 +31,13 @@ router.delete("/:id", authMiddleware, cleanBody, deleteCategory);
 router.delete("/subCategory/:id", authMiddleware, cleanBody, deleteSubCategory);
 router.patch("/addSubCategory/:id",authMiddleware, cleanBody, addSubCategory);
 router.patch("/update/:id", cleanBody,authMiddleware, updateCategory);
-router.patch("/updateSubCategory/:id",authMiddleware, cleanBody, updateSubCategory);
+router.patch("/updateSubCategory/:id", authMiddleware, cleanBody, updateSubCategory);
+router.patch(
+  "/updateStatus/:id/:status",
+  authMiddleware,
+  cleanBody,
+  updateStatus
+);
 
 
 module.exports = router;
