@@ -32,6 +32,7 @@ class Data {
     required this.profile,
     required this.street,
     required this.shippingAddress,
+    required this.deviceTokens,
     required this.zip,
     required this.city,
     required this.country,
@@ -46,6 +47,7 @@ class Data {
   String profile;
   String street;
   List<ShipAddress> shippingAddress;
+  List<String> deviceTokens;
   String zip;
   String city;
   String country;
@@ -61,6 +63,7 @@ class Data {
         street: json['street'],
         shippingAddress: List<ShipAddress>.from(
             json['ShippingAddress'].map((x) => ShipAddress.fromJson(x))),
+        deviceTokens: List<String>.from(json['deviceTokens']),
         zip: json['zip'],
         city: json['city'],
         country: json['country'],

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -165,13 +166,14 @@ class _UserImageState extends State<UserImage> {
         ),
         getStorage.read('isLogin') == true
             ? Text(
-                toBeginningOfSentenceCase(widget.currentUser!.data.username) ??
-                    '',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              )
+              toBeginningOfSentenceCase(
+                      widget.currentUser!.data.username) ??
+                  '',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            )
             : CustomButton(
                 height: 40,
                 width: Get.width * 0.3,

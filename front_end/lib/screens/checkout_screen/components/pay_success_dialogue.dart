@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/controllers/home_screen_controller.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -15,6 +16,7 @@ void PaySuccessDialogue(BuildContext context) {
     context: context,
     pageBuilder: (_, __, ___) {
       final CartScreenController cartScreenController = Get.find();
+      final HomeScreenController homeScreenController = Get.find();
       return Align(
         alignment: Alignment.center,
         child: Container(
@@ -63,6 +65,7 @@ void PaySuccessDialogue(BuildContext context) {
                   color: customYellow,
                   onPressed: () async {
                     await cartScreenController.clearCart();
+                    homeScreenController.cartLength.value = 0;
                     Get.back();
                     Get.back();
                     Get.back();

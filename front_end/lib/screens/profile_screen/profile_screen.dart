@@ -1,7 +1,10 @@
+import 'dart:developer';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/services/notification_api.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/home_screen_controller.dart';
@@ -149,19 +152,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       iconColor: Colors.purple[300],
                       onPressed: () {},
                     ),
-                    ProfileTile(
-                      text: 'Logout',
-                      icon: 'assets/images/Logout.svg',
-                      iconColor: Colors.red[400],
-                      onPressed: () async {
-                        await EasyLoading.show(
-                            status: 'logging out...', dismissOnTap: false);
-                        await getStorage.write('isLogin', false);
-                        await getStorage.remove('userId');
-                        await EasyLoading.dismiss();
-                        setState(() {});
-                      },
-                    ),
+                    StreamBuilder<UserModel>(
+                        stream: rootScreenController
+                            .currentUserStreamController.stream,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const SizedBox();
+                          } else if (snapshot.data == null) {}
+                          UserModel? currentUser = snapshot.data;
+
+                          return ProfileTile(
+                            text: 'Logout',
+                            icon: 'assets/images/Logout.svg',
+                            iconColor: Colors.red[400],
+                            onPressed: () async {
+                              await EasyLoading.show(
+                                  status: 'logging out...',
+                                  dismissOnTap: false);
+                              String? token =
+                                  await FirebaseMessaging.instance.getToken();
+                              String deletedToken = currentUser!
+                                  .data.deviceTokens
+                                  .firstWhere((element) => element == token)
+                                  .toString();
+                              log(deletedToken.toString());
+                              await NotificationApi().deleteToken(
+                                  token: deletedToken,
+                                  id: getStorage.read('userId'));
+                              // await getStorage.write('isLogin', false);
+                              // await getStorage.remove('userId');
+                              await EasyLoading.dismiss();
+                              setState(() {});
+                            },
+                          );
+                        }),
                     const SizedBox(height: 20),
                     Container(
                       height: Get.height * 0.15,

@@ -1,8 +1,11 @@
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:front_end/services/notification_api.dart';
 import 'package:get/get.dart';
 
 import '../screens/register_screen/register_screen.dart';
@@ -130,13 +133,19 @@ class RegisterScreenController extends GetxController {
           maskType: EasyLoadingMaskType.clear,
         );
       } else {
-        await EasyLoading.dismiss();
         await getStorage.write('userId', response.data['userId']);
         // Saving jwt token in local storage
         await getStorage.write('token', response.data['token']);
 
         // Save login status
         await getStorage.write('isLogin', true);
+
+        // Save device token
+        String? token = await FirebaseMessaging.instance.getToken();
+        log(token.toString());
+        await FirebaseMessaging.instance.subscribeToTopic('AllUsers');
+        await NotificationApi()
+            .addToken(token: token!, id: getStorage.read('userId'));
         await EasyLoading.dismiss();
         response.data['isActive'] == false
             ? await Get.to(() => VerificationScreen())

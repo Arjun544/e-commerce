@@ -43,18 +43,18 @@ void main() async {
       ]);
   AwesomeNotifications()
       .actionStream
-      .listen((ReceivedNotification receivedNotification) {
-    log(receivedNotification.title.toString());
-  });
+      .listen((ReceivedNotification receivedNotification) {});
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,
     badge: true,
     sound: true,
   );
-  String? token = await FirebaseMessaging.instance.getToken();
-  await FirebaseMessaging.instance.subscribeToTopic('AllUsers');
-  log(token!);
+  if (getStorage.read('isLogin') != true) {
+    String? token = await FirebaseMessaging.instance.getToken();
+    await FirebaseMessaging.instance.subscribeToTopic('AllUsers');
+    log(token!);
+  }
   runApp(MyApp());
 }
 

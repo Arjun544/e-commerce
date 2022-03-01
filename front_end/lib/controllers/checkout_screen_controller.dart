@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:front_end/services/notification_api.dart';
 import 'cart_screen_controller.dart';
 import 'root_screen_controller.dart';
 import '../models/delivery_model.dart';
@@ -46,6 +49,11 @@ class CheckoutScreenController extends GetxController {
         country: order['country'],
       );
     }
+    await NotificationApi().sendNotification(
+      tokens: currentUser.data.deviceTokens,
+      title: 'Your order has been placed',
+      body: 'Track order to see the status',
+    );
     await EasyLoading.dismiss();
     PaySuccessDialogue(context);
   }

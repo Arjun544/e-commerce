@@ -151,7 +151,7 @@ class MyOrders extends StatelessWidget {
                         ),
                         const SizedBox(height: 5),
                         const Text(
-                          'Track Orders',
+                          'Track Order',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 14),
                         ),

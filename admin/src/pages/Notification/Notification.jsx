@@ -9,8 +9,10 @@ import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import { sendNotificationToAllUsers } from "../../api/NotificationApi";
 import { useSnackbar } from "notistack";
+import Loader from "react-loader-spinner";
 
 const Notification = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [titleInput, setTitleInput] = useState("");
   const [bodyInput, setBodyInput] = useState("");
   const [file, setFile] = useState("");
@@ -24,24 +26,29 @@ const Notification = () => {
           autoHideDuration: 2000,
         });
       } else if (file.length === 0) {
+        setIsLoading(true);
         await sendNotificationToAllUsers(titleInput, bodyInput, null);
         enqueueSnackbar("Notification sent", {
           variant: "success",
           autoHideDuration: 2000,
         });
+        setIsLoading(false);
       } else {
+        setIsLoading(true);
         await sendNotificationToAllUsers(
           titleInput,
           bodyInput,
           // "https://cdn.vox-cdn.com/thumbor/Pkmq1nm3skO0-j693JTMd7RL0Zk=/0x0:2012x1341/1200x800/filters:focal(0x0:2012x1341)/cdn.vox-cdn.com/uploads/chorus_image/image/47070706/google2.0.0.jpg"
-          file[0].getFileEncodeDataURL(),
+          file[0].getFileEncodeDataURL()
         );
         enqueueSnackbar("Notification sent", {
           variant: "success",
           autoHideDuration: 2000,
         });
+        setIsLoading(false);
       }
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
       enqueueSnackbar("Something went wrong", {
         variant: "error",
@@ -89,14 +96,24 @@ const Notification = () => {
           />
 
           <div className="flex items-center justify-center">
-            <div
-              onClick={handleSendNotification}
-              className="flex h-12 mt-20 bg-green-500  shadow-sm border-none w-32 rounded-xl  items-center justify-center cursor-pointer transform hover:scale-95  transition duration-500 ease-in-out"
-            >
-              <span className="font-semibold text-sm text-white tracking-wider">
-                Send
-              </span>
-            </div>
+            {isLoading ? (
+              <Loader
+                type="Puff"
+                color="#00BFFF"
+                height={50}
+                width={50}
+                timeout={3000} //3 secs
+              />
+            ) : (
+              <div
+                onClick={handleSendNotification}
+                className="flex h-12 mt-20 bg-green-500  shadow-sm border-none w-32 rounded-xl  items-center justify-center cursor-pointer transform hover:scale-95  transition duration-500 ease-in-out"
+              >
+                <span className="font-semibold text-sm text-white tracking-wider">
+                  Send
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
