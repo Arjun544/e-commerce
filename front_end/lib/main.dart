@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.transparent,
         textSelectionTheme: TextSelectionThemeData(
           selectionHandleColor: customYellow,
-          selectionColor: customYellow.withOpacity(0.3), // Change bubble to red
+          selectionColor: customYellow.withOpacity(0.3),
           cursorColor: Colors.black,
         ),
         textTheme: const TextTheme(

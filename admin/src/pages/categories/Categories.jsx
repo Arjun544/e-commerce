@@ -209,8 +209,8 @@ const Categories = () => {
                         </span>
                       </div>
                       <div className="flex items-center">
-                        <CategoryStatus category={category}  />
-                        <div className="flex items-end mr-6">
+                        <CategoryStatus category={category} />
+                        <div className="flex items-end mx-6">
                           <EditIcon
                             onClick={(e) => handleCategoryEdit(e, category)}
                             className="mr-3 h-5 w-5 cursor-pointer fill-lightGreen hover:fill-green"
@@ -236,7 +236,7 @@ const Categories = () => {
                         No sub categories
                       </span>
                     ) : (
-                      <div className='flex flex-col'>
+                      <div className="flex flex-col">
                         <span className="font-semibold my-4">
                           Subcategories
                         </span>

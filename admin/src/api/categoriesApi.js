@@ -5,6 +5,15 @@ const cookies = new Cookies();
 const api = axios.create();
 
 // List of all the endpoints
+export const getCategories = () =>
+  api.get("/api/categories/getAdminCategories", {
+    headers: {
+      Authorization: `Bearer ${cookies.get("accessToken")}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  
 export const addCategory = (name, icon) =>
   api.post(
     "/api/categories/add",
@@ -90,13 +99,6 @@ export const deleteSubCategory = (id, subCategoryId) =>
     data: { subCategoryId: subCategoryId },
   });
 
-export const getCategories = () =>
-  api.get("/api/categories/get", {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
-    },
-  });
+
 
 export default api;

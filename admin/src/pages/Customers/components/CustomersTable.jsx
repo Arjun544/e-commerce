@@ -235,7 +235,7 @@ function CustomersTable({
             className={`${
               currentPage !== 1
                 ? "bg-black"
-                : "bg-gray-300 hover:cursor-not-allowed"
+                : "bg-gray-300 cursor-not-allowed"
             } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
           >
             First Page
@@ -245,7 +245,7 @@ function CustomersTable({
             className={`${
               hasPrevPage
                 ? "bg-customYellow-light"
-                : "bg-gray-300 hover:cursor-not-allowed"
+                : "bg-gray-300 cursor-not-allowed"
             } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
           >
             Previous
@@ -255,7 +255,7 @@ function CustomersTable({
             className={`${
               hasNextPage
                 ? "bg-customYellow-light"
-                : "bg-gray-300 hover:cursor-not-allowed"
+                : "bg-gray-300 cursor-not-allowed"
             } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
           >
             Next
@@ -265,7 +265,7 @@ function CustomersTable({
             className={`${
               currentPage < totalPages
                 ? "bg-black"
-                : "bg-gray-300 hover:cursor-not-allowed"
+                : "bg-gray-300 cursor-not-allowed"
             } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
           >
             Last Page

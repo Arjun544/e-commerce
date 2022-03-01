@@ -73,6 +73,26 @@ exports.addSubCategory = async (req, res) => {
   }
 };
 
+exports.getAdminCategories = async (req, res) => {
+  try {
+    const categoryList = await Category.find();
+
+    if (!categoryList) {
+      return res.json({
+        success: false,
+        message: "categories not found",
+      });
+    }
+
+    res.json({ categoryList });
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
 exports.getCategories = async (req, res) => {
   try {
     const categoryList = await Category.find({ status: true });

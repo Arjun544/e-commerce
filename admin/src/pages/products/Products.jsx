@@ -32,16 +32,19 @@ const Products = () => {
     fetchProducts();
   }, [currentPage]);
 
-  const data = !isLoading && tableData.results !== undefined && tableData?.results.map((item) => ({
-    product: item,
-    image: item.thumbnail,
-    name: item.name,
-    date: item.dateCreated,
-    price: item.price,
-    category: item.category.name,
-    featured: item.isFeatured,
-    status: item.status,
-  }));
+  const data =
+    !isLoading &&
+    tableData.results !== undefined &&
+    tableData?.results.map((item) => ({
+      product: item,
+      image: item.thumbnail,
+      name: item.name,
+      date: item.dateCreated,
+      price: item.price,
+      category: item.category.name,
+      featured: item.isFeatured,
+      status: item.status,
+    }));
 
   const columns = [
     {
@@ -99,7 +102,7 @@ const Products = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full h-full overflow-y-auto overflow-x-hidden  bg-white">
+    <div className="flex flex-col w-full h-full overflow-y-auto overflow-x-hidden bg-white">
       <TopBar />
       {/* Views */}
       {isLoading ? (

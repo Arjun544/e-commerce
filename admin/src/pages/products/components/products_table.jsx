@@ -93,18 +93,35 @@ function ProductsTable({
     history.push(`/products/view/${product.id}`);
   };
 
-const handleNextPage = (e) => {
-  e.preventDefault();
-  if (hasNextPage) {
-    setCurrentPage((prev) => prev + 1);
+  const handleNextPage = (e) => {
+    e.preventDefault();
+    if (hasNextPage) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+  const handlePreviousPage = (e) => {
+    e.preventDefault();
+    if (hasPrevPage) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  if (data.length === 0) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center pt-16 gap-4">
+        <span className="text-black text-lg font-semibold tracking-widest">No products</span>
+        <div
+          onClick={(e) => {
+            e.preventDefault();
+            history.push("/products/add");
+          }}
+          className="flex h-12 w-40 bg-customYellow-light rounded-2xl cursor-pointer items-center justify-center transform hover:scale-95 transition duration-500 ease-in-out"
+        >
+          <span className="text-white font-semibold">Add product</span>
+        </div>
+      </div>
+    );
   }
-};
-const handlePreviousPage = (e) => {
-  e.preventDefault();
-  if (hasPrevPage) {
-    setCurrentPage((prev) => prev - 1);
-  }
-};
 
   // Render the UI for your table
   return (
@@ -231,7 +248,7 @@ const handlePreviousPage = (e) => {
             className={`${
               currentPage !== 1
                 ? "bg-black"
-                : "bg-gray-300 hover:cursor-not-allowed"
+                : "bg-gray-300 cursor-not-allowed"
             } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
           >
             First Page
@@ -241,7 +258,7 @@ const handlePreviousPage = (e) => {
             className={`${
               hasPrevPage
                 ? "bg-customYellow-light"
-                : "bg-gray-300 hover:cursor-not-allowed"
+                : "bg-gray-300 cursor-not-allowed"
             } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
           >
             Previous
@@ -251,7 +268,7 @@ const handlePreviousPage = (e) => {
             className={`${
               hasNextPage
                 ? "bg-customYellow-light"
-                : "bg-gray-300 hover:cursor-not-allowed"
+                : "bg-gray-300 cursor-not-allowed"
             } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
           >
             Next
@@ -261,7 +278,7 @@ const handlePreviousPage = (e) => {
             className={`${
               currentPage < totalPages
                 ? "bg-black"
-                : "bg-gray-300 hover:cursor-not-allowed"
+                : "bg-gray-300 cursor-not-allowed"
             } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
           >
             Last Page
