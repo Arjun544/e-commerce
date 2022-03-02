@@ -28,7 +28,6 @@ const io = require("socket.io")(server, {
       "http://localhost:3000",
       "http://192.168.0.101:4000",
       "http://192.168.0.149:4000",
-      "https://sell-corner.herokuapp.com/",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
@@ -49,7 +48,7 @@ app.set("eventEmitter", eventEmitter);
 //Middlewares
 const corsOptions = {
   credentials: true,
-  origin: ["https://sell-corner.herokuapp.com"],
+  origin: ["http://localhost:3000", "https://sell-corner.herokuapp.com"],
 };
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
