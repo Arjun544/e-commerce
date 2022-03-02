@@ -51,9 +51,7 @@ void main() async {
     sound: true,
   );
   if (getStorage.read('isLogin') != true) {
-    String? token = await FirebaseMessaging.instance.getToken();
     await FirebaseMessaging.instance.subscribeToTopic('AllUsers');
-    log(token!);
   }
   runApp(MyApp());
 }

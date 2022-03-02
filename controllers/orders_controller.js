@@ -33,16 +33,18 @@ exports.addOrder = async (req, res) => {
       user: req.body.user,
     });
     order = await order.save();
-    
+
     // send order confirmation notification
     await notificationService.sendNotification(
       req.body.user.deviceTokens,
       "Your order has been placed",
-      `Track order with id ${order._id}`
+      `Track order with id ${order._id}`,
+      "order",
+      order._id.toString()
     );
 
     // send confirmation email
-    const sendMail = await sendOrderEmail(result.value.email, order._id);
+    const sendMail = await sendOrderEmail(req.body.user.email, order._id);
 
     if (sendMail.error) {
       return res.status(500).json({
@@ -123,6 +125,15 @@ exports.updateStatus = async (req, res) => {
           status: req.body.status,
         },
         { new: true }
+      );
+
+      // send order status notification
+      await notificationService.sendNotification(
+        newOrder.user.deviceTokens,
+        `Your order has been ${req.body.status}`,
+        `Track order with id ${newOrder._id}`,
+        "order",
+        newOrder._id.toString()
       );
     } else {
       newOrder = await Order.findByIdAndUpdate(

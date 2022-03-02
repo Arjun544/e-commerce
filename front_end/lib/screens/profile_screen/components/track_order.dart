@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:front_end/controllers/profile_screen_controller.dart';
 import '../../../models/trackOrder_model.dart';
 import 'top_header.dart';
 import '../../../services/orders_api.dart';
@@ -17,16 +18,28 @@ class TrackOrder extends StatefulWidget {
 }
 
 class _TrackOrderState extends State<TrackOrder> {
-  final TextEditingController idController = TextEditingController();
+  final ProfileScreenController profileScreenController =
+      Get.put(ProfileScreenController());
+  bool isNavigatingFromNotification = false;
+
   TrackOrderModel? order;
 
+  @override
+  void initState() {
+    if (profileScreenController.trackIdController.value.text.isNotEmpty) {
+      isNavigatingFromNotification = true;
+    }
+    super.initState();
+  }
+
   void onTrackOrder() async {
-    if (idController.text.isNotEmpty) {
+    if (profileScreenController.trackIdController.value.text.isNotEmpty) {
       await EasyLoading.show(
           status: 'Loading',
           dismissOnTap: false,
           maskType: EasyLoadingMaskType.clear);
-      order = await ApiOrders().getOrderById(orderId: idController.text);
+      order = await ApiOrders().getOrderById(
+          orderId: profileScreenController.trackIdController.value.text);
       await EasyLoading.dismiss();
       FocusScope.of(context).requestFocus(FocusNode());
       setState(() {});
@@ -35,31 +48,34 @@ class _TrackOrderState extends State<TrackOrder> {
 
   @override
   Widget build(BuildContext context) {
-    Color statusColor;
-    switch (order!.orderList.status) {
-      case 'Pending':
-        statusColor = Colors.orange;
-        break;
-      case 'Conpleted':
-        statusColor = Colors.green;
-        break;
-      case 'Confirmed':
-        statusColor = Colors.purple;
-        break;
-      case 'Rejected':
-        statusColor = Colors.red;
-        break;
-      case 'Processing':
-        statusColor = Colors.grey;
-        break;
-      case 'Delivered':
-        statusColor = Colors.green;
-        break;
-      case 'Cancelled':
-        statusColor = Colors.red;
-        break;
-      default:
-        statusColor = Colors.green;
+    Color statusColor = Colors.green;
+    if (profileScreenController.trackIdController.value.text.isNotEmpty &&
+        isNavigatingFromNotification == false) {
+      switch (order!.orderList.status) {
+        case 'Pending':
+          statusColor = Colors.orange;
+          break;
+        case 'Conpleted':
+          statusColor = Colors.green;
+          break;
+        case 'Confirmed':
+          statusColor = Colors.purple;
+          break;
+        case 'Rejected':
+          statusColor = Colors.red;
+          break;
+        case 'Processing':
+          statusColor = Colors.grey;
+          break;
+        case 'Delivered':
+          statusColor = Colors.green;
+          break;
+        case 'Cancelled':
+          statusColor = Colors.red;
+          break;
+        default:
+          statusColor = Colors.green;
+      }
     }
     return SafeArea(
       child: Container(
@@ -102,7 +118,8 @@ class _TrackOrderState extends State<TrackOrder> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
-                              controller: idController,
+                              controller: profileScreenController
+                                  .trackIdController.value,
                               obscureText: false,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,

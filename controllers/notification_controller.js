@@ -11,7 +11,7 @@ exports.sendNotification = async (req, res) => {
     const title = req.body.title;
     const body = req.body.body;
 
-  await notificationService.sendNotification(deviceToken, title, body);
+  await notificationService.sendNotification(deviceToken, title, body, 'promotion');
 
     res.send({
       success: true,

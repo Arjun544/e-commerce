@@ -95,7 +95,7 @@ const Orders = () => {
       Header: "Actions",
       accessor: "order",
       Cell: (props) => (
-        <TableActions order={props.cell.value} setOrders={setOrders} />
+        <TableActions  order={props.cell.value} />
       ),
     },
   ];

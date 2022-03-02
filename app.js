@@ -46,16 +46,12 @@ const eventEmitter = new Emitter();
 app.set("eventEmitter", eventEmitter);
 
 //Middlewares
-// const corsOptions = {
-//   credentials: true,
-//   origin: ["http://localhost:3000", "https://sell-corner.herokuapp.com"],
-// };
-app.use(cors({ credentials: true, origin: true }));
-app.all("/*", function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-});
+app.use(
+  cors({
+    credentials: true,
+    origin: ["http://localhost:3000", "https://sell-corner.herokuapp.com"],
+  })
+);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "50mb" })); // To parse the incoming requests with JSON payloads
 app.use(cookieParser());

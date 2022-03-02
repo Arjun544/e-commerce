@@ -38,7 +38,7 @@ async function sendOrderEmail(email, orderId) {
     let mailOptions = {
       from: senderAddress,
       to: email,
-      templateId: " d-6a49bcf540e54ec7b243be13c3ffbe03",
+      templateId: "d-6a49bcf540e54ec7b243be13c3ffbe03",
       dynamic_template_data: {
         code: orderId,
       },
@@ -55,4 +55,4 @@ async function sendOrderEmail(email, orderId) {
   }
 }
 
-module.exports = { sendEmail };
+module.exports = { sendEmail, sendOrderEmail };

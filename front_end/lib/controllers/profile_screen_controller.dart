@@ -16,6 +16,7 @@ class ProfileScreenController extends GetxController {
   final TextEditingController newPassController = TextEditingController();
   final TextEditingController confirmPassController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
+  Rx<TextEditingController> trackIdController = TextEditingController().obs;
   var Orders = OrderModel(success: true, orderList: []).obs;
   RxBool isLoading = false.obs;
   RxInt currentAvatar = 0.obs;
