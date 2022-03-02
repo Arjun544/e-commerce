@@ -69,6 +69,7 @@ void PaySuccessDialogue(BuildContext context) {
                     Get.back();
                     Get.back();
                     Get.back();
+                    Get.back();
                   },
                 ),
               ],

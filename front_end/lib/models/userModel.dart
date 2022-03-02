@@ -1,6 +1,8 @@
 // To parse this JSON data, do
 //
 //     final userModel = userModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
@@ -13,8 +15,8 @@ class UserModel {
     required this.data,
   });
 
-  bool success;
-  Data data;
+  final bool success;
+  final Data data;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         success: json['success'],
@@ -32,45 +34,45 @@ class Data {
     required this.profile,
     required this.street,
     required this.shippingAddress,
-    required this.deviceTokens,
     required this.zip,
     required this.city,
     required this.country,
+    required this.customerId,
     required this.active,
+    required this.deviceTokens,
     required this.id,
     required this.username,
-    required this.customerId,
     required this.email,
     required this.dataId,
   });
 
-  String profile;
-  String street;
-  List<ShipAddress> shippingAddress;
-  List<String> deviceTokens;
-  String zip;
-  String city;
-  String country;
-  bool active;
-  String id;
-  String username;
-  String customerId;
-  String email;
-  String dataId;
+  final String profile;
+  final String street;
+  final List<ShippingAddress> shippingAddress;
+  final String zip;
+  final String city;
+  final String country;
+  final String customerId;
+  final bool active;
+  final List<String> deviceTokens;
+  final String id;
+  final String username;
+  final String email;
+  final String dataId;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         profile: json['profile'],
         street: json['street'],
-        shippingAddress: List<ShipAddress>.from(
-            json['ShippingAddress'].map((x) => ShipAddress.fromJson(x))),
-        deviceTokens: List<String>.from(json['deviceTokens']),
+        shippingAddress: List<ShippingAddress>.from(
+            json['ShippingAddress'].map((x) => ShippingAddress.fromJson(x))),
         zip: json['zip'],
         city: json['city'],
         country: json['country'],
+        customerId: json['customerId'],
         active: json['active'],
+        deviceTokens: List<String>.from(json['deviceTokens'].map((x) => x)),
         id: json['_id'],
         username: json['username'],
-        customerId: json['customerId'],
         email: json['email'],
         dataId: json['id'],
       );
@@ -83,17 +85,18 @@ class Data {
         'zip': zip,
         'city': city,
         'country': country,
+        'customerId': customerId,
         'active': active,
+        'deviceTokens': List<dynamic>.from(deviceTokens.map((x) => x)),
         '_id': id,
         'username': username,
-        'customerId': customerId,
         'email': email,
         'id': dataId,
       };
 }
 
-class ShipAddress {
-  ShipAddress({
+class ShippingAddress {
+  ShippingAddress({
     required this.id,
     required this.address,
     required this.city,
@@ -102,14 +105,15 @@ class ShipAddress {
     required this.type,
   });
 
-  String id;
-  String address;
-  String city;
-  String country;
-  String phone;
-  String type;
+  final String id;
+  final String address;
+  final String city;
+  final String country;
+  final String phone;
+  final String type;
 
-  factory ShipAddress.fromJson(Map<String, dynamic> json) => ShipAddress(
+  factory ShippingAddress.fromJson(Map<String, dynamic> json) =>
+      ShippingAddress(
         id: json['id'],
         address: json['address'],
         city: json['city'],

@@ -16,7 +16,7 @@ import 'top_header.dart';
 
 class AddShipAddress extends StatefulWidget {
   final bool isEditing;
-  final ShipAddress? shipAddress;
+  final ShippingAddress? shipAddress;
   final ProfileScreenController profileScreenController;
 
   const AddShipAddress({

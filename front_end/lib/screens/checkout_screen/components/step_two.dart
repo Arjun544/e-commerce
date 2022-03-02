@@ -79,7 +79,7 @@ class StepTwo extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         Get.to(
-                          () => ShippingAddress(),
+                          () => ShipAddress(),
                         );
                       },
                       child: const Text(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/controllers/root_screen_controller.dart';
+import 'package:front_end/models/userModel.dart';
 import '../../../controllers/cart_screen_controller.dart';
 import '../../../controllers/checkout_screen_controller.dart';
 import '../../../models/delivery_model.dart';
@@ -9,6 +11,7 @@ import 'package:get/get.dart';
 class StepFour extends StatelessWidget {
   final CheckoutScreenController checkoutScreenController = Get.find();
   final CartScreenController cartScreenController = Get.find();
+  final RootScreenController rootScreenController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -294,13 +297,23 @@ class StepFour extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              CustomButton(
-                height: 50,
-                width: Get.width * 0.7,
-                text: 'Pay',
-                color: darkBlue,
-                onPressed: () => checkoutScreenController.orderPay(context),
-              ),
+              StreamBuilder<UserModel>(
+                  stream:
+                      rootScreenController.currentUserStreamController.stream,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox();
+                    } else if (snapshot.data == null) {}
+                    UserModel? currentUser = snapshot.data;
+                    return CustomButton(
+                      height: 50,
+                      width: Get.width * 0.7,
+                      text: 'Pay',
+                      color: darkBlue,
+                      onPressed: () => checkoutScreenController.orderPay(
+                          context, currentUser!),
+                    );
+                  }),
             ],
           ),
         ),

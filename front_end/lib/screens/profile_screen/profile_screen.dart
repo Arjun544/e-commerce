@@ -125,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       icon: 'assets/images/Location.svg',
                       iconColor: Colors.orange[300],
                       onPressed: () {
-                        Get.to(() => ShippingAddress());
+                        Get.to(() => ShipAddress());
                       },
                     ),
                     ProfileTile(
@@ -180,8 +180,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               await NotificationApi().deleteToken(
                                   token: deletedToken,
                                   id: getStorage.read('userId'));
-                              // await getStorage.write('isLogin', false);
-                              // await getStorage.remove('userId');
+                              await getStorage.write('isLogin', false);
+                              await getStorage.remove('userId');
                               await EasyLoading.dismiss();
                               setState(() {});
                             },

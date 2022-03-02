@@ -24,9 +24,8 @@ class CheckoutScreenController extends GetxController {
 
   Map<String, dynamic> order = {};
 
-  void orderPay(BuildContext context) async {
+  void orderPay(BuildContext context, UserModel currentUser) async {
     await EasyLoading.show(status: 'Paying...', dismissOnTap: false);
-    UserModel? currentUser = await rootScreenController.getCurrentUser();
     await ApiOrders().addOrder(
       orderItems: cartScreenController.orderItems,
       shippingAddress: order['shippingAddress'],
@@ -36,7 +35,7 @@ class CheckoutScreenController extends GetxController {
       deliveryFee: order['deliveryFees'],
       country: order['country'],
       phone: order['phone'],
-      user: currentUser!.data,
+      user: currentUser.data,
     );
     if (order['payment'] == 1) {
       await ApiPayment().payAmount(
@@ -49,11 +48,6 @@ class CheckoutScreenController extends GetxController {
         country: order['country'],
       );
     }
-    await NotificationApi().sendNotification(
-      tokens: currentUser.data.deviceTokens,
-      title: 'Your order has been placed',
-      body: 'Track order to see the status',
-    );
     await EasyLoading.dismiss();
     PaySuccessDialogue(context);
   }

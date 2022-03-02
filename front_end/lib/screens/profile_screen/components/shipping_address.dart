@@ -10,12 +10,12 @@ import '../../../widgets/address_widget.dart';
 import 'add_ship_address.dart';
 import 'top_header.dart';
 
-class ShippingAddress extends StatefulWidget {
+class ShipAddress extends StatefulWidget {
   @override
-  _ShippingAddressState createState() => _ShippingAddressState();
+  _ShipAddressState createState() => _ShipAddressState();
 }
 
-class _ShippingAddressState extends State<ShippingAddress> {
+class _ShipAddressState extends State<ShipAddress> {
   final ProfileScreenController profileScreenController = Get.find();
 
   final RootScreenController rootScreenController = Get.find();

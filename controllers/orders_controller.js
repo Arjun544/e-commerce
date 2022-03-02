@@ -1,5 +1,7 @@
 const Order = require("../models/Order");
 const socket = require("../app");
+const notificationService = require("../services/notification_service");
+const { sendOrderEmail } = require("../helpers/mailer");
 
 exports.addOrder = async (req, res) => {
   try {
@@ -31,6 +33,23 @@ exports.addOrder = async (req, res) => {
       user: req.body.user,
     });
     order = await order.save();
+    
+    // send order confirmation notification
+    await notificationService.sendNotification(
+      req.body.user.deviceTokens,
+      "Your order has been placed",
+      `Track order with id ${order._id}`
+    );
+
+    // send confirmation email
+    const sendMail = await sendOrderEmail(result.value.email, order._id);
+
+    if (sendMail.error) {
+      return res.status(500).json({
+        error: true,
+        message: "Couldn't send email.",
+      });
+    }
 
     res.json({
       success: true,
