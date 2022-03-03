@@ -91,6 +91,7 @@ class ApiCart {
     required int value,
   }) async {
     try {
+      await EasyLoading.show(status: 'loading...', dismissOnTap: false);
       await dio.patch(
         baseUrl + 'cart/updateQuantity/$userId',
         data: {
@@ -102,6 +103,7 @@ class ApiCart {
           headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
         ),
       );
+      await EasyLoading.dismiss();
     } catch (e) {
       await EasyLoading.showToast(
         'Something went wrong',
@@ -148,7 +150,7 @@ class ApiCart {
     required String userId,
   }) async {
     try {
-       await dio.delete(
+      await dio.delete(
         baseUrl + 'cart/clear/$userId',
         options: Options(
           responseType: ResponseType.plain,

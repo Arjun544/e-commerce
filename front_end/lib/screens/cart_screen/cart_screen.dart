@@ -219,14 +219,6 @@ class CartWidget extends StatefulWidget {
 }
 
 class _CartWidgetState extends State<CartWidget> {
-  int quantity = 0;
-
-  @override
-  void initState() {
-    quantity = widget.product.quantity;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -245,7 +237,6 @@ class _CartWidgetState extends State<CartWidget> {
                 RxList total = [].obs;
 
                 if (value == true) {
-                  widget.product.quantity = quantity;
                   widget.cartScreenController.orderItems.add(widget.product);
                   widget.cartScreenController.isOrderItemsSelected.value = true;
                 } else {
@@ -257,7 +248,7 @@ class _CartWidgetState extends State<CartWidget> {
                 }
                 total.add(widget.cartScreenController.orderItems
                     .map((e) =>
-                        e.discount > 0 ? e.totalPrice : e.price * quantity)
+                        e.discount > 0 ? e.totalPrice : e.price * e.quantity)
                     .toList());
                 widget.cartScreenController.orderItemsTotal.value =
                     total[0].fold(0, (p, c) => p + c);
@@ -377,69 +368,12 @@ class _CartWidgetState extends State<CartWidget> {
                       ],
                     ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          if (quantity < 5) {
-                            quantity++;
-
-                            int total;
-                            total = widget.product.discount > 0
-                                ? widget.product.totalPrice * quantity
-                                : widget.product.price * quantity;
-                            widget.cartScreenController.cartTotal.value +=
-                                total;
-                            widget.cartScreenController.isOrderItemsSelected
-                                .value = false;
-                            widget.cartScreenController.orderItems.clear();
-                            setState(() {});
-                          }
-                        },
-                        child: const Icon(
-                          Icons.add_rounded,
-                          size: 20,
-                        ),
-                      ),
-                      Container(
-                        width: 30,
-                        height: 30,
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: customYellow,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          quantity.toString(),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          if (quantity != 1) {
-                            quantity--;
-
-                            int total;
-                            total = widget.product.discount > 0
-                                ? widget.product.totalPrice * quantity
-                                : widget.product.price * quantity;
-                            widget.cartScreenController.cartTotal.value -=
-                                total;
-                            widget.cartScreenController.isOrderItemsSelected
-                                .value = false;
-                            widget.cartScreenController.orderItems.clear();
-                            setState(() {});
-                          }
-                        },
-                        child: const Icon(
-                          Icons.remove_rounded,
-                          size: 20,
-                        ),
-                      ),
-                    ],
-                  ),
+                  SizedBox(
+                    width: 70,
+                    child: QuantityDropDown(
+                        cartScreenController: widget.cartScreenController,
+                        item: widget.product),
+                  )
                 ],
               ),
             ),

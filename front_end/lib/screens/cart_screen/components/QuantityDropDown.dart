@@ -1,8 +1,9 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import '../../../controllers/cart_screen_controller.dart';
 import '../../../models/cart_model.dart';
-import '../../../utils/colors.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 class QuantityDropDown extends StatefulWidget {
   final CartScreenController cartScreenController;
@@ -17,82 +18,50 @@ class QuantityDropDown extends StatefulWidget {
 }
 
 class _QuantityDropDownState extends State<QuantityDropDown> {
-  int quantity = 0;
-  @override
-  void initState() {
-    quantity = widget.item.quantity;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        InkWell(
-          onTap: () async {
-            if (quantity < 5) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 14.0, right: 6),
+          child: DropdownButton<int>(
+            value: widget.item.quantity,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.black87),
+            isExpanded: true,
+            iconEnabledColor: Colors.black,
+            items: <int>[1, 2, 3, 4, 5].map((int value) {
+              return DropdownMenuItem<int>(
+                value: value,
+                child: Text(value.toString()),
+              );
+            }).toList(),
+            onChanged: (value) async {
               await widget.cartScreenController.updateQuantity(
                 productId: widget.item.id,
-                value: widget.item.quantity + 1,
+                value: value!,
               );
 
-              quantity++;
+              RxList total = [].obs;
 
-              int total;
-              total = widget.item.discount > 0
-                  ? widget.item.totalPrice * widget.item.quantity
-                  : widget.item.price * widget.item.quantity;
-              widget.cartScreenController.cartTotal.value += total;
-              widget.cartScreenController.isOrderItemsSelected.value = false;
-              widget.cartScreenController.orderItems.clear();
-              setState(() {});
-            }
-          },
-          child: const Icon(
-            Icons.add_rounded,
-            size: 20,
-          ),
-        ),
-        Container(
-          width: 30,
-          height: 30,
-          margin: const EdgeInsets.symmetric(vertical: 6),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: customYellow,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            quantity.toString(),
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        InkWell(
-          onTap: () async {
-            if (quantity != 1) {
-              await widget.cartScreenController.updateQuantity(
-                productId: widget.item.id,
-                value: widget.item.quantity - 1,
-              );
-              quantity--;
+              total.add(widget.item.discount > 0
+                  ? widget.item.totalPrice * value
+                  : widget.item.price * value);
 
-              int total;
-              total = widget.item.discount > 0
-                  ? widget.item.totalPrice * widget.item.quantity
-                  : widget.item.price * widget.item.quantity;
-              widget.cartScreenController.cartTotal.value -= total;
-              widget.cartScreenController.isOrderItemsSelected.value = false;
-              widget.cartScreenController.orderItems.clear();
-              setState(() {});
-            }
-          },
-          child: const Icon(
-            Icons.remove_rounded,
-            size: 20,
+              setState(() {
+                widget.item.quantity = value;
+                widget.cartScreenController.cartTotal.value = total[0];
+                widget.cartScreenController.isOrderItemsSelected.value = false;
+                widget.cartScreenController.orderItems.clear();
+              });
+            },
           ),
         ),
-      ],
+      ),
     );
   }
 }
