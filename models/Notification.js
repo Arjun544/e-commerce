@@ -18,8 +18,8 @@ const notificationSchema = mongoose.Schema({
     default: false,
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    type: String,
+    required: true,
   },
   createdAt: {
     type: Date,

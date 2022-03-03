@@ -53,12 +53,13 @@ class NotificationApi {
   }
 
   Future getNotifications(
-      {required StreamController notificationController}) async {
+      {required StreamController notificationController,
+      required String userId}) async {
     await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
 
     try {
       var response = await dio.get(
-        baseUrl + 'notification/get',
+        baseUrl + 'notification/get/$userId',
         options: Options(
             responseType: ResponseType.plain,
             headers: {'Authorization': 'Bearer ${getStorage.read('token')}'}),
@@ -121,12 +122,12 @@ class NotificationApi {
     }
   }
 
-  Future markAllAsRead({required List<String> ids}) async {
+  Future markAllAsRead({required List<String> ids, required String userId}) async {
     await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
 
     try {
       await dio.patch(
-        baseUrl + 'notification/markAllAsRead?ids=$ids',
+        baseUrl + 'notification/markAllAsRead/$userId?ids=$ids',
         options: Options(
             responseType: ResponseType.plain,
             headers: {'Authorization': 'Bearer ${getStorage.read('token')}'}),
@@ -143,12 +144,12 @@ class NotificationApi {
     }
   }
 
-  Future clearAll() async {
+  Future clearAll({required String userId}) async {
     await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
 
     try {
       await dio.delete(
-        baseUrl + 'notification/clear',
+        baseUrl + 'notification/clear/$userId',
         options: Options(
             responseType: ResponseType.plain,
             headers: {'Authorization': 'Bearer ${getStorage.read('token')}'}),

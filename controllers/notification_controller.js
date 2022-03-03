@@ -158,9 +158,9 @@ exports.deleteToken = async (req, res) => {
   }
 };
 
-exports.getAllNotification = async (req, res) => {
+exports.getUserNotifications = async (req, res) => {
   try {
-    const notifications = await Notification.find();
+    const notifications = await Notification.find({ user: req.params.id });
     res.send({
       success: true,
       notifications: notifications,
@@ -200,6 +200,7 @@ exports.updateAllAsRead = async (req, res) => {
   try {
     await Notification.updateMany(
       {
+        user: req.params.id,
         hasRead: false,
       },
       {
@@ -233,7 +234,7 @@ exports.deleteNotificationById = async (req, res) => {
 
 exports.clearAll = async (req, res) => {
   try {
-    await Notification.deleteMany();
+    await Notification.deleteMany({user: req.params.id});
     res.send("Notifications have been cleared");
   } catch (error) {
     console.log(error);

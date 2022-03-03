@@ -38,8 +38,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   void getNotifications() async {
-    await NotificationApi()
-        .getNotifications(notificationController: notificationController);
+    await NotificationApi().getNotifications(
+        notificationController: notificationController,
+        userId: getStorage.read('userId'));
   }
 
   @override
@@ -84,8 +85,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                               .where((e) => e.hasRead == false)
                                               .map((e) => e.id)
                                               .toList();
-                                          await NotificationApi()
-                                              .markAllAsRead(ids: ids);
+                                          await NotificationApi().markAllAsRead(
+                                            ids: ids,
+                                            userId: getStorage.read('userId'),
+                                          );
                                           setState(() {
                                             getNotifications();
                                           });
@@ -99,7 +102,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       PopupMenuItem<String>(
                                         value: 'Clear all',
                                         onTap: () async {
-                                          await NotificationApi().clearAll();
+                                          await NotificationApi().clearAll(
+                                            userId: getStorage.read('userId'),
+                                          );
                                           setState(() {
                                             getNotifications();
                                           });

@@ -65,7 +65,7 @@ class _EditProfileState extends State<EditProfile> {
           const TopHeader(text: 'Edit Profile'),
           const SizedBox(height: 20),
           customField(
-            text: widget.currentUser!.data.username,
+            text: widget.currentUser?.data.username ?? 'Username',
             controller: nameController,
             icon: 'assets/images/Profile.svg',
           ),

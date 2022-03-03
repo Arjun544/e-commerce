@@ -20,12 +20,12 @@ class NotificationService {
     return await admin.messaging().sendToDevice(tokens, payload, options);
   }
 
-  async saveNotification(title, body,type, userId) {
+  async saveNotification(title, body, type, userId) {
     const notification = Notification({
       title,
       body,
       type,
-      user: mongoose.Types.ObjectId(userId),
+      user: userId,
     });
     return await notification.save();
   }
