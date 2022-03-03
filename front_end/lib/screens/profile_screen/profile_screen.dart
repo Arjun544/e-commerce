@@ -16,7 +16,6 @@ import '../../controllers/root_screen_controller.dart';
 import '../../models/userModel.dart';
 import '../../utils/colors.dart';
 import '../../utils/constants.dart';
-import '../../widgets/customDialogue.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/draggable_scaffold.dart';
 import 'components/edit_profile.dart';

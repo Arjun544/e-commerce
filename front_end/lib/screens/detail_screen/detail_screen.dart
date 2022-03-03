@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
@@ -154,8 +155,13 @@ class DetailScreen extends StatelessWidget {
                   if (getStorage.read('isLogin') != true) {
                     Get.to(() => RegisterScreen());
                   } else {
-                    cartScreenController.addToCart(product);
-                    homeScreenController.cartLength += 1;
+                    if (cartScreenController.cartProducts.value.products
+                        .contains(product)) {
+                      EasyLoading.showToast('Product already added to cart');
+                    } else {
+                      cartScreenController.addToCart(product);
+                      homeScreenController.cartLength += 1;
+                    }
                   }
                 },
               ),
