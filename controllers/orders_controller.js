@@ -43,6 +43,14 @@ exports.addOrder = async (req, res) => {
       order._id.toString()
     );
 
+    // save order notification in db
+    await notificationService.saveNotification(
+      "Your order has been placed",
+      `Track order with id ${order._id}`,
+      "order",
+      req.body.user._id
+    );
+
     // send confirmation email
     const sendMail = await sendOrderEmail(req.body.user.email, order._id);
 
@@ -134,6 +142,14 @@ exports.updateStatus = async (req, res) => {
         `Track order with id ${newOrder._id}`,
         "order",
         newOrder._id.toString()
+      );
+
+      // save order notification in db
+      await notificationService.saveNotification(
+        `Your order has been ${req.body.status}`,
+        `Track order with id ${newOrder._id}`,
+        "order",
+        newOrder.user._id
       );
     } else {
       newOrder = await Order.findByIdAndUpdate(

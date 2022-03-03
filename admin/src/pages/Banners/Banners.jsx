@@ -21,7 +21,7 @@ import AddProductsDialogue from "./components/AddProductsDialogue";
 const Banners = () => {
   const { socket } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [banners, setBanners] = useState([]);
   const [currentBanner, setCurrentBanner] = useState({});
   const [products, setProducts] = useState([]);
@@ -31,7 +31,7 @@ const Banners = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingBanner, setEditingBanner] = useState({});
 
-  useEffect(async () => {
+  useEffect(() => {
     const fetchBanners = async () => {
       try {
         setIsLoading(true);

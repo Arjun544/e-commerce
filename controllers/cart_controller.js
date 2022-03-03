@@ -121,8 +121,6 @@ exports.updateQuantity = async (req, res) => {
 
 exports.deleteFromCart = async (req, res) => {
   try {
-    console.log(req.params.id);
-    console.log(req.body.productId);
     const product = await Cart.findByIdAndUpdate(req.params.id, {
       $pull: {
         products: {
@@ -133,15 +131,6 @@ exports.deleteFromCart = async (req, res) => {
     if (!product) {
       return res.send("No product found");
     }
-
-    const cart = await Cart.find({ user: req.params.id }).sort({
-      dateOrdered: -1,
-    });
-
-    // const eventEmitter = req.app.get("eventEmitter");
-    // eventEmitter.emit("delete-cartItem", {
-    //   cart: cart[0],
-    // });
 
     return res.status(200).json({
       success: false,

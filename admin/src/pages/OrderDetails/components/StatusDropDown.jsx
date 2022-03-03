@@ -1,4 +1,3 @@
-import moment from "moment";
 import { useState, useRef, useContext } from "react";
 import useOutsideClick from "../../../useOutsideClick";
 import ArrowDownIcon from "../../../components/icons/ArrowDownIcon";

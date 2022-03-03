@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import TopBar from "../../components/TopBar";
-import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-import { FilePond, registerPlugin } from "react-filepond";
+import { FilePond } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import { sendNotificationToAllUsers } from "../../api/NotificationApi";
 import { useSnackbar } from "notistack";
@@ -16,7 +12,7 @@ const Notification = () => {
   const [titleInput, setTitleInput] = useState("");
   const [bodyInput, setBodyInput] = useState("");
   const [file, setFile] = useState("");
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleSendNotification = async () => {
     try {

@@ -9,8 +9,7 @@ import '../../../widgets/pass_textField.dart';
 import '../../../widgets/social_btn.dart';
 
 class LoginView extends StatelessWidget {
-  final RegisterScreenController controller =
-      Get.find();
+  final RegisterScreenController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -75,24 +74,27 @@ class LoginView extends StatelessWidget {
           ),
           Column(
             children: [
-              SocialButton(
-                height: 50,
-                width: Get.width * 0.85,
-                text: 'Continue with Phone',
-                icon: 'assets/images/Call.svg',
-                color: customYellow,
-                iconColor: Colors.white,
-                onPressed: (){},
-              ),
-              const SizedBox(height: 10),
+              // SocialButton(
+              //   height: 50,
+              //   width: Get.width * 0.85,
+              //   text: 'Continue with Phone',
+              //   icon: 'assets/images/Call.svg',
+              //   color: customYellow,
+              //   iconColor: Colors.white,
+              //   onPressed: (){},
+              // ),
+              // const SizedBox(height: 10),
               SocialButton(
                 height: 50,
                 width: Get.width * 0.85,
                 text: 'Continue with Google',
                 icon: 'assets/images/Google.svg',
                 color: const Color(0xFFA2DBFA),
-                onPressed: () {},
+                onPressed: () async {
+                  await controller.signinWIthGoogle();
+                },
               ),
+              const SizedBox(height: 25),
             ],
           ),
         ],

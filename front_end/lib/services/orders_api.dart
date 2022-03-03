@@ -112,8 +112,8 @@ class ApiOrders {
       return TrackOrderModel.fromJson(response.data);
     } catch (e) {
       await EasyLoading.showToast(
-        'Something went wrong',
-        duration: const Duration(seconds: 2),
+        'No order with this id',
+        duration: const Duration(seconds: 4),
         toastPosition: EasyLoadingToastPosition.top,
         maskType: EasyLoadingMaskType.clear,
       );

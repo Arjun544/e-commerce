@@ -5,8 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/services/notification_api.dart';
+import '../services/notification_api.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../screens/register_screen/register_screen.dart';
 import '../screens/root_screen.dart';
@@ -151,6 +152,27 @@ class RegisterScreenController extends GetxController {
             ? await Get.to(() => VerificationScreen())
             : await Get.offAll(() => RootScreen());
       }
+    } catch (e) {
+      Get.snackbar('Something is wrong', e.toString(),
+          snackPosition: SnackPosition.TOP);
+      print(e);
+    }
+  }
+
+  Future<void> signinWIthGoogle() async {
+    try {
+      GoogleSignIn googleSignIn = GoogleSignIn();
+      GoogleSignInAccount user;
+
+      bool isSignedIn = await googleSignIn.isSignedIn();
+
+      if (isSignedIn) {
+        user = (await googleSignIn.signInSilently())!;
+      } else {
+        user = (await googleSignIn.signIn())!;
+      }
+
+      log(user.toString());
     } catch (e) {
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);

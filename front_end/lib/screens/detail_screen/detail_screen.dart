@@ -151,8 +151,12 @@ class DetailScreen extends StatelessWidget {
                 text: 'Add to Cart',
                 color: darkBlue,
                 onPressed: () {
-                  cartScreenController.addToCart(product);
-                  homeScreenController.cartLength += 1;
+                  if (getStorage.read('isLogin') != true) {
+                    Get.to(() => RegisterScreen());
+                  } else {
+                    cartScreenController.addToCart(product);
+                    homeScreenController.cartLength += 1;
+                  }
                 },
               ),
             ],

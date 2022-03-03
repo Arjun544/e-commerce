@@ -13,7 +13,7 @@ const AddProductsDialogue = ({
 }) => {
   const { socket } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [selectedProductName, setSelectedProductName] =
     useState("Select product");
   const [selectedProduct, setSelectedProduct] = useState({});

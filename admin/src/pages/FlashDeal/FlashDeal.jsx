@@ -1,24 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import TopBar from "../../components/TopBar";
-
-import EditIcon from "../../components/icons/EditIcon";
-import DeleteIcon from "../../components/icons/DeleteIcon";
 import Loader from "react-loader-spinner";
-import { useSnackbar } from "notistack";
 import {
-  deleteDeal,
   getDeals,
-  removeDealProducts,
-  updateStatus,
 } from "../../api/dealApi";
 import { Accordion } from "react-sanfona";
-import { ChevronDownIcon } from "@heroicons/react/solid";
-import { ChevronUpIcon } from "@heroicons/react/solid";
 import { AppContext } from "../../App";
 import AddDeal from "./components/AddDeal";
 import AddProductsDialogue from "./components/AddProductsDialogue";
 import { getProducts } from "../../api/productsApi";
-import Status from "./components/Status";
 import ReactTooltip from "react-tooltip";
 import DealItem from "./components/DealItem";
 
@@ -32,7 +22,6 @@ const FlashDeal = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const [addProductsDialogue, setAddProductsDialogue] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
   const [isInitLoading, setIsInitLoading] = useState(false);
 
   useEffect(() => {

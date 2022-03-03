@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/services/notification_api.dart';
 import 'cart_screen_controller.dart';
 import 'root_screen_controller.dart';
 import '../models/delivery_model.dart';

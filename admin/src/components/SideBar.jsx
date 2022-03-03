@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { AppContext } from "../App";
 import { useHistory } from "react-router-dom";
 import BagIcon from "./icons/BagIcon";

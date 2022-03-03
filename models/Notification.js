@@ -1,37 +1,31 @@
 const mongoose = require("mongoose");
 
-const notificationSchema = mongoose.Schema(
-  {
-    messageId: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    body: {
-      type: String,
-      required: true,
-    },
-    image: {
-      type: String,
-      required: true,
-    },
-    imageId: {
-      type: String,
-    },
-    hasRead: {
-      type: Boolean,
-      default: false,
-    },
-    messageId: {
-      type: String,
-      required: true,
-    },
+const notificationSchema = mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
   },
-  { strict: false }
-);
+  body: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  hasRead: {
+    type: Boolean,
+    default: false,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
 notificationSchema.virtual("id").get(function () {
   return this._id.toHexString();

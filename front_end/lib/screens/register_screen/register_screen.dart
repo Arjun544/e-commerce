@@ -36,7 +36,6 @@ class RegisterScreen extends StatelessWidget {
                 child: IconButton(
                   onPressed: () {
                     Get.back();
-                    Get.back();
                   },
                   icon: const Icon(
                     Icons.close_rounded,

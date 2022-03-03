@@ -6,7 +6,7 @@ import { AppContext } from "../../../App";
 
 const Status = ({ deal, value, setValue }) => {
   const { socket } = useContext(AppContext);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setValue(deal.status);

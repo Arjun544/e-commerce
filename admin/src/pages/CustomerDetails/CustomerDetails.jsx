@@ -19,7 +19,7 @@ const CustomerDetails = () => {
   const { isBigScreen } = useContext(AppContext);
   const params = useParams();
   const history = useHistory();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [user, setUser] = useState([]);
   const [customer, setCustomer] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/controllers/root_screen_controller.dart';
-import 'package:front_end/models/userModel.dart';
+import '../../../controllers/root_screen_controller.dart';
+import '../../../models/userModel.dart';
 import '../../../controllers/cart_screen_controller.dart';
 import '../../../controllers/checkout_screen_controller.dart';
 import '../../../models/delivery_model.dart';

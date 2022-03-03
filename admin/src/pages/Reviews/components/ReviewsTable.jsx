@@ -9,13 +9,6 @@ import {
   usePagination,
 } from "react-table";
 import {
-  ChevronDoubleLeftIcon,
-  ChevronDoubleRightIcon,
-} from "@heroicons/react/solid";
-import ArrowLeftIcon from "../../../components/icons/ArrowLeftIcon";
-import ArrowRightIcon from "../../../components/icons/ArrowRightIcon";
-import { Button, PageButton } from "../../../components/pagination_button";
-import {
   SortIcon,
   SortUpIcon,
   SortDownIcon,

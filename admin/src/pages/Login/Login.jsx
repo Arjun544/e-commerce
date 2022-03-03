@@ -11,7 +11,7 @@ import { login } from "../../api/userApi";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [unMounted, setUnMounted] = useState(false);
   const {

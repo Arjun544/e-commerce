@@ -1,19 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../App";
+import React, { useEffect, useState } from "react";
 import TableActions from "./components/TableActions";
 import TopBar from "../../components/TopBar";
-import { useDispatch } from "react-redux";
 import Loader from "react-loader-spinner";
 import { getUsers } from "../../api/userApi";
 import CustomersTable from "./components/CustomersTable";
-import { Avatar } from "./components/Avatar";
 
 const Customers = () => {
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [tableData, setTableData] = useState({});
-  const { isBigScreen } = useContext(AppContext);
   useEffect(() => {
     const fetchUsers = async () => {
       try {

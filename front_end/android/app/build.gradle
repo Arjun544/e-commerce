@@ -43,6 +43,15 @@ android {
         multiDexEnabled true
     }
 
+    signingConfigs {
+        debug {
+            keyAlias 'uploadkeystore'
+            keyPassword 'keystore'
+            storeFile file('upload-keystore.jks')
+            storePassword 'keystore'
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

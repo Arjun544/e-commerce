@@ -3,7 +3,7 @@ import 'package:badges/badges.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:front_end/screens/profile_screen/components/track_order.dart';
+import 'profile_screen/components/track_order.dart';
 import 'package:get/get.dart';
 
 import '../controllers/cart_screen_controller.dart';
@@ -17,7 +17,7 @@ import '../widgets/customDialogue.dart';
 import 'cart_screen/cart_screen.dart';
 import 'home_screen/components/custom_bar.dart';
 import 'home_screen/home_screen.dart';
-import 'notifications_screen.dart';
+import 'notification_screen.dart/notification_screen.dart';
 import 'wishlist_screen.dart';
 
 class RootScreen extends StatefulWidget {
@@ -35,7 +35,7 @@ class _RootScreenState extends State<RootScreen> {
   final List<Widget> children = [
     HomeScreen(),
     const WishlistScreen(),
-    const NotificationsScreen(),
+    const NotificationScreen(),
   ];
 
   @override

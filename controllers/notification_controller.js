@@ -11,7 +11,12 @@ exports.sendNotification = async (req, res) => {
     const title = req.body.title;
     const body = req.body.body;
 
-  await notificationService.sendNotification(deviceToken, title, body, 'promotion');
+    await notificationService.sendNotification(
+      deviceToken,
+      title,
+      body,
+      "promotion"
+    );
 
     res.send({
       success: true,
@@ -144,6 +149,92 @@ exports.deleteToken = async (req, res) => {
       success: true,
       message: "Token removed successfully",
     });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.getAllNotification = async (req, res) => {
+  try {
+    const notifications = await Notification.find();
+    res.send({
+      success: true,
+      notifications: notifications,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.updateHasRead = async (req, res) => {
+  try {
+    await Notification.findByIdAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      {
+        $set: {
+          hasRead: true,
+        },
+      }
+    );
+    res.send("Notification has been read");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.updateAllAsRead = async (req, res) => {
+  try {
+    await Notification.updateMany(
+      {
+        hasRead: false,
+      },
+      {
+        $set: {
+          hasRead: true,
+        },
+      }
+    );
+    res.send("All notifications marked as read");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.deleteNotificationById = async (req, res) => {
+  try {
+    await Notification.findByIdAndDelete(req.params.id);
+    res.send("Notification has been deleted");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+exports.clearAll = async (req, res) => {
+  try {
+    await Notification.deleteMany();
+    res.send("Notifications have been cleared");
   } catch (error) {
     console.log(error);
     return res.status(500).json({

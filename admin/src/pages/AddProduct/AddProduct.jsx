@@ -35,7 +35,7 @@ const AddProduct = ({ isEditing }) => {
   const history = useHistory();
   const params = useParams();
   const [loading, setLoading] = useState(false);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [categories, setCategories] = useState([]);
   const [editingProduct, setEditingProduct] = useState([]);
   const [editingCategoryName, setEditingCategoryName] = useState("");

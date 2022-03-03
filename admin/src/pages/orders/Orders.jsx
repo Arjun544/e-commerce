@@ -7,7 +7,6 @@ import Loader from "react-loader-spinner";
 import { getOrders } from "../../api/ordersApi";
 
 const Orders = () => {
-  const { isBigScreen } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrdersTab, setSelectedOrdersTab] = useState(0);

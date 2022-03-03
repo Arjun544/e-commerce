@@ -1,8 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../App";
+import React, { useEffect, useState } from "react";
 import TopBar from "../../components/TopBar";
 import Rating from "./components/Rating";
-import TableAction from "./components/TableAction";
 import { getAllReviews } from "../../api/reviewsApi";
 import Loader from "react-loader-spinner";
 import ReviewsTable from "./components/ReviewsTable";
@@ -11,7 +9,6 @@ const Reviews = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [tableData, setTableData] = useState({});
-  const { isBigScreen } = useContext(AppContext);
   useEffect(() => {
     const fetchReviews = async () => {
       try {

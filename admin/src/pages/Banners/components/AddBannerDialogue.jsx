@@ -29,7 +29,7 @@ const AddBannerDialogue = ({
   setAddBannerAlert,
 }) => {
   const { socket } = useContext(AppContext);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedType, setSelectedType] = useState("Select type");

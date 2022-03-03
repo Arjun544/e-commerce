@@ -2,7 +2,7 @@ import { useState, createContext, useEffect, useRef } from "react";
 import "./App.css";
 import SideBar from "./components/SideBar";
 import Dashboard from "./pages/dashboard/Dashboard";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import { SnackbarProvider } from "notistack";
 import Grow from "@material-ui/core/Grow";
