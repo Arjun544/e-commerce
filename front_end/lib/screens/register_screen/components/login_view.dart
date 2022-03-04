@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/screens/register_screen/components/forget_password.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/register_screen_controller.dart';
@@ -47,16 +48,19 @@ class LoginView extends StatelessWidget {
                 text: 'Password',
                 icon: 'assets/images/Lock.svg',
               ),
-              const Align(
+              Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: EdgeInsets.only(right: 25, top: 10),
-                  child: Text(
-                    'Forgot password?',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
-                      color: Colors.grey,
+                  padding: const EdgeInsets.only(right: 25, top: 10),
+                  child: InkWell(
+                    onTap: () => Get.to(() => ForgetPassWord()),
+                    child: const Text(
+                      'Forgot password?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),
@@ -84,17 +88,17 @@ class LoginView extends StatelessWidget {
               //   onPressed: (){},
               // ),
               // const SizedBox(height: 10),
-              SocialButton(
-                height: 50,
-                width: Get.width * 0.85,
-                text: 'Continue with Google',
-                icon: 'assets/images/Google.svg',
-                color: const Color(0xFFA2DBFA),
-                onPressed: () async {
-                  await controller.signinWIthGoogle();
-                },
-              ),
-              const SizedBox(height: 25),
+              // SocialButton(
+              //   height: 50,
+              //   width: Get.width * 0.85,
+              //   text: 'Continue with Google',
+              //   icon: 'assets/images/Google.svg',
+              //   color: const Color(0xFFA2DBFA),
+              //   onPressed: () async {
+              //     await controller.signinWIthGoogle();
+              //   },
+              // ),
+              // const SizedBox(height: 25),
             ],
           ),
         ],

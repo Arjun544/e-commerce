@@ -29,7 +29,7 @@ router.post("/register", cleanBody, register);
 router.patch("/sendCode", cleanBody, sendCode);
 router.post("/wishlist", cleanBody, getWishlist);
 router.patch("/activate", cleanBody, activate);
-router.patch("/forgotPassword", authMiddleware, cleanBody, forgotPassword);
+router.patch("/forgotPassword", cleanBody, forgotPassword);
 router.patch("/resetPassword", authMiddleware, cleanBody, resetPassword);
 router.patch("/addAddress/:id", authMiddleware, cleanBody, addShippingAddress);
 router.patch(

@@ -39,34 +39,34 @@ class _OrdersHistoryState extends State<OrdersHistory> {
     return SafeArea(
       child: Container(
         color: Colors.white,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 12.0, left: 8, bottom: 6),
-                child: TopHeader(text: 'Orders History'),
-              ),
-              profileScreenController.isLoading.value
-                  ? Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: Get.height / 2),
-                        child: const CircularProgressIndicator(),
+        child: Obx(() => SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(top: 12.0, left: 8, bottom: 6),
+                        child: TopHeader(text: 'Orders History'),
                       ),
-                    )
-                  : profileScreenController.Orders.value.orderList.isEmpty
-                      ? Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: Get.height / 4),
-                            child: Column(
-                              children: [
-                                Lottie.asset('assets/empty.json',
-                                    height: Get.height * 0.3),
-                                const Text(
-                                  'No Orders',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.black45),
+                      profileScreenController.isLoading.value
+                          ? Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: Get.height / 2),
+                                child: const CircularProgressIndicator(),
+                              ),
+                            )
+                          : profileScreenController.Orders.value.orderList.isEmpty
+                              ? Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: Get.height / 4),
+                                    child: Column(
+                                      children: [
+                                        Lottie.asset('assets/empty.json',
+                                            height: Get.height * 0.3),
+                                        const Text(
+                                          'No Orders',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                           color: Colors.black45),
                                 ),
                               ],
                             ),
@@ -298,6 +298,7 @@ class _OrdersHistoryState extends State<OrdersHistory> {
                         ),
             ],
           ),
+        ),
         ),
       ),
     );

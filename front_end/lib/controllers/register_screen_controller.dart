@@ -161,7 +161,12 @@ class RegisterScreenController extends GetxController {
 
   Future<void> signinWIthGoogle() async {
     try {
-      GoogleSignIn googleSignIn = GoogleSignIn();
+      GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: [
+          'email',
+          'https://www.googleapis.com/auth/contacts.readonly',
+        ],
+      );
       GoogleSignInAccount user;
 
       bool isSignedIn = await googleSignIn.isSignedIn();

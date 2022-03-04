@@ -113,6 +113,7 @@ class ApiUser {
         toastPosition: EasyLoadingToastPosition.top,
         maskType: EasyLoadingMaskType.clear,
       );
+      return response.data['message'];
     } catch (e) {
       await EasyLoading.showToast(
         'Something went wrong',

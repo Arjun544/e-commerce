@@ -138,7 +138,7 @@ class ApiProduct {
   }) async {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
 
-    // try {
+    try {
     var response = await dio.get(
       baseUrl + 'products/search/$query?page=$page&limit=5',
       options: Options(
@@ -147,13 +147,13 @@ class ApiProduct {
     );
     searchController.add(productModelFromJson(response.data));
     await EasyLoading.dismiss();
-    // } catch (e) {
-    //   await EasyLoading.showToast(
-    //     'Something went wrong',
-    //     toastPosition: EasyLoadingToastPosition.top,
-    //     maskType: EasyLoadingMaskType.clear,
-    //   );
-    //   print(e);
-    // }
+    } catch (e) {
+      await EasyLoading.showToast(
+        'Something went wrong',
+        toastPosition: EasyLoadingToastPosition.top,
+        maskType: EasyLoadingMaskType.clear,
+      );
+      print(e);
+    }
   }
 }

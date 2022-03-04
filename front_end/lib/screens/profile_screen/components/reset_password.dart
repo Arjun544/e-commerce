@@ -34,7 +34,7 @@ class ResetPassword extends StatelessWidget {
             children: [
               Lottie.asset('assets/email.json', height: Get.height * 0.15),
               Text(
-                'Pin has been sent to $currentUserEmail',
+                'Pin has been sent to \n $currentUserEmail',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,

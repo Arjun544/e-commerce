@@ -155,13 +155,8 @@ class DetailScreen extends StatelessWidget {
                   if (getStorage.read('isLogin') != true) {
                     Get.to(() => RegisterScreen());
                   } else {
-                    if (cartScreenController.cartProducts.value.products
-                        .contains(product)) {
-                      EasyLoading.showToast('Product already added to cart');
-                    } else {
-                      cartScreenController.addToCart(product);
-                      homeScreenController.cartLength += 1;
-                    }
+                    cartScreenController.addToCart(product);
+                    homeScreenController.cartLength += 1;
                   }
                 },
               ),

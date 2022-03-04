@@ -11,30 +11,30 @@ class TopHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        right: 12,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-            onTap: () => Get.back(),
-            child: SvgPicture.asset(
-              'assets/images/Arrow - Left.svg',
-              height: 25,
-              color: darkBlue.withOpacity(0.7),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(right: 12, top: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: () => Get.back(),
+              child: SvgPicture.asset(
+                'assets/images/Arrow - Left.svg',
+                height: 25,
+                color: darkBlue.withOpacity(0.7),
+              ),
             ),
-          ),
-          Text(
-            text,
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, color: darkBlue, fontSize: 18),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-        ],
+            Text(
+              text,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: darkBlue, fontSize: 18),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+          ],
+        ),
       ),
     );
   }
