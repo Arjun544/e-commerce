@@ -53,7 +53,6 @@ class _RootScreenState extends State<RootScreen> {
                   channelKey: 'noti_key',
                   title: notification.title,
                   body: notification.body,
-                  displayOnForeground: true,
                 )
               : NotificationContent(
                   id: 10,
@@ -65,6 +64,29 @@ class _RootScreenState extends State<RootScreen> {
         );
       }
     });
+
+    //  FirebaseMessaging.onBackgroundMessage.((RemoteMessage message) async {
+    //   RemoteNotification? notification = message.notification;
+    //   AndroidNotification? android = message.notification?.android;
+    //   if (notification != null && android != null) {
+    //     await AwesomeNotifications().createNotification(
+    //       content: message.data['image'] == null
+    //           ? NotificationContent(
+    //               id: 10,
+    //               channelKey: 'noti_key',
+    //               title: notification.title,
+    //               body: notification.body,
+    //             )
+    //           : NotificationContent(
+    //               id: 10,
+    //               channelKey: 'noti_key',
+    //               body: notification.body,
+    //               bigPicture: message.data['image'],
+    //               notificationLayout: NotificationLayout.BigPicture,
+    //             ),
+    //     );
+    //   }
+    // });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       if (message.notification != null && message.data['type'] == 'order') {

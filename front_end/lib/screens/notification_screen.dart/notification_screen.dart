@@ -160,8 +160,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                   child: NotificationTile(
-                                    notification:
-                                        notificationsData.notifications[index],
+                                    notification: notificationsData
+                                        .notifications.reversed
+                                        .toList()[index],
                                     onTap: () async {
                                       // Update hasRead to true
                                       if (notificationsData

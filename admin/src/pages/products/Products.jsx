@@ -1,21 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../App";
 import Featured from "./components/featured";
 import Status from "./components/status";
 import ProductsTable from "./components/products_table";
 import TableActions from "./components/table_actions";
 import TopBar from "../../components/TopBar";
-import { setProducts } from "../../redux/reducers/productsSlice";
 import { getProducts } from "../../api/productsApi";
 import Loader from "react-loader-spinner";
 import Avatar from "./components/avatar";
-import { useSelector } from "react-redux";
 
 const Products = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [tableData, setTableData] = useState({});
-  const { isBigScreen } = useContext(AppContext);
 
   useEffect(() => {
     const fetchProducts = async () => {
