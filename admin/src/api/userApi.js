@@ -3,10 +3,12 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 const api = axios.create();
 
+const BaseUrl = process.env.REACT_APP_API_URL;
+
 // List of all the endpoints
 export const login = (email, password) =>
   api.post(
-    "/api/admin/login",
+    `${BaseUrl}/api/admin/login`,
     {
       email,
       password,
@@ -21,7 +23,7 @@ export const login = (email, password) =>
   );
 
 export const getUserById = (id) =>
-  api.get(`/api/users/${id}`, {
+  api.get(`${BaseUrl}/api/users/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -31,7 +33,7 @@ export const getUserById = (id) =>
 
 export const getUsers = (page, limit, pagination) =>
   api.get(
-    `/api/users/allUsers?page=${page}&limit=${limit}&pagination=${pagination}`,
+    `${BaseUrl}/api/users/allUsers?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
         Authorization: `Bearer ${cookies.get("accessToken")}`,
@@ -42,7 +44,7 @@ export const getUsers = (page, limit, pagination) =>
   );
 
 export const deleteUser = (id, profileId) =>
-  api.delete(`/api/users/delete/${id}`, {
+  api.delete(`${BaseUrl}/api/users/delete/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -53,7 +55,7 @@ export const deleteUser = (id, profileId) =>
 
 export const logout = () =>
   api.post(
-    "/api/admin/logout",
+    `${BaseUrl}/api/admin/logout`,
     { withCredentials: true },
     {
       headers: {

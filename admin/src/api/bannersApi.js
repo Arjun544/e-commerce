@@ -4,10 +4,12 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 const api = axios.create();
 
+const BaseUrl = process.env.REACT_APP_API_URL;
+
 // List of all the endpoints
 export const addBanner = (image, type, products) =>
   api.post(
-    "/api/banners/add",
+    `${BaseUrl}/api/banners/add`,
     {
       image,
       type,
@@ -23,7 +25,7 @@ export const addBanner = (image, type, products) =>
   );
 
 export const getBanners = () =>
-  api.get("/api/banners/get", {
+  api.get(`${BaseUrl}/api/banners/get`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -33,7 +35,7 @@ export const getBanners = () =>
 
 export const updateBanner = (id, image, imageId) =>
   api.patch(
-    `/api/banners/update/${id}`,
+    `${BaseUrl}/api/banners/update/${id}`,
     { image, imageId },
     {
       headers: {
@@ -46,7 +48,7 @@ export const updateBanner = (id, image, imageId) =>
 
 export const addBannerProducts = (id, product, products) =>
   api.patch(
-    `/api/banners/addBannerProducts/${id}`,
+    `${BaseUrl}/api/banners/addBannerProducts/${id}`,
     { product, products },
     {
       headers: {
@@ -59,7 +61,7 @@ export const addBannerProducts = (id, product, products) =>
 
 export const removeBannerProducts = (id, productId, productPrice) =>
   api.patch(
-    `/api/banners/removeBannerProduct/${id}`,
+    `${BaseUrl}/api/banners/removeBannerProduct/${id}`,
     { productId, productPrice },
     {
       headers: {
@@ -72,7 +74,7 @@ export const removeBannerProducts = (id, productId, productPrice) =>
 
 export const updateStatus = (id, status) =>
   api.patch(
-    `/api/banners/updateStatus/${id}/${status}`,
+    `${BaseUrl}/api/banners/updateStatus/${id}/${status}`,
     {},
     {
       headers: {
@@ -84,7 +86,7 @@ export const updateStatus = (id, status) =>
   );
 
 export const deleteBanner = (id, imageId) =>
-  api.delete(`/api/banners/deleteBanner/${id}`, {
+  api.delete(`${BaseUrl}/api/banners/deleteBanner/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",

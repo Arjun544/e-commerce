@@ -4,10 +4,12 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 const api = axios.create();
 
+const BaseUrl = process.env.REACT_APP_API_URL;
+
 // List of all the endpoints
 export const addDeal = (title, products) =>
   api.post(
-    "/api/deal/add",
+    `${BaseUrl}/api/deal/add`,
     {
       title,
       products,
@@ -22,7 +24,7 @@ export const addDeal = (title, products) =>
   );
 
 export const getDeals = () =>
-  api.get("/api/deal/get", {
+  api.get(`${BaseUrl}/api/deal/get`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -32,7 +34,7 @@ export const getDeals = () =>
 
 export const updateDeal = (id, title, startDate, endDate) =>
   api.patch(
-    `/api/deal/update/${id}`,
+    `${BaseUrl}/api/deal/update/${id}`,
     { title, startDate, endDate },
     {
       headers: {
@@ -44,7 +46,7 @@ export const updateDeal = (id, title, startDate, endDate) =>
   );
 export const addDealProducts = (id, product, products) =>
   api.patch(
-    `/api/deal/addDealProducts/${id}`,
+    `${BaseUrl}/api/deal/addDealProducts/${id}`,
     { product, products },
     {
       headers: {
@@ -57,7 +59,7 @@ export const addDealProducts = (id, product, products) =>
 
 export const removeDealProducts = (id, productId, productPrice) =>
   api.patch(
-    `/api/deal/removeDealProduct/${id}`,
+    `${BaseUrl}/api/deal/removeDealProduct/${id}`,
     { productId, productPrice },
     {
       headers: {
@@ -70,7 +72,7 @@ export const removeDealProducts = (id, productId, productPrice) =>
 
   export const updateStatus = (id, status) =>
     api.patch(
-      `/api/deal/updateStatus/${id}/${status}`,
+      `${BaseUrl}/api/deal/updateStatus/${id}/${status}`,
       {},
       {
         headers: {
@@ -82,7 +84,7 @@ export const removeDealProducts = (id, productId, productPrice) =>
     );
 
 export const deleteDeal = (id) =>
-  api.delete(`/api/deal/delete/${id}`, {
+  api.delete(`${BaseUrl}/api/deal/delete/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",

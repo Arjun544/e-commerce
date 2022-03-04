@@ -4,6 +4,8 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 const api = axios.create();
 
+const BaseUrl = process.env.REACT_APP_API_URL;
+
 // List of all the endpoints
 export const addProduct = (
   name,
@@ -19,7 +21,7 @@ export const addProduct = (
   discount
 ) =>
   api.post(
-    "/api/products/add",
+    `${BaseUrl}/api/products/add`,
     {
       name,
       description,
@@ -44,7 +46,7 @@ export const addProduct = (
 
 export const uploadMultiImages = (id, images) =>
   api.patch(
-    `/api/products/multipleImages/${id}`,
+    `${BaseUrl}/api/products/multipleImages/${id}`,
     { images },
     {
       headers: {
@@ -57,7 +59,7 @@ export const uploadMultiImages = (id, images) =>
 
 export const getProducts = (page, limit, pagination) =>
   api.get(
-    `/api/products/getAdminProducts?page=${page}&limit=${limit}&pagination=${pagination}`,
+    `${BaseUrl}/api/products/getAdminProducts?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
         Authorization: `Bearer ${cookies.get("accessToken")}`,
@@ -68,7 +70,7 @@ export const getProducts = (page, limit, pagination) =>
   );
 
 export const getProductById = (id) =>
-  api.get(`/api/products/${id}`, {
+  api.get(`${BaseUrl}/api/products/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -93,7 +95,7 @@ export const updateProduct = (
   imageIds
 ) =>
   api.patch(
-    `/api/products/update/${id}`,
+    `${BaseUrl}/api/products/update/${id}`,
     {
       name,
       description,
@@ -120,7 +122,7 @@ export const updateProduct = (
 
 export const updateFeatured = (id, isFeatured) =>
   api.patch(
-    `/api/products/updateFeatured/${id}/${isFeatured}`,
+    `${BaseUrl}/api/products/updateFeatured/${id}/${isFeatured}`,
     {},
     {
       headers: {
@@ -133,7 +135,7 @@ export const updateFeatured = (id, isFeatured) =>
 
 export const updateStatus = (id, status) =>
   api.patch(
-    `/api/products/updateStatus/${id}/${status}`,
+    `${BaseUrl}/api/products/updateStatus/${id}/${status}`,
     {},
     {
       headers: {
@@ -145,7 +147,7 @@ export const updateStatus = (id, status) =>
   );
 
 export const deleteProduct = (id, thumbnailId, imageIds) =>
-  api.delete(`/api/products/delete/${id}`, {
+  api.delete(`${BaseUrl}/api/products/delete/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",

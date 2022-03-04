@@ -4,9 +4,11 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 const api = axios.create();
 
+const BaseUrl = process.env.REACT_APP_API_URL;
+
 export const getAllReviews = (page, limit, pagination) =>
   api.get(
-    `/api/reviews/get?page=${page}&limit=${limit}&pagination=${pagination}`,
+    `${BaseUrl}/api/reviews/get?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
         Authorization: `Bearer ${cookies.get("accessToken")}`,
@@ -16,9 +18,8 @@ export const getAllReviews = (page, limit, pagination) =>
     }
   );
 
-
 export const getRecentReviews = () =>
-  api.get("/api/reviews/getRecentReviews", {
+  api.get(`${BaseUrl}/api/reviews/getRecentReviews`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",

@@ -2,7 +2,7 @@
     "name": "admin",
     "version": "0.1.0",
     "private": true,
-    "proxy": "https://sell-corner.herokuapp.com/",
+    "proxy": "https://sell-corner.herokuapp.com",
     "dependencies": {
         "@craco/craco": "^6.2.0",
         "@headlessui/react": "^1.4.1",

@@ -4,9 +4,11 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 const api = axios.create();
 
+const BaseUrl = process.env.REACT_APP_API_URL;
+
 // List of all the endpoints
 export const getCategories = () =>
-  api.get("/api/categories/getAdminCategories", {
+  api.get(`${BaseUrl}/api/categories/getAdminCategories`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -16,7 +18,7 @@ export const getCategories = () =>
   
 export const addCategory = (name, icon) =>
   api.post(
-    "/api/categories/add",
+    `${BaseUrl}/api/categories/add`,
     { name, icon },
     {
       headers: {
@@ -29,7 +31,7 @@ export const addCategory = (name, icon) =>
 
 export const updateStatus = (id, status) =>
   api.patch(
-    `/api/categories/updateStatus/${id}/${status}`,
+    `${BaseUrl}/api/categories/updateStatus/${id}/${status}`,
     {},
     {
       headers: {
@@ -42,7 +44,7 @@ export const updateStatus = (id, status) =>
 
 export const addSubCategory = (id, name) =>
   api.patch(
-    `/api/categories/addSubCategory/${id}`,
+    `${BaseUrl}/api/categories/addSubCategory/${id}`,
     { name },
     {
       headers: {
@@ -55,7 +57,7 @@ export const addSubCategory = (id, name) =>
 
 export const updateCategory = (id, name, icon, iconId) =>
   api.patch(
-    `/api/categories/update/${id}`,
+    `${BaseUrl}/api/categories/update/${id}`,
     { name, icon, iconId },
     {
       headers: {
@@ -68,7 +70,7 @@ export const updateCategory = (id, name, icon, iconId) =>
 
 export const updateSubCategory = (id, subCategoryId, name) =>
   api.patch(
-    `/api/categories/updateSubCategory/${id}`,
+    `${BaseUrl}/api/categories/updateSubCategory/${id}`,
     { subCategoryId, name },
     {
       headers: {
@@ -80,7 +82,7 @@ export const updateSubCategory = (id, subCategoryId, name) =>
   );
 
 export const deleteCategory = (id, iconId) =>
-  api.delete(`/api/categories/${id}`, {
+  api.delete(`${BaseUrl}/api/categories/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -90,7 +92,7 @@ export const deleteCategory = (id, iconId) =>
   });
 
 export const deleteSubCategory = (id, subCategoryId) =>
-  api.delete(`/api/categories/subCategory/${id}`, {
+  api.delete(`${BaseUrl}/api/categories/subCategory/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
