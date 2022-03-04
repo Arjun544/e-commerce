@@ -27,7 +27,7 @@ import Notification from "./pages/Notification/Notification";
 export const AppContext = createContext(null);
 
 function App() {
-  const socketUrl = io("http://localhost:4000");
+  const socketUrl = io("https://sell-corner.herokuapp.com");
   let socket = useRef(null);
 
   const [selectedSideBar, setSelectedSideBar] = useState(0);
