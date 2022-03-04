@@ -3,11 +3,13 @@ import useOutsideClick from "../../../useOutsideClick";
 import ArrowDownIcon from "../../../components/icons/ArrowDownIcon";
 import { updateStatus } from "../../../api/ordersApi";
 import { AppContext } from "../../../App";
+import { useSnackbar } from "notistack";
 
 const StatusDropDown = ({ order, setOrder }) => {
   const { socket } = useContext(AppContext);
   const [selectedStatus, setSelectedStatus] = useState(order.status);
   const [isOpen, setIsOpen] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const ref = useRef();
 
@@ -29,6 +31,10 @@ const StatusDropDown = ({ order, setOrder }) => {
       setOrder(newOrder);
       setSelectedStatus(newOrder.status);
     });
+    enqueueSnackbar("Status has been updated", {
+      variant: "success",
+      autoHideDuration: 2000,
+    });
   };
 
   const handleSortPending = async (e) => {
@@ -38,6 +44,10 @@ const StatusDropDown = ({ order, setOrder }) => {
     socket.current.on("update-orderStatus", (newOrder) => {
       setOrder(newOrder);
       setSelectedStatus(newOrder.status);
+    });
+    enqueueSnackbar("Status has been updated", {
+      variant: "success",
+      autoHideDuration: 2000,
     });
   };
 
@@ -49,6 +59,10 @@ const StatusDropDown = ({ order, setOrder }) => {
       setOrder(newOrder);
       setSelectedStatus(newOrder.status);
     });
+    enqueueSnackbar("Status has been updated", {
+      variant: "success",
+      autoHideDuration: 2000,
+    });
   };
 
   const handleSortDelivered = async (e) => {
@@ -59,6 +73,10 @@ const StatusDropDown = ({ order, setOrder }) => {
       setOrder(newOrder);
       setSelectedStatus(newOrder.status);
     });
+    enqueueSnackbar("Status has been updated", {
+      variant: "success",
+      autoHideDuration: 2000,
+    });
   };
 
   const handleSortCancelled = async (e) => {
@@ -68,6 +86,10 @@ const StatusDropDown = ({ order, setOrder }) => {
     socket.current.on("update-orderStatus", (newOrder) => {
       setOrder(newOrder);
       setSelectedStatus(newOrder.status);
+    });
+    enqueueSnackbar("Status has been updated", {
+      variant: "success",
+      autoHideDuration: 2000,
     });
   };
 
