@@ -33,7 +33,11 @@ const LatestReviews = () => {
   return (
     <div className="flex flex-col">
       <span className="text-black font-semibold">Recent Reviews</span>
-      {recentReviews.length === 0 ? (
+      {recentReviews === undefined ? (
+        <div className="flex h-full w-full pt-10 justify-center">
+          <span className="text-black font-semibold">Loading</span>
+        </div>
+      ) : recentReviews.length === 0 ? (
         <div className="flex h-full w-full pt-10 justify-center">
           <span className="text-black font-semibold">No Reviews</span>
         </div>
