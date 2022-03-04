@@ -50,7 +50,11 @@ app.set("eventEmitter", eventEmitter);
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3000", "https://sell-corner.herokuapp.com"],
+    origin: [
+      "http://localhost:3000",
+      "https://sell-corner.herokuapp.com",
+      "https://sellcorner-admin.herokuapp.com",
+    ],
   })
 );
 app.use(express.urlencoded({ extended: true }));
@@ -59,7 +63,8 @@ app.use(cookieParser());
 app.use(function (req, res, next) {
   res.header(
     "Access-Control-Allow-Origin",
-    "https://sell-corner.herokuapp.com"
+    "https://sell-corner.herokuapp.com",
+    "https://sellcorner-admin.herokuapp.com"
   );
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
