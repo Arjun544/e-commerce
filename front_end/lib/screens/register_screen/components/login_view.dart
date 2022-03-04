@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/screens/register_screen/components/forget_password.dart';
+import 'forget_password.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/register_screen_controller.dart';
@@ -7,7 +7,6 @@ import '../../../utils/colors.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/email_textField.dart';
 import '../../../widgets/pass_textField.dart';
-import '../../../widgets/social_btn.dart';
 
 class LoginView extends StatelessWidget {
   final RegisterScreenController controller = Get.find();

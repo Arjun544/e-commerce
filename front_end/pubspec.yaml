@@ -60,10 +60,16 @@ dependencies:
   awesome_notifications: ^0.6.19
   google_sign_in: ^5.2.4
   url_launcher: ^6.0.20
+  flutter_native_splash: ^2.0.5
+  
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_native_splash:
+  color: "#ffffff"
+  image:  assets/logo.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

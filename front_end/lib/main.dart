@@ -1,15 +1,15 @@
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'screens/root_screen.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 import 'controllers_binding.dart';
-import 'screens/splash_screen.dart';
 import 'utils/colors.dart';
 import 'utils/constants.dart';
 
@@ -19,7 +19,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await GetStorage.init();
   sharedPreferences = await StreamingSharedPreferences.instance;
   await Firebase.initializeApp();
@@ -50,14 +51,16 @@ void main() async {
   if (getStorage.read('isLogin') != true) {
     await FirebaseMessaging.instance.subscribeToTopic('AllUsers');
   }
+
   runApp(MyApp());
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'SellCorner',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Nunito',
@@ -79,7 +82,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       initialBinding: ControllersBinding(),
-      home: SplashScreen(),
+      home: RootScreen(),
       builder: EasyLoading.init(),
     );
   }

@@ -35,7 +35,7 @@ class ApiProduct {
   }) async {
     try {
       var arrivalResponse = await dio.get(
-        baseUrl + 'products/newArrival?page=$page&limit=10',
+        baseUrl + 'products/newArrival?page=$page&limit=20',
         options: Options(
           responseType: ResponseType.plain,
         ),
@@ -57,7 +57,7 @@ class ApiProduct {
   }) async {
     try {
       var featuredResponse = await dio.get(
-        baseUrl + 'products/featured?page=$page&limit=10',
+        baseUrl + 'products/featured?page=$page&limit=20',
         options: Options(
           responseType: ResponseType.plain,
         ),
@@ -81,7 +81,7 @@ class ApiProduct {
   }) async {
     try {
       var response = await dio.get(
-        baseUrl + 'products/similar/$categoryId/$productId?page=$page&limit=10',
+        baseUrl + 'products/similar/$categoryId/$productId?page=$page&limit=20',
         options: Options(
           responseType: ResponseType.plain,
         ),
@@ -139,14 +139,14 @@ class ApiProduct {
     await EasyLoading.show(status: 'loading...', dismissOnTap: false);
 
     try {
-    var response = await dio.get(
-      baseUrl + 'products/search/$query?page=$page&limit=5',
-      options: Options(
-        responseType: ResponseType.plain,
-      ),
-    );
-    searchController.add(productModelFromJson(response.data));
-    await EasyLoading.dismiss();
+      var response = await dio.get(
+        baseUrl + 'products/search/$query?page=$page&limit=20',
+        options: Options(
+          responseType: ResponseType.plain,
+        ),
+      );
+      searchController.add(productModelFromJson(response.data));
+      await EasyLoading.dismiss();
     } catch (e) {
       await EasyLoading.showToast(
         'Something went wrong',

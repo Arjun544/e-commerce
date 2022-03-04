@@ -75,8 +75,10 @@ class HomeScreen extends StatelessWidget {
                                 const Text(
                                   'Flash Deal',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    letterSpacing: 1,
+                                  ),
                                 ),
                                 GestureDetector(
                                   onTap: () => Get.to(
@@ -119,7 +121,11 @@ class HomeScreen extends StatelessWidget {
               padding: EdgeInsets.only(top: 15, left: 15, bottom: 10),
               child: Text(
                 'Featured',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  letterSpacing: 1,
+                ),
               ),
             ),
             FeaturedSection(

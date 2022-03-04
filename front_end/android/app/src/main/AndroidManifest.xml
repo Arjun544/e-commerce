@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.front_end">
    <application
-        android:label="front_end"
+        android:label="SellCorner"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
         >

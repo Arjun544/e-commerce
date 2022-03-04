@@ -48,7 +48,10 @@ class ArrivalsSection extends StatelessWidget {
                               const Text(
                                 'New Arrivals',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  letterSpacing: 1,
+                                ),
                               ),
                               InkWell(
                                 onTap: () => Get.to(

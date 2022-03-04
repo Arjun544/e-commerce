@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:front_end/controllers/profile_screen_controller.dart';
-import 'package:front_end/screens/profile_screen/components/reset_password.dart';
-import 'package:front_end/screens/profile_screen/components/top_header.dart';
-import 'package:front_end/widgets/email_textField.dart';
+import '../../../controllers/profile_screen_controller.dart';
+import '../../profile_screen/components/reset_password.dart';
+import '../../profile_screen/components/top_header.dart';
+import '../../../widgets/email_textField.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import '../../../controllers/register_screen_controller.dart';

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import '../../../controllers/cart_screen_controller.dart';
