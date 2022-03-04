@@ -53,6 +53,7 @@ class _RootScreenState extends State<RootScreen> {
                   channelKey: 'noti_key',
                   title: notification.title,
                   body: notification.body,
+                  displayOnForeground: true,
                 )
               : NotificationContent(
                   id: 10,

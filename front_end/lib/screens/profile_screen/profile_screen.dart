@@ -52,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             const Padding(
-              padding: EdgeInsets.only(top: 45, left: 8),
+              padding: EdgeInsets.only(left: 8),
               child: TopHeader(text: 'Profile'),
             ),
             const SizedBox(height: 30),

@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -40,199 +39,204 @@ class _WishlistScreenState extends State<WishlistScreen> {
       extendBody: true,
       body: Padding(
         padding: const EdgeInsets.only(top: 50),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const SizedBox(width: 40),
-                const Text(
-                  'Wishlist',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                wishListController.ids.isEmpty
-                    ? const SizedBox(
-                        width: 15,
-                      )
-                    : GestureDetector(
-                        onTap: () async {
-                          await wishListController.clearWishlist();
-                          wishListController.ids.clear();
-                          await sharedPreferences.remove('favListIds');
-                          setState(() {
-                            wishListController.getWishlist();
-                          });
-                        },
-                        child: const Text(
-                          'Clear',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.redAccent,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const SizedBox(width: 40),
+                  const Text(
+                    'Wishlist',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  wishListController.ids.isEmpty
+                      ? const SizedBox(
+                          width: 15,
+                        )
+                      : GestureDetector(
+                          onTap: () async {
+                            await wishListController.clearWishlist();
+                            wishListController.ids.clear();
+                            await sharedPreferences.remove('favListIds');
+                            setState(() {
+                              wishListController.getWishlist();
+                            });
+                          },
+                          child: const Text(
+                            'Clear',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.redAccent,
+                            ),
                           ),
                         ),
+                ],
+              ),
+              wishListController.ids.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 80),
+                      child: Column(
+                        children: [
+                          Lottie.asset('assets/empty.json',
+                              height: Get.height * 0.3),
+                          const Text(
+                            'Nothing in wishlist',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.black45),
+                          ),
+                        ],
                       ),
-              ],
-            ),
-            wishListController.ids.isEmpty
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 80),
-                    child: Column(
-                      children: [
-                        Lottie.asset('assets/empty.json',
-                            height: Get.height * 0.3),
-                        const Text(
-                          'Nothing in wishlist',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.black45),
-                        ),
-                      ],
-                    ),
-                  )
-                : StreamBuilder(
-                    stream: wishListController.wishlistController.stream,
-                    builder: (context, AsyncSnapshot<ProductModel> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const SizedBox();
-                      }
-                      return snapshot.data!.results.isEmpty
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 80),
-                              child: Column(
-                                children: [
-                                  Lottie.asset('assets/empty.json',
-                                      height: Get.height * 0.3),
-                                  const Text(
-                                    'Nothing in wishlist',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.black45),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : StaggeredGridView.countBuilder(
-                              shrinkWrap: true,
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 15,
-                              mainAxisSpacing: 15,
-                              padding: const EdgeInsets.only(
-                                  right: 15, left: 15, bottom: 20, top: 20),
-                              itemCount: snapshot.data!.results.length,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                Product product =
-                                    snapshot.data!.results[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    Get.off(() => DetailScreen(
-                                          product: product,
-                                        ));
-                                  },
-                                  child: Stack(
-                                    alignment: Alignment.topRight,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(7),
-                                        decoration: const BoxDecoration(
-                                          color: customGrey,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(20),
-                                          ),
-                                        ),
-                                        child: BuildItem(
-                                          product: product,
-                                          wishListController:
-                                              wishListController,
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          product.discount > 0
-                                              ? Container(
-                                                  height: 24,
-                                                  width: 70,
-                                                  margin: const EdgeInsets.only(
-                                                      left: 10),
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.redAccent,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            7),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Text(
-                                                        '${product.discount}%',
-                                                        style: const TextStyle(
-                                                          fontSize: 13,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                      const Text(
-                                                        'OFF',
-                                                        style: TextStyle(
-                                                          fontSize: 10,
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              : const SizedBox.shrink(),
-                                          IconButton(
-                                            onPressed: () async {
-                                              homeScreenController.favListIds
-                                                  .remove(product.id);
-                                              wishListController.ids
-                                                  .remove(product.id);
-                                              await sharedPreferences
-                                                  .setStringList(
-                                                      'favListIds',
-                                                      homeScreenController
-                                                          .favListIds);
-                                              setState(() {
-                                                wishListController
-                                                    .getWishlist();
-                                              });
-                                            },
-                                            icon: Icon(
-                                              Icons.delete_rounded,
-                                              size: 20,
-                                              color: Colors.redAccent
-                                                  .withOpacity(0.5),
+                    )
+                  : StreamBuilder(
+                      stream: wishListController.wishlistController.stream,
+                      builder: (context, AsyncSnapshot<ProductModel> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const SizedBox();
+                        }
+                        return snapshot.data!.results.isEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 80),
+                                child: Column(
+                                  children: [
+                                    Lottie.asset('assets/empty.json',
+                                        height: Get.height * 0.3),
+                                    const Text(
+                                      'Nothing in wishlist',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.black45),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : StaggeredGridView.countBuilder(
+                                shrinkWrap: true,
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 15,
+                                mainAxisSpacing: 15,
+                                padding: const EdgeInsets.only(
+                                    right: 15, left: 15, bottom: 20, top: 20),
+                                itemCount: snapshot.data!.results.length,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  Product product =
+                                      snapshot.data!.results[index];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Get.off(() => DetailScreen(
+                                            product: product,
+                                          ));
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.topRight,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(7),
+                                          decoration: const BoxDecoration(
+                                            color: customGrey,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(20),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                              staggeredTileBuilder: (index) {
-                                return StaggeredTile.count(
-                                    1, index.isEven ? 1.5 : 1.6);
-                              },
-                            );
-                    },
-                  ),
-          ],
+                                          child: BuildItem(
+                                            product: product,
+                                            wishListController:
+                                                wishListController,
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            product.discount > 0
+                                                ? Container(
+                                                    height: 24,
+                                                    width: 70,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            left: 10),
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.redAccent,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              7),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Text(
+                                                          '${product.discount}%',
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 13,
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        const Text(
+                                                          'OFF',
+                                                          style: TextStyle(
+                                                            fontSize: 10,
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                : const SizedBox.shrink(),
+                                            IconButton(
+                                              onPressed: () async {
+                                                homeScreenController.favListIds
+                                                    .remove(product.id);
+                                                wishListController.ids
+                                                    .remove(product.id);
+                                                await sharedPreferences
+                                                    .setStringList(
+                                                        'favListIds',
+                                                        homeScreenController
+                                                            .favListIds);
+                                                setState(() {
+                                                  wishListController
+                                                      .getWishlist();
+                                                });
+                                              },
+                                              icon: Icon(
+                                                Icons.delete_rounded,
+                                                size: 20,
+                                                color: Colors.redAccent
+                                                    .withOpacity(0.5),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                staggeredTileBuilder: (index) {
+                                  return StaggeredTile.count(
+                                      1, index.isEven ? 1.5 : 1.6);
+                                },
+                              );
+                      },
+                    ),
+            ],
+          ),
         ),
       ),
     );

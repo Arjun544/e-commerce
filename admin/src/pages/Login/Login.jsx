@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import CustomButon from "../../components/custom_button";
-import SocialButton from "./components/social_button";
 import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 import Logo from "../../components/icons/Logo";
@@ -17,6 +16,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -42,6 +42,12 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCopy = (e, data) => {
+    e.preventDefault();
+    setValue("email", "admin@admin.com");
+    setValue("password", "adminadmin");
   };
 
   useEffect(() => {
@@ -72,6 +78,7 @@ const Login = () => {
       >
         <div className="flex flex-col">
           <input
+            type='email'
             className="h-14 w-80 rounded-2xl text-black bg-bgColor-light pl-4 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
             placeholder="Email"
             {...register("email", {
@@ -91,6 +98,7 @@ const Login = () => {
             </span>
           )}
           <input
+            type='password'
             className="h-14 w-80 rounded-2xl text-black bg-bgColor-light pl-4 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             placeholder="Password"
             {...register("password", {
@@ -127,18 +135,35 @@ const Login = () => {
           <CustomButon
             text={"Sign in"}
             color={"bg-darkBlue-light"}
-            width={72}
+            width={80}
             onPressed={handleSubmit((data) => onSignIn(data))}
           />
         )}
       </form>
-      <span className=" font-semibold text-xs text-Grey-dark mt-10">OR</span>
+      {/* <span className=" font-semibold text-xs text-Grey-dark mt-10">OR</span>
       <div className="flex mt-10">
         <SocialButton img={"assets/google.png"} text={"Continue with Google"} />
         <SocialButton
           img={"assets/facebook.png"}
           text={"Continue with Facebook"}
         />
+      </div> */}
+
+      <div className="flex  h-20 w-80 items-center justify-around bg-bgColor-light mt-10 rounded-2xl">
+        <div className="flex flex-col">
+          <span className="text-black text-sm font-semibold">
+            Email : admin@admin.com
+          </span>
+          <span className="text-black text-sm font-semibold">
+            Password : adminadmin
+          </span>
+        </div>
+        <button
+          onClick={(e) => handleCopy(e)}
+          className="bg-green-500 h-10 rounded-lg px-4 text-white font-semibold text-sm tracking-widest hover:bg-green-400"
+        >
+          Copy
+        </button>
       </div>
     </div>
   );
