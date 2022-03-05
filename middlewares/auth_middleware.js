@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
   const token = req.headers.cookie;
-  console.log('cooooooookie',req.headers);
+  console.log('cooooooookie',req.cookies['accessToken']);
   if (!token) res.status(403).json({ error: "please provide a token" });
   else {
     jwt.verify(
