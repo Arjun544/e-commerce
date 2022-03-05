@@ -25,7 +25,7 @@ router.post(
   cleanBody,
   addCategory
 );
-router.get("/getAdminCategories", cleanBody, getAdminCategories);
+router.get("/getAdminCategories", authMiddleware, cleanBody, getAdminCategories);
 router.get("/get", cleanBody, getCategories);
 router.get("/count", authMiddleware, cleanBody, count);
 router.get("/:id", authMiddleware, cleanBody, getCategoryById);
