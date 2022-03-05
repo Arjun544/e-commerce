@@ -28,7 +28,7 @@ const io = require("socket.io")(server, {
       "http://localhost:3000",
       "http://192.168.0.101:4000",
       "http://192.168.0.149:4000",
-      "https://sellcorner-admin.herokuapp.com",
+      "https://admin-sellcorner.herokuapp.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
@@ -51,7 +51,7 @@ app.use(
   cors({
     credentials: true,
     methods: "GET, POST, PUT, DELETE",
-    origin: ["http://localhost:3000", "https://sellcorner-admin.herokuapp.com"],
+    origin: ["http://localhost:3000", "https://admin-sellcorner.herokuapp.com"],
   })
 );
 app.use(express.urlencoded({ extended: true }));
@@ -61,7 +61,7 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Credentials", true);
   res.header(
     "Access-Control-Allow-Origin",
-    "https://sellcorner-admin.herokuapp.com"
+    "https://admin-sellcorner.herokuapp.com"
   );
   res.header(
     "Access-Control-Allow-Headers",
