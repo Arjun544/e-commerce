@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const api = axios.create();
 const BaseUrl = process.env.REACT_APP_API_URL;
@@ -7,7 +8,6 @@ const BaseUrl = process.env.REACT_APP_API_URL;
 export const getOrders = async (page, limit, pagination) => {
   return await api.get(
     `${BaseUrl}/api/orders/get?page=${page}&limit=${limit}&pagination=${pagination}`,
-    { withCredentials: true },
     {
       headers: {
         Authorization: `Bearer ${JSON.parse(

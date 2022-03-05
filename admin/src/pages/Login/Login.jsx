@@ -26,6 +26,9 @@ const Login = () => {
       const response = await login(data.email, data.password);
       if (response.data.auth) {
         if (!unMounted) {
+          JSON.stringify(
+            localStorage.setItem("accessToken", response.data.accessToken)
+          );
           dispatch(
             setAuth({
               auth: response.data.auth,
@@ -82,7 +85,7 @@ const Login = () => {
       >
         <div className="flex flex-col">
           <input
-            type='email'
+            type="email"
             className="h-14 w-80 rounded-2xl text-black bg-bgColor-light pl-4 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
             placeholder="Email"
             {...register("email", {
@@ -102,7 +105,7 @@ const Login = () => {
             </span>
           )}
           <input
-            type='password'
+            type="password"
             className="h-14 w-80 rounded-2xl text-black bg-bgColor-light pl-4 mb-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
             placeholder="Password"
             {...register("password", {
