@@ -87,7 +87,7 @@ exports.getOrders = async (req, res) => {
       if (err) {
         return res.status(500).json({ error: true, message: err.message });
       } else {
-        return res.send({
+        return res.json({
           page: result.page,
           hasNextPage: result.hasNextPage,
           hasPrevPage: result.hasPrevPage,
@@ -110,7 +110,7 @@ exports.getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
 
-    res.send({
+    res.json({
       success: true,
       orderList: order,
     });
@@ -169,7 +169,7 @@ exports.updateStatus = async (req, res) => {
       socket.socket.emit("update-orderStatus", newOrder);
     }
 
-    res.send({
+    res.json({
       success: true,
       message: "Status has been updated",
     });
@@ -212,7 +212,7 @@ exports.totalSales = async (req, res) => {
     return res.status(400).send("The order sales cannot be generated");
   }
 
-  res.send({ totalsales: totalSales.pop().totalsales });
+  res.json({ totalsales: totalSales.pop().totalsales });
 };
 
 exports.count = async (req, res) => {
@@ -221,7 +221,7 @@ exports.count = async (req, res) => {
   if (!orderCount) {
     res.status(500).json({ success: false });
   }
-  res.send({
+  res.json({
     orderCount: orderCount,
   });
 };
@@ -234,7 +234,7 @@ exports.userOrders = async (req, res) => {
 
     if (!userOrderList) return res.status(400).send("No Orders");
 
-    res.send({
+    res.json({
       success: true,
       orderList: userOrderList,
     });

@@ -15,7 +15,7 @@ exports.addDeal = async (req, res) => {
 
     const deals = await Deal.find();
     socket.socket.emit("add-deal", deals);
-    res.send({
+    res.json({
       success: true,
       message: "Deal has been added",
     });
@@ -31,7 +31,7 @@ exports.addDeal = async (req, res) => {
 exports.getAdminDeal = async (req, res) => {
   try {
     const deals = await Deal.find();
-    res.send({
+    res.json({
       success: true,
       deals: deals,
     });
@@ -47,7 +47,7 @@ exports.getAdminDeal = async (req, res) => {
 exports.getUserDeal = async (req, res) => {
   try {
     const deals = await Deal.find({ status: true });
-    res.send({
+    res.json({
       success: true,
       deals: deals,
     });
@@ -100,7 +100,7 @@ exports.updateStatus = async (req, res) => {
       { new: true }
     );
     socket.socket.emit("update-dealStatus", deal.status);
-    res.send({
+    res.json({
       success: true,
       message: "Status has been updated",
     });

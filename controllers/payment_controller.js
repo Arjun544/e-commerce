@@ -112,12 +112,12 @@ exports.payAmount = async (req, res) => {
       },
     });
     if (!confirmpayment) {
-      res.send({
+      res.json({
         sucess: false,
         message: "Payment did not succeed",
       });
     } else {
-      res.send("Payment successful");
+      res.json("Payment successful");
     }
   } catch (error) {
     console.log(error);

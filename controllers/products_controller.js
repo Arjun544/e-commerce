@@ -66,7 +66,7 @@ exports.addProduct = async (req, res) => {
         isFeatured: isFeatured,
       });
       await product.save();
-      res.send({
+      res.json({
         success: true,
         product: product,
         message: "Product has been added",
@@ -89,7 +89,7 @@ exports.addProduct = async (req, res) => {
 
       await product.save();
 
-      res.send({
+      res.json({
         success: true,
         product: product,
         message: "Product has been added",
@@ -107,7 +107,7 @@ exports.addProduct = async (req, res) => {
 exports.getProducts = async (req, res) => {
   try {
     const products = await Product.find({ status: true }).populate("category");
-    res.send({ products });
+    res.json({ products });
   } catch (error) {
     res.status(500).json({ error: true, message: "Can't get products" });
   }
@@ -127,7 +127,7 @@ exports.getAdminProducts = async (req, res) => {
       if (err) {
         return res.status(500).json({ error: true, message: err.message });
       } else {
-        return res.send({
+        return res.json({
           page: result.page,
           hasNextPage: result.hasNextPage,
           hasPrevPage: result.hasPrevPage,
@@ -184,7 +184,7 @@ exports.getSimilarProducts = async (req, res) => {
       if (err) {
         return res.status(500).json({ error: true, message: err.message });
       } else {
-        return res.send({
+        return res.json({
           page: result.page,
           hasNextPage: result.hasNextPage,
           hasPrevPage: result.hasPrevPage,
@@ -220,7 +220,7 @@ exports.NewArrivalProducts = async (req, res) => {
     if (err) {
       return res.status(500).json({ error: true, message: err.message });
     } else {
-      return res.send({
+      return res.json({
         page: result.page,
         hasNextPage: result.hasNextPage,
         hasPrevPage: result.hasPrevPage,
@@ -268,7 +268,7 @@ exports.productsByCategory = async (req, res) => {
         if (err) {
           return res.status(500).json({ error: true, message: err.message });
         } else {
-          return res.send({
+          return res.json({
             page: result.page,
             hasNextPage: result.hasNextPage,
             hasPrevPage: result.hasPrevPage,
@@ -294,7 +294,7 @@ exports.productsByCategory = async (req, res) => {
         if (err) {
           return res.status(500).json({ error: true, message: err.message });
         } else {
-          return res.send({
+          return res.json({
             page: result.page,
             hasNextPage: result.hasNextPage,
             hasPrevPage: result.hasPrevPage,
@@ -374,7 +374,7 @@ exports.featuredProducts = async (req, res) => {
       if (err) {
         return res.status(500).json({ error: true, message: err.message });
       } else {
-        return res.send({
+        return res.json({
           page: result.page,
           hasNextPage: result.hasNextPage,
           hasPrevPage: result.hasPrevPage,
@@ -469,7 +469,7 @@ exports.updateProduct = async (req, res) => {
       return res.status(400).send("Product not found");
     }
 
-    res.send({
+    res.json({
       success: true,
       updatedProduct: product,
     });
@@ -493,7 +493,7 @@ exports.updateFeatured = async (req, res) => {
     );
 
     socket.socket.emit("update-featured", product.isFeatured);
-    res.send({
+    res.json({
       success: true,
       message: "Featured has been updated",
     });
@@ -516,7 +516,7 @@ exports.updateStatus = async (req, res) => {
       { new: true }
     );
     socket.socket.emit("update-productStatus", product.status);
-    res.send({
+    res.json({
       success: true,
       message: "status has been updated",
     });
@@ -535,7 +535,7 @@ exports.count = async (req, res) => {
   if (!productCount) {
     res.status(500).json({ success: false });
   }
-  res.send({
+  res.json({
     productCount: productCount,
   });
 };
@@ -607,7 +607,7 @@ exports.multipleImages = async (req, res) => {
 
   if (!product) return res.status(500).send("Images cannot be upload!");
 
-  res.send({
+  res.json({
     success: true,
     message: "Images has been added",
   });

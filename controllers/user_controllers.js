@@ -188,7 +188,7 @@ exports.activate = async (req, res) => {
       });
     } else {
       if (user.active)
-        return res.send({
+        return res.json({
           error: true,
           message: "Account already activated",
           status: 400,
@@ -217,7 +217,7 @@ exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
-      return res.send({
+      return res.json({
         status: 400,
         error: true,
         message: "All fields are required",
@@ -227,7 +227,7 @@ exports.forgotPassword = async (req, res) => {
       email: email,
     });
     if (!user) {
-      return res.send({
+      return res.json({
         success: true,
         message: "User not found",
       });
@@ -249,7 +249,7 @@ exports.forgotPassword = async (req, res) => {
 
     await user.save();
 
-    return res.send({
+    return res.json({
       success: true,
       message:
         "If that email address is in our database, we will send you an email to reset your password",
@@ -276,7 +276,7 @@ exports.resetPassword = async (req, res) => {
       resetPasswordExpires: { $gt: Date.now() },
     });
     if (!user) {
-      return res.send({
+      return res.json({
         error: true,
         message: "Password reset token is invalid or has expired.",
       });
@@ -294,7 +294,7 @@ exports.resetPassword = async (req, res) => {
 
     await user.save();
 
-    return res.send({
+    return res.json({
       success: true,
       message: "Password has been changed",
     });
@@ -359,7 +359,7 @@ exports.getAllUsers = async (req, res) => {
       if (err) {
         return res.status(500).json({ error: true, message: err.message });
       } else {
-        return res.send({
+        return res.json({
           page: result.page,
           hasNextPage: result.hasNextPage,
           hasPrevPage: result.hasPrevPage,
@@ -385,7 +385,7 @@ exports.count = async (req, res) => {
   if (!userCount) {
     res.status(500).json({ success: false });
   }
-  res.send({
+  res.json({
     userCount: userCount,
   });
 };
@@ -421,7 +421,7 @@ exports.updateUser = async (req, res) => {
   }
   // update only those value passed from req.body, but not password
   if (req.body.password) {
-    return res.send("Password can't be updated here");
+    return res.json("Password can't be updated here");
   }
   const user = await User.findByIdAndUpdate(
     req.params.id,
@@ -431,7 +431,7 @@ exports.updateUser = async (req, res) => {
 
   if (!user) return res.status(400).send("User not found");
 
-  res.send("Updated");
+  res.json("Updated");
 };
 
 exports.updateImage = async (req, res) => {
@@ -440,7 +440,7 @@ exports.updateImage = async (req, res) => {
   }
   // update only those value passed from req.body, but not password
   if (!req.body.image) {
-    return res.send("All fields are required");
+    return res.json("All fields are required");
   }
 
   // Upload image to cloudinary
@@ -454,7 +454,7 @@ exports.updateImage = async (req, res) => {
 
   if (!user) return res.status(400).send("User not found");
 
-  res.send("Updated");
+  res.json("Updated");
 };
 
 exports.addShippingAddress = async (req, res) => {
@@ -486,7 +486,7 @@ exports.addShippingAddress = async (req, res) => {
       { new: true }
     );
 
-    return res.send("Address has been added");
+    return res.json("Address has been added");
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -519,7 +519,7 @@ exports.editShippingAddress = async (req, res) => {
         },
       }
     );
-    return res.send("Address has been edited");
+    return res.json("Address has been edited");
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -549,7 +549,7 @@ exports.removeAddress = async (req, res) => {
       { new: true }
     );
 
-    return res.send("Address has been removed");
+    return res.json("Address has been removed");
   } catch (error) {
     console.log(error);
     return res.status(500).json({

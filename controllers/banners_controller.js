@@ -9,7 +9,7 @@ exports.addBanner = async (req, res) => {
     const { image, type } = req.body;
 
     if (!image || !type) {
-      return res.send({
+      return res.json({
         success: false,
         message: "All fields are required",
       });
@@ -26,7 +26,7 @@ exports.addBanner = async (req, res) => {
       await banner.save();
       const banners = await Banner.find();
       socket.socket.emit("add-banner", banners);
-      res.send({
+      res.json({
         success: true,
         message: "Banner has been added",
       });
@@ -42,7 +42,7 @@ exports.addBanner = async (req, res) => {
       const banners = await Banner.find();
       socket.socket.emit("add-banner", banners);
 
-      res.send({
+      res.json({
         success: true,
         banners: banners,
         message: "Banner has been added",
@@ -98,7 +98,7 @@ exports.updateStatus = async (req, res) => {
       { new: true }
     );
     socket.socket.emit("update-bannerStatus", banner.status);
-    res.send({
+    res.json({
       success: true,
       message: "Status has been updated",
     });

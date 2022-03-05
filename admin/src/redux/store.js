@@ -5,7 +5,6 @@ import orders from "./reducers/ordersSlice";
 import customers from "./reducers/customersSlice";
 import categories from "./reducers/categoriesSlice";
 import {
-  persistStore,
   persistReducer,
   FLUSH,
   REHYDRATE,

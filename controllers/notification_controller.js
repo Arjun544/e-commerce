@@ -18,7 +18,7 @@ exports.sendNotification = async (req, res) => {
       "promotion"
     );
 
-    res.send({
+    res.json({
       success: true,
       message: "Notification sent successfully",
     });
@@ -49,7 +49,7 @@ exports.notifyAllUsers = async (req, res) => {
         topic: "AllUsers",
       };
       await admin.messaging().send(message);
-      res.send({
+      res.json({
         success: true,
         message: "Notification sent successfully",
       });
@@ -72,7 +72,7 @@ exports.notifyAllUsers = async (req, res) => {
         topic: "AllUsers",
       };
       await admin.messaging().send(message);
-      res.send({
+      res.json({
         success: true,
         message: "Notification sent successfully",
       });
@@ -109,7 +109,7 @@ exports.saveToken = async (req, res) => {
       { new: true }
     );
 
-    res.send({
+    res.json({
       success: true,
       message: "Token saved successfully",
     });
@@ -145,7 +145,7 @@ exports.deleteToken = async (req, res) => {
       { new: true }
     );
 
-    res.send({
+    res.json({
       success: true,
       message: "Token removed successfully",
     });
@@ -161,7 +161,7 @@ exports.deleteToken = async (req, res) => {
 exports.getUserNotifications = async (req, res) => {
   try {
     const notifications = await Notification.find({ user: req.params.id });
-    res.send({
+    res.json({
       success: true,
       notifications: notifications,
     });
@@ -186,7 +186,7 @@ exports.updateHasRead = async (req, res) => {
         },
       }
     );
-    res.send("Notification has been read");
+    res.json("Notification has been read");
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -209,7 +209,7 @@ exports.updateAllAsRead = async (req, res) => {
         },
       }
     );
-    res.send("All notifications marked as read");
+    res.json("All notifications marked as read");
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -222,7 +222,7 @@ exports.updateAllAsRead = async (req, res) => {
 exports.deleteNotificationById = async (req, res) => {
   try {
     await Notification.findByIdAndDelete(req.params.id);
-    res.send("Notification has been deleted");
+    res.json("Notification has been deleted");
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -235,7 +235,7 @@ exports.deleteNotificationById = async (req, res) => {
 exports.clearAll = async (req, res) => {
   try {
     await Notification.deleteMany({user: req.params.id});
-    res.send("Notifications have been cleared");
+    res.json("Notifications have been cleared");
   } catch (error) {
     console.log(error);
     return res.status(500).json({

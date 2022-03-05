@@ -57,7 +57,7 @@ exports.getCart = async (req, res) => {
       dateOrdered: -1,
     });
 
-    res.send(cartList[0]);
+    res.json(cartList[0]);
   } catch (error) {
     console.log(error);
     return res.json({
@@ -70,7 +70,7 @@ exports.getCart = async (req, res) => {
 exports.updateQuantity = async (req, res) => {
   try {
     if (!req.body.productId) {
-      res.send({
+      res.json({
         error: true,
         message: "Please provide all fields",
       });
@@ -107,7 +107,7 @@ exports.updateQuantity = async (req, res) => {
     //   console.log(data);
     // });
 
-    return res.send({
+    return res.json({
       message: "Quantity has been updated",
     });
   } catch (error) {
@@ -129,7 +129,7 @@ exports.deleteFromCart = async (req, res) => {
       },
     });
     if (!product) {
-      return res.send("No product found");
+      return res.json("No product found");
     }
 
     return res.status(200).json({
@@ -168,12 +168,12 @@ exports.clearCart = async (req, res) => {
     );
 
     if (!cart) {
-      res.send({
+      res.json({
         error: true,
         message: "Cart not found for user",
       });
     } else {
-      return res.send("Cart cleared");
+      return res.json("Cart cleared");
     }
   } catch (error) {
     return res.status(500).json({ error: true, message: error });

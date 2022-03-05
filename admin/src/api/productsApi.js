@@ -16,8 +16,8 @@ export const addProduct = async (
   subCategory,
   onSale,
   discount
-) =>
-  await api.post(
+) => {
+  const res = await api.post(
     `${BaseUrl}/api/products/add`,
     {
       name,
@@ -37,11 +37,14 @@ export const addProduct = async (
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
+    }
   );
+  const json = await res.json();
+  return json;
+};
 
-export const uploadMultiImages = async (id, images) =>
-  await api.patch(
+export const uploadMultiImages = async (id, images) => {
+  const res = await api.patch(
     `${BaseUrl}/api/products/multipleImages/${id}`,
     { images },
     {
@@ -52,11 +55,14 @@ export const uploadMultiImages = async (id, images) =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
+    }
   );
+  const json = await res.json();
+  return json;
+};
 
-export const getProducts = async (page, limit, pagination) =>
-  await api.get(
+export const getProducts = async (page, limit, pagination) => {
+  const res = await api.get(
     `${BaseUrl}/api/products/getAdminProducts?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
@@ -65,11 +71,14 @@ export const getProducts = async (page, limit, pagination) =>
         )}`,
         "Content-type": "application/json",
       },
-    },
+    }
   );
+  const json = await res.json();
+  return json;
+};
 
-export const getProductById = async (id) =>
-  await api.get(`${BaseUrl}/api/products/${id}`, {
+export const getProductById = async (id) => {
+  const res = await api.get(`${BaseUrl}/api/products/${id}`, {
     headers: {
       Authorization: `Bearer ${JSON.parse(
         localStorage.getItem("accessToken")
@@ -77,6 +86,9 @@ export const getProductById = async (id) =>
       "Content-type": "application/json",
     },
   });
+  const json = await res.json();
+  return json;
+};
 
 export const updateProduct = async (
   id,
@@ -93,8 +105,8 @@ export const updateProduct = async (
   discount,
   thumbnailId,
   imageIds
-) =>
-  await api.patch(
+) => {
+  const res = await api.patch(
     `${BaseUrl}/api/products/update/${id}`,
     {
       name,
@@ -119,11 +131,14 @@ export const updateProduct = async (
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
+    }
   );
+  const json = await res.json();
+  return json;
+};
 
-export const updateFeatured = async (id, isFeatured) =>
-  await api.patch(
+export const updateFeatured = async (id, isFeatured) => {
+  const res = await api.patch(
     `${BaseUrl}/api/products/updateFeatured/${id}/${isFeatured}`,
     {},
     {
@@ -136,9 +151,11 @@ export const updateFeatured = async (id, isFeatured) =>
       },
     }
   );
-
-export const updateStatus = async (id, status) =>
-  await api.patch(
+  const json = await res.json();
+  return json;
+};
+export const updateStatus = async (id, status) => {
+  const res = await api.patch(
     `${BaseUrl}/api/products/updateStatus/${id}/${status}`,
     {},
     {
@@ -151,9 +168,13 @@ export const updateStatus = async (id, status) =>
       },
     }
   );
+  const json = await res.json();
+  return json;
+};
 
-export const deleteProduct = async (id, thumbnailId, imageIds) =>
-  await api.delete(`${BaseUrl}/api/products/delete/${id}`, {
+export const deleteProduct = async (id, thumbnailId, imageIds) => {
+
+  const res = await api.delete(`${BaseUrl}/api/products/delete/${id}`, {
     headers: {
       Authorization: `Bearer ${JSON.parse(
         localStorage.getItem("accessToken")
@@ -163,5 +184,8 @@ export const deleteProduct = async (id, thumbnailId, imageIds) =>
     },
     data: { thumbnailId: thumbnailId, imageIds: imageIds },
   });
+  const json = await res.json();
+  return json;
+}
 
 export default api;

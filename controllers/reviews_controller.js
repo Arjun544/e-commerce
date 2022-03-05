@@ -22,12 +22,12 @@ exports.addReview = async (req, res) => {
       "-resetPasswordToken -resetPasswordExpires -emailToken -emailTokenExpires -password"
     );
     if (!newUser) {
-      return res.send("No user found");
+      return res.json("No user found");
     }
 
     const newProduct = await Product.findById(req.body.productId);
     if (!newProduct) {
-      return res.send("No product found");
+      return res.json("No product found");
     }
 
     const newReview = new Review({
@@ -61,7 +61,7 @@ exports.addReview = async (req, res) => {
         },
       }
     );
-    res.send({
+    res.json({
       success: true,
       message: "Review has been added",
     });
@@ -88,7 +88,7 @@ exports.skipReview = async (req, res) => {
       }
     );
 
-    res.send({
+    res.json({
       success: true,
       message: "Review has been skipped",
     });
@@ -114,7 +114,7 @@ exports.getAllReviews = async (req, res) => {
       if (err) {
         return res.status(500).json({ error: true, message: err.message });
       } else {
-        return res.send({
+        return res.json({
           page: result.page,
           hasNextPage: result.hasNextPage,
           hasPrevPage: result.hasPrevPage,
@@ -141,7 +141,7 @@ exports.getRecentReviews = async (req, res) => {
       (item) => item.addedAt.toISOString().split("T")[0] === currrentDate
     );
 
-    res.send({ filteredReviews });
+    res.json({ filteredReviews });
   } catch (error) {
     console.log(error);
     return res.status(500).json({

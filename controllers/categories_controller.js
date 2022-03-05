@@ -193,7 +193,7 @@ exports.updateStatus = async (req, res) => {
       { new: true }
     );
     socket.socket.emit("update-categoryStatus", category.status);
-    res.send({
+    res.json({
       success: true,
       message: "status has been updated",
     });
