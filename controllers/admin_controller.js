@@ -39,7 +39,12 @@ exports.logIn = async (req, res) => {
       activated: false,
     });
 
-    res.cookie("accessToken", accessToken);
+    res.cookie("accessToken", accessToken, {
+      path: "/",
+      secure: true,
+      sameSite: "none",
+      httpOnly: true,
+    });
 
     await admin.save();
     //Success
