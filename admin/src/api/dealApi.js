@@ -29,7 +29,6 @@ export const getDeals = async () =>
         localStorage.getItem("accessToken")
       )}`,
       "Content-type": "application/json",
-      Accept: "application/json",
     },
   });
 
@@ -90,7 +89,6 @@ export const updateStatus = async (id, status) =>
         Accept: "application/json",
       },
     },
-    { withCredentials: true }
   );
 
 export const deleteDeal = async (id) =>
@@ -106,5 +104,4 @@ export const deleteDeal = async (id) =>
       },
       data: {},
     },
-    { withCredentials: true }
   );

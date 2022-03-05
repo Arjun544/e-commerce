@@ -38,7 +38,6 @@ export const addProduct = async (
         Accept: "application/json",
       },
     },
-    { withCredentials: true }
   );
 
 export const uploadMultiImages = async (id, images) =>
@@ -65,7 +64,6 @@ export const getProducts = async (page, limit, pagination) =>
           localStorage.getItem("accessToken")
         )}`,
         "Content-type": "application/json",
-        Accept: "application/json",
       },
     },
   );
@@ -77,7 +75,6 @@ export const getProductById = async (id) =>
         localStorage.getItem("accessToken")
       )}`,
       "Content-type": "application/json",
-      Accept: "application/json",
     },
   });
 

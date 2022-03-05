@@ -31,7 +31,6 @@ export const getUserById = (id) =>
           localStorage.getItem("accessToken")
         )}`,
         "Content-type": "application/json",
-        Accept: "application/json",
       },
     },
   );
@@ -45,7 +44,6 @@ export const getUsers = (page, limit, pagination) =>
           localStorage.getItem("accessToken")
         )}`,
         "Content-type": "application/json",
-        Accept: "application/json",
       },
     },
   );

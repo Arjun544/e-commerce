@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import '../services/notification_api.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import '../screens/register_screen/register_screen.dart';
 import '../screens/root_screen.dart';
@@ -159,31 +158,6 @@ class RegisterScreenController extends GetxController {
     }
   }
 
-  Future<void> signinWIthGoogle() async {
-    try {
-      GoogleSignIn googleSignIn = GoogleSignIn(
-        scopes: [
-          'email',
-          'https://www.googleapis.com/auth/contacts.readonly',
-        ],
-      );
-      GoogleSignInAccount user;
-
-      bool isSignedIn = await googleSignIn.isSignedIn();
-
-      if (isSignedIn) {
-        user = (await googleSignIn.signInSilently())!;
-      } else {
-        user = (await googleSignIn.signIn())!;
-      }
-
-      log(user.toString());
-    } catch (e) {
-      Get.snackbar('Something is wrong', e.toString(),
-          snackPosition: SnackPosition.TOP);
-      print(e);
-    }
-  }
 
   Future<void> sendCode() async {
     await EasyLoading.show(status: 'Sending code...', dismissOnTap: false);

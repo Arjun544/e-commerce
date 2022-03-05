@@ -12,7 +12,6 @@ export const getAllReviews = async (page, limit, pagination) =>
           localStorage.getItem("accessToken")
         )}`,
         "Content-type": "application/json",
-        Accept: "application/json",
       },
     }
   );
@@ -24,7 +23,6 @@ export const getRecentReviews = async () =>
         localStorage.getItem("accessToken")
       )}`,
       "Content-type": "application/json",
-      Accept: "application/json",
     },
   });
 

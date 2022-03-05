@@ -32,7 +32,6 @@ export const getBanners = async () =>
           localStorage.getItem("accessToken")
         )}`,
         "Content-type": "application/json",
-        Accept: "application/json",
       },
     },
   );

@@ -11,7 +11,6 @@ export const getCategories = async () =>
         localStorage.getItem("accessToken")
       )}`,
       "Content-type": "application/json",
-      Accept: "application/json",
     },
   });
 
