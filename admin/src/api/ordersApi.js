@@ -6,15 +6,16 @@ const BaseUrl = process.env.REACT_APP_API_URL;
 export const getOrders = async (page, limit, pagination) => {
   return await axios.get(
     `${BaseUrl}/api/orders/get?page=${page}&limit=${limit}&pagination=${pagination}`,
+    { withCredentials: true },
     {
       headers: {
+        "Access-Control-Allow-Origin": "*",
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
-    { withCredentials: true }
+    }
   );
-  }
+};
 
 export const getUserOrders = async (id) =>
   await axios.get(
@@ -52,4 +53,3 @@ export const updateStatus = async (id, status, paidStatus, isSettingOrders) =>
     },
     { withCredentials: true }
   );
-
