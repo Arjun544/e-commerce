@@ -55,4 +55,3 @@ export const updateStatus = async (id, status, paidStatus, isSettingOrders) =>
     { withCredentials: true }
   );
 
-export default api;
