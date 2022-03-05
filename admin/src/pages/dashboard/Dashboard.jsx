@@ -85,7 +85,7 @@ const Dashboard = () => {
     const fetchReviews = async () => {
       try {
         setIsLoading(true);
-        const { data } = await getAllReviews(false);
+        const { data } = await getAllReviews(1, 1, false);
         setReviews(data.results);
         setIsLoading(false);
       } catch (error) {
