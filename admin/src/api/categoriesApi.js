@@ -82,23 +82,31 @@ export const updateSubCategory = async (id, subCategoryId, name) =>
   );
 
 export const deleteCategory = async (id, iconId) =>
-  await api.delete(`${BaseUrl}/api/categories/${id}`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
+  await api.delete(
+    `${BaseUrl}/api/categories/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+      data: { iconId: iconId },
     },
-    data: { iconId: iconId },
-  });
+    { withCredentials: true }
+  );
 
 export const deleteSubCategory = async (id, subCategoryId) =>
-  await api.delete(`${BaseUrl}/api/categories/subCategory/${id}`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
+  await api.delete(
+    `${BaseUrl}/api/categories/subCategory/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+      data: { subCategoryId: subCategoryId },
     },
-    data: { subCategoryId: subCategoryId },
-  });
+    { withCredentials: true }
+  );
 
 export default api;

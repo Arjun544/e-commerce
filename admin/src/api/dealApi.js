@@ -71,7 +71,7 @@ export const removeDealProducts = async (id, productId, productPrice) =>
   );
 
   export const updateStatus = async (id, status) =>
-   await api.patch(
+    await api.patch(
       `${BaseUrl}/api/deal/updateStatus/${id}/${status}`,
       {},
       {
@@ -80,15 +80,20 @@ export const removeDealProducts = async (id, productId, productPrice) =>
           "Content-type": "application/json",
           Accept: "application/json",
         },
-      }
+      },
+      { withCredentials: true }
     );
 
 export const deleteDeal = async (id) =>
-  await api.delete(`${BaseUrl}/api/deal/delete/${id}`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
+  await api.delete(
+    `${BaseUrl}/api/deal/delete/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+      data: {},
     },
-    data: {},
-  });
+    { withCredentials: true }
+  );

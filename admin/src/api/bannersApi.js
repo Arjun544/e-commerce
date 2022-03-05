@@ -8,7 +8,7 @@ const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
 export const addBanner = async (image, type, products) =>
- await api.post(
+  await api.post(
     `${BaseUrl}/api/banners/add`,
     {
       image,
@@ -21,20 +21,25 @@ export const addBanner = async (image, type, products) =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const getBanners = async () =>
-  await api.get(`${BaseUrl}/api/banners/get`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
+  await api.get(
+    `${BaseUrl}/api/banners/get`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
     },
-  });
+    { withCredentials: true }
+  );
 
 export const updateBanner = async (id, image, imageId) =>
- await api.patch(
+  await api.patch(
     `${BaseUrl}/api/banners/update/${id}`,
     { image, imageId },
     {
@@ -43,7 +48,8 @@ export const updateBanner = async (id, image, imageId) =>
         Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const addBannerProducts = async (id, product, products) =>
@@ -56,11 +62,12 @@ export const addBannerProducts = async (id, product, products) =>
         Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const removeBannerProducts = async (id, productId, productPrice) =>
- await api.patch(
+  await api.patch(
     `${BaseUrl}/api/banners/removeBannerProduct/${id}`,
     { productId, productPrice },
     {
@@ -69,11 +76,12 @@ export const removeBannerProducts = async (id, productId, productPrice) =>
         Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const updateStatus = async (id, status) =>
- await api.patch(
+  await api.patch(
     `${BaseUrl}/api/banners/updateStatus/${id}/${status}`,
     {},
     {
@@ -82,15 +90,20 @@ export const updateStatus = async (id, status) =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const deleteBanner = async (id, imageId) =>
-  await api.delete(`${BaseUrl}/api/banners/deleteBanner/${id}`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
+  await api.delete(
+    `${BaseUrl}/api/banners/deleteBanner/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+      data: { imageId: imageId },
     },
-    data: { imageId: imageId },
-  });
+    { withCredentials: true }
+  );

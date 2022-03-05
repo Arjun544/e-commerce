@@ -19,17 +19,22 @@ export const login = (email, password) =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const getUserById = (id) =>
-  api.get(`${BaseUrl}/api/users/${id}`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
+  api.get(
+    `${BaseUrl}/api/users/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
     },
-  });
+    { withCredentials: true }
+  );
 
 export const getUsers = (page, limit, pagination) =>
   api.get(
@@ -40,18 +45,23 @@ export const getUsers = (page, limit, pagination) =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const deleteUser = (id, profileId) =>
-  api.delete(`${BaseUrl}/api/users/delete/${id}`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
+  api.delete(
+    `${BaseUrl}/api/users/delete/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+      data: { profileId: profileId },
     },
-    data: { profileId: profileId },
-  });
+    { withCredentials: true }
+  );
 
 export const logout = () =>
   api.post(
@@ -62,7 +72,8 @@ export const logout = () =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 // Interceptors;

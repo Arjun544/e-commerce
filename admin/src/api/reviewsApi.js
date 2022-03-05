@@ -15,16 +15,21 @@ export const getAllReviews = async (page, limit, pagination) =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const getRecentReviews = async () =>
-  await api.get(`${BaseUrl}/api/reviews/getRecentReviews`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
+  await api.get(
+    `${BaseUrl}/api/reviews/getRecentReviews`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
     },
-  });
+    { withCredentials: true }
+  );
 
 export default api;

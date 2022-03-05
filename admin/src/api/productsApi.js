@@ -41,7 +41,8 @@ export const addProduct = async (
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const uploadMultiImages = async (id, images) =>
@@ -54,7 +55,8 @@ export const uploadMultiImages = async (id, images) =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const getProducts = async (page, limit, pagination) =>
@@ -66,17 +68,22 @@ export const getProducts = async (page, limit, pagination) =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const getProductById = async (id) =>
-  await api.get(`${BaseUrl}/api/products/${id}`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
+  await api.get(
+    `${BaseUrl}/api/products/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
     },
-  });
+    { withCredentials: true }
+  );
 
 export const updateProduct = async (
   id,
@@ -117,7 +124,8 @@ export const updateProduct = async (
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const updateFeatured = async (id, isFeatured) =>
@@ -130,7 +138,8 @@ export const updateFeatured = async (id, isFeatured) =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const updateStatus = async (id, status) =>
@@ -143,17 +152,22 @@ export const updateStatus = async (id, status) =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    }
+    },
+    { withCredentials: true }
   );
 
 export const deleteProduct = async (id, thumbnailId, imageIds) =>
-  await api.delete(`${BaseUrl}/api/products/delete/${id}`, {
-    headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
-      "Content-type": "application/json",
-      Accept: "application/json",
+  await api.delete(
+    `${BaseUrl}/api/products/delete/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        "Content-type": "application/json",
+        Accept: "application/json",
+      },
+      data: { thumbnailId: thumbnailId, imageIds: imageIds },
     },
-    data: { thumbnailId: thumbnailId, imageIds: imageIds },
-  });
+    { withCredentials: true }
+  );
 
 export default api;
