@@ -1,18 +1,17 @@
 import axios from "axios";
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
+
+axios.defaults.withCredentials = true;
 const api = axios.create();
+api.defaults.withCredentials = true;
 
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
 export const getOrders = async (page, limit, pagination) => {
-console.log("cookie", cookies.get("accessToken"));
   return await api.get(
     `${BaseUrl}/api/orders/get?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -26,7 +25,6 @@ export const getUserOrders = async (id) =>
     `${BaseUrl}/api/orders/userOrders/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -39,7 +37,6 @@ export const getOrderById = async (id) =>
     `${BaseUrl}/api/orders/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -53,7 +50,6 @@ export const updateStatus = async (id, status, paidStatus, isSettingOrders) =>
     { status, paidStatus, isSettingOrders },
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

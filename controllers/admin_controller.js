@@ -39,17 +39,21 @@ exports.logIn = async (req, res) => {
       activated: false,
     });
 
-    // res.cookie("accessToken", accessToken, {
-    //   path: "/",
-    //   secure: true,
-    //   sameSite: "none",
-    //   httpOnly: false,
-    // });
+    res.set("Access-Control-Allow-Origin", req.headers.origin);
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set(
+      "Access-Control-Expose-Headers",
+      "date, etag, access-control-allow-origin, access-control-allow-credentials"
+    );
+
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      origin : "https://admin-sellcorner.herokuapp.com",
+    });
 
     await admin.save();
     //Success
     return res.json({
-      accessToken: accessToken,
       user: { id: admin.id, profile: admin.profile, email: admin.email },
       auth: true,
     });
@@ -68,5 +72,5 @@ exports.logout = async (req, res) => {
   await tokenService.removeToken(accessToken);
   // delete cookies
   res.clearCookie("accessToken");
-  res.json({ user: null, auth: false, accessToken: null });
+  res.json({ user: null, auth: false});
 };

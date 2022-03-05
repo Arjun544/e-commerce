@@ -1,8 +1,8 @@
 import axios from "axios";
-import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
+axios.defaults.withCredentials = true;
 const api = axios.create();
+api.defaults.withCredentials = true;
 
 const BaseUrl = process.env.REACT_APP_API_URL;
 
@@ -37,7 +37,6 @@ export const addProduct = async (
     },
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -51,7 +50,6 @@ export const uploadMultiImages = async (id, images) =>
     { images },
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -64,7 +62,6 @@ export const getProducts = async (page, limit, pagination) =>
     `${BaseUrl}/api/products/getAdminProducts?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -77,7 +74,6 @@ export const getProductById = async (id) =>
     `${BaseUrl}/api/products/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -120,7 +116,6 @@ export const updateProduct = async (
     },
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -134,7 +129,6 @@ export const updateFeatured = async (id, isFeatured) =>
     {},
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -148,7 +142,6 @@ export const updateStatus = async (id, status) =>
     {},
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -161,7 +154,6 @@ export const deleteProduct = async (id, thumbnailId, imageIds) =>
     `${BaseUrl}/api/products/delete/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

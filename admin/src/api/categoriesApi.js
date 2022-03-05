@@ -1,8 +1,8 @@
 import axios from "axios";
-import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
+axios.defaults.withCredentials = true;
 const api = axios.create();
+api.defaults.withCredentials = true;
 
 const BaseUrl = process.env.REACT_APP_API_URL;
 
@@ -10,7 +10,6 @@ const BaseUrl = process.env.REACT_APP_API_URL;
 export const getCategories = async () =>
   await api.get(`${BaseUrl}/api/categories/getAdminCategories`, {
     headers: {
-      Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -23,7 +22,6 @@ export const addCategory = async (name, icon) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
     }
@@ -35,7 +33,6 @@ export const updateStatus = async (id, status) =>
     {},
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -49,7 +46,6 @@ export const addSubCategory = async (id, name) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
     }
@@ -62,7 +58,6 @@ export const updateCategory = async (id, name, icon, iconId) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
     }
@@ -75,7 +70,6 @@ export const updateSubCategory = async (id, subCategoryId, name) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
         Accept: "application/json",
       },
     }
@@ -86,7 +80,6 @@ export const deleteCategory = async (id, iconId) =>
     `${BaseUrl}/api/categories/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -100,7 +93,6 @@ export const deleteSubCategory = async (id, subCategoryId) =>
     `${BaseUrl}/api/categories/subCategory/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

@@ -51,7 +51,7 @@ app.use(
   cors({
     credentials: true,
     methods: "GET, POST, PUT, DELETE",
-    origin: ["http://localhost:3000", "https://admin-sellcorner.herokuapp.com"],
+    origin: "https://admin-sellcorner.herokuapp.com",
   })
 );
 app.use(express.urlencoded({ extended: true }));

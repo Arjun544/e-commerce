@@ -1,8 +1,8 @@
 import axios from "axios";
-import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
+axios.defaults.withCredentials = true;
 const api = axios.create();
+api.defaults.withCredentials = true;
 
 const BaseUrl = process.env.REACT_APP_API_URL;
 
@@ -17,7 +17,6 @@ export const sendNotificationToAllUsers = async (title, body, image) =>
     },
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -34,7 +33,6 @@ export const NotifyUser = async (title, body) =>
     },
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

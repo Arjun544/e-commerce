@@ -1,8 +1,9 @@
 import axios from "axios";
-import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
+
+axios.defaults.withCredentials = true;
 const api = axios.create();
+api.defaults.withCredentials = true;
 
 const BaseUrl = process.env.REACT_APP_API_URL;
 
@@ -11,7 +12,6 @@ export const getAllReviews = async (page, limit, pagination) =>
     `${BaseUrl}/api/reviews/get?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -24,7 +24,6 @@ export const getRecentReviews = async () =>
     `${BaseUrl}/api/reviews/getRecentReviews`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

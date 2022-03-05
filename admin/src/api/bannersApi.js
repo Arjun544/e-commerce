@@ -1,8 +1,8 @@
 import axios from "axios";
-import Cookies from "universal-cookie";
 
-const cookies = new Cookies();
+axios.defaults.withCredentials = true;
 const api = axios.create();
+api.defaults.withCredentials = true;
 
 const BaseUrl = process.env.REACT_APP_API_URL;
 
@@ -17,7 +17,6 @@ export const addBanner = async (image, type, products) =>
     },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -30,7 +29,6 @@ export const getBanners = async () =>
     `${BaseUrl}/api/banners/get`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -45,7 +43,6 @@ export const updateBanner = async (id, image, imageId) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         Accept: "application/json",
       },
     },
@@ -59,7 +56,6 @@ export const addBannerProducts = async (id, product, products) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         Accept: "application/json",
       },
     },
@@ -73,7 +69,6 @@ export const removeBannerProducts = async (id, productId, productPrice) =>
     {
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         Accept: "application/json",
       },
     },
@@ -86,7 +81,6 @@ export const updateStatus = async (id, status) =>
     {},
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -99,7 +93,6 @@ export const deleteBanner = async (id, imageId) =>
     `${BaseUrl}/api/banners/deleteBanner/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
