@@ -30,7 +30,6 @@ const Login = () => {
             setAuth({
               auth: response.data.auth,
               user: response.data.user,
-              accessToken: response.data.accessToken,
             })
           );
         }
