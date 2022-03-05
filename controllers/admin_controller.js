@@ -43,7 +43,7 @@ exports.logIn = async (req, res) => {
       path: "/",
       secure: true,
       sameSite: "none",
-      httpOnly: true,
+      httpOnly: false,
     });
 
     await admin.save();
