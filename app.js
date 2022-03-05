@@ -45,7 +45,7 @@ connectDB();
 // Event Emitter
 const eventEmitter = new Emitter();
 app.set("eventEmitter", eventEmitter);
-
+app.set("trust proxy", 1);
 //Middlewares
 app.use(
   cors({
