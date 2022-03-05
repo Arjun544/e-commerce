@@ -4,8 +4,8 @@ const api = axios.create();
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
-export const getCategories = async () => {
-  const res = await api.get(`${BaseUrl}/api/categories/getAdminCategories`, {
+export const getCategories = async () =>
+  await api.get(`${BaseUrl}/api/categories/getAdminCategories`, {
     headers: {
       Authorization: `Bearer ${JSON.parse(
         localStorage.getItem("accessToken")
@@ -13,12 +13,9 @@ export const getCategories = async () => {
       "Content-type": "application/json",
     },
   });
-  const json = await res.json();
-  return json;
-};
 
-export const addCategory = async (name, icon) => {
-  const res = await api.post(
+export const addCategory = async (name, icon) =>
+  await api.post(
     `${BaseUrl}/api/categories/add`,
     { name, icon },
     {
@@ -31,12 +28,9 @@ export const addCategory = async (name, icon) => {
       },
     }
   );
-  const json = await res.json();
-  return json;
-};
 
-export const updateStatus = async (id, status) => {
-  const res = await api.patch(
+export const updateStatus = async (id, status) =>
+  await api.patch(
     `${BaseUrl}/api/categories/updateStatus/${id}/${status}`,
     {},
     {
@@ -49,12 +43,9 @@ export const updateStatus = async (id, status) => {
       },
     }
   );
-  const json = await res.json();
-  return json;
-};
 
-export const addSubCategory = async (id, name) => {
-  const res = await api.patch(
+export const addSubCategory = async (id, name) =>
+  await api.patch(
     `${BaseUrl}/api/categories/addSubCategory/${id}`,
     { name },
     {
@@ -67,12 +58,9 @@ export const addSubCategory = async (id, name) => {
       },
     }
   );
-  const json = await res.json();
-  return json;
-};
 
-export const updateCategory = async (id, name, icon, iconId) => {
-  const res = await api.patch(
+export const updateCategory = async (id, name, icon, iconId) =>
+  await api.patch(
     `${BaseUrl}/api/categories/update/${id}`,
     { name, icon, iconId },
     {
@@ -85,12 +73,9 @@ export const updateCategory = async (id, name, icon, iconId) => {
       },
     }
   );
-  const json = await res.json();
-  return json;
-};
 
-export const updateSubCategory = async (id, subCategoryId, name) => {
-  const res = await api.patch(
+export const updateSubCategory = async (id, subCategoryId, name) =>
+  await api.patch(
     `${BaseUrl}/api/categories/updateSubCategory/${id}`,
     { subCategoryId, name },
     {
@@ -103,12 +88,9 @@ export const updateSubCategory = async (id, subCategoryId, name) => {
       },
     }
   );
-  const json = await res.json();
-  return json;
-};
 
-export const deleteCategory = async (id, iconId) => {
-  const res = await api.delete(`${BaseUrl}/api/categories/${id}`, {
+export const deleteCategory = async (id, iconId) =>
+  await api.delete(`${BaseUrl}/api/categories/${id}`, {
     headers: {
       Authorization: `Bearer ${JSON.parse(
         localStorage.getItem("accessToken")
@@ -118,11 +100,9 @@ export const deleteCategory = async (id, iconId) => {
     },
     data: { iconId: iconId },
   });
-  const json = await res.json();
-  return json;
-};
-export const deleteSubCategory = async (id, subCategoryId) => {
-  const res = await api.delete(`${BaseUrl}/api/categories/subCategory/${id}`, {
+
+export const deleteSubCategory = async (id, subCategoryId) =>
+  await api.delete(`${BaseUrl}/api/categories/subCategory/${id}`, {
     headers: {
       Authorization: `Bearer ${JSON.parse(
         localStorage.getItem("accessToken")
@@ -132,8 +112,5 @@ export const deleteSubCategory = async (id, subCategoryId) => {
     },
     data: { subCategoryId: subCategoryId },
   });
-  const json = await res.json();
-  return json;
-};
 
 export default api;

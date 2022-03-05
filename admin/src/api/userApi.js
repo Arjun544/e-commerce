@@ -4,8 +4,8 @@ const api = axios.create();
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
-export const login = async (email, password) => {
-  const res = await api.post(
+export const login = (email, password) =>
+  api.post(
     `${BaseUrl}/api/admin/login`,
     {
       email,
@@ -21,12 +21,9 @@ export const login = async (email, password) => {
       },
     }
   );
-  const json = await res.json();
-  return json;
-};
 
-export const getUserById = async (id) => {
-  const res = await api.get(`${BaseUrl}/api/users/${id}`, {
+export const getUserById = (id) =>
+  api.get(`${BaseUrl}/api/users/${id}`, {
     headers: {
       Authorization: `Bearer ${JSON.parse(
         localStorage.getItem("accessToken")
@@ -34,12 +31,9 @@ export const getUserById = async (id) => {
       "Content-type": "application/json",
     },
   });
-  const json = await res.json();
-  return json;
-};
 
-export const getUsers = async (page, limit, pagination) => {
-  const res = await api.get(
+export const getUsers = (page, limit, pagination) =>
+  api.get(
     `${BaseUrl}/api/users/allUsers?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
@@ -50,12 +44,9 @@ export const getUsers = async (page, limit, pagination) => {
       },
     }
   );
-  const json = await res.json();
-  return json;
-};
 
-export const deleteUser = async (id, profileId) => {
-  const res = await api.delete(`${BaseUrl}/api/users/delete/${id}`, {
+export const deleteUser = (id, profileId) =>
+  api.delete(`${BaseUrl}/api/users/delete/${id}`, {
     headers: {
       Authorization: `Bearer ${JSON.parse(
         localStorage.getItem("accessToken")
@@ -65,12 +56,9 @@ export const deleteUser = async (id, profileId) => {
     },
     data: { profileId: profileId },
   });
-  const json = await res.json();
-  return json;
-};
 
-export const logout = async () => {
-  const res = await api.post(
+export const logout = () =>
+  api.post(
     `${BaseUrl}/api/admin/logout`,
     { withCredentials: true },
     {
@@ -83,9 +71,6 @@ export const logout = async () => {
       },
     }
   );
-  const json = await res.json();
-  return json;
-};
 
 // Interceptors;
 // api.interceptors.response.use(
