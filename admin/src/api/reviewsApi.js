@@ -6,8 +6,8 @@ const api = axios.create();
 
 const BaseUrl = process.env.REACT_APP_API_URL;
 
-export const getAllReviews = (page, limit, pagination) =>
-  api.get(
+export const getAllReviews = async (page, limit, pagination) =>
+  await api.get(
     `${BaseUrl}/api/reviews/get?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
@@ -18,8 +18,8 @@ export const getAllReviews = (page, limit, pagination) =>
     }
   );
 
-export const getRecentReviews = () =>
-  api.get(`${BaseUrl}/api/reviews/getRecentReviews`, {
+export const getRecentReviews = async () =>
+  await api.get(`${BaseUrl}/api/reviews/getRecentReviews`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",

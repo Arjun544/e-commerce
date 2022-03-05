@@ -7,17 +7,17 @@ const api = axios.create();
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
-export const getCategories = () =>
-  api.get(`${BaseUrl}/api/categories/getAdminCategories`, {
+export const getCategories = async () =>
+  await api.get(`${BaseUrl}/api/categories/getAdminCategories`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
   });
-  
-export const addCategory = (name, icon) =>
-  api.post(
+
+export const addCategory = async (name, icon) =>
+  await api.post(
     `${BaseUrl}/api/categories/add`,
     { name, icon },
     {
@@ -29,8 +29,8 @@ export const addCategory = (name, icon) =>
     }
   );
 
-export const updateStatus = (id, status) =>
-  api.patch(
+export const updateStatus = async (id, status) =>
+  await api.patch(
     `${BaseUrl}/api/categories/updateStatus/${id}/${status}`,
     {},
     {
@@ -42,8 +42,8 @@ export const updateStatus = (id, status) =>
     }
   );
 
-export const addSubCategory = (id, name) =>
-  api.patch(
+export const addSubCategory = async (id, name) =>
+  await api.patch(
     `${BaseUrl}/api/categories/addSubCategory/${id}`,
     { name },
     {
@@ -55,8 +55,8 @@ export const addSubCategory = (id, name) =>
     }
   );
 
-export const updateCategory = (id, name, icon, iconId) =>
-  api.patch(
+export const updateCategory = async (id, name, icon, iconId) =>
+  await api.patch(
     `${BaseUrl}/api/categories/update/${id}`,
     { name, icon, iconId },
     {
@@ -68,8 +68,8 @@ export const updateCategory = (id, name, icon, iconId) =>
     }
   );
 
-export const updateSubCategory = (id, subCategoryId, name) =>
-  api.patch(
+export const updateSubCategory = async (id, subCategoryId, name) =>
+  await api.patch(
     `${BaseUrl}/api/categories/updateSubCategory/${id}`,
     { subCategoryId, name },
     {
@@ -81,8 +81,8 @@ export const updateSubCategory = (id, subCategoryId, name) =>
     }
   );
 
-export const deleteCategory = (id, iconId) =>
-  api.delete(`${BaseUrl}/api/categories/${id}`, {
+export const deleteCategory = async (id, iconId) =>
+  await api.delete(`${BaseUrl}/api/categories/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -91,8 +91,8 @@ export const deleteCategory = (id, iconId) =>
     data: { iconId: iconId },
   });
 
-export const deleteSubCategory = (id, subCategoryId) =>
-  api.delete(`${BaseUrl}/api/categories/subCategory/${id}`, {
+export const deleteSubCategory = async (id, subCategoryId) =>
+  await api.delete(`${BaseUrl}/api/categories/subCategory/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -100,7 +100,5 @@ export const deleteSubCategory = (id, subCategoryId) =>
     },
     data: { subCategoryId: subCategoryId },
   });
-
-
 
 export default api;

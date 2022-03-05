@@ -7,7 +7,7 @@ const api = axios.create();
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
-export const addProduct = (
+export const addProduct = async (
   name,
   description,
   fullDescription,
@@ -20,7 +20,7 @@ export const addProduct = (
   onSale,
   discount
 ) =>
-  api.post(
+  await api.post(
     `${BaseUrl}/api/products/add`,
     {
       name,
@@ -44,8 +44,8 @@ export const addProduct = (
     }
   );
 
-export const uploadMultiImages = (id, images) =>
-  api.patch(
+export const uploadMultiImages = async (id, images) =>
+  await api.patch(
     `${BaseUrl}/api/products/multipleImages/${id}`,
     { images },
     {
@@ -57,8 +57,8 @@ export const uploadMultiImages = (id, images) =>
     }
   );
 
-export const getProducts = (page, limit, pagination) =>
-  api.get(
+export const getProducts = async (page, limit, pagination) =>
+  await api.get(
     `${BaseUrl}/api/products/getAdminProducts?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
@@ -69,8 +69,8 @@ export const getProducts = (page, limit, pagination) =>
     }
   );
 
-export const getProductById = (id) =>
-  api.get(`${BaseUrl}/api/products/${id}`, {
+export const getProductById = async (id) =>
+  await api.get(`${BaseUrl}/api/products/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -78,7 +78,7 @@ export const getProductById = (id) =>
     },
   });
 
-export const updateProduct = (
+export const updateProduct = async (
   id,
   name,
   description,
@@ -94,7 +94,7 @@ export const updateProduct = (
   thumbnailId,
   imageIds
 ) =>
-  api.patch(
+  await api.patch(
     `${BaseUrl}/api/products/update/${id}`,
     {
       name,
@@ -120,8 +120,8 @@ export const updateProduct = (
     }
   );
 
-export const updateFeatured = (id, isFeatured) =>
-  api.patch(
+export const updateFeatured = async (id, isFeatured) =>
+  await api.patch(
     `${BaseUrl}/api/products/updateFeatured/${id}/${isFeatured}`,
     {},
     {
@@ -133,8 +133,8 @@ export const updateFeatured = (id, isFeatured) =>
     }
   );
 
-export const updateStatus = (id, status) =>
-  api.patch(
+export const updateStatus = async (id, status) =>
+  await api.patch(
     `${BaseUrl}/api/products/updateStatus/${id}/${status}`,
     {},
     {
@@ -146,8 +146,8 @@ export const updateStatus = (id, status) =>
     }
   );
 
-export const deleteProduct = (id, thumbnailId, imageIds) =>
-  api.delete(`${BaseUrl}/api/products/delete/${id}`, {
+export const deleteProduct = async (id, thumbnailId, imageIds) =>
+  await api.delete(`${BaseUrl}/api/products/delete/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",

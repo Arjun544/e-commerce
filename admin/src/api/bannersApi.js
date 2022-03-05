@@ -7,8 +7,8 @@ const api = axios.create();
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
-export const addBanner = (image, type, products) =>
-  api.post(
+export const addBanner = async (image, type, products) =>
+ await api.post(
     `${BaseUrl}/api/banners/add`,
     {
       image,
@@ -24,8 +24,8 @@ export const addBanner = (image, type, products) =>
     }
   );
 
-export const getBanners = () =>
-  api.get(`${BaseUrl}/api/banners/get`, {
+export const getBanners = async () =>
+  await api.get(`${BaseUrl}/api/banners/get`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -33,8 +33,8 @@ export const getBanners = () =>
     },
   });
 
-export const updateBanner = (id, image, imageId) =>
-  api.patch(
+export const updateBanner = async (id, image, imageId) =>
+ await api.patch(
     `${BaseUrl}/api/banners/update/${id}`,
     { image, imageId },
     {
@@ -46,8 +46,8 @@ export const updateBanner = (id, image, imageId) =>
     }
   );
 
-export const addBannerProducts = (id, product, products) =>
-  api.patch(
+export const addBannerProducts = async (id, product, products) =>
+  await api.patch(
     `${BaseUrl}/api/banners/addBannerProducts/${id}`,
     { product, products },
     {
@@ -59,8 +59,8 @@ export const addBannerProducts = (id, product, products) =>
     }
   );
 
-export const removeBannerProducts = (id, productId, productPrice) =>
-  api.patch(
+export const removeBannerProducts = async (id, productId, productPrice) =>
+ await api.patch(
     `${BaseUrl}/api/banners/removeBannerProduct/${id}`,
     { productId, productPrice },
     {
@@ -72,8 +72,8 @@ export const removeBannerProducts = (id, productId, productPrice) =>
     }
   );
 
-export const updateStatus = (id, status) =>
-  api.patch(
+export const updateStatus = async (id, status) =>
+ await api.patch(
     `${BaseUrl}/api/banners/updateStatus/${id}/${status}`,
     {},
     {
@@ -85,8 +85,8 @@ export const updateStatus = (id, status) =>
     }
   );
 
-export const deleteBanner = (id, imageId) =>
-  api.delete(`${BaseUrl}/api/banners/deleteBanner/${id}`, {
+export const deleteBanner = async (id, imageId) =>
+  await api.delete(`${BaseUrl}/api/banners/deleteBanner/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",

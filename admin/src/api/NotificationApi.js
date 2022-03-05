@@ -7,8 +7,8 @@ const api = axios.create();
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
-export const sendNotificationToAllUsers = (title, body, image) =>
-  api.post(
+export const sendNotificationToAllUsers = async (title, body, image) =>
+ await api.post(
     `${BaseUrl}/api/notification/sendToAllUsers`,
     {
       title,
@@ -24,8 +24,8 @@ export const sendNotificationToAllUsers = (title, body, image) =>
     }
   );
 
-export const NotifyUser = (title, body) =>
-  api.post(
+export const NotifyUser = async (title, body) =>
+  await api.post(
     `${BaseUrl}/api/notification/send`,
     {
       title,

@@ -6,9 +6,10 @@ const api = axios.create();
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
-export const getOrders = (page, limit, pagination) =>
-  api.get(
+export const getOrders = async (page, limit, pagination) =>
+  await api.get(
     `${BaseUrl}/api/orders/get?page=${page}&limit=${limit}&pagination=${pagination}`,
+
     {
       headers: {
         Authorization: `Bearer ${cookies.get("accessToken")}`,
@@ -18,8 +19,8 @@ export const getOrders = (page, limit, pagination) =>
     }
   );
 
-export const getUserOrders = (id) =>
-  api.get(`${BaseUrl}/api/orders/userOrders/${id}`, {
+export const getUserOrders = async (id) =>
+ await api.get(`${BaseUrl}/api/orders/userOrders/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -27,8 +28,8 @@ export const getUserOrders = (id) =>
     },
   });
 
-export const getOrderById = (id) =>
-  api.get(`${BaseUrl}/api/orders/${id}`, {
+export const getOrderById = async (id) =>
+  await api.get(`${BaseUrl}/api/orders/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -36,8 +37,8 @@ export const getOrderById = (id) =>
     },
   });
 
-export const updateStatus = (id, status, paidStatus, isSettingOrders) =>
-  api.patch(
+export const updateStatus = async (id, status, paidStatus, isSettingOrders) =>
+ await api.patch(
     `${BaseUrl}/api/orders/${id}`,
     { status, paidStatus, isSettingOrders },
     {

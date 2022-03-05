@@ -7,8 +7,8 @@ const api = axios.create();
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
-export const addDeal = (title, products) =>
-  api.post(
+export const addDeal = async (title, products) =>
+  await api.post(
     `${BaseUrl}/api/deal/add`,
     {
       title,
@@ -23,8 +23,8 @@ export const addDeal = (title, products) =>
     }
   );
 
-export const getDeals = () =>
-  api.get(`${BaseUrl}/api/deal/get`, {
+export const getDeals = async () =>
+  await api.get(`${BaseUrl}/api/deal/get`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
@@ -32,8 +32,8 @@ export const getDeals = () =>
     },
   });
 
-export const updateDeal = (id, title, startDate, endDate) =>
-  api.patch(
+export const updateDeal = async (id, title, startDate, endDate) =>
+ await api.patch(
     `${BaseUrl}/api/deal/update/${id}`,
     { title, startDate, endDate },
     {
@@ -44,8 +44,8 @@ export const updateDeal = (id, title, startDate, endDate) =>
       },
     }
   );
-export const addDealProducts = (id, product, products) =>
-  api.patch(
+export const addDealProducts = async (id, product, products) =>
+ await api.patch(
     `${BaseUrl}/api/deal/addDealProducts/${id}`,
     { product, products },
     {
@@ -57,8 +57,8 @@ export const addDealProducts = (id, product, products) =>
     }
   );
 
-export const removeDealProducts = (id, productId, productPrice) =>
-  api.patch(
+export const removeDealProducts = async (id, productId, productPrice) =>
+  await api.patch(
     `${BaseUrl}/api/deal/removeDealProduct/${id}`,
     { productId, productPrice },
     {
@@ -70,8 +70,8 @@ export const removeDealProducts = (id, productId, productPrice) =>
     }
   );
 
-  export const updateStatus = (id, status) =>
-    api.patch(
+  export const updateStatus = async (id, status) =>
+   await api.patch(
       `${BaseUrl}/api/deal/updateStatus/${id}/${status}`,
       {},
       {
@@ -83,8 +83,8 @@ export const removeDealProducts = (id, productId, productPrice) =>
       }
     );
 
-export const deleteDeal = (id) =>
-  api.delete(`${BaseUrl}/api/deal/delete/${id}`, {
+export const deleteDeal = async (id) =>
+  await api.delete(`${BaseUrl}/api/deal/delete/${id}`, {
     headers: {
       Authorization: `Bearer ${cookies.get("accessToken")}`,
       "Content-type": "application/json",
