@@ -27,7 +27,7 @@ export const getUserById = (id) =>
     `${BaseUrl}/api/users/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -40,7 +40,7 @@ export const getUsers = (page, limit, pagination) =>
     `${BaseUrl}/api/users/allUsers?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -53,7 +53,7 @@ export const deleteUser = (id, profileId) =>
     `${BaseUrl}/api/users/delete/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

@@ -86,7 +86,7 @@ export const deleteCategory = async (id, iconId) =>
     `${BaseUrl}/api/categories/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -100,7 +100,7 @@ export const deleteSubCategory = async (id, subCategoryId) =>
     `${BaseUrl}/api/categories/subCategory/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

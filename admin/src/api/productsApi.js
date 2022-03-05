@@ -37,7 +37,7 @@ export const addProduct = async (
     },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -51,7 +51,7 @@ export const uploadMultiImages = async (id, images) =>
     { images },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -64,7 +64,7 @@ export const getProducts = async (page, limit, pagination) =>
     `${BaseUrl}/api/products/getAdminProducts?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -77,7 +77,7 @@ export const getProductById = async (id) =>
     `${BaseUrl}/api/products/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -120,7 +120,7 @@ export const updateProduct = async (
     },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -134,7 +134,7 @@ export const updateFeatured = async (id, isFeatured) =>
     {},
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -148,7 +148,7 @@ export const updateStatus = async (id, status) =>
     {},
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -161,7 +161,7 @@ export const deleteProduct = async (id, thumbnailId, imageIds) =>
     `${BaseUrl}/api/products/delete/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

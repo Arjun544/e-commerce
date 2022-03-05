@@ -12,13 +12,13 @@ console.log("cookie", cookies.get("accessToken"));
     `${BaseUrl}/api/orders/get?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
     },
     { withCredentials: true }
-    );
+  );
   }
 
 export const getUserOrders = async (id) =>
@@ -26,7 +26,7 @@ export const getUserOrders = async (id) =>
     `${BaseUrl}/api/orders/userOrders/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -39,7 +39,7 @@ export const getOrderById = async (id) =>
     `${BaseUrl}/api/orders/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -53,7 +53,7 @@ export const updateStatus = async (id, status, paidStatus, isSettingOrders) =>
     { status, paidStatus, isSettingOrders },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

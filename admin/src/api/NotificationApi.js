@@ -17,7 +17,7 @@ export const sendNotificationToAllUsers = async (title, body, image) =>
     },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -34,7 +34,7 @@ export const NotifyUser = async (title, body) =>
     },
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

@@ -11,7 +11,7 @@ export const getAllReviews = async (page, limit, pagination) =>
     `${BaseUrl}/api/reviews/get?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -24,7 +24,7 @@ export const getRecentReviews = async () =>
     `${BaseUrl}/api/reviews/getRecentReviews`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

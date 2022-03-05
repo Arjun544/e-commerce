@@ -76,7 +76,7 @@ export const removeDealProducts = async (id, productId, productPrice) =>
       {},
       {
         headers: {
-          Authorization: `Bearer ${cookies.get("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           "Content-type": "application/json",
           Accept: "application/json",
         },
@@ -89,7 +89,7 @@ export const deleteDeal = async (id) =>
     `${BaseUrl}/api/deal/delete/${id}`,
     {
       headers: {
-        Authorization: `Bearer ${cookies.get("accessToken")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
