@@ -1,9 +1,6 @@
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
 const api = axios.create();
-api.defaults.withCredentials = true;
-
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
@@ -17,11 +14,13 @@ export const sendNotificationToAllUsers = async (title, body, image) =>
     },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
-    { withCredentials: true }
+    }
   );
 
 export const NotifyUser = async (title, body) =>
@@ -33,9 +32,11 @@ export const NotifyUser = async (title, body) =>
     },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
-    { withCredentials: true }
+    }
   );

@@ -1,9 +1,6 @@
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
 const api = axios.create();
-api.defaults.withCredentials = true;
-
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
@@ -50,11 +47,13 @@ export const uploadMultiImages = async (id, images) =>
     { images },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
     },
-    { withCredentials: true }
   );
 
 export const getProducts = async (page, limit, pagination) =>
@@ -62,24 +61,25 @@ export const getProducts = async (page, limit, pagination) =>
     `${BaseUrl}/api/products/getAdminProducts?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
     },
-    { withCredentials: true }
   );
 
 export const getProductById = async (id) =>
-  await api.get(
-    `${BaseUrl}/api/products/${id}`,
-    {
-      headers: {
-        "Content-type": "application/json",
-        Accept: "application/json",
-      },
+  await api.get(`${BaseUrl}/api/products/${id}`, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(
+        localStorage.getItem("accessToken")
+      )}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
     },
-    { withCredentials: true }
-  );
+  });
 
 export const updateProduct = async (
   id,
@@ -116,11 +116,13 @@ export const updateProduct = async (
     },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
     },
-    { withCredentials: true }
   );
 
 export const updateFeatured = async (id, isFeatured) =>
@@ -129,11 +131,13 @@ export const updateFeatured = async (id, isFeatured) =>
     {},
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
-    { withCredentials: true }
+    }
   );
 
 export const updateStatus = async (id, status) =>
@@ -142,24 +146,25 @@ export const updateStatus = async (id, status) =>
     {},
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
-    { withCredentials: true }
+    }
   );
 
 export const deleteProduct = async (id, thumbnailId, imageIds) =>
-  await api.delete(
-    `${BaseUrl}/api/products/delete/${id}`,
-    {
-      headers: {
-        "Content-type": "application/json",
-        Accept: "application/json",
-      },
-      data: { thumbnailId: thumbnailId, imageIds: imageIds },
+  await api.delete(`${BaseUrl}/api/products/delete/${id}`, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(
+        localStorage.getItem("accessToken")
+      )}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
     },
-    { withCredentials: true }
-  );
+    data: { thumbnailId: thumbnailId, imageIds: imageIds },
+  });
 
 export default api;

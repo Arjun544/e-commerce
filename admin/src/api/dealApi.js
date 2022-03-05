@@ -1,9 +1,6 @@
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
 const api = axios.create();
-api.defaults.withCredentials = true;
-
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
@@ -16,6 +13,9 @@ export const addDeal = async (title, products) =>
     },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -25,6 +25,9 @@ export const addDeal = async (title, products) =>
 export const getDeals = async () =>
   await api.get(`${BaseUrl}/api/deal/get`, {
     headers: {
+      Authorization: `Bearer ${JSON.parse(
+        localStorage.getItem("accessToken")
+      )}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -36,6 +39,9 @@ export const updateDeal = async (id, title, startDate, endDate) =>
     { title, startDate, endDate },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -47,6 +53,9 @@ export const addDealProducts = async (id, product, products) =>
     { product, products },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -59,6 +68,9 @@ export const removeDealProducts = async (id, productId, productPrice) =>
     { productId, productPrice },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -71,6 +83,9 @@ export const updateStatus = async (id, status) =>
     {},
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -83,6 +98,9 @@ export const deleteDeal = async (id) =>
     `${BaseUrl}/api/deal/delete/${id}`,
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

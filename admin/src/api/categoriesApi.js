@@ -1,15 +1,15 @@
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
 const api = axios.create();
-api.defaults.withCredentials = true;
-
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
 export const getCategories = async () =>
   await api.get(`${BaseUrl}/api/categories/getAdminCategories`, {
     headers: {
+      Authorization: `Bearer ${JSON.parse(
+        localStorage.getItem("accessToken")
+      )}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -21,6 +21,9 @@ export const addCategory = async (name, icon) =>
     { name, icon },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -33,6 +36,9 @@ export const updateStatus = async (id, status) =>
     {},
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -45,6 +51,9 @@ export const addSubCategory = async (id, name) =>
     { name },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -57,6 +66,9 @@ export const updateCategory = async (id, name, icon, iconId) =>
     { name, icon, iconId },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -69,6 +81,9 @@ export const updateSubCategory = async (id, subCategoryId, name) =>
     { subCategoryId, name },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -80,12 +95,14 @@ export const deleteCategory = async (id, iconId) =>
     `${BaseUrl}/api/categories/${id}`,
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
       data: { iconId: iconId },
     },
-    { withCredentials: true }
   );
 
 export const deleteSubCategory = async (id, subCategoryId) =>
@@ -93,12 +110,14 @@ export const deleteSubCategory = async (id, subCategoryId) =>
     `${BaseUrl}/api/categories/subCategory/${id}`,
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
       data: { subCategoryId: subCategoryId },
     },
-    { withCredentials: true }
   );
 
 export default api;

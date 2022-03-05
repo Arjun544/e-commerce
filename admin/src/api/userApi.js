@@ -1,9 +1,6 @@
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
 const api = axios.create();
-api.defaults.withCredentials = true;
-
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
@@ -14,9 +11,11 @@ export const login = (email, password) =>
       email,
       password,
     },
-    { withCredentials: true },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -28,11 +27,13 @@ export const getUserById = (id) =>
     `${BaseUrl}/api/users/${id}`,
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
     },
-    { withCredentials: true }
   );
 
 export const getUsers = (page, limit, pagination) =>
@@ -40,12 +41,13 @@ export const getUsers = (page, limit, pagination) =>
     `${BaseUrl}/api/users/allUsers?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
     },
-    { withCredentials: true }
   );
 
 export const deleteUser = (id, profileId) =>
@@ -53,12 +55,14 @@ export const deleteUser = (id, profileId) =>
     `${BaseUrl}/api/users/delete/${id}`,
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
       data: { profileId: profileId },
     },
-    { withCredentials: true }
   );
 
 export const logout = () =>
@@ -67,11 +71,13 @@ export const logout = () =>
     { withCredentials: true },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
-    { withCredentials: true }
+    }
   );
 
 // Interceptors;

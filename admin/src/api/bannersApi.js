@@ -1,9 +1,6 @@
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
 const api = axios.create();
-api.defaults.withCredentials = true;
-
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
@@ -17,11 +14,13 @@ export const addBanner = async (image, type, products) =>
     },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
-    { withCredentials: true }
+    }
   );
 
 export const getBanners = async () =>
@@ -29,11 +28,13 @@ export const getBanners = async () =>
     `${BaseUrl}/api/banners/get`,
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
     },
-    { withCredentials: true }
   );
 
 export const updateBanner = async (id, image, imageId) =>
@@ -42,11 +43,13 @@ export const updateBanner = async (id, image, imageId) =>
     { image, imageId },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
     },
-    { withCredentials: true }
   );
 
 export const addBannerProducts = async (id, product, products) =>
@@ -55,11 +58,13 @@ export const addBannerProducts = async (id, product, products) =>
     { product, products },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
     },
-    { withCredentials: true }
   );
 
 export const removeBannerProducts = async (id, productId, productPrice) =>
@@ -68,11 +73,13 @@ export const removeBannerProducts = async (id, productId, productPrice) =>
     { productId, productPrice },
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
-    { withCredentials: true }
+    }
   );
 
 export const updateStatus = async (id, status) =>
@@ -81,22 +88,25 @@ export const updateStatus = async (id, status) =>
     {},
     {
       headers: {
+        Authorization: `Bearer ${JSON.parse(
+          localStorage.getItem("accessToken")
+        )}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
-    { withCredentials: true }
+    }
   );
 
 export const deleteBanner = async (id, imageId) =>
-  await api.delete(
-    `${BaseUrl}/api/banners/deleteBanner/${id}`,
-    {
-      headers: {
-        "Content-type": "application/json",
-        Accept: "application/json",
-      },
-      data: { imageId: imageId },
+  await api.delete(`${BaseUrl}/api/banners/deleteBanner/${id}`, {
+    headers: {
+      Authorization: `Bearer ${JSON.parse(
+        localStorage.getItem("accessToken")
+      )}`,
+      "Content-type": "application/json",
+      Accept: "application/json",
     },
-    { withCredentials: true }
-  );
+    data: { imageId: imageId },
+  });
+
+  export default api;
