@@ -6,8 +6,9 @@ const api = axios.create();
 const BaseUrl = process.env.REACT_APP_API_URL;
 
 // List of all the endpoints
-export const getOrders = async (page, limit, pagination) =>
-  await api.get(
+export const getOrders = async (page, limit, pagination) => {
+console.log("cookie", cookies.get("accessToken"));
+  return await api.get(
     `${BaseUrl}/api/orders/get?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
@@ -17,7 +18,8 @@ export const getOrders = async (page, limit, pagination) =>
       },
     },
     { withCredentials: true }
-  );
+    );
+  }
 
 export const getUserOrders = async (id) =>
   await api.get(

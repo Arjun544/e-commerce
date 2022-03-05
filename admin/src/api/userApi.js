@@ -19,8 +19,7 @@ export const login = (email, password) =>
         "Content-type": "application/json",
         Accept: "application/json",
       },
-    },
-    { withCredentials: true }
+    }
   );
 
 export const getUserById = (id) =>
