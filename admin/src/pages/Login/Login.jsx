@@ -27,7 +27,11 @@ const Login = () => {
       if (response.data.auth) {
         if (!unMounted) {
           dispatch(
-            setAuth({ auth: response.data.auth, user: response.data.user })
+            setAuth({
+              auth: response.data.auth,
+              user: response.data.user,
+              accessToken: response.data.accessToken,
+            })
           );
         }
       }

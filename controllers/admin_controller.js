@@ -68,5 +68,5 @@ exports.logout = async (req, res) => {
   await tokenService.removeToken(accessToken);
   // delete cookies
   res.clearCookie("accessToken");
-  res.json({ user: null, auth: false });
+  res.json({ user: null, auth: false, accessToken: null });
 };
