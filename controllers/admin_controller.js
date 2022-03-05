@@ -40,9 +40,9 @@ exports.logIn = async (req, res) => {
     });
 
     res.cookie("accessToken", accessToken, {
+      path: '/',
       secure: true,
       httpOnly: true,
-      domain: "https://sellcorner-admin.herokuapp.com",
     });
 
     await admin.save();
