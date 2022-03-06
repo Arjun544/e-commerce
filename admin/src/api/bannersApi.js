@@ -84,9 +84,9 @@ export const updateStatus = async (id, status) =>
 export const deleteBanner = async (id, imageId) =>
   await api.delete(`${BaseUrl}/api/banners/deleteBanner/${id}`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
+      Authorization: `Bearer ${
         localStorage.getItem("accessToken")
-      )}`,
+      }`,
       "Content-type": "application/json",
       Accept: "application/json",
     },

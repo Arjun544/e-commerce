@@ -76,19 +76,6 @@ const TopBar = () => {
             </svg>
           )}
         </div>
-
-        <div
-          className={`flex h-12 w-${
-            isBigScreen ? "1/2" : "full"
-          } items-center pl-4 ml-28 rounded-xl placeholder-gray-200 bg-gray-100`}
-        >
-          <SearchIcon />
-          <input
-            className="text-sm  flex-grow font-semibold pl-4 text-black bg-gray-100 border-0 outline-none"
-            type="text"
-            placeholder="Search here"
-          />
-        </div>
       </div>
       <div ref={ref} className="mr-4 rounded-full relative">
         <div onClick={toggleMenu} className="flex items-center cursor-pointer">

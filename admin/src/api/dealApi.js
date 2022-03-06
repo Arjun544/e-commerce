@@ -23,9 +23,9 @@ export const addDeal = async (title, products) =>
 export const getDeals = async () =>
   await api.get(`${BaseUrl}/api/deal/get`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
+      Authorization: `Bearer ${
         localStorage.getItem("accessToken")
-      )}`,
+      }`,
       "Content-type": "application/json",
     },
   });
@@ -84,9 +84,9 @@ export const updateStatus = async (id, status) =>
 export const deleteDeal = async (id) =>
   await api.delete(`${BaseUrl}/api/deal/delete/${id}`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
+      Authorization: `Bearer ${
         localStorage.getItem("accessToken")
-      )}`,
+      }`,
       "Content-type": "application/json",
       Accept: "application/json",
     },

@@ -26,7 +26,7 @@ class _ShipAddressState extends State<ShipAddress> {
       appBar: PreferredSize(
         preferredSize: Size(Get.width, 40),
         child: const Padding(
-          padding: EdgeInsets.only(top: 40.0, left: 8, bottom: 6),
+          padding: EdgeInsets.only(left: 8, bottom: 6),
           child: TopHeader(text: 'Shipping Address'),
         ),
       ),

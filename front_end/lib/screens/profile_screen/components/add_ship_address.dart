@@ -1,4 +1,3 @@
-
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -75,7 +74,7 @@ class _EditProfileState extends State<AddShipAddress> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 40.0, left: 8, bottom: 6),
+          padding: const EdgeInsets.only(left: 8, bottom: 6),
           child: TopHeader(
               text: widget.isEditing ? 'Edit Address' : 'Add Address'),
         ),

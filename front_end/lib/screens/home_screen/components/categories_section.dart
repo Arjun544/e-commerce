@@ -79,12 +79,12 @@ class CategoriesSection extends StatelessWidget {
                       child: Column(
                         children: [
                           Container(
-                            height: 70,
+                            height: 60,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: customGrey,
                               image: DecorationImage(
-                                fit: BoxFit.contain,
+                                fit: BoxFit.fill,
                                 image: CachedNetworkImageProvider(
                                   category.icon,
                                 ),

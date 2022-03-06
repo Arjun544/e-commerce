@@ -7,9 +7,7 @@ const BaseUrl = process.env.REACT_APP_API_URL;
 export const getCategories = async () =>
   await api.get(`${BaseUrl}/api/categories/getAdminCategories`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
-        localStorage.getItem("accessToken")
-      )}`,
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       "Content-type": "application/json",
     },
   });
@@ -82,9 +80,7 @@ export const updateSubCategory = async (id, subCategoryId, name) =>
 export const deleteCategory = async (id, iconId) =>
   await api.delete(`${BaseUrl}/api/categories/${id}`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
-        localStorage.getItem("accessToken")
-      )}`,
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -94,9 +90,7 @@ export const deleteCategory = async (id, iconId) =>
 export const deleteSubCategory = async (id, subCategoryId) =>
   await api.delete(`${BaseUrl}/api/categories/subCategory/${id}`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
-        localStorage.getItem("accessToken")
-      )}`,
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },

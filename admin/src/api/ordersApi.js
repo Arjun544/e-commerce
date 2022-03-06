@@ -20,9 +20,7 @@ export const getOrders = async (page, limit, pagination) => {
 export const getUserOrders = async (id) =>
   await api.get(`${BaseUrl}/api/orders/userOrders/${id}`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
-        localStorage.getItem("accessToken")
-      )}`,
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
@@ -31,9 +29,7 @@ export const getUserOrders = async (id) =>
 export const getOrderById = async (id) =>
   await api.get(`${BaseUrl}/api/orders/${id}`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
-        localStorage.getItem("accessToken")
-      )}`,
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },

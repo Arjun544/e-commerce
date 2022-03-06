@@ -110,7 +110,7 @@ class RegisterScreenController extends GetxController {
     await EasyLoading.show(status: 'Signing in...', dismissOnTap: false);
 
     Map data = {
-      'email': emailController.text,
+      'email': emailController.text.trim(),
       'password': passController.text,
     };
     try {
@@ -157,7 +157,6 @@ class RegisterScreenController extends GetxController {
       print(e);
     }
   }
-
 
   Future<void> sendCode() async {
     await EasyLoading.show(status: 'Sending code...', dismissOnTap: false);

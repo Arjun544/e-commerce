@@ -17,9 +17,9 @@ export const getAllReviews = async (page, limit, pagination) =>
 export const getRecentReviews = async () =>
   await api.get(`${BaseUrl}/api/reviews/getRecentReviews`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
+      Authorization: `Bearer ${
         localStorage.getItem("accessToken")
-      )}`,
+      }`,
       "Content-type": "application/json",
     },
   });

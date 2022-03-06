@@ -23,9 +23,7 @@ export const login = (email, password) =>
 export const getUserById = (id) =>
   api.get(`${BaseUrl}/api/users/${id}`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
-        localStorage.getItem("accessToken")
-      )}`,
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       "Content-type": "application/json",
     },
   });
@@ -44,9 +42,7 @@ export const getUsers = (page, limit, pagination) =>
 export const deleteUser = (id, profileId) =>
   api.delete(`${BaseUrl}/api/users/delete/${id}`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
-        localStorage.getItem("accessToken")
-      )}`,
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       "Content-type": "application/json",
       Accept: "application/json",
     },

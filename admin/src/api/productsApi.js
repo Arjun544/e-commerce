@@ -67,9 +67,9 @@ export const getProducts = async (page, limit, pagination) =>
 export const getProductById = async (id) =>
   await api.get(`${BaseUrl}/api/products/${id}`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
+      Authorization: `Bearer ${
         localStorage.getItem("accessToken")
-      )}`,
+      }`,
       "Content-type": "application/json",
     },
   });
@@ -145,9 +145,9 @@ export const updateStatus = async (id, status) =>
 export const deleteProduct = async (id, thumbnailId, imageIds) =>
   await api.delete(`${BaseUrl}/api/products/delete/${id}`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
+      Authorization: `Bearer ${
         localStorage.getItem("accessToken")
-      )}`,
+      }`,
       "Content-type": "application/json",
       Accept: "application/json",
     },
