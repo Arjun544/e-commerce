@@ -35,15 +35,17 @@ const Dashboard = () => {
   const { products } = useSelector((state) => state.products);
   const [isOrderMenuOpen, setIsOrderMenuOpen] = useState(false);
   const [isOrdersLoading, setIsOrdersLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
+  const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         setIsOrdersLoading(true);
-        const { data } = await getOrders(false);
+        const { data } = await getOrders( false);
         dispatch(setOrders({ orders: data.results }));
         setIsOrdersLoading(false);
+        console.log('ordersssss', data.results);
       } catch (error) {
         setIsOrdersLoading(false);
         console.log(error.response);

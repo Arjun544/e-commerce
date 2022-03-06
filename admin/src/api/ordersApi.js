@@ -10,9 +10,7 @@ export const getOrders = async (page, limit, pagination) => {
     `${BaseUrl}/api/orders/get?page=${page}&limit=${limit}&pagination=${pagination}`,
     {
       headers: {
-        Authorization: `Bearer ${JSON.parse(
-          localStorage.getItem("accessToken")
-        )}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
       },
     }
@@ -47,9 +45,7 @@ export const updateStatus = async (id, status, paidStatus, isSettingOrders) =>
     { status, paidStatus, isSettingOrders },
     {
       headers: {
-        Authorization: `Bearer ${JSON.parse(
-          localStorage.getItem("accessToken")
-        )}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },

@@ -14,9 +14,7 @@ export const addBanner = async (image, type, products) =>
     },
     {
       headers: {
-        Authorization: `Bearer ${JSON.parse(
-          localStorage.getItem("accessToken")
-        )}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -26,9 +24,7 @@ export const addBanner = async (image, type, products) =>
 export const getBanners = async () =>
   await api.get(`${BaseUrl}/api/banners/get`, {
     headers: {
-      Authorization: `Bearer ${JSON.parse(
-        localStorage.getItem("accessToken")
-      )}`,
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       "Content-type": "application/json",
     },
   });
@@ -39,9 +35,7 @@ export const updateBanner = async (id, image, imageId) =>
     { image, imageId },
     {
       headers: {
-        Authorization: `Bearer ${JSON.parse(
-          localStorage.getItem("accessToken")
-        )}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -54,9 +48,7 @@ export const addBannerProducts = async (id, product, products) =>
     { product, products },
     {
       headers: {
-        Authorization: `Bearer ${JSON.parse(
-          localStorage.getItem("accessToken")
-        )}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -69,9 +61,7 @@ export const removeBannerProducts = async (id, productId, productPrice) =>
     { productId, productPrice },
     {
       headers: {
-        Authorization: `Bearer ${JSON.parse(
-          localStorage.getItem("accessToken")
-        )}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
@@ -84,9 +74,7 @@ export const updateStatus = async (id, status) =>
     {},
     {
       headers: {
-        Authorization: `Bearer ${JSON.parse(
-          localStorage.getItem("accessToken")
-        )}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
