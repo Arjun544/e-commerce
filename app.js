@@ -39,7 +39,6 @@ require("dotenv").config();
 // Db Connection
 connectDB();
 
-app.set("trust proxy", 1);
 // Event Emitter
 const eventEmitter = new Emitter();
 app.set("eventEmitter", eventEmitter);
