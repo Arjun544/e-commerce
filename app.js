@@ -20,16 +20,12 @@ const notificationRoutes = require("./routes/notification_routes");
 const server = require("http").createServer(app);
 
 // Sooket Connection
-const io = require("socket.io")(
-  server
-  // {
-  // transports: ["polling"],
-  // autoConnect: true,
-  // cors: {
-
-  // },
-  // }
-);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "https://sell-corner.herokuapp.com",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  },
+});
 
 const connectDB = require("./config/db_config");
 
@@ -39,16 +35,15 @@ require("dotenv").config();
 // Db Connection
 connectDB();
 
+app.set("trust proxy", 1);
 // Event Emitter
 const eventEmitter = new Emitter();
 app.set("eventEmitter", eventEmitter);
 //Middlewares
 app.use(
-  cors()
-  // {
-  // credentials: true,
-  // origin: ["https://admin-sellcorner.herokuapp.com", "http://localhost:3000"],
-  // }
+  cors({
+    origin: "https://sell-corner.herokuapp.com",
+  })
 );
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "50mb" }));
@@ -69,9 +64,6 @@ app.use("/api/notification/", notificationRoutes);
 
 const socket = io.on("connection", (socket) => {
   console.log("socket server is connected");
-  socket.on("updatedCart", (productId) => {
-    socket.join(productId);
-  });
   return socket;
 });
 

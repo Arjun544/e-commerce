@@ -491,7 +491,6 @@ exports.updateFeatured = async (req, res) => {
       },
       { new: true }
     );
-
     socket.socket.emit("update-featured", product.isFeatured);
     res.json({
       success: true,

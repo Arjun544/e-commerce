@@ -27,8 +27,7 @@ import Notification from "./pages/Notification/Notification";
 export const AppContext = createContext(null);
 
 function App() {
-  // const socketUrl = io("https://sell-corner.herokuapp.com");
-  const socketUrl = io();
+  const socketUrl = "https://sell-corner.herokuapp.com";
   let socket = useRef(null);
 
   const [selectedSideBar, setSelectedSideBar] = useState(0);
@@ -39,16 +38,9 @@ function App() {
   const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
 
   useEffect(() => {
-    socket.current = io(
-      socketUrl
-      // {
-      // "force new connection": true,
-      // autoConnect: false,
-      // reconnectionAttempt: "Infinity",
-      // timeout: 10000,
-      // transports: ["polling"],
-      // }
-    );
+    socket.current = io(socketUrl, {
+      transports: ["polling"],
+    });
     socket.current.on("connection", () => {
       console.log("connected to server");
     });
