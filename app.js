@@ -22,7 +22,7 @@ const server = require("http").createServer(app);
 // Sooket Connection
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://sell-corner.herokuapp.com",
+    origin: "https://admin-sellcorner.herokuapp.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
@@ -42,7 +42,7 @@ app.set("eventEmitter", eventEmitter);
 //Middlewares
 app.use(
   cors({
-    origin: "https://sell-corner.herokuapp.com",
+    origin: "https://admin-sellcorner.herokuapp.com",
   })
 );
 app.use(express.urlencoded({ extended: true }));
