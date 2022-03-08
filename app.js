@@ -20,20 +20,16 @@ const notificationRoutes = require("./routes/notification_routes");
 const server = require("http").createServer(app);
 
 // Sooket Connection
-const io = require("socket.io")(server, {
-  transports: ["polling"],
-  
-  autoConnect: true,
-  cors: {
-    // origin: [
-    //   "http://localhost:3000",
-    //   "http://192.168.0.101:4000",
-    //   "http://192.168.0.149:4000",
-    //   "https://admin-sellcorner.herokuapp.com",
-    // ],
-    // methods: ["GET", "POST", "PUT", "DELETE"],
-  },
-});
+const io = require("socket.io")(
+  server
+  // {
+  // transports: ["polling"],
+  // autoConnect: true,
+  // cors: {
+
+  // },
+  // }
+);
 
 const connectDB = require("./config/db_config");
 
@@ -49,10 +45,11 @@ const eventEmitter = new Emitter();
 app.set("eventEmitter", eventEmitter);
 //Middlewares
 app.use(
-  cors({
-    credentials: true,
-    origin: ["https://admin-sellcorner.herokuapp.com", "http://localhost:3000"],
-  })
+  cors()
+  // {
+  // credentials: true,
+  // origin: ["https://admin-sellcorner.herokuapp.com", "http://localhost:3000"],
+  // }
 );
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "50mb" }));

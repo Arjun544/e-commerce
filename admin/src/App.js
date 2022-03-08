@@ -39,13 +39,16 @@ function App() {
   const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
 
   useEffect(() => {
-    socket.current = io(socketUrl, {
-      "force new connection": true,
-      autoConnect: false,
-      reconnectionAttempt: "Infinity",
-      timeout: 10000,
-      transports: ["polling"],
-    });
+    socket.current = io(
+      socketUrl
+      // {
+      // "force new connection": true,
+      // autoConnect: false,
+      // reconnectionAttempt: "Infinity",
+      // timeout: 10000,
+      // transports: ["polling"],
+      // }
+    );
     socket.current.on("connection", () => {
       console.log("connected to server");
     });
