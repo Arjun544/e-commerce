@@ -22,15 +22,16 @@ const server = require("http").createServer(app);
 // Sooket Connection
 const io = require("socket.io")(server, {
   transports: ["polling"],
+  
   autoConnect: true,
   cors: {
-    origin: [
-      "http://localhost:3000",
-      "http://192.168.0.101:4000",
-      "http://192.168.0.149:4000",
-      "https://admin-sellcorner.herokuapp.com",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    // origin: [
+    //   "http://localhost:3000",
+    //   "http://192.168.0.101:4000",
+    //   "http://192.168.0.149:4000",
+    //   "https://admin-sellcorner.herokuapp.com",
+    // ],
+    // methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
 
