@@ -97,7 +97,7 @@ class ProductItem extends StatelessWidget {
                   !isBannerProduct
                       ? PreferenceBuilder<List<String>>(
                           preference: sharedPreferences
-                              .getStringList('favListIds', defaultValue: []),
+                              .getStringList('wishlistIds', defaultValue: []),
                           builder: (context, snapshot) {
                             wishListController.wishlistIds = snapshot;
                             return LikeButton(
@@ -129,7 +129,7 @@ class ProductItem extends StatelessWidget {
                                     ? snapshot.remove(product.id)
                                     : snapshot.add(product.id);
                                 await sharedPreferences.setStringList(
-                                    'favListIds', snapshot);
+                                    'wishlistIds', snapshot);
                                 return !isLiked;
                               },
                             );

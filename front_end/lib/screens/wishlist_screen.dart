@@ -101,7 +101,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                             ConnectionState.waiting) {
                           return const SizedBox();
                         }
-                        return snapshot.data == null
+                        return snapshot.data!.results.isEmpty
                             ? Padding(
                                 padding: const EdgeInsets.only(top: 80),
                                 child: Column(

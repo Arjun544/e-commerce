@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
@@ -11,13 +12,13 @@ class WishListController extends GetxController {
   final StreamController<ProductModel> wishlistController = BehaviorSubject();
   List<String> wishlistIds = [];
 
-  Future getWishlist() async {
-    await ApiWishList().getWishlist(
-        ids: getStorage.read('wishlistIds'),
-        wishlistController: wishlistController);
+  void getWishlist() async {
+    log(wishlistIds.toString());
+    await ApiWishList()
+        .getWishlist(ids: wishlistIds, wishlistController: wishlistController);
   }
 
   Future clearWishlist() async {
-    await getStorage.remove('wishlistIds');
+    await sharedPreferences.remove('wishlistIds');
   }
 }

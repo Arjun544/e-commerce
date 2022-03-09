@@ -36,7 +36,7 @@ class TopHeader extends StatelessWidget {
         !isBannerProduct
             ? PreferenceBuilder<List<String>>(
                 preference: sharedPreferences
-                    .getStringList('favListIds', defaultValue: []),
+                    .getStringList('wishlistIds', defaultValue: []),
                 builder: (context, snapshot) {
                   wishListController.wishlistIds = snapshot;
                   return LikeButton(
