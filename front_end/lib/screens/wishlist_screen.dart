@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -97,7 +96,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     )
                   : StreamBuilder(
                       stream: wishListController.wishlistController.stream,
-                      builder: (context, AsyncSnapshot<List<Product>> snapshot) {
+                      builder: (context, AsyncSnapshot<ProductModel> snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return const SizedBox();
@@ -126,11 +125,11 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                 mainAxisSpacing: 15,
                                 padding: const EdgeInsets.only(
                                     right: 15, left: 15, bottom: 20, top: 20),
-                                itemCount: snapshot.data!.length,
+                                itemCount: snapshot.data!.results.length,
                                 physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (context, index) {
                                   Product product =
-                                      snapshot.data![index];
+                                      snapshot.data!.results[index];
                                   return GestureDetector(
                                     onTap: () {
                                       Get.off(() => DetailScreen(

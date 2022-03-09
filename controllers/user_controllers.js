@@ -605,18 +605,44 @@ exports.deleteUserById = async (req, res) => {
 };
 
 exports.getWishlist = async (req, res) => {
-  try {
-    const ids = req.body.ids;
-    const products = await Product.find({ _id: { $in: ids } }).populate(
-      "category"
-    );
+  const ids = req.body.ids;
+  // const products = await Product.find({ _id: { $in: ids } }).populate(
+  //   "category"
+  // );
 
-    if (!products) {
-      return res.status(400).send("Nothing in wishlist");
-    } else {
-      return res.status(200).json( products );
-    }
+  // if (!products) {
+  //   return res.status(400).send("Nothing in wishlist");
+  // } else {
+  //   return res.status(200).json( products );
+  // }
+
+  try {
+    var query = {
+      status: true,
+      _id: { $in: ids },
+    };
+    var options = {
+      sort: { dateCreated: -1 },
+      page: req.query.page ?? 1,
+      limit: req.query.limit ?? 10,
+      populate: "category",
+    };
+    await Product.paginate(query, options, function (err, result) {
+      if (err) {
+        return res.status(500).json({ error: true, message: err.message });
+      } else {
+        return res.json({
+          page: result.page,
+          hasNextPage: result.hasNextPage,
+          hasPrevPage: result.hasPrevPage,
+          total_pages: result.totalPages,
+          total_results: result.totalDocs,
+          results: result.docs,
+        });
+      }
+    });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Server Error",
