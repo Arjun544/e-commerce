@@ -6,24 +6,26 @@ import '../models/product_Model.dart';
 import '../utils/constants.dart';
 
 class ApiWishList {
-  Future getWishlist({
+  Future<List<Product>> getWishlist({
     required List<String> ids,
     required StreamController wishlistController,
   }) async {
     await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
 
     // try {
-      var response = await dio.post(
-        baseUrl + 'users/wishlist',
-        data: {'ids': ids},
-        options: Options(
-          responseType: ResponseType.plain,
-        ),
-      );
+    var response = await dio.post(
+      baseUrl + 'users/wishlist',
+      data: {'ids': ids},
+      options: Options(
+        responseType: ResponseType.plain,
+      ),
+    );
 
-      wishlistController.add(productModelFromJson(response.data));
+    await EasyLoading.dismiss();
+    return response.data
+        .map<Product>((json) => Product.fromJson(json))
+        .toList();
 
-      await EasyLoading.dismiss();
     // } catch (e) {
     //   await EasyLoading.showToast(
     //     'Something went wrong',

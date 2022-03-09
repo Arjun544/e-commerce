@@ -10,7 +10,7 @@ import 'cart_screen_controller.dart';
 
 class WishListController extends GetxController {
   final CartScreenController cartScreenController = Get.find();
-  final StreamController<ProductModel> wishlistController = BehaviorSubject();
+  final StreamController<List<Product>> wishlistController = BehaviorSubject();
   List<String> wishlistIds = [];
 
   Future getWishlist() async {
