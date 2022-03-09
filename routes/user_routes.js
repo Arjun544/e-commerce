@@ -26,7 +26,7 @@ const {
 router.post("/login", cleanBody, logIn);
 router.post("/register", cleanBody, register);
 router.patch("/sendCode", cleanBody, sendCode);
-router.get("/wishlist", authMiddleware, cleanBody, getWishlist);
+router.get("/wishlist", cleanBody, getWishlist);
 router.patch("/activate", cleanBody, activate);
 router.patch("/forgotPassword", cleanBody, forgotPassword);
 router.patch("/resetPassword", authMiddleware, cleanBody, resetPassword);

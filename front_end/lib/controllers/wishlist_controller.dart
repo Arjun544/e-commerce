@@ -19,7 +19,6 @@ class WishListController extends GetxController {
   }
 
   Future clearWishlist() async {
-    await ApiWishList()
-        .clearWishlist(userId: getStorage.read('userId'));
+    await getStorage.remove('wishlistIds');
   }
 }
