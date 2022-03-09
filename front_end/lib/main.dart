@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'services/notification_api.dart';
 import 'screens/root_screen.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -50,6 +53,12 @@ void main() async {
   );
   if (getStorage.read('isLogin') != true) {
     await FirebaseMessaging.instance.subscribeToTopic('AllUsers');
+  } else if (getStorage.read('isLogin') == true) {
+    FirebaseMessaging.instance.onTokenRefresh.listen((token) async {
+      log(token.toString());
+      await NotificationApi()
+          .addToken(token: token, id: getStorage.read('userId'));
+    });
   }
 
   runApp(MyApp());

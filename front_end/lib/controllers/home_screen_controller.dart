@@ -15,7 +15,6 @@ import '../services/product_api.dart';
 
 class HomeScreenController extends GetxController {
   final PageController salesPageController = PageController(initialPage: 0);
-  List<String> favListIds = [];
   int _currentPage = 0;
   RxBool isBannersLoading = false.obs;
   RxBool isDealLoading = false.obs;

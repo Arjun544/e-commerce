@@ -623,30 +623,3 @@ exports.getWishlist = async (req, res) => {
     });
   }
 };
-
-exports.clearWishlist = async (req, res) => {
-  try {
-    if (!req.params.userId) {
-      return res.status(400).send("User id is required");
-    }
-    const user = await User.findByIdAndUpdate(
-      { _id: req.params.userId },
-      {
-        $push: {
-          wishlist: [],
-        },
-      }
-    );
-
-    if (!user) {
-      return res.status(400).send("User not found");
-    } else {
-      return res.status(200).json("Wishlist is cleared");
-    }
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
-  }
-};

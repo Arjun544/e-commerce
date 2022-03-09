@@ -12,7 +12,7 @@ class ApiWishList {
   }) async {
     await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
 
-    try {
+    // try {
       var response = await dio.post(
         baseUrl + 'users/wishlist',
         data: {'ids': ids},
@@ -24,14 +24,14 @@ class ApiWishList {
       wishlistController.add(productModelFromJson(response.data));
 
       await EasyLoading.dismiss();
-    } catch (e) {
-      await EasyLoading.showToast(
-        'Something went wrong',
-        toastPosition: EasyLoadingToastPosition.top,
-        maskType: EasyLoadingMaskType.clear,
-      );
-      print(e);
-    }
+    // } catch (e) {
+    //   await EasyLoading.showToast(
+    //     'Something went wrong',
+    //     toastPosition: EasyLoadingToastPosition.top,
+    //     maskType: EasyLoadingMaskType.clear,
+    //   );
+    //   print(e);
+    // }
   }
 
   Future clearWishlist({

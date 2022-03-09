@@ -11,11 +11,11 @@ import 'cart_screen_controller.dart';
 class WishListController extends GetxController {
   final CartScreenController cartScreenController = Get.find();
   final StreamController<ProductModel> wishlistController = BehaviorSubject();
-  List<String> ids = [];
+  List<String> wishlistIds = [];
 
   Future getWishlist() async {
     await ApiWishList()
-        .getWishlist(ids: ids, wishlistController: wishlistController);
+        .getWishlist(ids: wishlistIds, wishlistController: wishlistController);
   }
 
   Future clearWishlist() async {

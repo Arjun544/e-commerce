@@ -156,7 +156,6 @@ class _CartScreenState extends State<CartScreen> {
                                       products[index].quantity;
                                   return SwipeActionCell(
                                     key: ValueKey(products[index]),
-                                    performsFirstActionWithFullSwipe: true,
                                     trailingActions: <SwipeAction>[
                                       SwipeAction(
                                         title: 'Remove',

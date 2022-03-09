@@ -99,7 +99,7 @@ class ProductItem extends StatelessWidget {
                           preference: sharedPreferences
                               .getStringList('favListIds', defaultValue: []),
                           builder: (context, snapshot) {
-                            wishListController.ids = snapshot;
+                            wishListController.wishlistIds = snapshot;
                             return LikeButton(
                               mainAxisAlignment: MainAxisAlignment.center,
                               size: 20,

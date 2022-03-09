@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -29,7 +31,9 @@ class _WishlistScreenState extends State<WishlistScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (wishListController.ids.isNotEmpty) wishListController.getWishlist();
+      if (wishListController.wishlistIds.isNotEmpty) {
+        wishListController.getWishlist();
+      }
     });
   }
 
@@ -38,7 +42,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
     return Scaffold(
       extendBody: true,
       body: Padding(
-        padding: const EdgeInsets.only(top: 50),
+        padding: const EdgeInsets.only(top: 40),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,15 +55,15 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     'Wishlist',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
-                  wishListController.ids.isEmpty
+                  wishListController.wishlistIds.isEmpty
                       ? const SizedBox(
                           width: 15,
                         )
                       : GestureDetector(
                           onTap: () async {
                             await wishListController.clearWishlist();
-                            wishListController.ids.clear();
-                            await sharedPreferences.remove('favListIds');
+                            wishListController.wishlistIds.clear();
+                            await sharedPreferences.remove('wishlistIds');
                             setState(() {
                               wishListController.getWishlist();
                             });
@@ -75,7 +79,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         ),
                 ],
               ),
-              wishListController.ids.isEmpty
+              wishListController.wishlistIds.isEmpty
                   ? Padding(
                       padding: const EdgeInsets.only(top: 80),
                       child: Column(
@@ -99,6 +103,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                             ConnectionState.waiting) {
                           return const SizedBox();
                         }
+                        log(snapshot.data!.results.toString());
                         return snapshot.data!.results.isEmpty
                             ? Padding(
                                 padding: const EdgeInsets.only(top: 80),
@@ -201,15 +206,15 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                                 : const SizedBox.shrink(),
                                             IconButton(
                                               onPressed: () async {
-                                                homeScreenController.favListIds
+                                                wishListController.wishlistIds
                                                     .remove(product.id);
-                                                wishListController.ids
+                                                wishListController.wishlistIds
                                                     .remove(product.id);
                                                 await sharedPreferences
                                                     .setStringList(
-                                                        'favListIds',
-                                                        homeScreenController
-                                                            .favListIds);
+                                                        'wishlistIds',
+                                                        wishListController
+                                                            .wishlistIds);
                                                 setState(() {
                                                   wishListController
                                                       .getWishlist();

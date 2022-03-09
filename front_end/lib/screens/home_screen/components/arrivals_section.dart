@@ -215,7 +215,7 @@ class BuildItem extends StatelessWidget {
                     preference: sharedPreferences
                         .getStringList('favListIds', defaultValue: []),
                     builder: (context, snapshot) {
-                      wishListController.ids = snapshot;
+                      wishListController.wishlistIds = snapshot;
                       return LikeButton(
                         mainAxisAlignment: MainAxisAlignment.end,
                         padding: const EdgeInsets.only(right: 15, top: 10),

@@ -38,7 +38,7 @@ class TopHeader extends StatelessWidget {
                 preference: sharedPreferences
                     .getStringList('favListIds', defaultValue: []),
                 builder: (context, snapshot) {
-                  wishListController.ids = snapshot;
+                  wishListController.wishlistIds = snapshot;
                   return LikeButton(
                     mainAxisAlignment: MainAxisAlignment.end,
                     size: 20,
@@ -64,12 +64,11 @@ class TopHeader extends StatelessWidget {
                     },
                     onTap: (isLiked) async {
                       isLiked
-                          ? homeScreenController.favListIds.remove(productId)
-                          : homeScreenController.favListIds
-                              .insert(0, productId);
+                          ? wishListController.wishlistIds.remove(productId)
+                          : wishListController.wishlistIds.insert(0, productId);
                       await sharedPreferences.setStringList(
-                        'favListIds',
-                        homeScreenController.favListIds,
+                        'wishlistIds',
+                        wishListController.wishlistIds,
                       );
                       return !isLiked;
                     },

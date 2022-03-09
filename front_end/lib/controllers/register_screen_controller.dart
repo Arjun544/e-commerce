@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -142,7 +141,6 @@ class RegisterScreenController extends GetxController {
 
         // Save device token
         String? token = await FirebaseMessaging.instance.getToken();
-        log(token.toString());
         await FirebaseMessaging.instance.subscribeToTopic('AllUsers');
         await NotificationApi()
             .addToken(token: token!, id: getStorage.read('userId'));

@@ -54,6 +54,15 @@ class VerificationScreen extends StatelessWidget {
                     color: Colors.grey,
                   ),
                 ),
+                const Text(
+                  'Confirm in spam folder',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
               ],
             ),
             Padding(

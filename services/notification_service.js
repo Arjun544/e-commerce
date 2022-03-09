@@ -1,6 +1,5 @@
 const { admin } = require("../config/firebase-config");
 const Notification = require("../models/Notification");
-const mongoose = require("mongoose");
 class NotificationService {
   async sendNotification(tokens, title, body, type, orderId) {
     const options = {

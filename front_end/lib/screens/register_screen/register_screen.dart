@@ -62,7 +62,6 @@ class RegisterScreen extends StatelessWidget {
               children: [
                 CustomSlidingSegmentedControl(
                   fixedWidth: 150,
-                  elevation: 5,
                   radius: 15,
                   innerPadding: 5,
                   backgroundColor: Colors.grey.withOpacity(0.2),
