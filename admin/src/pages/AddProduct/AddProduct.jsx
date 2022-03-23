@@ -276,7 +276,7 @@ const AddProduct = ({ isEditing }) => {
                   )}
                   {errors?.description?.type === "maxLength" && (
                     <span className="flex text-red-500 text-xs font-semibold">
-                      Description can't be more than 50 characters
+                      Description can't be more than 500 characters
                     </span>
                   )}
                 </div>
@@ -414,7 +414,7 @@ const AddProduct = ({ isEditing }) => {
                 maxLength={1000}
                 placeholder="Full description"
                 footer={
-                  <span className="text-gray-400 text-sm ml-4 mb-2">{`${inputCount}/${200}`}</span>
+                  <span className="text-gray-400 text-sm ml-4 mb-2">{`${inputCount}/${1000}`}</span>
                 }
                 className="rainbow-m-vertical_x-large rainbow-p-horizontal_medium rainbow-m_auto"
               />
