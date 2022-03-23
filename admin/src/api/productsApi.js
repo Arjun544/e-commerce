@@ -34,6 +34,7 @@ export const addProduct = async (
     },
     {
       headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         "Content-type": "application/json",
         Accept: "application/json",
       },
