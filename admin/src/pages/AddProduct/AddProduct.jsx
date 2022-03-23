@@ -257,11 +257,12 @@ const AddProduct = ({ isEditing }) => {
                   <input
                     className="h-14 w-full rounded-2xl text-black font-semibold bg-bgColor-light pl-4 mb-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent "
                     placeholder="Description"
-                    maxLength="100"
+                    maxLength="500"
                     {...register("description", {
                       required: true,
                       maxLength: 500,
                       minLength: 2,
+                      
                     })}
                   />
                   {errors?.description?.type === "required" && (
