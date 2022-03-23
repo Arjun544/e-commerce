@@ -260,7 +260,7 @@ const AddProduct = ({ isEditing }) => {
                     maxLength="100"
                     {...register("description", {
                       required: true,
-                      maxLength: 100,
+                      maxLength: 300,
                       minLength: 2,
                     })}
                   />
@@ -411,7 +411,7 @@ const AddProduct = ({ isEditing }) => {
                   setInput(event.target.value);
                   setInputCount(event.target.value.length);
                 }}
-                maxLength={200}
+                maxLength={500}
                 placeholder="Full description"
                 footer={
                   <span className="text-gray-400 text-sm ml-4 mb-2">{`${inputCount}/${200}`}</span>
