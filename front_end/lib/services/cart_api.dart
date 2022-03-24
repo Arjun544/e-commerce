@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -51,7 +50,7 @@ class ApiCart {
           headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
         ),
       );
-      return  json.decode(response.data);
+      return response.data;
     } catch (e) {
       await EasyLoading.showToast(
         'Something went wrong',

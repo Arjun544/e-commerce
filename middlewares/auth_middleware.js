@@ -18,11 +18,7 @@ module.exports = (req, res, next) => {
         msg: "Unauthorized",
       });
     }
-    req.user = user;
-    if (user.isAdmin === false) {
-      return res
-        .json("Forbidden, you cant access this endpoint");
-    }
+
     next();
   });
 };
