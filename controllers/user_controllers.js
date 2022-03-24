@@ -77,6 +77,7 @@ exports.register = async (req, res) => {
 
     const cart = new Cart({
       user: userCart[0],
+      products: [],
     });
     await cart.save();
 

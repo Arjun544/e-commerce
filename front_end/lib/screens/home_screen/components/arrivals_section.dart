@@ -113,7 +113,7 @@ class ArrivalsSection extends StatelessWidget {
                                           margin:
                                               const EdgeInsets.only(right: 10),
                                           decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.2),
+                                            color: Colors.grey.withOpacity(0.1),
                                             borderRadius:
                                                 BorderRadius.circular(20),
                                           ),

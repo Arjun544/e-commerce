@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../models/product_Model.dart' as model;
@@ -28,7 +27,7 @@ class ProductImages extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
                 image: CachedNetworkImageProvider(
                   controller.currentImage.value == 5
                       ? thumbnail
@@ -77,7 +76,7 @@ class ProductImages extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                             child: CachedNetworkImage(
                               imageUrl: images[index].url,
-                              fit: BoxFit.contain,
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),

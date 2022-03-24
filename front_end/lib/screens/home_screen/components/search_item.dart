@@ -46,7 +46,7 @@ class SearchItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
                       imageUrl: product.thumbnail,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                       width: Get.width * 0.16,
                     ),
                   ),
@@ -57,21 +57,28 @@ class SearchItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      RichText(
-                        text: TextSpan(
-                          children: highlightOccurrences(
-                              toBeginningOfSentenceCase(product.name), query),
-                          style: const TextStyle(
+                      SizedBox(
+                        width: Get.width * 0.5,
+                        child: RichText(
+                          maxLines: 1,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          text: TextSpan(
+                            children: highlightOccurrences(
+                                toBeginningOfSentenceCase(product.name), query),
+                            style: const TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: Colors.grey),
+                              fontSize: 15,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ),
                       ),
                       Text(
                         product.category.name,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 13,
                           color: customYellow,
                         ),
                       ),

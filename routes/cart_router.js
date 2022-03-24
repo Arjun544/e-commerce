@@ -12,9 +12,9 @@ const {
   cartCount,
 } = require("../controllers/cart_controller");
 
-router.post("/addToCart",authMiddleware, cleanBody, addToCart);
+router.post("/addToCart", authMiddleware, cleanBody, addToCart);
 router.get("/getCart/:id", authMiddleware, cleanBody, getCart);
-router.get("/cartCount/:id", authMiddleware, cleanBody, cartCount);
+router.get("/cartCount/:id", cleanBody, cartCount);
 router.patch("/updateQuantity/:id", authMiddleware, cleanBody, updateQuantity);
 router.patch("/:id", cleanBody, authMiddleware, deleteFromCart);
 router.delete("/clear/:id", authMiddleware, cleanBody, clearCart);
