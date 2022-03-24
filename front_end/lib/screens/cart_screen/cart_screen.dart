@@ -145,7 +145,7 @@ class _CartScreenState extends State<CartScreen> {
                                 itemCount: cartScreenController
                                     .cartProducts.value.products.length,
                                 padding: const EdgeInsets.only(
-                                    right: 15, left: 15, bottom: 80),
+                                    right: 15, bottom: 80),
                                 itemBuilder: (context, index) {
                                   // calc total price
                                   var products = cartScreenController
@@ -269,110 +269,132 @@ class _CartWidgetState extends State<CartWidget> {
                 children: [
                   Expanded(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        Row(
-                          children: [
-                            const SizedBox(width: 10),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: CachedNetworkImage(
-                                imageUrl: widget.product.thumbnail,
-                                fit: BoxFit.cover,
-                                width: Get.width * 0.14,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
+                        const SizedBox(width: 10),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.product.thumbnail,
+                            fit: BoxFit.contain,
+                            width: Get.width * 0.14,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(
+                                width: Get.width * 0.6,
+                                child: Text(
                                   widget.product.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15),
                                 ),
-                                widget.product.discount > 0
-                                    ? Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '\$${widget.product.totalPrice.toString()}',
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 13,
-                                              color: Colors.black,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  widget.product.discount > 0
+                                      ? Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '\$${widget.product.totalPrice.toString()}',
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 13,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  '\$${widget.product.price.toString()}',
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 12,
+                                                    decorationColor: Colors.red,
+                                                    decorationThickness: 3,
+                                                    decoration: TextDecoration
+                                                        .lineThrough,
+                                                    color: Colors.black45,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            widget.product.discount > 0
+                                                ? Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Text(
+                                                        '${widget.product.discount}%',
+                                                        style: const TextStyle(
+                                                          fontSize: 13,
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      const Text(
+                                                        'OFF',
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : const SizedBox.shrink(),
+                                          ],
+                                        )
+                                      : Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 12.0),
+                                          child: Text(
                                             '\$${widget.product.price.toString()}',
                                             style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12,
-                                              decorationColor: Colors.red,
-                                              decorationThickness: 3,
-                                              decoration:
-                                                  TextDecoration.lineThrough,
-                                              color: Colors.black45,
-                                            ),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 13),
                                           ),
-                                        ],
-                                      )
-                                    : Text(
-                                        '\$${widget.product.price.toString()}',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 13),
-                                      ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                widget.product.discount > 0
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(
-                                            '${widget.product.discount}%',
-                                            style: const TextStyle(
-                                              fontSize: 13,
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          const Text(
-                                            'OFF',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    : const SizedBox.shrink(),
-                              ],
-                            ),
-                          ],
+                                        ),
+                                  SizedBox(
+                                    width: 70,
+                                    child: QuantityDropDown(
+                                        cartScreenController:
+                                            widget.cartScreenController,
+                                        item: widget.product),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    width: 70,
-                    child: QuantityDropDown(
-                        cartScreenController: widget.cartScreenController,
-                        item: widget.product),
-                  )
                 ],
               ),
             ),
