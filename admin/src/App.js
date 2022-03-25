@@ -35,7 +35,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
+  const isBigScreen = useMediaQuery({ query: "(min-width: 1200x)" });
 
   useEffect(() => {
     socket.current = io(socketUrl, {
