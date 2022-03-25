@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../App";
-
+import moment from "moment";
 import CustomersPaymentChart from "./components/CustomersPaymentChart";
 import EarningChart from "./components/EarningChart";
 import OverviewChart from "./components/OverviewChart";
@@ -155,6 +155,11 @@ const Dashboard = () => {
     {
       Header: "Date",
       accessor: "date",
+      Cell: (props) => (
+        <span className="text-gray-500">
+          {moment(props.cell.value).format("ll")}
+        </span>
+      ),
     },
     {
       Header: "Price",
