@@ -61,7 +61,7 @@ class _CartScreenState extends State<CartScreen> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
-                              right: 15, left: 15, top: 50, bottom: 20),
+                              right: 15, left: 15, top: 40, bottom: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -380,13 +380,10 @@ class _CartWidgetState extends State<CartWidget> {
                                                 fontSize: 13),
                                           ),
                                         ),
-                                  SizedBox(
-                                    width: 70,
-                                    child: QuantityDropDown(
-                                        cartScreenController:
-                                            widget.cartScreenController,
-                                        item: widget.product),
-                                  ),
+                                  QuantityDropDown(
+                                      cartScreenController:
+                                          widget.cartScreenController,
+                                      item: widget.product),
                                 ],
                               ),
                             ],

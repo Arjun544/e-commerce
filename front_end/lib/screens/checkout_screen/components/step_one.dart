@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -53,7 +52,7 @@ class _StepOneState extends State<StepOne> {
                 return Container(
                   width: Get.width * 0.7,
                   margin: const EdgeInsets.only(top: 30, right: 10),
-                  padding: const EdgeInsets.only(right: 20),
+                  padding: const EdgeInsets.only(right: 12, left: 10),
                   decoration: BoxDecoration(
                       color: customGrey,
                       borderRadius: BorderRadius.circular(20)),
@@ -67,7 +66,7 @@ class _StepOneState extends State<StepOne> {
                             child: CachedNetworkImage(
                               imageUrl: cartScreenController
                                   .orderItems[index].thumbnail,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                               width: Get.width * 0.15,
                             ),
                           ),
@@ -78,10 +77,18 @@ class _StepOneState extends State<StepOne> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                cartScreenController.orderItems[index].name,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              SizedBox(
+                                width: Get.width * 0.35,
+                                child: Text(
+                                  cartScreenController.orderItems[index].name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
                               cartScreenController.orderItems[index].discount >
                                       0
@@ -89,13 +96,13 @@ class _StepOneState extends State<StepOne> {
                                       '\$ ${cartScreenController.orderItems[index].totalPrice.toString()}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 12),
+                                          fontSize: 10),
                                     )
                                   : Text(
                                       '\$ ${cartScreenController.orderItems[index].price.toString()}',
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 12),
+                                          fontSize: 10),
                                     ),
                             ],
                           ),

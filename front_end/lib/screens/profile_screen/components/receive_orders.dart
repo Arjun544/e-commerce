@@ -65,7 +65,7 @@ class _ReceiveOrdersState extends State<ReceiveOrders> {
             child: Column(
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(top: 12.0, left: 8, bottom: 6),
+                  padding: EdgeInsets.only(left: 8, bottom: 6),
                   child: TopHeader(text: 'To Receive'),
                 ),
                 profileScreenController.isLoading.value
@@ -236,12 +236,16 @@ class ProductCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                toBeginningOfSentenceCase(
-                                        product.name) ??
-                                    '',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 14),
+                              SizedBox(
+                                width: Get.width * 0.6,
+                                child: Text(
+                                  toBeginningOfSentenceCase(product.name) ?? '',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14),
+                                ),
                               ),
                               Text(
                                 '\$${product.totalPrice.toString()}',

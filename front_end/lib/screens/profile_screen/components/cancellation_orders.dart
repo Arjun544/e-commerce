@@ -45,7 +45,7 @@ class _CancellationOrdersState extends State<CancellationOrders> {
             child: Column(
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(top: 12.0, left: 8, bottom: 6),
+                  padding: EdgeInsets.only( left: 8, bottom: 6),
                   child: TopHeader(text: 'Cancellation'),
                 ),
                 profileScreenController.isLoading.value

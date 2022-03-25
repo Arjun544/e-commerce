@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -44,7 +43,6 @@ class _TrackOrderState extends State<TrackOrder> {
       await EasyLoading.dismiss();
       FocusScope.of(context).requestFocus(FocusNode());
       setState(() {});
-    
     }
   }
 
@@ -86,7 +84,7 @@ class _TrackOrderState extends State<TrackOrder> {
           child: Column(
             children: [
               const Padding(
-                padding: EdgeInsets.only(top: 12.0, left: 8, bottom: 6),
+                padding: EdgeInsets.only(left: 8, bottom: 6),
                 child: TopHeader(text: 'Track Order'),
               ),
               Padding(
@@ -246,7 +244,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                             margin: const EdgeInsets.only(
                                                 top: 10, right: 10),
                                             padding: const EdgeInsets.only(
-                                                right: 20),
+                                                right: 10, left: 5),
                                             decoration: BoxDecoration(
                                               color: customGrey,
                                               borderRadius:
@@ -268,7 +266,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                                             .orderList
                                                             .orderItems[index]
                                                             .thumbnail,
-                                                        fit: BoxFit.cover,
+                                                        fit: BoxFit.contain,
                                                         width: Get.width * 0.15,
                                                       ),
                                                     ),
@@ -283,17 +281,27 @@ class _TrackOrderState extends State<TrackOrder> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        Text(
-                                                          order!
-                                                              .orderList
-                                                              .orderItems[index]
-                                                              .name,
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 16),
+                                                        SizedBox(
+                                                          width:
+                                                              Get.width * 0.4,
+                                                          child: Text(
+                                                            order!
+                                                                .orderList
+                                                                .orderItems[
+                                                                    index]
+                                                                .name,
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 14,
+                                                            ),
+                                                          ),
                                                         ),
                                                         order!
                                                                     .orderList
