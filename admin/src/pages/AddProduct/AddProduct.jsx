@@ -14,7 +14,6 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import ReactTooltip from "react-tooltip";
-import CustomButon from "../../components/custom_button";
 import { Textarea } from "react-rainbow-components";
 import {
   addProduct,
@@ -262,7 +261,6 @@ const AddProduct = ({ isEditing }) => {
                       required: true,
                       maxLength: 500,
                       minLength: 2,
-                      
                     })}
                   />
                   {errors?.description?.type === "required" && (
@@ -566,18 +564,20 @@ const AddProduct = ({ isEditing }) => {
                 } `}
               />
             </div>
-            <div className="flex items-center justify-center mt-8 pb-10">
+            <div className="flex w-full items-center justify-center mt-8 pb-10">
               {loading ? (
                 <div className="flex items-center justify-center">
                   <Loader type="Puff" color="#00BFFF" height={50} width={50} />
                 </div>
               ) : (
-                <CustomButon
-                  text={isEditing ? "Edit Product" : "Add Product"}
-                  color={"bg-darkBlue-light"}
-                  width={72}
-                  onPressed={handleSubmit((data) => handleAddProduct(data))}
-                ></CustomButon>
+                <div
+                  onClick={handleSubmit((data) => handleAddProduct(data))}
+                  className="flex items-center justify-center py-3 rounded-2xl w-72 bg-darkBlue-light cursor-pointer shadow-md  transform hover:scale-95 transition duration-500 ease-in-out"
+                >
+                  <span className="font-semibold text-white">
+                    {isEditing ? "Edit Product" : "Add Product"}
+                  </span>
+                </div>
               )}
             </div>
           </div>
