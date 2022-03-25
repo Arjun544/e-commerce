@@ -4,8 +4,10 @@ import Rating from "./components/Rating";
 import { getAllReviews } from "../../api/reviewsApi";
 import Loader from "react-loader-spinner";
 import ReviewsTable from "./components/ReviewsTable";
+import { useHistory } from "react-router-dom";
 
 const Reviews = () => {
+   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [tableData, setTableData] = useState({});
@@ -50,10 +52,34 @@ const Reviews = () => {
     {
       Header: "Product",
       accessor: "product",
+      Cell: (props) => (
+        <span
+          onClick={(e) =>
+            history.push(
+              `/products/view/${props.cell.row.original.review.product._id}`
+            )
+          }
+          className="text-green-500 text-sm font-semibold cursor-pointer"
+        >
+          {props.cell.value}
+        </span>
+      ),
     },
     {
       Header: "Customer",
       accessor: "customerName",
+      Cell: (props) => (
+        <span
+          onClick={(e) =>
+            history.push(
+              `/customers/view/${props.cell.row.original.review.user._id}`
+            )
+          }
+          className="text-green-500 text-sm font-semibold cursor-pointer"
+        >
+          {props.cell.value}
+        </span>
+      ),
     },
     {
       Header: "Date",

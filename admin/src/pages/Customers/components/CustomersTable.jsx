@@ -76,12 +76,6 @@ function CustomersTable({
     usePagination // new
   );
 
-  const onUserClick = (e, userId) => {
-    e.preventDefault();
-    e.stopPropagation();
-    history.push(`/customers/view/${userId}`);
-  };
-
   const handleNextPage = (e) => {
     e.preventDefault();
     if (hasNextPage) {
@@ -172,13 +166,7 @@ function CustomersTable({
                             >
                               {cell.column.Cell.name === "defaultRenderer" ? (
                                 <div
-                                  onClick={(e) => {
-                                    cell.column.Header === "Name" &&
-                                      onUserClick(
-                                        e,
-                                        cell.row.original.review._id
-                                      );
-                                  }}
+                                  
                                   className={`text-sm font-semibold  ${(() => {
                                     if (cell.column.Header === "Name")
                                       return "text-green-500 cursor-pointer";

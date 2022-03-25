@@ -6,7 +6,6 @@ import EarningChart from "./components/EarningChart";
 import OverviewChart from "./components/OverviewChart";
 import OrdersMenu from "./components/Orders_Menu";
 import TopProductsTable from "./components/TopProductsTable";
-import { AvatarCell } from "./components/TopProductsTable";
 import TopBar from "../../components/TopBar";
 import AllOrders from "./components/AllOrders";
 import LatestReviews from "./components/LatestReviews";
@@ -26,9 +25,10 @@ import { setcategories } from "../../redux/reducers/categoriesSlice";
 import { getCategories } from "../../api/categoriesApi";
 import Avatar from "../products/components/avatar";
 import { getAllReviews } from "../../api/reviewsApi";
-import RatingStars from "./components/RatingStars";
+import { useHistory } from "react-router-dom";
 
 const Dashboard = () => {
+  const history = useHistory();
   const { isBigScreen } = useContext(AppContext);
   const dispatch = useDispatch();
   const [reviews, setReviews] = useState([]);
@@ -36,7 +36,6 @@ const Dashboard = () => {
   const [isOrderMenuOpen, setIsOrderMenuOpen] = useState(false);
   const [isOrdersLoading, setIsOrdersLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
-  const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -142,6 +141,16 @@ const Dashboard = () => {
     {
       Header: "Name",
       accessor: "name",
+      Cell: (props) => (
+        <span
+          onClick={(e) =>
+            history.push(`/products/view/${props.cell.row.original.product.id}`)
+          }
+          className="text-green-500 text-sm font-semibold cursor-pointer"
+        >
+          {props.cell.value}
+        </span>
+      ),
     },
     {
       Header: "Date",

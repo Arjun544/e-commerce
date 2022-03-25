@@ -14,7 +14,6 @@ import {
   SortDownIcon,
 } from "../../../components/pagination_icons";
 import { useHistory } from "react-router-dom";
-import { current } from "daisyui/colors";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -87,12 +86,6 @@ function ProductsTable({
     usePagination // new
   );
 
-  const onProductClick = (e, product) => {
-    e.preventDefault();
-    e.stopPropagation();
-    history.push(`/products/view/${product.id}`);
-  };
-
   const handleNextPage = (e) => {
     e.preventDefault();
     if (hasNextPage) {
@@ -109,7 +102,9 @@ function ProductsTable({
   if (data.length === 0) {
     return (
       <div className="w-full h-full flex flex-col items-center justify-center pt-16 gap-4">
-        <span className="text-black text-lg font-semibold tracking-widest">No products</span>
+        <span className="text-black text-lg font-semibold tracking-widest">
+          No products
+        </span>
         <div
           onClick={(e) => {
             e.preventDefault();
@@ -200,13 +195,6 @@ function ProductsTable({
                             >
                               {cell.column.Cell.name === "defaultRenderer" ? (
                                 <div
-                                  onClick={(e) => {
-                                    cell.column.Header === "Name" &&
-                                      onProductClick(
-                                        e,
-                                        cell.row.original.product
-                                      );
-                                  }}
                                   className={`text-sm font-semibold  ${(() => {
                                     if (cell.column.Header === "Name")
                                       return "text-green-500 cursor-pointer";
@@ -246,9 +234,7 @@ function ProductsTable({
           <button
             onClick={() => setCurrentPage(1)}
             className={`${
-              currentPage !== 1
-                ? "bg-black"
-                : "bg-gray-300 cursor-not-allowed"
+              currentPage !== 1 ? "bg-black" : "bg-gray-300 cursor-not-allowed"
             } h-10 w-24 rounded-md text-sm text-white font-semibold tracking-wider transform hover:scale-105 transition-all duration-500 ease-in-out`}
           >
             First Page

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Featured from "./components/featured";
 import Status from "./components/status";
 import ProductsTable from "./components/products_table";
@@ -7,8 +7,11 @@ import TopBar from "../../components/TopBar";
 import { getProducts } from "../../api/productsApi";
 import Loader from "react-loader-spinner";
 import Avatar from "./components/avatar";
+import { useHistory } from "react-router-dom";
+import moment from "moment";
 
 const Products = () => {
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [tableData, setTableData] = useState({});
@@ -61,10 +64,25 @@ const Products = () => {
     {
       Header: "Name",
       accessor: "name",
+      Cell: (props) => (
+        <span
+          onClick={(e) =>
+            history.push(`/products/view/${props.cell.row.original.product.id}`)
+          }
+          className="text-green-500 text-sm font-semibold cursor-pointer"
+        >
+          {props.cell.value}
+        </span>
+      ),
     },
     {
       Header: "Date",
       accessor: "date",
+      Cell: (props) => (
+        <span className="text-gray-500">
+          {moment(props.cell.value).format("ll")}
+        </span>
+      ),
     },
     {
       Header: "Price",

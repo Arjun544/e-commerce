@@ -167,13 +167,6 @@ function TopProductsTable({ columns, data }) {
                             >
                               {cell.column.Cell.name === "defaultRenderer" ? (
                                 <div
-                                  onClick={(e) => {
-                                    cell.column.Header === "Name" &&
-                                      onProductClick(
-                                        e,
-                                        cell.row.original.product
-                                      );
-                                  }}
                                   className={`text-sm font-semibold  ${(() => {
                                     if (cell.column.Header === "Name")
                                       return "text-green-500 cursor-pointer";

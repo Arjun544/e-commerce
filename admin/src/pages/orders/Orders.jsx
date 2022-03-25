@@ -1,12 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";
-import { AppContext } from "../../App";
+import React, { useState, useEffect } from "react";
 import OrdersTable from "./components/orders_table";
 import TableActions from "./components/table_actions";
 import TopBar from "../../components/TopBar";
 import Loader from "react-loader-spinner";
 import { getOrders } from "../../api/ordersApi";
+import { useHistory } from "react-router-dom";
+import moment from "moment";
 
 const Orders = () => {
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrdersTab, setSelectedOrdersTab] = useState(0);
@@ -57,10 +59,25 @@ const Orders = () => {
     {
       Header: "Id",
       accessor: "id",
+      Cell: (props) => (
+        <span
+          onClick={(e) =>
+            history.push(`/orders/view/${props.cell.row.original.order.id}`)
+          }
+          className="text-green-500 text-sm font-semibold cursor-pointer"
+        >
+          {props.cell.value}
+        </span>
+      ),
     },
     {
       Header: "Date",
       accessor: "date",
+      Cell: (props) => (
+        <span className="text-gray-500">
+          {moment(props.cell.value).format("ll")}
+        </span>
+      ),
     },
     {
       Header: "Customer Name",
@@ -69,6 +86,15 @@ const Orders = () => {
     {
       Header: "Payment",
       accessor: "payment",
+      Cell: (props) => (
+        <span
+          className={`${
+            props.cell.value === "Card" ? "text-green-500" : "text-red-500"
+          } `}
+        >
+          {props.cell.value}
+        </span>
+      ),
     },
     {
       Header: "Amount",
@@ -77,10 +103,30 @@ const Orders = () => {
     {
       Header: "Delivery",
       accessor: "deliveryType",
+      Cell: (props) => (
+        <span
+          className={`${
+            props.cell.value === "Free"
+              ? "text-customYellow-light"
+              : "text-green-500"
+          } `}
+        >
+          {props.cell.value}
+        </span>
+      ),
     },
     {
       Header: "Pay Status",
       accessor: "paid",
+      Cell: (props) => (
+        <span
+          className={`${
+            props.cell.value === "Unpaid" ? "text-red-500" : "text-green-500"
+          } `}
+        >
+          {props.cell.value}
+        </span>
+      ),
     },
     {
       Header: "Phone",
@@ -89,13 +135,29 @@ const Orders = () => {
     {
       Header: "Status",
       accessor: "status",
+      Cell: (props) => (
+        <span
+          className={`${(() => {
+            if (props.cell.value === "Completed") return "text-green-500";
+            if (props.cell.value === "Pending")
+              return "text-customYellow-light";
+            if (props.cell.value === "Confirmed") return "text-green-500";
+            if (props.cell.value === "Rejected") return "text-red-500";
+            if (props.cell.value === "Delivered") return "text-green-500";
+            if (props.cell.value === "Cancelled") return "text-red-500";
+            else {
+              return "text-gray-500";
+            }
+          })()}`}
+        >
+          {props.cell.value}
+        </span>
+      ),
     },
     {
       Header: "Actions",
       accessor: "order",
-      Cell: (props) => (
-        <TableActions  order={props.cell.value} />
-      ),
+      Cell: (props) => <TableActions order={props.cell.value} />,
     },
   ];
 

@@ -75,20 +75,6 @@ function ReviewsTable({
     usePagination // new
   );
 
-  const onNameClick = (e, id) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setSelectedSideBar(6);
-    history.push(`/customers/view/${id}`);
-  };
-
-  const onProductClick = (e, id) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setSelectedSideBar(2);
-    history.push(`/products/view/${id}`);
-  };
-
   const handleNextPage = (e) => {
     e.preventDefault();
     if (hasNextPage) {
@@ -179,21 +165,7 @@ function ReviewsTable({
                             >
                               {cell.column.Cell.name === "defaultRenderer" ? (
                                 <div
-                                  onClick={(e) => {
-                                    if (cell.column.Header === "Product") {
-                                      onProductClick(
-                                        e,
-                                        cell.row.original.review.product._id
-                                      );
-                                    } else if (
-                                      cell.column.Header === "Customer"
-                                    ) {
-                                      onNameClick(
-                                        e,
-                                        cell.row.original.review.user._id
-                                      );
-                                    }
-                                  }}
+                                 
                                   className={`text-sm font-semibold  ${(() => {
                                     if (
                                       cell.column.Header === "Customer" ||

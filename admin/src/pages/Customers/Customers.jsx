@@ -4,8 +4,10 @@ import TopBar from "../../components/TopBar";
 import Loader from "react-loader-spinner";
 import { getUsers } from "../../api/userApi";
 import CustomersTable from "./components/CustomersTable";
+import { useHistory } from "react-router-dom";
 
 const Customers = () => {
+   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [tableData, setTableData] = useState({});
@@ -67,6 +69,18 @@ const Customers = () => {
     {
       Header: "Name",
       accessor: "name",
+      Cell: (props) => (
+        <span
+          onClick={(e) =>
+            history.push(
+              `/customers/view/${props.cell.row.original.review.id}`
+            )
+          }
+          className="text-green-500 text-sm font-semibold cursor-pointer"
+        >
+          {props.cell.value}
+        </span>
+      ),
     },
     {
       Header: "Email",
