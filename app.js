@@ -22,7 +22,7 @@ const server = require("http").createServer(app);
 // Sooket Connection
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://admin-sellcorner.herokuapp.com",
+    origin: "https://sellcorner-admin.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
@@ -42,7 +42,10 @@ app.set("eventEmitter", eventEmitter);
 //Middlewares
 app.use(
   cors({
-    origin: ["https://admin-sellcorner.herokuapp.com", "http://localhost:3000"],
+    origin: [
+      "http://localhost:3000",
+      "https://sellcorner-admin.netlify.app",
+    ],
   })
 );
 app.use(express.urlencoded({ extended: true }));
