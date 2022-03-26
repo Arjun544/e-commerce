@@ -27,13 +27,10 @@ const io = require("socket.io")(server, {
 });
 
 const connectDB = require("./config/db_config");
-const redisClient = require("./config/redis");
 
 const PORT = process.env.PORT || 4000;
 require("dotenv").config();
 
-// Redis Connection
-// redisClient.set('test','test');
 // Db Connection
 connectDB();
 
