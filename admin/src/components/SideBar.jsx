@@ -16,8 +16,15 @@ import NotificationIcon from "./icons/NotificationIcon";
 const SideBar = () => {
   const history = useHistory();
   const createHistory = createBrowserHistory();
-  const {selectedSideBar, setSelectedSideBar, isSideBarOpen, isBigScreen, isMenuOpen, setIsMenuOpen } =
-    useContext(AppContext);
+  const {
+    selectedSideBar,
+    setSelectedSideBar,
+    isSideBarOpen,
+    isBigScreen,
+    isMenuOpen,
+    setIsMenuOpen,
+  } = useContext(AppContext);
+
 
   useEffect(() => {
     switch (createHistory.location.pathname) {
@@ -36,17 +43,14 @@ const SideBar = () => {
       case "/banners":
         setSelectedSideBar(4);
         break;
-      case "/flashDeal":
+      case "/customers":
         setSelectedSideBar(5);
         break;
-      case "/customers":
+      case "/reviews":
         setSelectedSideBar(6);
         break;
-      case "/reviews":
-        setSelectedSideBar(7);
-        break;
       case "/notification":
-        setSelectedSideBar(8);
+        setSelectedSideBar(7);
         break;
       default:
         break;
@@ -82,7 +86,7 @@ const SideBar = () => {
           <div className="flex items-center justify-between px-6">
             <div className="flex items-center">
               <Logo color={"#ffff"} />
-              <span className="text-lg font-semibold ml-2 tracking-wider">
+              <span className="text-lg font-semibold ml-2 text-white tracking-wider">
                 Sell
               </span>
               <span className="text-lg font-semibold text-customYellow-light tracking-wider">
@@ -97,7 +101,7 @@ const SideBar = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
                 viewBox="0 0 20 20"
-                fill="currentColor"
+                fill="#ffff"
               >
                 <path
                   fillRule="evenodd"
@@ -240,36 +244,11 @@ const SideBar = () => {
           )}
         </div>
 
-        {/* Deals */}
-
-        <div
-          onClick={(e) => {
-            setSelectedSideBar(5);
-            history.push("/flashDeal");
-          }}
-          className={`flex w-${
-            isSideBarOpen ? "48" : "42"
-          }  items-center py-3 ${
-            isSideBarOpen ? "px-6" : "px-3"
-          } rounded-2xl hover:bg-lightGrey-light cursor-pointer transform hover:scale-90 transition duration-500 ease-in-out`}
-        >
-          <FlashIcon color={selectedSideBar === 5 ? "#EC981A" : "#fff"} />
-          {isSideBarOpen && (
-            <span
-              className={`${
-                selectedSideBar === 5 ? "text-customYellow-light" : "text-white"
-              } ml-3 text-sm font-semibold tracking-wider`}
-            >
-              Flash deal
-            </span>
-          )}
-        </div>
-
         {/* Customer */}
 
         <div
           onClick={(e) => {
-            setSelectedSideBar(6);
+            setSelectedSideBar(5);
             history.push("/customers");
           }}
           className={`flex w-${
@@ -279,12 +258,12 @@ const SideBar = () => {
           } rounded-2xl hover:bg-lightGrey-light cursor-pointer transform hover:scale-90 transition duration-500 ease-in-out`}
         >
           <PersonIcon
-            className={selectedSideBar === 6 ? "fill-yellow" : "fill-white"}
+            className={selectedSideBar === 5 ? "fill-yellow" : "fill-white"}
           />
           {isSideBarOpen && (
             <span
               className={`${
-                selectedSideBar === 6 ? "text-customYellow-light" : "text-white"
+                selectedSideBar === 5 ? "text-customYellow-light" : "text-white"
               } ml-3 text-sm font-semibold tracking-wider`}
             >
               Customers
@@ -296,18 +275,18 @@ const SideBar = () => {
 
         <div
           onClick={(e) => {
-            setSelectedSideBar(7);
+            setSelectedSideBar(6);
             history.push("/reviews");
           }}
           className={`flex w-${isSideBarOpen ? "48" : "42"} items-center py-3 ${
             isSideBarOpen ? "px-6" : "px-3"
           } rounded-2xl hover:bg-lightGrey-light cursor-pointer transform hover:scale-90 transition duration-500 ease-in-out`}
         >
-          <ChatIcon color={selectedSideBar === 7 ? "#EC981A" : "#fff"} />
+          <ChatIcon color={selectedSideBar === 6 ? "#EC981A" : "#fff"} />
           {isSideBarOpen && (
             <span
               className={`${
-                selectedSideBar === 7 ? "text-customYellow-light" : "text-white"
+                selectedSideBar === 6 ? "text-customYellow-light" : "text-white"
               } ml-3 text-sm font-semibold tracking-wider`}
             >
               Reviews
@@ -318,7 +297,7 @@ const SideBar = () => {
         {/* Notification */}
         <div
           onClick={(e) => {
-            setSelectedSideBar(8);
+            setSelectedSideBar(7);
             history.push("/notification");
           }}
           className={`flex w-${
@@ -327,11 +306,13 @@ const SideBar = () => {
             isSideBarOpen ? "px-6" : "px-3"
           } rounded-2xl hover:bg-lightGrey-light cursor-pointer transform hover:scale-90 transition duration-500 ease-in-out`}
         >
-          <NotificationIcon color={selectedSideBar === 8 ? "#EC981A" : "#fff"} />
+          <NotificationIcon
+            color={selectedSideBar === 7 ? "#EC981A" : "#fff"}
+          />
           {isSideBarOpen && (
             <span
               className={`${
-                selectedSideBar === 8 ? "text-customYellow-light" : "text-white"
+                selectedSideBar === 7 ? "text-customYellow-light" : "text-white"
               } ml-3 text-sm font-semibold tracking-wider`}
             >
               Notification

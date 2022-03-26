@@ -12,7 +12,6 @@ const ordersRoutes = require("./routes/orders_routes");
 const cartRoutes = require("./routes/cart_router");
 const paymentRoutes = require("./routes/payment_routes");
 const bannersRoutes = require("./routes/banner_routes");
-const dealRoutes = require("./routes/deal_routes");
 const reviewsRoutes = require("./routes/reviews_routes");
 const adminRoutes = require("./routes/admin_routes");
 const notificationRoutes = require("./routes/notification_routes");
@@ -28,10 +27,13 @@ const io = require("socket.io")(server, {
 });
 
 const connectDB = require("./config/db_config");
+const redisClient = require("./config/redis");
 
 const PORT = process.env.PORT || 4000;
 require("dotenv").config();
 
+// Redis Connection
+// redisClient.set('test','test');
 // Db Connection
 connectDB();
 
@@ -42,10 +44,7 @@ app.set("eventEmitter", eventEmitter);
 //Middlewares
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://sellcorner-admin.netlify.app",
-    ],
+    origin: ["http://localhost:3000", "https://sellcorner-admin.netlify.app"],
   })
 );
 app.use(express.urlencoded({ extended: true }));
@@ -59,7 +58,6 @@ app.use("/api/products/", productsRoutes);
 app.use("/api/orders/", ordersRoutes);
 app.use("/api/cart/", cartRoutes);
 app.use("/api/banners/", bannersRoutes);
-app.use("/api/deal/", dealRoutes);
 app.use("/api/payment/", paymentRoutes);
 app.use("/api/reviews/", reviewsRoutes);
 app.use("/api/admin/", adminRoutes);

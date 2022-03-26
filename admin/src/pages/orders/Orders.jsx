@@ -178,7 +178,7 @@ const Orders = () => {
         <div className="flex flex-col px-10">
           {/* Tabs */}
           <div className="flex items-center mb-6 w-full justify-center cursor-pointer pt-4">
-            <div className="tabs tabs-boxed w-10/12 flex items-center justify-between h-16 rounded-3xl px-5 bg-bgColor-light">
+            <div className="tabs tabs-boxed xl:w-10/12 w-full grid grid-cols-4 md:flex items-center justify-between h-28 pb-4 md:pb-0 pt-4 md:pt-0 md:h-16 rounded-3xl px-5 bg-bgColor-light">
               <a
                 onClick={(e) => {
                   e.preventDefault();
@@ -186,8 +186,8 @@ const Orders = () => {
                 }}
                 className={
                   selectedOrdersTab === 0
-                    ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                    : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
+                    ? "tabs tab-active w-20 xl:w-28 h-10 items-center bg-customYellow-light text-sm justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                    : "tabs w-20 xl:w-28 h-10 items-center justify-center text-sm font-medium text-gray-400 tracking-wide"
                 }
               >
                 All
@@ -199,8 +199,8 @@ const Orders = () => {
                 }}
                 className={
                   selectedOrdersTab === 1
-                    ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                    : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
+                    ? "tabs tab-active w-20 xl:w-28 h-10 items-center bg-customYellow-light text-sm justify-center font-medium text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                    : "tabs w-20 xl:w-28 h-10 items-center text-sm justify-center font-medium text-gray-400 tracking-wide"
                 }
               >
                 Completed
@@ -212,8 +212,8 @@ const Orders = () => {
                 }}
                 className={
                   selectedOrdersTab === 2
-                    ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                    : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
+                    ? "tabs tab-active w-20 xl:w-28 h-10 items-center text-sm bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                    : "tabs w-20 xl:w-28 h-10 items-center text-sm justify-center font-medium text-gray-400 tracking-wide"
                 }
               >
                 Confirmed
@@ -225,8 +225,8 @@ const Orders = () => {
                 }}
                 className={
                   selectedOrdersTab === 3
-                    ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                    : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
+                    ? "tabs tab-active w-20 xl:w-28 h-10 items-center text-sm bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                    : "tabs w-20 xl:w-28 h-10 items-center text-sm justify-center font-medium text-gray-400 tracking-wide"
                 }
               >
                 Rejected
@@ -238,8 +238,8 @@ const Orders = () => {
                 }}
                 className={
                   selectedOrdersTab === 4
-                    ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                    : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
+                    ? "tabs tab-active w-20 xl:w-28 h-10 items-center text-sm bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                    : "tabs w-20 xl:w-28 items-center justify-center text-sm font-medium text-gray-400 tracking-wide"
                 }
               >
                 Pending
@@ -251,8 +251,8 @@ const Orders = () => {
                 }}
                 className={
                   selectedOrdersTab === 5
-                    ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium text-white  tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                    : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
+                    ? "tabs tab-active w-20 xl:w-28 h-10 items-center text-sm bg-customYellow-light justify-center font-medium text-white  tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                    : "tabs w-20 xl:w-28 items-center justify-center text-sm font-medium text-gray-400 tracking-wide"
                 }
               >
                 Processing
@@ -265,8 +265,8 @@ const Orders = () => {
                 }}
                 className={
                   selectedOrdersTab === 6
-                    ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                    : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
+                    ? "tabs tab-active w-20 xl:w-28 h-10 items-center text-sm bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                    : "tabs w-20 xl:w-28 h-10 items-center text-sm justify-center font-medium text-gray-400 tracking-wide"
                 }
               >
                 Delivered
@@ -279,8 +279,8 @@ const Orders = () => {
                 }}
                 className={
                   selectedOrdersTab === 7
-                    ? "tabs tab-active w-28 h-10 items-center bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
-                    : "tabs w-28 h-10 items-center justify-center font-medium text-gray-400 tracking-wide"
+                    ? "tabs tab-active w-20 xl:w-28 h-10 items-center text-sm bg-customYellow-light justify-center font-medium  text-white tracking-wide bg-amber-light rounded-2xl transform hover:scale-95 transition duration-500 ease-in-out"
+                    : "tabs w-20 xl:w-28 h-10 items-center text-sm justify-center font-medium text-gray-400 tracking-wide"
                 }
               >
                 Cancelled

@@ -35,16 +35,16 @@ const Dashboard = () => {
   const { products } = useSelector((state) => state.products);
   const [isOrderMenuOpen, setIsOrderMenuOpen] = useState(false);
   const [isOrdersLoading, setIsOrdersLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         setIsOrdersLoading(true);
-        const { data } = await getOrders( false);
+        const { data } = await getOrders(false);
         dispatch(setOrders({ orders: data.results }));
         setIsOrdersLoading(false);
-        console.log('ordersssss', data.results);
+        console.log("ordersssss", data.results);
       } catch (error) {
         setIsOrdersLoading(false);
         console.log(error.response);
@@ -283,11 +283,9 @@ const Dashboard = () => {
           </div>
 
           {/* Top Products */}
-          <div className={`flex mt-12 ${!isBigScreen && "flex-col"}`}>
+          <div className={`flex mt-12 lg:flex-col xl:flex-row`}>
             <div
-              className={`bg-bgColor-light rounded-3xl p-6 shadow-sm ${
-                isBigScreen ? "w-1/2 mr-8" : "w-full mb-6"
-              }`}
+              className={`bg-bgColor-light h-full rounded-3xl p-6 shadow-sm lg:flex-col lg:w-full  lg:mb-6 xl:flex-row xl:w-1/2 xl:mr-8`}
             >
               <TopCustomers />
             </div>

@@ -17,7 +17,6 @@ import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import Categories from "./pages/categories/Categories";
 import AddProduct from "./pages/AddProduct/AddProduct";
 import Banners from "./pages/Banners/Banners";
-import FlashDeal from "./pages/FlashDeal/FlashDeal";
 import Customers from "./pages/Customers/Customers";
 import CustomerDetails from "./pages/CustomerDetails/CustomerDetails";
 import Reviews from "./pages/Reviews/Reviews";
@@ -35,7 +34,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const isBigScreen = useMediaQuery({ query: "(min-width: 1200px)" });
+  const isBigScreen = useMediaQuery({ query: "(min-width: 1024px)" });
 
   useEffect(() => {
     socket.current = io(socketUrl, {
@@ -126,9 +125,6 @@ function App() {
                 </ProtectedRoute>
                 <ProtectedRoute path="/banners" exact>
                   <Banners />
-                </ProtectedRoute>
-                <ProtectedRoute path="/flashDeal" exact>
-                  <FlashDeal />
                 </ProtectedRoute>
                 <ProtectedRoute path="/customers" exact>
                   <Customers />

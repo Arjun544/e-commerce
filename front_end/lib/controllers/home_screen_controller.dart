@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../models/deal_model.dart';
-import '../services/deal_api.dart';
 import '../models/banner_model.dart';
 import '../services/banners_api.dart';
 import '../services/cart_api.dart';
@@ -17,11 +15,9 @@ class HomeScreenController extends GetxController {
   final PageController salesPageController = PageController(initialPage: 0);
   int _currentPage = 0;
   RxBool isBannersLoading = false.obs;
-  RxBool isDealLoading = false.obs;
   RxInt cartLength = 0.obs;
 
   var banners = BannerModel(success: true, banners: []).obs;
-  var deals = DealModel(success: true, deals: []).obs;
   final StreamController<CategoryModel> categoriesStreamController =
       BehaviorSubject();
   final StreamController<ProductModel> featuredProductsStreamController =
@@ -36,9 +32,6 @@ class HomeScreenController extends GetxController {
     isBannersLoading.value = true;
     banners.value = await BannersApi().getBanners();
     isBannersLoading.value = false;
-    isDealLoading.value = true;
-    deals.value = await DealApi().getDeal();
-    isDealLoading.value = false;
     await getCategories();
     await getNewArrivalProducts(page: 1);
     await getFeaturedProducts(page: 1);

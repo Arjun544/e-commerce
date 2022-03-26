@@ -120,7 +120,7 @@ const AllReviews = ({ reviews }) => {
   return (
     <div className="flex flex-col justify-between">
       <ChatIcon color={"#7176AC9F"} />
-      <span className="text-black font-semibold text-lg mt-2">All Reviews</span>
+      <span className="text-black font-semibold mt-2">All Reviews</span>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <ReactStars

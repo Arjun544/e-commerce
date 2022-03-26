@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import '../banner_products_screen/banner_products_screen.dart';
-import 'components/deal_section.dart';
-import '../../widgets/loaders/banner_loader.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/cart_screen_controller.dart';
@@ -54,65 +51,6 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CategoriesSection(),
-            Obx(
-              () => SizedBox(
-                child: homeScreenController.deals.value.deals.isEmpty
-                    ? const SizedBox.shrink()
-                    :
-                    // DateTime.now().isAfter(
-                    //         homeScreenController.deals.value.deals[0].endDate)
-                    //     ? const SizedBox.shrink()
-                    //     :
-                    Padding(
-                        padding:
-                            const EdgeInsets.only(right: 15, left: 15, top: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Flash Deal',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                    letterSpacing: 1,
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () => Get.to(
-                                    () => BannerProductsScreen(
-                                      products: homeScreenController
-                                          .deals.value.deals[0].products,
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    'View all',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                        color: Colors.grey),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            homeScreenController.isDealLoading.value
-                                ? const Center(
-                                    child: BannerLoader(
-                                    height: 60,
-                                  ))
-                                : DealSection(
-                                    controller: homeScreenController,
-                                  ),
-                          ],
-                        ),
-                      ),
-              ),
-            ),
             ArrivalsSection(
               homeScreenController: homeScreenController,
               cartScreenController: cartScreenController,

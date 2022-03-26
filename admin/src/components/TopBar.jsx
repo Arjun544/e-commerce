@@ -94,20 +94,14 @@ const TopBar = () => {
           <ArrowDownIcon className="h-5 w-5" />
         </div>
         {isOpen && (
-          <div className="flex flex-col justify-around absolute z-50 top-12 right-0 bg-white h-36 w-52 rounded-2xl shadow-lg pt-4 pb-2">
+          <div className="flex flex-col justify-around absolute z-50 top-12 right-0 bg-white h-24 w-52 rounded-2xl shadow-lg pt-4 pb-2">
             <span className="text-gray-400 font-semibold tracking-wider pl-4">
               {user.email}
             </span>
 
-            <div className="flex flex-col">
-              <span className=" pl-4 text-gray-500 hover:bg-blue-light cursor-pointer py-2">
-                <div>Settings</div>
-              </span>
-
-              <span className="pl-4 text-gray-500 hover:bg-blue-light cursor-pointer py-2">
-                <div onClick={handleLogout}>Logout</div>
-              </span>
-            </div>
+            <span className="pl-4 text-gray-500 hover:bg-blue-light cursor-pointer py-2">
+              <div onClick={handleLogout}>Logout</div>
+            </span>
           </div>
         )}
       </div>

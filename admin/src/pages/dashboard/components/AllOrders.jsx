@@ -134,7 +134,7 @@ const AllOrders = () => {
   return (
     <div className="flex flex-col justify-between">
       <CartIcon color={"#7176AC9F"} />
-      <span className="text-black font-semibold text-lg mt-2">All Orders</span>
+      <span className="text-black font-semibold mt-2">All Orders</span>
       <div className="flex items-center justify-between">
         <span className="text-black font-semibold text-xl">
           {orders.length}
