@@ -41,6 +41,7 @@ router.patch("/removeAddress/:id", authMiddleware, cleanBody, removeAddress);
 router.patch(
   "/updateImage/:id",
   upload.single("image"),
+  authMiddleware,
   cleanBody,
   updateImage
 );

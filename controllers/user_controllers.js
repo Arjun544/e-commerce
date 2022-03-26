@@ -436,26 +436,34 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.updateImage = async (req, res) => {
-  if (!mongoose.isValidObjectId(req.params.id)) {
-    return res.status(400).send("Invalid user id");
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send("Invalid user id");
+    }
+
+    if (!req.body.image || !req.params.id) {
+      return res.json("All fields are required");
+    }
+
+    // Upload image to cloudinary
+    const result = await cloudinary.uploader.upload(req.body.image);
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: { profile: result.secure_url, profileId: result.public_id } },
+      { new: true }
+    );
+
+    if (!user) return res.status(400).send("User not found");
+
+    res.json("Updated");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
   }
-  // update only those value passed from req.body, but not password
-  if (!req.body.image) {
-    return res.json("All fields are required");
-  }
-
-  // Upload image to cloudinary
-  const result = await cloudinary.uploader.upload(req.body.image);
-
-  const user = await User.findByIdAndUpdate(
-    req.params.id,
-    { $set: { profile: result.secure_url, profileId: result.public_id } },
-    { new: true }
-  );
-
-  if (!user) return res.status(400).send("User not found");
-
-  res.json("Updated");
 };
 
 exports.addShippingAddress = async (req, res) => {
@@ -574,8 +582,6 @@ exports.deleteUserById = async (req, res) => {
         .status(500)
         .json({ success: false, message: "All fields are required" });
     }
-
-    console.log(req.params.id, req.body.profileId);
 
     // delete image
     await cloudinary.uploader.destroy(req.body.profileId, (error, result) => {

@@ -246,8 +246,9 @@ class _CartWidgetState extends State<CartWidget> {
                   }
                 }
                 total.add(widget.cartScreenController.orderItems
-                    .map((e) =>
-                        e.discount > 0 ? e.totalPrice : e.price * e.quantity)
+                    .map((e) => e.discount > 0
+                        ? e.totalPrice * e.quantity
+                        : e.price * e.quantity)
                     .toList());
                 widget.cartScreenController.orderItemsTotal.value =
                     total[0].fold(0, (p, c) => p + c);

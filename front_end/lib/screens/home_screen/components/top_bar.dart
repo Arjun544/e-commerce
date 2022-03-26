@@ -48,11 +48,10 @@ class TopBar extends StatelessWidget {
             const SizedBox(width: 20),
             getStorage.read('isLogin') == true
                 ? StreamBuilder<UserModel>(
-                    stream: rootScreenController
-                        .currentUserStreamController.stream,
+                    stream:
+                        rootScreenController.currentUserStreamController.stream,
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircleAvatar(radius: 20);
                       } else if (snapshot.data == null) {}
                       UserModel? currentUser = snapshot.data;
@@ -67,7 +66,8 @@ class TopBar extends StatelessWidget {
                             ? CircleAvatar(
                                 radius: 20,
                                 backgroundImage: CachedNetworkImageProvider(
-                                    currentUser.data.profile),
+                                  currentUser.data.profile,
+                                ),
                               )
                             : PreferenceBuilder<String>(
                                 preference: sharedPreferences.getString(

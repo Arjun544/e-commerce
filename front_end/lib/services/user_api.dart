@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart' as dio;
@@ -53,17 +55,18 @@ class ApiUser {
     required File image,
   }) async {
     await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
-    String fileName = image.path.split('/').last;
 
     try {
-      dio.FormData formData = dio.FormData.fromMap({
-        'image':
-            await dio.MultipartFile.fromFile(image.path, filename: fileName),
-      });
+      final bytes = File(image.path).readAsBytesSync();
+      String base64Image = 'data:image/png;base64,' + base64Encode(bytes);
+
       await dio.Dio().patch(
         baseUrl + 'users/updateImage/$userId',
-        data: formData,
+        data: {
+          'image': base64Image,
+        },
         options: Options(
+          headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
           followRedirects: false,
           validateStatus: (status) {
             return status! < 500;
