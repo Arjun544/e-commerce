@@ -20,15 +20,14 @@ class PaymentController extends GetxController {
     required String expMonth,
     required String expYear,
     required String cvc,
-  }) async {
-    await ApiPayment().addCard(
-      customerId: customerId,
-      cardNumber: cardNumber,
-      expMonth: expMonth,
-      expYear: expYear,
-      cvc: cvc,
-    );
-  }
+  }) async =>
+      await ApiPayment().addCard(
+        customerId: customerId,
+        cardNumber: cardNumber,
+        expMonth: expMonth,
+        expYear: expYear,
+        cvc: cvc,
+      );
 
   Future getCustomerCard() async {
     UserModel? userModel = await rootScreenController.getCurrentUser();

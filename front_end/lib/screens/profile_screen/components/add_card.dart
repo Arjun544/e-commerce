@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
@@ -38,22 +39,27 @@ class _AddCardState extends State<AddCard> {
 
   void onAddPressed() async {
     if (formKey.currentState!.validate()) {
-      await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
       UserModel? userModel =
           await paymentController.rootScreenController.getCurrentUser();
-      await paymentController.addCard(
+      var response = await paymentController.addCard(
         customerId: userModel!.data.customerId,
         cardNumber: cardNumber.value,
         expMonth: expiryDate.value.split('/')[0].toString(),
         expYear: expiryDate.value.split('/')[1].toString(),
         cvc: cvvCode.value,
       );
-      await EasyLoading.dismiss();
-      Get.back();
-
-      setState(() {
-        paymentController.getCustomerCard();
-      });
+      if (response['success'] == false) {
+        await EasyLoading.showToast(
+          response['message'],
+          toastPosition: EasyLoadingToastPosition.top,
+          maskType: EasyLoadingMaskType.clear,
+        );
+      } else {
+        Get.back();
+        setState(() {
+          paymentController.getCustomerCard();
+        });
+      }
     } else {
       print('invalid!');
     }

@@ -26,11 +26,11 @@ exports.addCard = async (req, res) => {
         card: paymentMethod,
       });
     }
-  } catch (error) {
-    console.log(error);
+  } catch (error) { 
+    console.log(error.raw.message);
     return res.json({
       success: false,
-      message: "Something went wrong",
+      message: error.raw.message,
     });
   }
 };

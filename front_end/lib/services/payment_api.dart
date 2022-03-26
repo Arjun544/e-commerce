@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import '../models/payment_card_model.dart';
 import '../utils/constants.dart';
 
@@ -13,31 +16,34 @@ class ApiPayment {
     required String expYear,
     required String cvc,
   }) async {
-    var response = await dio.post(
-      baseUrl + 'payment/addCard',
-      data: {
-        'customerId': customerId,
-        'card': {
-          'number': cardNumber,
-          'exp_year': expYear,
-          'exp_month': expMonth,
-          'cvc': cvc,
-        }
-      },
-      options: Options(
-        headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
-        responseType: ResponseType.plain,
-      ),
-    );
-    if (response.statusCode == 200) {
-    } else {
+    await EasyLoading.show(status: 'Loading...', dismissOnTap: false);
+    try {
+      var response = await dio.post(
+        baseUrl + 'payment/addCard',
+        data: {
+          'customerId': customerId,
+          'card': {
+            'number': cardNumber,
+            'exp_year': expYear,
+            'exp_month': expMonth,
+            'cvc': cvc,
+          }
+        },
+        options: Options(
+          headers: {'Authorization': 'Bearer ${getStorage.read('token')}'},
+          responseType: ResponseType.plain,
+        ),
+      );
+      await EasyLoading.dismiss();
+      return json.decode(response.data);
+    } on DioError catch (e) {
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
         maskType: EasyLoadingMaskType.clear,
       );
-      await EasyLoading.dismiss();
-      throw Exception('failed to load');
+      print(e);
+      throw Exception('Failed to load');
     }
   }
 
