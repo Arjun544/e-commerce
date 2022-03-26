@@ -175,10 +175,10 @@ const Orders = () => {
           />
         </div>
       ) : (
-        <div className="flex flex-col px-10">
+        <div className="flex flex-col px-10 w-full">
           {/* Tabs */}
           <div className="flex items-center mb-6 w-full justify-center cursor-pointer pt-4">
-            <div className="tabs tabs-boxed xl:w-10/12 w-full grid grid-cols-4 md:flex items-center justify-between h-28 pb-4 md:pb-0 pt-4 md:pt-0 md:h-16 rounded-3xl px-5 bg-bgColor-light">
+            <div className="tabs tabs-boxed 2xl :bg-red-500 xl:w-full w-full grid grid-cols-4 md:flex items-center justify-between h-28 pb-4 md:pb-0 pt-4 md:pt-0 md:h-16 rounded-3xl px-5 bg-bgColor-light">
               <a
                 onClick={(e) => {
                   e.preventDefault();

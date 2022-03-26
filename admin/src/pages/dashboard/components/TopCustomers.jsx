@@ -5,7 +5,7 @@ const TopCustomers = () => {
   const { customers } = useSelector((state) => state.customers);
   const { orders } = useSelector((state) => state.orders);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <span className="text-black font-semibold text-lg mb-4">
         Top Customers
       </span>

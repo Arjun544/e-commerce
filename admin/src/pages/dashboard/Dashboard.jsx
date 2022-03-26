@@ -285,12 +285,12 @@ const Dashboard = () => {
           {/* Top Products */}
           <div className={`flex mt-12 lg:flex-col xl:flex-row`}>
             <div
-              className={`bg-bgColor-light h-full rounded-3xl p-6 shadow-sm lg:flex-col lg:w-full  lg:mb-6 xl:flex-row xl:w-1/2 xl:mr-8`}
+              className={`bg-bgColor-light h-full rounded-3xl p-6 shadow-sm lg:flex-col lg:w-full lg:mb-6 xl:flex-row xl:w-1/2 xl:mr-8`}
             >
               <TopCustomers />
             </div>
 
-            <div className="flex flex-col w-full bg-bgColor-light rounded-3xl p-6 shadow-sm">
+            <div className="flex flex-col w-2/3 bg-bgColor-light rounded-3xl p-6 shadow-sm">
               {!isLoading && products !== undefined && (
                 <TopProductsTable
                   columns={productsColumns}
