@@ -1,4 +1,3 @@
-
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -140,80 +139,76 @@ class _FilterProductsScreenState extends State<FilterProductsScreen> {
                 height: 20,
               ),
               filteredProductsScreenController.isSorting.value == true
-                  ? StreamBuilder(
-                      stream: filteredProductsScreenController
-                          .sortedProductsStreamController.stream,
-                      builder:
-                          (context, AsyncSnapshot<List<Product>> snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Expanded(
-                            child: FeaturedLoader(),
-                          );
-                        }
-                        return snapshot.data!.isEmpty
-                            ? Padding(
-                                padding: const EdgeInsets.only(top: 80),
-                                child: Column(
-                                  children: [
-                                    Lottie.asset('assets/empty.json',
-                                        height: Get.height * 0.3),
-                                    const Text(
-                                      'No products',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                          color: Colors.black45),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Expanded(
-                                child: StaggeredGridView.countBuilder(
-                                    shrinkWrap: true,
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 15,
-                                    mainAxisSpacing: 15,
-                                    padding: const EdgeInsets.only(
-                                        right: 12, left: 12, bottom: 20),
-                                    itemCount: snapshot.data!.length,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      Product product = snapshot.data![index];
+                  ? filteredProductsScreenController.sortedProducts.isEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 80),
+                          child: Column(
+                            children: [
+                              Lottie.asset('assets/empty.json',
+                                  height: Get.height * 0.3),
+                              const Text(
+                                'No products',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.black45),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Expanded(
+                          child: Obx(
+                            () => StaggeredGridView.countBuilder(
+                                shrinkWrap: true,
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 15,
+                                mainAxisSpacing: 15,
+                                padding: const EdgeInsets.only(
+                                    right: 12, left: 12, bottom: 20),
+                                itemCount: filteredProductsScreenController
+                                    .sortedProducts
+                                    .toSet()
+                                    .toList()
+                                    .length,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  Product product =
+                                      filteredProductsScreenController
+                                          .sortedProducts
+                                          .toSet()
+                                          .toList()[index];
 
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Get.to(
-                                            () => DetailScreen(
-                                              product: product,
-                                            ),
-                                          );
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 5, vertical: 5),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.2),
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(20),
-                                            ),
-                                          ),
-                                          child: ProductItem(
-                                            homeScreenController:
-                                                homeScreenController,
-                                            product: product,
-                                          ),
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Get.to(
+                                        () => DetailScreen(
+                                          product: product,
                                         ),
                                       );
                                     },
-                                    staggeredTileBuilder: (index) {
-                                      return StaggeredTile.count(
-                                          1, index.isEven ? 1.5 : 1.6);
-                                    }),
-                              );
-                      })
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                      child: ProductItem(
+                                        homeScreenController:
+                                            homeScreenController,
+                                        product: product,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                staggeredTileBuilder: (index) {
+                                  return StaggeredTile.count(
+                                      1, index.isEven ? 1.5 : 1.6);
+                                }),
+                          ),
+                        )
                   : StreamBuilder(
                       stream: filteredProductsScreenController
                           .filteredProductsStreamController.stream,
@@ -251,7 +246,7 @@ class _FilterProductsScreenState extends State<FilterProductsScreen> {
                                         right: 12, left: 12, bottom: 20),
                                     itemCount: snapshot.data!.results.length,
                                     physics:
-                                        const NeverScrollableScrollPhysics(),
+                                        const AlwaysScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
                                       Product product =
                                           snapshot.data!.results[index];

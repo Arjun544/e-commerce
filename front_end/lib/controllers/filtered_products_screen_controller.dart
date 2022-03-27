@@ -10,8 +10,7 @@ class FilteredProductsScreenController extends GetxController {
   final StreamController<ProductModel> filteredProductsStreamController =
       BehaviorSubject();
 
-  final StreamController<List<Product>> sortedProductsStreamController =
-      BehaviorSubject();
+  RxList<Product> sortedProducts = <Product>[].obs;
 
   RxBool isSorting = false.obs;
   RxString appliedSort = ''.obs;

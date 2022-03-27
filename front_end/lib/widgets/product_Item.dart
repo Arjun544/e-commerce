@@ -168,7 +168,7 @@ class ProductItem extends StatelessWidget {
                               '\$${product.totalPrice.toString()}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: Colors.black,
                               ),
                             ),
@@ -179,7 +179,7 @@ class ProductItem extends StatelessWidget {
                               '\$${product.price.toString()}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                                fontSize: 10,
                                 decorationColor: Colors.red,
                                 decorationThickness: 3,
                                 decoration: TextDecoration.lineThrough,

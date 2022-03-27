@@ -1,4 +1,3 @@
-
 import 'package:another_xlider/another_xlider.dart';
 import 'package:flutter/material.dart';
 import '../../../models/product_Model.dart';
@@ -128,11 +127,33 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
 }
 
 // ignore: must_be_immutable
-class CustomSortButton extends StatelessWidget {
+class CustomSortButton extends StatefulWidget {
   final FilteredProductsScreenController controller;
   String selectedSortBy;
 
   CustomSortButton({required this.selectedSortBy, required this.controller});
+
+  @override
+  State<CustomSortButton> createState() => _CustomSortButtonState();
+}
+
+class _CustomSortButtonState extends State<CustomSortButton> {
+  List<Product> sortByProducts(String sortBy, List<Product> filteredProducts) {
+    switch (sortBy) {
+      case 'newest':
+        return filteredProducts
+          ..sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
+      case 'oldest':
+        return filteredProducts
+          ..sort((a, b) => a.dateCreated.compareTo(b.dateCreated));
+      case 'Low to High Pricing':
+        return filteredProducts..sort((a, b) => a.price.compareTo(b.price));
+      case 'High to Low Pricing':
+        return filteredProducts..sort((a, b) => b.price.compareTo(a.price));
+      default:
+        return filteredProducts;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,58 +166,51 @@ class CustomSortButton extends StatelessWidget {
       onSelected: (index, isSelected) {
         switch (index) {
           case 0:
-            selectedSortBy = 'onSale';
+            widget.selectedSortBy = 'onSale';
             break;
           case 1:
-            selectedSortBy = 'newest';
+            widget.selectedSortBy = 'newest';
             break;
           case 2:
-            selectedSortBy = 'oldest';
+            widget.selectedSortBy = 'oldest';
             break;
           case 3:
-            selectedSortBy = 'Low to High Pricing';
+            widget.selectedSortBy = 'Low to High Pricing';
             break;
           case 4:
-            selectedSortBy = 'High to Low Pricing';
+            widget.selectedSortBy = 'High to Low Pricing';
             break;
           default:
         }
 
-        switch (selectedSortBy) {
+        switch (widget.selectedSortBy) {
           case 'onSale':
-            controller.sortedProductsStreamController.add(controller
-                .filteredProducts
-                .where((element) => element.onSale == true)
-                .toList());
+            widget.controller.sortedProducts.value = widget
+                .controller.filteredProducts
+                .where((product) => product.onSale)
+                .toList();
             break;
           case 'newest':
-            controller.filteredProducts
-                .sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
-            controller.sortedProductsStreamController
-                .add(controller.filteredProducts.toList());
+            widget.controller.sortedProducts.value =
+                sortByProducts('newest', widget.controller.filteredProducts);
+
             break;
           case 'oldest':
-            controller.filteredProducts
-                .sort((a, b) => a.dateCreated.compareTo(b.dateCreated));
-            controller.sortedProductsStreamController
-                .add(controller.filteredProducts.toList());
+            widget.controller.sortedProducts.value =
+                sortByProducts('oldest', widget.controller.filteredProducts);
             break;
           case 'Low to High Pricing':
-            controller.filteredProducts
-                .sort((a, b) => a.price.compareTo(b.price));
-            controller.sortedProductsStreamController
-                .add(controller.filteredProducts);
+            widget.controller.sortedProducts.value = sortByProducts(
+                'Low to High Pricing', widget.controller.filteredProducts);
             break;
           case 'High to Low Pricing':
-            controller.filteredProducts
-                .sort((a, b) => b.price.compareTo(a.price));
-            controller.sortedProductsStreamController
-                .add(controller.filteredProducts);
+            widget.controller.sortedProducts.value = sortByProducts(
+                'High to Low Pricing', widget.controller.filteredProducts);
             break;
           default:
         }
-        controller.isSorting.value = true;
-        controller.appliedSort.value = selectedSortBy;
+        widget.controller.isSorting.value = true;
+        widget.controller.appliedSort.value = widget.selectedSortBy;
         Get.back();
       },
       buttons: [
@@ -236,6 +250,7 @@ class CustomRatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GroupButton(
       spacing: 10,
+      runSpacing: 10,
       isRadio: true,
       buttonWidth: Get.width * 0.425,
       buttonHeight: Get.height * 0.05,
@@ -269,33 +284,29 @@ class CustomRatingButton extends StatelessWidget {
         }
 
         if (selectedRating >= 0 && selectedRating <= 2) {
-          controller.sortedProductsStreamController.add(controller
-              .filteredProducts.reversed
-              .where((element) =>
-                  calcAvgRating(element.reviews) >= 0 &&
-                  calcAvgRating(element.reviews) <= 2)
-              .toList());
+          controller.sortedProducts.value = controller.filteredProducts.reversed
+              .where((product) =>
+                  calcAvgRating(product.reviews) >= 0 &&
+                  calcAvgRating(product.reviews) <= 2)
+              .toList();
         } else if (selectedRating >= 2 && selectedRating <= 3) {
-          controller.sortedProductsStreamController.add(controller
-              .filteredProducts.reversed
-              .where((element) =>
-                  calcAvgRating(element.reviews) >= 2 &&
-                  calcAvgRating(element.reviews) <= 3)
-              .toList());
+          controller.sortedProducts.value = controller.filteredProducts.reversed
+              .where((product) =>
+                  calcAvgRating(product.reviews) >= 2 &&
+                  calcAvgRating(product.reviews) <= 3)
+              .toList();
         } else if (selectedRating >= 3 && selectedRating <= 4) {
-          controller.sortedProductsStreamController.add(controller
-              .filteredProducts.reversed
-              .where((element) =>
-                  calcAvgRating(element.reviews) >= 3 &&
-                  calcAvgRating(element.reviews) <= 4)
-              .toList());
+          controller.sortedProducts.value = controller.filteredProducts.reversed
+              .where((product) =>
+                  calcAvgRating(product.reviews) >= 3 &&
+                  calcAvgRating(product.reviews) <= 4)
+              .toList();
         } else if (selectedRating >= 4 && selectedRating <= 5) {
-          controller.sortedProductsStreamController.add(controller
-              .filteredProducts.reversed
-              .where((element) =>
-                  calcAvgRating(element.reviews) >= 4 &&
-                  calcAvgRating(element.reviews) <= 5)
-              .toList());
+          controller.sortedProducts.value = controller.filteredProducts.reversed
+              .where((product) =>
+                  calcAvgRating(product.reviews) >= 4 &&
+                  calcAvgRating(product.reviews) <= 5)
+              .toList();
         }
         controller.isSorting.value = true;
         Get.back();
@@ -339,17 +350,16 @@ class PriceSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterSlider(
-      values: [0, 20000],
-      max: 100000,
+      values: [0, 50000],
+      max: 500000,
       min: 0,
       onDragCompleted: (value, one, two) {
         startPrice = one;
         endPrice = two;
-        controller.sortedProductsStreamController.add(controller
-            .filteredProducts
+        controller.sortedProducts.value = controller.filteredProducts
             .where((element) =>
                 element.price >= startPrice && element.price <= endPrice)
-            .toList());
+            .toList();
 
         controller.isSorting.value = true;
         Get.back();
@@ -379,7 +389,7 @@ class PriceSlider extends StatelessWidget {
       tooltip: FlutterSliderTooltip(
         textStyle: const TextStyle(fontSize: 26),
         leftSuffix: const Text(
-          ' Pkr',
+          ' \$',
           style: TextStyle(
             fontSize: 20,
             color: Colors.black,
@@ -387,7 +397,7 @@ class PriceSlider extends StatelessWidget {
           ),
         ),
         rightSuffix: const Text(
-          ' Pkr',
+          ' \$',
           style: TextStyle(
             fontSize: 20,
             color: Colors.black,
