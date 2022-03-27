@@ -275,7 +275,7 @@ const Dashboard = () => {
             {/* ActivityOverview */}
             <div
               className={`h-full bg-bgColor-light rounded-3xl p-6 shadow-sm ${
-                isBigScreen ? "w-1/3" : "w-full"
+                isBigScreen ? "w-1/2" : "w-full"
               }`}
             >
               <ProductsSold />
