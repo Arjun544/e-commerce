@@ -47,7 +47,7 @@ exports.addProduct = async (req, res) => {
     // Upload thumbnail to cloudinary
     const result = await cloudinary.uploader.upload(image);
 
-    if (onSale === "true" && discount > 0) {
+    if (onSale === true && discount > 0) {
       const priceAfterDiscount = price - (price * req.body.discount) / 100;
 
       const product = new Product({
@@ -413,13 +413,9 @@ exports.updateProduct = async (req, res) => {
     if (!newCategory) return res.status(400).send("Invalid Category");
 
     // delete old thumbnail
-    await cloudinary.uploader.destroy(req.body.thumbnailId, (error, result) => {
-      console.log(result, error);
-    });
+    await cloudinary.uploader.destroy(req.body.thumbnailId);
     // upload new thumbnail again
-    const result = await cloudinary.uploader.upload(image, (error, result) => {
-      console.log(result, error);
-    });
+    const result = await cloudinary.uploader.upload(image);
 
     // // delete old images
     await cloudinary.v2.api.delete_resources(
@@ -430,11 +426,11 @@ exports.updateProduct = async (req, res) => {
     );
 
     let product;
-    if (req.body.onSale === "true" && req.body.discount > 0) {
+    if (req.body.onSale === true && req.body.discount > 0) {
       const priceAfterDiscount =
         req.body.price - (req.body.price * req.body.discount) / 100;
 
-      product = await Product.findOneAndUpdate(
+      product = await Product.findByIdAndUpdate(
         req.params.id,
         {
           onSale: onSale,
@@ -458,7 +454,7 @@ exports.updateProduct = async (req, res) => {
         countInStock: countInStock,
         isFeatured: isFeatured,
       };
-      product = await Product.findOneAndUpdate(
+      product = await Product.findByIdAndUpdate(
         req.params.id,
         { $set: newProduct },
         { new: true }
@@ -545,9 +541,7 @@ exports.deleteProduct = async (req, res) => {
       return res.status(400).send("Invalid product id");
     }
     // delete thumbnail from cloudinary
-    await cloudinary.uploader.destroy(req.body.thumbnailId, (error, result) => {
-      console.log(result, error);
-    });
+    await cloudinary.uploader.destroy(req.body.thumbnailId);
 
     // delete images from cloudinary
     await cloudinary.v2.api.delete_resources(

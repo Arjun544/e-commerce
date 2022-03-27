@@ -14,7 +14,7 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import ReactTooltip from "react-tooltip";
-import { Textarea } from "react-rainbow-components";
+import { Breadcrumb, Breadcrumbs, Textarea } from "react-rainbow-components";
 import {
   addProduct,
   uploadMultiImages,
@@ -159,10 +159,10 @@ const AddProduct = ({ isEditing }) => {
             editingProduct.thumbnailId,
             editingProduct.images.map((item) => item.id)
           );
-          await uploadMultiImages(
-            product.data.product.id,
-            images.map((item) => item.getFileEncodeDataURL())
-          );
+          // await uploadMultiImages(
+          //   product.data.product.id,
+          //   images.map((item) => item.getFileEncodeDataURL())
+          // );
         } else {
           const product = await addProduct(
             data.name,
@@ -217,9 +217,15 @@ const AddProduct = ({ isEditing }) => {
         </div>
       ) : (
         <div className="flex flex-col h-full px-10 mt-6">
-          <span className="text-black font-semibold text-xl">
-            {isEditing ? "Edit Product" : "Add Product"}
-          </span>
+            <Breadcrumbs>
+              <Breadcrumb label="Products" onClick={() => history.goBack()} />
+              {isEditing ? (
+                <Breadcrumb label="Editing Product" />
+              ) : (
+                <Breadcrumb label="Add Product" />
+              )}
+            </Breadcrumbs>
+          
           <div className=" flex-col flex-grow bg-white">
             <div className="flex w-full items-start">
               <div className="flex-col w-1/2">
@@ -406,6 +412,7 @@ const AddProduct = ({ isEditing }) => {
               <Textarea
                 label=""
                 rows={4}
+                value={input}
                 onChange={(event) => {
                   setInput(event.target.value);
                   setInputCount(event.target.value.length);
