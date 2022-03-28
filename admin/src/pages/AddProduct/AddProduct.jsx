@@ -82,6 +82,7 @@ const AddProduct = ({ isEditing }) => {
         setImages(data.products.images.map((image) => image.url));
         setIsFeatured(data.products.isFeatured);
         setIsOnSale(data.products.onSale);
+        setValue("discount", data.products.discount);
         setEditingCategoryName(data.products.category.name);
         setEditingCategoryId(data.products.category._id);
         setEditingSubCategoryName(data.products.subCategory);
@@ -159,10 +160,10 @@ const AddProduct = ({ isEditing }) => {
             editingProduct.thumbnailId,
             editingProduct.images.map((item) => item.id)
           );
-          // await uploadMultiImages(
-          //   product.data.product.id,
-          //   images.map((item) => item.getFileEncodeDataURL())
-          // );
+          await uploadMultiImages(
+            product.data.updatedProduct.id,
+            images.map((item) => item.getFileEncodeDataURL())
+          );
         } else {
           const product = await addProduct(
             data.name,
@@ -192,6 +193,7 @@ const AddProduct = ({ isEditing }) => {
           }
         );
       } catch (error) {
+        console.log(error);
         enqueueSnackbar("Something went wrong", {
           variant: "error",
           autoHideDuration: 2000,
@@ -217,15 +219,15 @@ const AddProduct = ({ isEditing }) => {
         </div>
       ) : (
         <div className="flex flex-col h-full px-10 mt-6">
-            <Breadcrumbs>
-              <Breadcrumb label="Products" onClick={() => history.goBack()} />
-              {isEditing ? (
-                <Breadcrumb label="Editing Product" />
-              ) : (
-                <Breadcrumb label="Add Product" />
-              )}
-            </Breadcrumbs>
-          
+          <Breadcrumbs>
+            <Breadcrumb label="Products" onClick={() => history.goBack()} />
+            {isEditing ? (
+              <Breadcrumb label="Editing Product" />
+            ) : (
+              <Breadcrumb label="Add Product" />
+            )}
+          </Breadcrumbs>
+
           <div className=" flex-col flex-grow bg-white">
             <div className="flex w-full items-start">
               <div className="flex-col w-1/2">

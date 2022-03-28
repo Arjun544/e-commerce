@@ -89,7 +89,7 @@ exports.addProduct = async (req, res) => {
 
       await product.save();
 
-      res.json({
+      return res.json({
         success: true,
         product: product,
         message: "Product has been added",
@@ -418,12 +418,7 @@ exports.updateProduct = async (req, res) => {
     const result = await cloudinary.uploader.upload(image);
 
     // // delete old images
-    await cloudinary.v2.api.delete_resources(
-      req.body.imageIds,
-      (error, result) => {
-        console.log(result, error);
-      }
-    );
+    await cloudinary.v2.api.delete_resources(req.body.imageIds);
 
     let product;
     if (req.body.onSale === true && req.body.discount > 0) {
@@ -433,9 +428,11 @@ exports.updateProduct = async (req, res) => {
       product = await Product.findByIdAndUpdate(
         req.params.id,
         {
-          onSale: onSale,
-          totalPrice: priceAfterDiscount,
-          discount: discount,
+          $set: {
+            onSale: onSale,
+            totalPrice: priceAfterDiscount,
+            discount: discount,
+          },
         },
         { new: true }
       );
