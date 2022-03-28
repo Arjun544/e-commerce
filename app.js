@@ -21,7 +21,7 @@ const server = require("http").createServer(app);
 // Sooket Connection
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://sellcorner-admin.netlify.app",
+    origin: "https://sellcorner-admin.herokuapp.com",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
