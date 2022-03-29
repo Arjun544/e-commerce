@@ -18,8 +18,9 @@ const ProductOverview = ({ product, averageRating }) => {
         />
 
         <div className="flex h-16 w-full object-cover bg-transparent justify-between mt-8">
-          {product.images.map((image, index) => (
+          {product.images.slice(0,4).map((image, index) => (
             <img
+              key={image.id}
               onClick={(e) => onImageClick(e, index)}
               className={`h-16 w-16 rounded-xl object-cover cursor-pointer ${
                 index === selectedImage && "border-customYellow-light border-4"

@@ -418,45 +418,39 @@ exports.updateProduct = async (req, res) => {
     const result = await cloudinary.uploader.upload(image);
 
     // // delete old images
-    await cloudinary.v2.api.delete_resources(req.body.imageIds);
+    await cloudinary.v2.api.delete_resources(
+      req.body.imageIds,
+      (result, error) => {
+        console.log(result, error);
+      }
+    );
 
     let product;
-    if (req.body.onSale === true && req.body.discount > 0) {
-      const priceAfterDiscount =
-        req.body.price - (req.body.price * req.body.discount) / 100;
+    const priceAfterDiscount =
+      req.body.price - (req.body.price * req.body.discount) / 100;
 
-      product = await Product.findByIdAndUpdate(
-        req.params.id,
-        {
-          $set: {
-            onSale: onSale,
-            totalPrice: priceAfterDiscount,
-            discount: discount,
-          },
+    product = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          name: name,
+          description: description,
+          fullDescription: fullDescription,
+          thumbnail: result.secure_url,
+          thumbnailId: result.public_id,
+          price: price,
+          category: category,
+          subCategory: subCategory,
+          countInStock: countInStock,
+          isFeatured: isFeatured,
+          onSale: onSale,
+          totalPrice: priceAfterDiscount,
+          discount: discount,
         },
-        { new: true }
-      );
-    } else {
-      const newProduct = {
-        name: name,
-        description: description,
-        fullDescription: fullDescription,
-        thumbnail: result.secure_url,
-        thumbnailId: result.public_id,
-        price: price,
-        totalPrice: price,
-        onSale: onSale,
-        category: category,
-        subCategory: subCategory,
-        countInStock: countInStock,
-        isFeatured: isFeatured,
-      };
-      product = await Product.findByIdAndUpdate(
-        req.params.id,
-        { $set: newProduct },
-        { new: true }
-      );
-    }
+        $pull: { images: [] },
+      },
+      { new: true }
+    );
 
     if (!product) {
       return res.status(400).send("Product not found");
@@ -464,7 +458,7 @@ exports.updateProduct = async (req, res) => {
 
     res.json({
       success: true,
-      updatedProduct: product,
+      product,
     });
   } catch (error) {
     console.log(error);
@@ -570,35 +564,43 @@ exports.deleteProduct = async (req, res) => {
 };
 
 exports.multipleImages = async (req, res) => {
-  if (!mongoose.isValidObjectId(req.params.id)) {
-    return res.status(400).send("Invalid Product Id");
-  }
+  try {
+    if (!mongoose.isValidObjectId(req.params.id)) {
+      return res.status(400).send("Invalid Product Id");
+    }
 
-  const uploader = async (path) => await cloudinary.uploader.upload(path);
+    const uploader = async (path) => await cloudinary.uploader.upload(path);
 
-  // Upload images to cloudinary
-  const files = req.body.images;
-  let product;
-  for (const file of files) {
-    const newPath = await uploader(file);
-    product = await Product.findByIdAndUpdate(
-      req.params.id,
-      {
-        $push: {
-          images: {
-            id: newPath.public_id,
-            url: newPath.secure_url,
+    // Upload images to cloudinary
+    const files = req.body.images;
+    let product;
+    for (const file of files) {
+      const newPath = await uploader(file);
+      product = await Product.findByIdAndUpdate(
+        req.params.id,
+        {
+          $push: {
+            images: {
+              id: newPath.public_id,
+              url: newPath.secure_url,
+            },
           },
         },
-      },
-      { new: true }
-    );
+        { new: true }
+      );
+    }
+
+    if (!product) return res.status(500).send("Images cannot be upload!");
+
+    res.json({
+      success: true,
+      message: "Images has been added",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
   }
-
-  if (!product) return res.status(500).send("Images cannot be upload!");
-
-  res.json({
-    success: true,
-    message: "Images has been added",
-  });
 };

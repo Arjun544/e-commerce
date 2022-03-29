@@ -109,6 +109,7 @@ const Products = () => {
         <TableActions
           product={props.cell.row.original.product}
           setIsLoading={setIsLoading}
+          tableData={tableData}
           setTableData={setTableData}
         />
       ),

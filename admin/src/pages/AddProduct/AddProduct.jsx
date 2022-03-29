@@ -144,26 +144,26 @@ const AddProduct = ({ isEditing }) => {
       try {
         setLoading(true);
         if (isEditing) {
-          const product = await updateProduct(
-            params.id,
-            data.name,
-            data.description,
-            input,
-            categories.filter((item) => item._id === editingCategoryId)[0],
-            data.stock,
-            isFeatured,
-            data.price,
-            thumbnail[0].getFileEncodeDataURL(),
-            currentSubCategory,
-            isOnSale,
-            data.discount === undefined ? 0 : data.discount,
-            editingProduct.thumbnailId,
-            editingProduct.images.map((item) => item.id)
-          );
-          await uploadMultiImages(
-            product.data.updatedProduct.id,
-            images.map((item) => item.getFileEncodeDataURL())
-          );
+          // const product = await updateProduct(
+          //   params.id,
+          //   data.name,
+          //   data.description,
+          //   input,
+          //   categories.filter((item) => item._id === editingCategoryId)[0],
+          //   data.stock,
+          //   isFeatured,
+          //   data.price,
+          //   thumbnail[0].getFileEncodeDataURL(),
+          //   currentSubCategory,
+          //   isOnSale,
+          //   data.discount === undefined ? 0 : data.discount,
+          //   editingProduct.thumbnailId,
+          //   editingProduct.images.map((item) => item.id)
+          // );
+          // await uploadMultiImages(
+          //   product.data.product.id,
+          //   images.map((item) => item.getFileEncodeDataURL())
+          // );
         } else {
           const product = await addProduct(
             data.name,

@@ -59,20 +59,25 @@ const Categories = () => {
 
   const handleCategoryDelete = async (e, category) => {
     e.preventDefault();
-    try {
-      await deleteCategory(category._id, category.iconId);
-      socket.current.on("delete-category", (newCategories) => {
-        setCategories(newCategories);
-      });
-      enqueueSnackbar("Category deleted", {
-        variant: "success",
-        autoHideDuration: 2000,
-      });
-    } catch (error) {
-      console.log(error.response);
-    } finally {
-      setIsLoading(false);
-    }
+    setCategories(categories.filter((item) => item._id !== category._id));
+    enqueueSnackbar("Category deleted", {
+      variant: "success",
+      autoHideDuration: 2000,
+    });
+    // try {
+    //   await deleteCategory(category._id, category.iconId);
+    //   socket.current.on("delete-category", (newCategories) => {
+    //     setCategories(newCategories);
+    //   });
+    //   enqueueSnackbar("Category deleted", {
+    //     variant: "success",
+    //     autoHideDuration: 2000,
+    //   });
+    // } catch (error) {
+    //   console.log(error.response);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   const handleSubCategoryEdit = (e, subCategory) => {
@@ -84,22 +89,23 @@ const Categories = () => {
 
   const handleSubCategoryDelete = async (e, mainId, category) => {
     e.preventDefault();
-    // setIsLoading(true);
-    try {
-      await deleteSubCategory(mainId, category.id);
-      socket.current.on("delete-subCategory", (newCategories) => {
-        setCategories(newCategories);
-      });
-      enqueueSnackbar("Category deleted", {
-        variant: "success",
-        autoHideDuration: 2000,
-      });
-    } catch (error) {
-      console.log(error.response);
-    }
-    // const { data } = await getCategories();
-    // setCategories(data.categoryList);
-    // setIsLoading(false);
+
+    enqueueSnackbar("SubCategory deleted", {
+      variant: "success",
+      autoHideDuration: 2000,
+    });
+    // try {
+    //   await deleteSubCategory(mainId, category.id);
+    //   socket.current.on("delete-subCategory", (newCategories) => {
+    //     setCategories(newCategories);
+    //   });
+    //   enqueueSnackbar("SubCategory deleted", {
+    //     variant: "success",
+    //     autoHideDuration: 2000,
+    //   });
+    // } catch (error) {
+    //   console.log(error.response);
+    // }
   };
 
   return (

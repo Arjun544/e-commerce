@@ -72,12 +72,13 @@ function ProductsTable({
     page,
     state,
     preGlobalFilteredRows,
-
     setGlobalFilter,
   } = useTable(
     {
       columns,
       data,
+      autoResetPage: false,
+      autoResetFilters: false,
     },
 
     useFilters, // useFilters!

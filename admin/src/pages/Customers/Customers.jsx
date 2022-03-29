@@ -30,7 +30,7 @@ const Customers = () => {
     !isLoading &&
     tableData.results !== undefined &&
     tableData?.results.map((item) => ({
-      review: item,
+      user: item,
       image: item.profile.image,
       name: item.username,
       email: item.email,
@@ -72,9 +72,7 @@ const Customers = () => {
       Cell: (props) => (
         <span
           onClick={(e) =>
-            history.push(
-              `/customers/view/${props.cell.row.original.review.id}`
-            )
+            history.push(`/customers/view/${props.cell.row.original.user.id}`)
           }
           className="text-green-500 text-sm font-semibold cursor-pointer"
         >
@@ -96,6 +94,7 @@ const Customers = () => {
       Cell: (props) => (
         <TableActions
           user={props.cell.row.original.user}
+          tableData={tableData}
           setTableData={setTableData}
         />
       ),

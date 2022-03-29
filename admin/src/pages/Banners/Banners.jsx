@@ -73,42 +73,51 @@ const Banners = () => {
 
   const handleBannerDelete = async (e, banner) => {
     e.preventDefault();
-    try {
-      await deleteBanner(banner._id, banner.imageId);
-      socket.current.on("delete-banner", (newBanners) => {
-        setBanners(newBanners);
-      });
-      enqueueSnackbar("Banner deleted", {
-        variant: "success",
-        autoHideDuration: 2000,
-      });
-    } catch (error) {
-      console.log(error.response);
-      enqueueSnackbar("Something went wrong", {
-        variant: "error",
-        autoHideDuration: 2000,
-      });
-    }
+    setBanners(banners.filter((item) => item.id !== banner.id));
+     enqueueSnackbar("Banner deleted", {
+       variant: "success",
+       autoHideDuration: 2000,
+     });
+    // try {
+    //   await deleteBanner(banner._id, banner.imageId);
+    //   socket.current.on("delete-banner", (newBanners) => {
+    //     setBanners(newBanners);
+    //   });
+    //   enqueueSnackbar("Banner deleted", {
+    //     variant: "success",
+    //     autoHideDuration: 2000,
+    //   });
+    // } catch (error) {
+    //   console.log(error.response);
+    //   enqueueSnackbar("Something went wrong", {
+    //     variant: "error",
+    //     autoHideDuration: 2000,
+    //   });
+    // }
   };
 
   const handleProductDelete = async (e, bannerId, productId, productPrice) => {
     e.preventDefault();
-    try {
-      await removeBannerProducts(bannerId, productId, productPrice);
-      socket.current.on("remove-bannerProduct", (newBanners) => {
-        setBanners(newBanners);
-      });
-      enqueueSnackbar("Product deleted", {
-        variant: "success",
-        autoHideDuration: 2000,
-      });
-    } catch (error) {
-      console.log(error.response);
-      enqueueSnackbar("Something went wrong", {
-        variant: "error",
-        autoHideDuration: 2000,
-      });
-    }
+    enqueueSnackbar("Product deleted", {
+      variant: "success",
+      autoHideDuration: 2000,
+    });
+    // try {
+    //   await removeBannerProducts(bannerId, productId, productPrice);
+    //   socket.current.on("remove-bannerProduct", (newBanners) => {
+    //     setBanners(newBanners);
+    //   });
+    //   enqueueSnackbar("Product deleted", {
+    //     variant: "success",
+    //     autoHideDuration: 2000,
+    //   });
+    // } catch (error) {
+    //   console.log(error.response);
+    //   enqueueSnackbar("Something went wrong", {
+    //     variant: "error",
+    //     autoHideDuration: 2000,
+    //   });
+    // }
   };
 
   return (
