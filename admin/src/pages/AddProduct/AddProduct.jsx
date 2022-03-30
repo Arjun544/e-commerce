@@ -70,7 +70,6 @@ const AddProduct = ({ isEditing }) => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     const fetchEditingProduct = async () => {
@@ -100,7 +99,6 @@ const AddProduct = ({ isEditing }) => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     if (isEditing) {
@@ -193,7 +191,6 @@ const AddProduct = ({ isEditing }) => {
           }
         );
       } catch (error) {
-        console.log(error);
         enqueueSnackbar("Something went wrong", {
           variant: "error",
           autoHideDuration: 2000,

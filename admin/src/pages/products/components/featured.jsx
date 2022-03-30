@@ -13,16 +13,13 @@ const Featured = ({ product }) => {
     try {
       await updateFeatured(product._id, nextChecked);
       socket.current.on("update-featured", (newValue) => {
-        console.log(newValue);
         setValue(newValue);
       });
       enqueueSnackbar("Featured has been updated", {
         variant: "success",
         autoHideDuration: 2000,
       });
-    } catch (error) {
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
 
   return (

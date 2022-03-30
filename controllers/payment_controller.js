@@ -26,8 +26,7 @@ exports.addCard = async (req, res) => {
         card: paymentMethod,
       });
     }
-  } catch (error) { 
-    console.log(error.raw.message);
+  } catch (error) {
     return res.json({
       success: false,
       message: error.raw.message,
@@ -48,7 +47,6 @@ exports.deleteCard = async (req, res) => {
       return res.json("Card deleted");
     }
   } catch (error) {
-    console.log(error.raw.message);
     return res.json({
       success: false,
       message: error.raw.message,
@@ -74,7 +72,6 @@ exports.getCustomerCards = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -120,7 +117,6 @@ exports.payAmount = async (req, res) => {
       res.json("Payment successful");
     }
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",

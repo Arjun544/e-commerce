@@ -23,7 +23,6 @@ exports.sendNotification = async (req, res) => {
       message: "Notification sent successfully",
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -54,13 +53,7 @@ exports.notifyAllUsers = async (req, res) => {
         message: "Notification sent successfully",
       });
     } else {
-      const result = await cloudinary.uploader.upload(
-        image,
-        { timeout: 60000 },
-        (error, result) => {
-          console.log(result, error);
-        }
-      );
+      const result = await cloudinary.uploader.upload(image);
       const message = {
         notification: {
           title,
@@ -78,7 +71,6 @@ exports.notifyAllUsers = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -114,7 +106,6 @@ exports.saveToken = async (req, res) => {
       message: "Token saved successfully",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -150,7 +141,6 @@ exports.deleteToken = async (req, res) => {
       message: "Token removed successfully",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -166,7 +156,6 @@ exports.getUserNotifications = async (req, res) => {
       notifications: notifications,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -188,7 +177,6 @@ exports.updateHasRead = async (req, res) => {
     );
     res.json("Notification has been read");
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -211,7 +199,6 @@ exports.updateAllAsRead = async (req, res) => {
     );
     res.json("All notifications marked as read");
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -224,7 +211,6 @@ exports.deleteNotificationById = async (req, res) => {
     await Notification.findByIdAndDelete(req.params.id);
     res.json("Notification has been deleted");
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -234,10 +220,9 @@ exports.deleteNotificationById = async (req, res) => {
 
 exports.clearAll = async (req, res) => {
   try {
-    await Notification.deleteMany({user: req.params.id});
+    await Notification.deleteMany({ user: req.params.id });
     res.json("Notifications have been cleared");
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",

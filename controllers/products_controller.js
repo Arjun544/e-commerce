@@ -17,7 +17,6 @@ exports.searchProducts = async (req, res) => {
       return res.json({ results: products });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -96,7 +95,6 @@ exports.addProduct = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -138,7 +136,6 @@ exports.getAdminProducts = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -159,7 +156,6 @@ exports.getProductById = async (req, res) => {
       products: product,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -195,7 +191,6 @@ exports.getSimilarProducts = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -242,7 +237,6 @@ exports.filterByPrice = async (req, res) => {
       products: productsList,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -306,7 +300,6 @@ exports.productsByCategory = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -350,7 +343,6 @@ exports.sortProducts = async (req, res) => {
       products: productsList,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -418,12 +410,7 @@ exports.updateProduct = async (req, res) => {
     const result = await cloudinary.uploader.upload(image);
 
     // // delete old images
-    await cloudinary.v2.api.delete_resources(
-      req.body.imageIds,
-      (result, error) => {
-        console.log(result, error);
-      }
-    );
+    await cloudinary.v2.api.delete_resources(req.body.imageIds);
 
     let product;
     const priceAfterDiscount =
@@ -461,7 +448,6 @@ exports.updateProduct = async (req, res) => {
       product,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -484,7 +470,6 @@ exports.updateFeatured = async (req, res) => {
       message: "Featured has been updated",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -507,7 +492,6 @@ exports.updateStatus = async (req, res) => {
       message: "status has been updated",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -535,12 +519,7 @@ exports.deleteProduct = async (req, res) => {
     await cloudinary.uploader.destroy(req.body.thumbnailId);
 
     // delete images from cloudinary
-    await cloudinary.v2.api.delete_resources(
-      req.body.imageIds,
-      (error, result) => {
-        console.log(result, error);
-      }
-    );
+    await cloudinary.v2.api.delete_resources(req.body.imageIds);
 
     const product = await Product.findByIdAndRemove(req.params.id);
 
@@ -597,7 +576,6 @@ exports.multipleImages = async (req, res) => {
       message: "Images has been added",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",

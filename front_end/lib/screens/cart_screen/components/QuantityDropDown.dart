@@ -36,8 +36,6 @@ class _QuantityDropDownState extends State<QuantityDropDown> {
                 total.add(widget.item.discount > 0
                     ? widget.item.totalPrice
                     : widget.item.price);
-
-                log(total.toString());
                 widget.cartScreenController.cartTotal.value -= total[0];
                 widget.cartScreenController.isOrderItemsSelected.value = false;
                 widget.cartScreenController.orderItems.clear();
@@ -76,7 +74,6 @@ class _QuantityDropDownState extends State<QuantityDropDown> {
                     ? widget.item.totalPrice
                     : widget.item.price);
 
-                log(total.toString());
                 widget.cartScreenController.cartTotal.value += total[0];
                 widget.cartScreenController.isOrderItemsSelected.value = false;
                 widget.cartScreenController.orderItems.clear();

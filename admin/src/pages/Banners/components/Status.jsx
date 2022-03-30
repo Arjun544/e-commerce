@@ -26,9 +26,7 @@ const Status = ({ banner }) => {
           autoHideDuration: 2000,
         });
       }
-    } catch (error) {
-      console.log(error.response);
-    }
+    } catch (error) {}
   };
   return (
     <Switch

@@ -37,7 +37,6 @@ const CategoriesDropDown = ({
       setSubCategories(
         categories.map((category) => category.subCategories)
       );
-       console.log(categories.map((category) => category.subCategories));
     }
   }, [editingCategoryName]);
 

@@ -59,7 +59,6 @@ exports.logIn = async (req, res) => {
       accessToken: accessToken
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       error: true,
       message: "Couldn't login. Please try again later.",

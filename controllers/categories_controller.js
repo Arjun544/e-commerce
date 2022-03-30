@@ -27,7 +27,6 @@ exports.addCategory = async (req, res) => {
     socket.socket.emit("add-category", categories);
     return res.json("New category has been added");
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -143,16 +142,9 @@ exports.getCategoryById = async (req, res) => {
 exports.updateCategory = async (req, res) => {
   try {
     // delete image
-    await cloudinary.uploader.destroy(req.body.iconId, (error, result) => {
-      console.log(result, error);
-    });
+    await cloudinary.uploader.destroy(req.body.iconId);
     // upload new again
-    const result = await cloudinary.uploader.upload(
-      req.body.icon,
-      (error, result) => {
-        console.log(result, error);
-      }
-    );
+    const result = await cloudinary.uploader.upload(req.body.icon);
 
     const category = await Category.findByIdAndUpdate(
       req.params.id,
@@ -175,7 +167,6 @@ exports.updateCategory = async (req, res) => {
       categories: category,
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -198,7 +189,6 @@ exports.updateStatus = async (req, res) => {
       message: "status has been updated",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -225,7 +215,6 @@ exports.updateSubCategory = async (req, res) => {
 
     res.json("Sub category has beem updated");
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -244,7 +233,6 @@ exports.count = async (req, res) => {
       categoryCount: categoryCount,
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -259,9 +247,7 @@ exports.deleteCategory = async (req, res) => {
     // }
 
     // delete image
-    await cloudinary.uploader.destroy(req.body.iconId, (error, result) => {
-      console.log(result, error);
-    });
+    await cloudinary.uploader.destroy(req.body.iconId);
 
     const category = await Category.findByIdAndRemove(req.params.id);
 
@@ -300,7 +286,6 @@ exports.deleteSubCategory = async (req, res) => {
 
     res.json("Sub category has beem deleted");
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",

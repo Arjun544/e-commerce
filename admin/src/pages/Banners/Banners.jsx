@@ -42,7 +42,7 @@ const Banners = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
+
         enqueueSnackbar("Something went wrong", {
           variant: "error",
           autoHideDuration: 2000,
@@ -74,10 +74,10 @@ const Banners = () => {
   const handleBannerDelete = async (e, banner) => {
     e.preventDefault();
     setBanners(banners.filter((item) => item.id !== banner.id));
-     enqueueSnackbar("Banner deleted", {
-       variant: "success",
-       autoHideDuration: 2000,
-     });
+    enqueueSnackbar("Banner deleted", {
+      variant: "success",
+      autoHideDuration: 2000,
+    });
     // try {
     //   await deleteBanner(banner._id, banner.imageId);
     //   socket.current.on("delete-banner", (newBanners) => {
@@ -88,7 +88,7 @@ const Banners = () => {
     //     autoHideDuration: 2000,
     //   });
     // } catch (error) {
-    //   console.log(error.response);
+    //
     //   enqueueSnackbar("Something went wrong", {
     //     variant: "error",
     //     autoHideDuration: 2000,
@@ -112,7 +112,7 @@ const Banners = () => {
     //     autoHideDuration: 2000,
     //   });
     // } catch (error) {
-    //   console.log(error.response);
+    //
     //   enqueueSnackbar("Something went wrong", {
     //     variant: "error",
     //     autoHideDuration: 2000,
@@ -157,12 +157,7 @@ const Banners = () => {
         </div>
         {isLoading ? (
           <div className="flex w-full h-screen items-center justify-center bg-white">
-            <Loader
-              type="Puff"
-              color="#00BFFF"
-              height={50}
-              width={50}
-            />
+            <Loader type="Puff" color="#00BFFF" height={50} width={50} />
           </div>
         ) : banners.length === 0 ? (
           <div className="flex items-center justify-center mt-20">

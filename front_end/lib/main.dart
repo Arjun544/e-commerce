@@ -55,7 +55,6 @@ void main() async {
     await FirebaseMessaging.instance.subscribeToTopic('AllUsers');
   } else if (getStorage.read('isLogin') == true) {
     FirebaseMessaging.instance.onTokenRefresh.listen((token) async {
-      log(token.toString());
       await NotificationApi()
           .addToken(token: token, id: getStorage.read('userId'));
     });

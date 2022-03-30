@@ -36,7 +36,7 @@ const TableActions = ({ product, setIsLoading, tableData, setTableData }) => {
     //     autoHideDuration: 2000,
     //   });
     // } catch (error) {
-    //   console.log(error.response);
+    //
     //   enqueueSnackbar(error.response.data.message, {
     //     variant: "error",
     //     autoHideDuration: 2000,

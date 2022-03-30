@@ -24,11 +24,9 @@ const OrderDetails = () => {
         setIsLoading(true);
         const { data } = await getOrderById(orderId);
         setOrder(data.orderList);
-        console.log(data.orderList);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     getOrder();
@@ -45,12 +43,7 @@ const OrderDetails = () => {
       </div>
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader
-            type="Puff"
-            color="#00BFFF"
-            height={50}
-            width={50}
-          />
+          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
         </div>
       ) : order === undefined || order.length === 0 ? (
         <div className="flex flex-col items-center justify-center m-auto">

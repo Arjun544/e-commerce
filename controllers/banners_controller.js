@@ -49,7 +49,6 @@ exports.addBanner = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -65,7 +64,6 @@ exports.getUserBanners = async (req, res) => {
       banners: banners,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -80,7 +78,6 @@ exports.getAdminBanners = async (req, res) => {
       banners: banners,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -103,7 +100,6 @@ exports.updateStatus = async (req, res) => {
       message: "Status has been updated",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -114,16 +110,9 @@ exports.updateStatus = async (req, res) => {
 exports.updateBanner = async (req, res) => {
   try {
     // delete image
-    await cloudinary.uploader.destroy(req.body.imageId, (error, result) => {
-      console.log(result, error);
-    });
+    await cloudinary.uploader.destroy(req.body.imageId);
     // upload new again
-    const result = await cloudinary.uploader.upload(
-      req.body.image,
-      (error, result) => {
-        console.log(result, error);
-      }
-    );
+    const result = await cloudinary.uploader.upload(req.body.image);
 
     const banner = await Banner.findByIdAndUpdate(
       req.params.id,
@@ -144,7 +133,6 @@ exports.updateBanner = async (req, res) => {
       message: "Banner has been updated",
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -192,7 +180,6 @@ exports.addBannerProducts = async (req, res) => {
       message: "Banner has been updated",
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -232,7 +219,6 @@ exports.removeBannerProduct = async (req, res) => {
       message: "Banner has been removed",
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -243,9 +229,7 @@ exports.removeBannerProduct = async (req, res) => {
 exports.deleteBanner = async (req, res) => {
   try {
     // delete image
-    await cloudinary.uploader.destroy(req.body.imageId, (error, result) => {
-      console.log(result, error);
-    });
+    await cloudinary.uploader.destroy(req.body.imageId);
 
     await Banner.findByIdAndDelete(req.params.id);
 
@@ -257,7 +241,6 @@ exports.deleteBanner = async (req, res) => {
       message: "Banner has been deleted",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",

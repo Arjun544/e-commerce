@@ -7,7 +7,7 @@ import CustomersTable from "./components/CustomersTable";
 import { useHistory } from "react-router-dom";
 
 const Customers = () => {
-   const history = useHistory();
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [tableData, setTableData] = useState({});
@@ -20,7 +20,6 @@ const Customers = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     fetchUsers();
@@ -107,12 +106,7 @@ const Customers = () => {
       {/* Views */}
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader
-            type="Puff"
-            color="#00BFFF"
-            height={50}
-            width={50}
-          />
+          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
         </div>
       ) : (
         <div className="px-10">

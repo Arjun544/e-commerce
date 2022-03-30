@@ -32,7 +32,7 @@ const TableActions = ({ user, tableData, setTableData }) => {
     //     autoHideDuration: 2000,
     //   });
     // } catch (error) {
-    //   console.log(error.response);
+    //
     //   enqueueSnackbar("Something went wrong", {
     //     variant: "error",
     //     autoHideDuration: 2000,
@@ -43,7 +43,7 @@ const TableActions = ({ user, tableData, setTableData }) => {
   return (
     <div className="flex ml-4">
       <DeleteIcon
-        onClick={(e) =>handleDelete(e)}
+        onClick={(e) => handleDelete(e)}
         className="cursor-pointer h-5 w-5 fill-grey hover:fill-red"
       />
     </div>

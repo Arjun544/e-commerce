@@ -118,7 +118,6 @@ class CustomSearchDelegate extends SearchDelegate {
                             itemCount: snapshot.data!.results.length,
                             padding: const EdgeInsets.only(top: 15),
                             itemBuilder: (context, index) {
-                              log(snapshot.data!.results[index].toString());
                               return SearchItem(
                                 query: query,
                                 product: snapshot.data!.results[index],

@@ -70,7 +70,6 @@ exports.register = async (req, res) => {
     });
 
     const newUser = new User(result.value);
-    console.log(newUser);
     await newUser.save();
 
     const userCart = await User.find({ email: result.value.email });
@@ -90,7 +89,6 @@ exports.register = async (req, res) => {
       message: "Registration Success",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       error: true,
       message: "Cannot Register",
@@ -458,7 +456,6 @@ exports.updateImage = async (req, res) => {
 
     res.json("Updated");
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -497,7 +494,6 @@ exports.addShippingAddress = async (req, res) => {
 
     return res.json("Address has been added");
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -530,7 +526,6 @@ exports.editShippingAddress = async (req, res) => {
     );
     return res.json("Address has been edited");
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -560,7 +555,6 @@ exports.removeAddress = async (req, res) => {
 
     return res.json("Address has been removed");
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -584,9 +578,7 @@ exports.deleteUserById = async (req, res) => {
     }
 
     // delete image
-    await cloudinary.uploader.destroy(req.body.profileId, (error, result) => {
-      console.log(result, error);
-    });
+    await cloudinary.uploader.destroy(req.body.profileId);
 
     const user = await User.findByIdAndRemove(req.params.id);
     if (!user) {
@@ -603,7 +595,6 @@ exports.deleteUserById = async (req, res) => {
     );
     socket.socket.emit("delete-user", users);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Server Error",
@@ -649,7 +640,6 @@ exports.getWishlist = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Server Error",

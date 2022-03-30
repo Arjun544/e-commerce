@@ -25,7 +25,6 @@ const Products = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     fetchProducts();
@@ -122,12 +121,7 @@ const Products = () => {
       {/* Views */}
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader
-            type="Puff"
-            color="#00BFFF"
-            height={50}
-            width={50}
-          />
+          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
         </div>
       ) : (
         <div className="px-10">

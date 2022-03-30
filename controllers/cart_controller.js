@@ -39,7 +39,6 @@ exports.addToCart = async (req, res) => {
       message: "Added to cart",
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -59,7 +58,6 @@ exports.getCart = async (req, res) => {
 
     res.json(cartList[0]);
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -103,15 +101,10 @@ exports.updateQuantity = async (req, res) => {
       totalGrand: totalFinal,
     });
 
-    // eventEmitter.on("updatedCart", (data) => {
-    //   console.log(data);
-    // });
-
     return res.json({
       message: "Quantity has been updated",
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -137,7 +130,6 @@ exports.deleteFromCart = async (req, res) => {
       message: "Cart item has been deleted",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -151,7 +143,6 @@ exports.cartCount = async (req, res) => {
 
     res.status(200).json(userCart.products.length);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: true, message: "Something went wrong" });
   }
 };

@@ -38,7 +38,7 @@ const CustomerDetails = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
+
         error.response.data.success === false &&
         error.response.data.msg === "User not found"
           ? enqueueSnackbar("No user found", {
@@ -195,12 +195,7 @@ const CustomerDetails = () => {
       </div>
       {isLoading || user.length === 0 ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader
-            type="Puff"
-            color="#00BFFF"
-            height={50}
-            width={50}
-          />
+          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
         </div>
       ) : (
         <div className="flex flex-col w-full h-full px-10 mt-4">

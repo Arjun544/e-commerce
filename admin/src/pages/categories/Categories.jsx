@@ -40,7 +40,6 @@ const Categories = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     fetchCategories();
@@ -74,7 +73,7 @@ const Categories = () => {
     //     autoHideDuration: 2000,
     //   });
     // } catch (error) {
-    //   console.log(error.response);
+    //
     // } finally {
     //   setIsLoading(false);
     // }
@@ -104,7 +103,7 @@ const Categories = () => {
     //     autoHideDuration: 2000,
     //   });
     // } catch (error) {
-    //   console.log(error.response);
+    //
     // }
   };
 
@@ -167,12 +166,7 @@ const Categories = () => {
 
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader
-            type="Puff"
-            color="#00BFFF"
-            height={50}
-            width={50}
-          />
+          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
         </div>
       ) : categories.length === 0 ? (
         <div className="flex w-full items-center justify-center mt-40">

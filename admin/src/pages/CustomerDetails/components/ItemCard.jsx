@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 const ItemCard = ({ value, items }) => {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(items);
   return (
     <div
       onMouseEnter={(e) => setIsOpen(true)}

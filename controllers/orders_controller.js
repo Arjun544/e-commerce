@@ -66,7 +66,6 @@ exports.addOrder = async (req, res) => {
       // orders: order,
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -98,7 +97,6 @@ exports.getOrders = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -115,7 +113,6 @@ exports.getOrderById = async (req, res) => {
       orderList: order,
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -174,7 +171,6 @@ exports.updateStatus = async (req, res) => {
       message: "Status has been updated",
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -195,7 +191,6 @@ exports.deleteOrder = async (req, res) => {
         .json({ success: true, message: "Order is deleted!" });
     }
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",
@@ -239,7 +234,6 @@ exports.userOrders = async (req, res) => {
       orderList: userOrderList,
     });
   } catch (error) {
-    console.log(error);
     return res.json({
       success: false,
       message: "Something went wrong",

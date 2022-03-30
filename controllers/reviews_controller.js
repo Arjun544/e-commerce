@@ -66,7 +66,6 @@ exports.addReview = async (req, res) => {
       message: "Review has been added",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -93,7 +92,6 @@ exports.skipReview = async (req, res) => {
       message: "Review has been skipped",
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -125,7 +123,6 @@ exports.getAllReviews = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -143,7 +140,6 @@ exports.getRecentReviews = async (req, res) => {
 
     res.json({ filteredReviews });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",

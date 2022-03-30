@@ -62,31 +62,4 @@ export const logout = async () => await
     }
   );
 
-// Interceptors;
-// api.interceptors.response.use(
-//   (config) => {
-//     return config;
-//   },
-//   async (error) => {
-//     const originalRequest = error.config;
-//     if (
-//       error.response.status === 401 &&
-//       originalRequest &&
-//       !originalRequest._isRetry
-//     ) {
-//       originalRequest.isRetry = true;
-//       try {
-//         await axios.get("/api/admin/refresh", {
-//           withCredentials: true,
-//         });
-
-//         return api.request(originalRequest);
-//       } catch (err) {
-//         console.log(err.message);
-//       }
-//     }
-//     throw error;
-//   }
-// );
-
 export default api;

@@ -198,7 +198,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             String deletedToken = currentUser!.data.deviceTokens
                                 .firstWhere((element) => element == token)
                                 .toString();
-                            log(deletedToken.toString());
                             await NotificationApi().deleteToken(
                                 token: deletedToken,
                                 id: getStorage.read('userId'));

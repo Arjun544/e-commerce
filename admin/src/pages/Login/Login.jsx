@@ -41,7 +41,6 @@ const Login = () => {
 
       setLoading(false);
     } catch (error) {
-      console.log(error);
       enqueueSnackbar(error.response.data.message, {
         variant: "error",
         autoHideDuration: 2000,

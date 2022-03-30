@@ -13,7 +13,6 @@ class WishListController extends GetxController {
   List<String> wishlistIds = [];
 
   void getWishlist() async {
-    log(wishlistIds.toString());
     await ApiWishList()
         .getWishlist(ids: wishlistIds, wishlistController: wishlistController);
   }

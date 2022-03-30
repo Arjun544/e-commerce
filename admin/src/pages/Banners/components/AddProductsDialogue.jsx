@@ -48,7 +48,6 @@ const AddProductsDialogue = ({
         autoHideDuration: 2000,
       });
     } catch (error) {
-      console.log(error.response);
       enqueueSnackbar("Something went wrong", {
         variant: "error",
         autoHideDuration: 2000,

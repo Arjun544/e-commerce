@@ -24,11 +24,9 @@ const ProductDetail = () => {
         setIsLoading(true);
         const { data } = await getProductById(productId);
         setProduct(data.products);
-        console.log(data.products);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     getProduct();
@@ -44,18 +42,16 @@ const ProductDetail = () => {
       <TopBar />
       <div className="flex ml-10 my-6">
         <Breadcrumbs>
-          <Breadcrumb label="Products" onClick={() => history.push('/products')} />
+          <Breadcrumb
+            label="Products"
+            onClick={() => history.push("/products")}
+          />
           <Breadcrumb label="Product Detail" />
         </Breadcrumbs>
       </div>
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader
-            type="Puff"
-            color="#00BFFF"
-            height={50}
-            width={50}
-          />
+          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
         </div>
       ) : product.length === 0 ? (
         <div className="flex flex-col items-center justify-center m-auto">

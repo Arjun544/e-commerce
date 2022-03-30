@@ -44,10 +44,8 @@ const Dashboard = () => {
         const { data } = await getOrders(false);
         dispatch(setOrders({ orders: data.results }));
         setIsOrdersLoading(false);
-        console.log("ordersssss", data.results);
       } catch (error) {
         setIsOrdersLoading(false);
-        console.log(error.response);
       }
     };
     const fetchCustomers = async () => {
@@ -58,7 +56,6 @@ const Dashboard = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     const fetchProducts = async () => {
@@ -69,7 +66,6 @@ const Dashboard = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     const fetchCategories = async () => {
@@ -80,7 +76,6 @@ const Dashboard = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     const fetchReviews = async () => {
@@ -91,7 +86,6 @@ const Dashboard = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error.response);
       }
     };
     fetchOrders();

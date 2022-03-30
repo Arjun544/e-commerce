@@ -45,7 +45,6 @@ const Notification = () => {
       }
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
       enqueueSnackbar("Something went wrong", {
         variant: "error",
         autoHideDuration: 2000,
