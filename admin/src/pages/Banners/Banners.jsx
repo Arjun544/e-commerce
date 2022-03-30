@@ -332,10 +332,10 @@ const Banners = () => {
                                       src={item.thumbnail}
                                       alt=""
                                     />
-                                    <span className="text-black font-semibold capitalize mr-4">
+                                    <span className="text-black text-sm font-semibold capitalize mr-4">
                                       {item.name}
                                     </span>
-                                    <span className="text-green-400 font-semibold capitalize">
+                                    <span className="text-green-400 text-xs font-semibold capitalize">
                                       {`${item.discount}% OFF`}
                                     </span>
                                   </div>
