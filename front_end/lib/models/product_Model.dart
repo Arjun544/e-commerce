@@ -103,7 +103,7 @@ class Product {
         images: List<Image>.from(json['images'].map((x) => Image.fromJson(x))),
         price: json['price'],
         onSale: json['onSale'],
-        totalPrice: json['totalPrice'],
+        totalPrice: json['totalPrice'].round(),
         discount: json['discount'],
         totalReviews: json['totalReviews'],
         reviews:

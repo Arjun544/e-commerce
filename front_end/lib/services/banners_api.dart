@@ -6,7 +6,7 @@ import '../utils/constants.dart';
 
 class BannersApi {
   Future<BannerModel> getBanners() async {
-    try {
+    // try {
       var response = await dio.get(
         baseUrl + 'banners/getUserBanners',
         options: Options(
@@ -14,14 +14,14 @@ class BannersApi {
         ),
       );
       return bannerModelFromJson(response.data);
-    } catch (e) {
-      await EasyLoading.showToast(
-        'Something went wrong',
-        toastPosition: EasyLoadingToastPosition.top,
-        maskType: EasyLoadingMaskType.clear,
-      );
-      print(e);
-      throw Exception('Failed to load');
-    }
+    // } catch (e) {
+    //   await EasyLoading.showToast(
+    //     'Something went wrong',
+    //     toastPosition: EasyLoadingToastPosition.top,
+    //     maskType: EasyLoadingMaskType.clear,
+    //   );
+    //   print(e);
+    //   throw Exception('Failed to load');
+    // }
   }
 }
