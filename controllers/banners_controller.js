@@ -87,7 +87,7 @@ exports.getAdminBanners = async (req, res) => {
 
 exports.updateStatus = async (req, res) => {
   try {
-    const banner = await Banner.findOneAndUpdate(
+    const banner = await Banner.findByIdAndUpdate(
       req.params.id,
       {
         status: req.params.status,

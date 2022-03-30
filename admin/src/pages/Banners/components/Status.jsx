@@ -12,11 +12,13 @@ const Status = ({ banner }) => {
   const handleStatus = async (nextChecked) => {
     try {
       if (banner.type === "Sale" && banner.products.length === 0) {
-        enqueueSnackbar("Products can't be empty", {
+       return enqueueSnackbar("Products can't be empty", {
           variant: "warning",
           autoHideDuration: 2000,
         });
       } else {
+        console.log(banner._id);
+        console.log(nextChecked);
         await updateStatus(banner._id, nextChecked);
         socket.current.on("update-bannerStatus", (newValue) => {
           setValue(newValue);
