@@ -11,7 +11,7 @@ const Status = ({ banner }) => {
 
   const handleStatus = async (nextChecked) => {
     try {
-      if (banner.products.length === 0) {
+      if (banner.type === "Sale" && banner.products.length === 0) {
         enqueueSnackbar("Products can't be empty", {
           variant: "warning",
           autoHideDuration: 2000,
