@@ -7,9 +7,9 @@ const socket = require("../app");
 
 exports.searchProducts = async (req, res) => {
   try {
-    const products = await Product.fuzzySearch(req.params.query).populate(
-      "category"
-    );
+    const products = await Product.find({
+      $text: { $search: req.params.query },
+    });
 
     if (!products) {
       return res.json("No products found");
@@ -17,6 +17,7 @@ exports.searchProducts = async (req, res) => {
       return res.json({ results: products });
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",

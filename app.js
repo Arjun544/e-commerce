@@ -52,9 +52,6 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 
 // Api Routes
-app.use("/api/", (req, res)=> {
-  return res.send('Welcome to the Stylish API');
-});
 app.use("/api/users/", userRoutes);
 app.use("/api/categories/", categoriesRoutes);
 app.use("/api/products/", productsRoutes);

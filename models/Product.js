@@ -1,6 +1,5 @@
 const { number } = require("joi");
 const mongoose = require("mongoose");
-const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
 const mongoosePaginate = require("mongoose-paginate-v2");
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
@@ -105,12 +104,10 @@ productSchema.virtual("id").get(function () {
 productSchema.set("toJSON", {
   virtuals: true,
 });
-
-productSchema.plugin(mongoose_fuzzy_searching, {
-  fields: ["name"],
-});
+productSchema.index({ name: "text", fullDescription: "text" });
 
 productSchema.plugin(mongoosePaginate);
 productSchema.plugin(aggregatePaginate);
 
 module.exports = mongoose.model("Product", productSchema);
+
