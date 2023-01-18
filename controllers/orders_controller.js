@@ -1,5 +1,5 @@
 const Order = require("../models/Order");
-const socket = require("../app");
+const socket = require("..");
 const notificationService = require("../services/notification_service");
 const { sendOrderEmail } = require("../helpers/mailer");
 

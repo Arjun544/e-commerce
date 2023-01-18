@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const Product = require("../models/Product");
 const { sendEmail } = require("../helpers/mailer");
 const cloudinary = require("cloudinary");
-const socket = require("../app");
+const socket = require("..");
 const Cart = require("../models/Cart");
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 

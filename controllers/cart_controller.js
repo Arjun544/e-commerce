@@ -1,7 +1,7 @@
 const Cart = require("../models/Cart");
 const CartItem = require("../models/CartItem");
 const mongoose = require("mongoose");
-const socket = require("../app");
+const socket = require("..");
 var ObjectID = require("mongodb").ObjectID;
 
 exports.addToCart = async (req, res) => {

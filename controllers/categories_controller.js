@@ -1,7 +1,7 @@
 const Category = require("../models/Category");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
-const socket = require("../app");
+const socket = require("..");
 
 exports.addCategory = async (req, res) => {
   try {

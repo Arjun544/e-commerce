@@ -1,4 +1,4 @@
-const socket = require("../app");
+const socket = require("..");
 const mongoose = require("mongoose");
 var ObjectID = require("mongodb").ObjectID;
 const Review = require("../models/Review");

@@ -3,7 +3,7 @@ const Category = require("../models/Category");
 var ObjectID = require("mongodb").ObjectID;
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
-const socket = require("../app");
+const socket = require("..");
 
 exports.searchProducts = async (req, res) => {
   try {

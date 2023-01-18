@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
-const socket = require("../app");
+const socket = require("..");
 const Banner = require("../models/Banner");
 const Product = require("../models/Product");
 
