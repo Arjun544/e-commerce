@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.DB_URL, {
+    mongoose.set("strictQuery", false);
+
+    mongoose.connect(process.env.DB_URL, {
       useNewUrlParser: true,
-      useCreateIndex: true,
       useUnifiedTopology: true,
-      useFindAndModify: false,
     });
     console.log("Connected to DB..!");
   } catch (error) {

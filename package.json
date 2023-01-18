@@ -1,42 +1,41 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@sendgrid/mail": "^7.4.5",
-    "bcrypt": "^5.0.1",
-    "cloudinary": "^1.28.1",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "express-jwt": "^6.0.0",
-    "firebase-admin": "^10.0.1",
-    "googleapis": "^80.2.0",
-    "i": "^0.3.7",
-    "joi": "^17.4.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongo-sanitize": "^1.1.0",
-    "mongoose": "^5.13.2",
-    "mongoose-aggregate-paginate-v2": "^1.0.6",
-    "mongoose-double": "0.0.1",
-    "mongoose-fuzzy-searching": "^2.0.2",
-    "mongoose-paginate-v2": "^1.6.1",
-    "multer": "^1.4.2",
-    "multer-storage-cloudinary": "^4.0.0",
-    "npm": "^8.3.0",
-    "redis": "^4.0.4",
-    "socket.io": "^4.4.1",
-    "stripe": "^8.174.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.9"
-  }
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "dev": "nodemon app.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@mongoosejs/double": "^0.3.0",
+        "@sendgrid/mail": "^7.7.0",
+        "bcrypt": "^5.1.0",
+        "cloudinary": "^1.33.0",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "express-jwt": "^8.3.0",
+        "firebase-admin": "^11.4.1",
+        "googleapis": "^110.0.0",
+        "joi": "^17.7.0",
+        "jsonwebtoken": "^9.0.0",
+        "mongo-sanitize": "^1.1.0",
+        "mongoose": "^6.8.4",
+        "mongoose-aggregate-paginate-v2": "^1.0.6",
+        "mongoose-fuzzy-searching": "^2.0.2",
+        "mongoose-paginate-v2": "^1.7.1",
+        "multer": "^1.4.5-lts.1",
+        "multer-storage-cloudinary": "^4.0.0",
+        "npm": "^8.3.0",
+        "redis": "^4.5.1",
+        "socket.io": "^4.4.1",
+        "stripe": "^11.6"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.20"
+    }
 }
