@@ -23,6 +23,7 @@ class ApiWishList {
       await EasyLoading.dismiss();
       return wishlistController.add(productModelFromJson(response.data));
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,

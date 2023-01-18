@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -42,9 +40,9 @@ void main() async {
           ledColor: Colors.white,
         ),
       ]);
-  AwesomeNotifications()
-      .actionStream
-      .listen((ReceivedNotification receivedNotification) {});
+  await AwesomeNotifications().setListeners(
+    onActionReceivedMethod: (receivedAction) async {},
+  );
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,
@@ -60,7 +58,14 @@ void main() async {
     });
   }
 
+  void configLoading() {
+    EasyLoading.instance
+      ..userInteractions = false
+      ..dismissOnTap = false;
+  }
+
   runApp(MyApp());
+  configLoading();
   FlutterNativeSplash.remove();
 }
 

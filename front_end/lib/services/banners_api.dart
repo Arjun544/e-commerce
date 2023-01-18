@@ -14,10 +14,12 @@ class BannersApi {
       );
       return bannerModelFromJson(response.data);
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
         maskType: EasyLoadingMaskType.clear,
+        dismissOnTap: false
       );
       print(e);
       throw Exception('Failed to load');

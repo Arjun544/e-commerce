@@ -55,13 +55,15 @@ class PassTextField extends StatelessWidget {
                       ? true
                       : false,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
                   ),
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: text,
                     hintStyle: const TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
                     ),
                   ),
                 ),

@@ -97,7 +97,7 @@ class _RootScreenState extends State<RootScreen> {
         );
       }
     });
-    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (getStorage.read('isLogin') == true) {
         await rootScreenController.getCurrentUser();
         homeScreenController.cartLength.value = await homeScreenController

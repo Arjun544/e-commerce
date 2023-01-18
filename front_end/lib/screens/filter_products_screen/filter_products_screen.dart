@@ -70,8 +70,8 @@ class _FilterProductsScreenState extends State<FilterProductsScreen> {
                   ),
                   Text(
                     toBeginningOfSentenceCase(widget.filterBy) ?? '',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 18),
+                    style:
+                        const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                   ),
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,

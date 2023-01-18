@@ -39,7 +39,7 @@ class _StepOneState extends State<StepOne> {
       children: [
         const Text(
           'Order Confirmation',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+         style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
         ),
         SizedBox(
           height: 100,

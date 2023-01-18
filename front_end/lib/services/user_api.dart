@@ -40,6 +40,7 @@ class ApiUser {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -80,6 +81,7 @@ class ApiUser {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -117,6 +119,7 @@ class ApiUser {
       );
       return response.data['message'];
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -163,6 +166,7 @@ class ApiUser {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -208,6 +212,7 @@ class ApiUser {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -252,6 +257,7 @@ class ApiUser {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,

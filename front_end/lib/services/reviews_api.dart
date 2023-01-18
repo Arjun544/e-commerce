@@ -26,6 +26,7 @@ class ApiReviews {
         ),
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -51,6 +52,7 @@ class ApiReviews {
         ),
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,

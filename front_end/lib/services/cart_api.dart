@@ -31,6 +31,7 @@ class ApiCart {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -52,6 +53,7 @@ class ApiCart {
       );
       return response.data;
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -75,6 +77,7 @@ class ApiCart {
 
       return cartModelFromJson(response.data);
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -105,6 +108,7 @@ class ApiCart {
       );
       await EasyLoading.dismiss();
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -137,6 +141,7 @@ class ApiCart {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -158,6 +163,7 @@ class ApiCart {
         ),
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,

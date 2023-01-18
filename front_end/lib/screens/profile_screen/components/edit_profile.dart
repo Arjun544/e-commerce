@@ -34,7 +34,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       nameController.text = widget.currentUser!.data.username;
       cityController.text = widget.currentUser!.data.city;
       streetController.text = widget.currentUser!.data.street;

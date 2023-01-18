@@ -83,8 +83,8 @@ class _CartScreenState extends State<CartScreen> {
                                 child: Text(
                                   'My Cart',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16),
                                 ),
                               ),
                               cartScreenController
@@ -167,7 +167,7 @@ class _CartScreenState extends State<CartScreen> {
                                         ),
                                         onTap:
                                             (CompletionHandler handler) async {
-                                          handler(false);
+                                          await handler(false);
 
                                           await cartScreenController.deleteItem(
                                             id: cartScreenController

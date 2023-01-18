@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import '../../controllers/profile_screen_controller.dart';
 import '../profile_screen/components/track_order.dart';
-import '../../models/notification_model.dart' as notificationModel;
+import '../../models/notification_model.dart' as notification_model;
 import 'components/notification_tile.dart';
 import '../register_screen/register_screen.dart';
 import '../../services/notification_api.dart';
@@ -21,13 +21,13 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   final ProfileScreenController profileScreenController = Get.find();
-  final StreamController<notificationModel.NotificationModel>
+  final StreamController<notification_model.NotificationModel>
       notificationController = BehaviorSubject();
   RxInt currentTab = 1.obs;
 
   @override
   void initState() {
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       if (getStorage.read('isLogin') != true) {
         Get.to(() => RegisterScreen());
       } else {
@@ -61,17 +61,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       child: Text(
                         'Notifications',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                            fontWeight: FontWeight.w600, fontSize: 16),
                       ),
                     ),
-                    StreamBuilder<notificationModel.NotificationModel>(
+                    StreamBuilder<notification_model.NotificationModel>(
                         stream: notificationController.stream,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return const SizedBox();
                           } else if (snapshot.data == null) {}
-                          notificationModel.NotificationModel?
+                          notification_model.NotificationModel?
                               notificationsData = snapshot.data;
                           return notificationsData!.notifications.isEmpty
                               ? const SizedBox.shrink()
@@ -123,13 +123,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         }),
                   ],
                 ),
-                StreamBuilder<notificationModel.NotificationModel>(
+                StreamBuilder<notification_model.NotificationModel>(
                     stream: notificationController.stream,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const SizedBox();
                       } else if (snapshot.data == null) {}
-                      notificationModel.NotificationModel? notificationsData =
+                      notification_model.NotificationModel? notificationsData =
                           snapshot.data;
 
                       return notificationsData!.notifications.isEmpty

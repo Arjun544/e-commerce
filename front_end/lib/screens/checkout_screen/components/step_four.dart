@@ -19,7 +19,7 @@ class StepFour extends StatelessWidget {
       children: [
         const Text(
           'Order Overview',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
         ),
         Container(
           width: Get.width,

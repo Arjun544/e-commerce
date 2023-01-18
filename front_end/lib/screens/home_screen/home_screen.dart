@@ -60,7 +60,7 @@ class HomeScreen extends StatelessWidget {
               child: Text(
                 'Featured',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                   fontSize: 16,
                   letterSpacing: 1,
                 ),

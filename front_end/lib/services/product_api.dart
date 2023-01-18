@@ -20,6 +20,7 @@ class ApiProduct {
       );
       categoriesController.add(categoryModelFromJson(categoriesResponse.data));
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -42,6 +43,7 @@ class ApiProduct {
       );
       arrivalController.add(productModelFromJson(arrivalResponse.data));
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -64,6 +66,7 @@ class ApiProduct {
       );
       featuredController.add(productModelFromJson(featuredResponse.data));
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -88,6 +91,7 @@ class ApiProduct {
       );
       controller.add(productModelFromJson(response.data));
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -122,6 +126,7 @@ class ApiProduct {
         controller.add(productModelFromJson(response.data));
       }
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -148,6 +153,7 @@ class ApiProduct {
       searchController.add(productModelFromJson(response.data));
       await EasyLoading.dismiss();
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,

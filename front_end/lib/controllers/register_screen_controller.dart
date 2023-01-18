@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,6 +56,7 @@ class RegisterScreenController extends GetxController {
         await Get.to(() => VerificationScreen());
       }
     } catch (e) {
+      await EasyLoading.dismiss();
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);
       print(e);
@@ -99,6 +99,7 @@ class RegisterScreenController extends GetxController {
         await Get.offAll(() => RegisterScreen());
       }
     } catch (e) {
+      await EasyLoading.dismiss();
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);
       print(e);
@@ -150,6 +151,7 @@ class RegisterScreenController extends GetxController {
             : await Get.offAll(() => RootScreen());
       }
     } catch (e) {
+      await EasyLoading.dismiss();
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);
       print(e);
@@ -185,6 +187,7 @@ class RegisterScreenController extends GetxController {
         await EasyLoading.dismiss();
       }
     } catch (e) {
+      await EasyLoading.dismiss();
       Get.snackbar('Something is wrong', e.toString(),
           snackPosition: SnackPosition.TOP);
       print(e);

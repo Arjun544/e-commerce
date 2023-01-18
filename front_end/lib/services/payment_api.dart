@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get.dart';
 import '../models/payment_card_model.dart';
 import '../utils/constants.dart';
 
@@ -37,6 +35,7 @@ class ApiPayment {
       await EasyLoading.dismiss();
       return json.decode(response.data);
     } on DioError catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -66,6 +65,7 @@ class ApiPayment {
 
       await EasyLoading.dismiss();
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -96,6 +96,7 @@ class ApiPayment {
         maskType: EasyLoadingMaskType.clear,
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -132,6 +133,7 @@ class ApiPayment {
         ),
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/credit_card_form.dart';
 import 'package:flutter_credit_card/credit_card_model.dart';
@@ -113,6 +111,7 @@ class _AddCardState extends State<AddCard> {
                   fontSize: 15,
                   color: isCvvFocused.value ? Colors.black : Colors.white,
                 ),
+                onCreditCardWidgetChange: (CreditCardBrand) {},
               ),
             ),
             Expanded(

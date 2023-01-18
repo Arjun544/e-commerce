@@ -40,6 +40,7 @@ class ApiOrders {
             headers: {'Authorization': 'Bearer ${getStorage.read('token')}'}),
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -63,6 +64,7 @@ class ApiOrders {
 
       return OrderModel.fromJson(response.data);
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         duration: const Duration(seconds: 2),
@@ -89,6 +91,7 @@ class ApiOrders {
         ),
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         duration: const Duration(seconds: 2),
@@ -111,6 +114,7 @@ class ApiOrders {
       );
       return TrackOrderModel.fromJson(response.data);
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'No order with this id',
         duration: const Duration(seconds: 4),

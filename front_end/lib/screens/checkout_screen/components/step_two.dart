@@ -85,7 +85,7 @@ class StepTwo extends StatelessWidget {
                       child: const Text(
                         'Add / Edit Address',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                            fontWeight: FontWeight.w600, fontSize: 16),
                       ),
                     ),
                     const SizedBox(height: 15),

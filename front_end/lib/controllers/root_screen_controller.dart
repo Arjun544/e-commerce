@@ -47,6 +47,7 @@ class RootScreenController extends GetxController {
       currentUserStreamController.add(userModelFromJson(response.data));
       return userModelFromJson(response.data);
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -54,5 +55,6 @@ class RootScreenController extends GetxController {
       );
       print(e);
     }
+    return null;
   }
 }

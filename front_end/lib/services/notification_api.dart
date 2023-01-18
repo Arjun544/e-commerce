@@ -19,6 +19,7 @@ class NotificationApi {
         ),
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -42,6 +43,7 @@ class NotificationApi {
         ),
       );
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -69,6 +71,7 @@ class NotificationApi {
 
       await EasyLoading.dismiss();
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -91,6 +94,7 @@ class NotificationApi {
 
       await EasyLoading.dismiss();
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -113,6 +117,7 @@ class NotificationApi {
 
       await EasyLoading.dismiss();
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -135,6 +140,7 @@ class NotificationApi {
 
       await EasyLoading.dismiss();
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,
@@ -157,6 +163,7 @@ class NotificationApi {
 
       await EasyLoading.dismiss();
     } catch (e) {
+      await EasyLoading.dismiss();
       await EasyLoading.showToast(
         'Something went wrong',
         toastPosition: EasyLoadingToastPosition.top,

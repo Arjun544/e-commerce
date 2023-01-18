@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -244,8 +243,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: Colors.green[300],
                       onPressed: () async {
                         const uri = 'mailto:sellcorner1@gmail.com';
-                        if (await canLaunch(uri)) {
-                          await launch(uri);
+                        if (await canLaunchUrl(Uri.parse(uri))) {
+                          await launchUrl(Uri.parse(uri));
                         } else {
                           await EasyLoading.showToast('Cant launch email');
                         }

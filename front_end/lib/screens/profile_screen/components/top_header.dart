@@ -28,7 +28,7 @@ class TopHeader extends StatelessWidget {
             Text(
               text,
               style: const TextStyle(
-                  fontWeight: FontWeight.bold, color: darkBlue, fontSize: 18),
+                  fontWeight: FontWeight.w600, color: darkBlue, fontSize: 16),
             ),
             const SizedBox(
               width: 10,

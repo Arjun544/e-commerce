@@ -41,7 +41,7 @@ app.set("eventEmitter", eventEmitter);
 //Middlewares
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://sellcorner-admin.herokuapp.com"],
+    origin: ["http://localhost:4000", "https://sellcorner-admin.herokuapp.com"],
   })
 );
 app.use(express.urlencoded({ extended: true }));

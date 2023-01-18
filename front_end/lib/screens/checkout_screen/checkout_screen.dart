@@ -50,7 +50,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
                 const Text(
                   'Check out',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                 ),
                 const SizedBox(
                   width: 10,

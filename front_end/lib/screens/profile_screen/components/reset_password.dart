@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pinput/pin_put/pin_put.dart';
+import 'package:pinput/pinput.dart';
 
 import '../../../controllers/profile_screen_controller.dart';
 import '../../../controllers/register_screen_controller.dart';
@@ -48,39 +48,47 @@ class ResetPassword extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               children: [
-                PinPut(
-                  fieldsCount: 6,
+                Pinput(
+                  length: 6,
                   animationDuration: const Duration(milliseconds: 200),
-                  onSubmit: (String pin) {
+                  onSubmitted: (String pin) {
                     profileScreenController.pinController.text = pin;
                   },
-                  checkClipboard: true,
-                  obscureText: '*',
+                  obscureText: true,
+                  obscuringCharacter: '*',
                   pinAnimationType: PinAnimationType.slide,
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                  defaultPinTheme: const PinTheme(
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   // focusNode: _pinPutFocusNode,
                   controller: profileScreenController.pinController,
-                  submittedFieldDecoration: BoxDecoration(
+                  submittedPinTheme:PinTheme(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      border: Border.all(
+                        width: 2,
+                        color: customYellow,
+                      ),
+                    ),
+                  ), 
+                  focusedPinTheme: PinTheme(
+                    decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.0),
                     border: Border.all(
                       width: 2,
                       color: customYellow,
                     ),
                   ),
-                  selectedFieldDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    border: Border.all(
-                      width: 2,
-                      color: customYellow,
-                    ),
                   ),
-                  followingFieldDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(
-                      width: 2,
-                      color: Colors.grey.withOpacity(0.5),
+                  followingPinTheme: PinTheme(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                        width: 2,
+                        color: Colors.grey.withOpacity(0.5),
+                      ),
                     ),
                   ),
                 ),

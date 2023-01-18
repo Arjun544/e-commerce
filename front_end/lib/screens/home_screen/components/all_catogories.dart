@@ -44,7 +44,7 @@ class _AllCategoriesState extends State<AllCategories> {
                 ),
                 const Text(
                   'Categories',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                 ),
                 const SizedBox(
                   width: 15,

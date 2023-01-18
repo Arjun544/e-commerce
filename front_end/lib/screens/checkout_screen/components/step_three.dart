@@ -76,7 +76,7 @@ class _StepThreeState extends State<StepThree> {
                               child: Text(
                                 'Cash On Delivery',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
+                                    fontWeight: FontWeight.w600, fontSize: 16),
                               ),
                             )
                           : Image.asset(

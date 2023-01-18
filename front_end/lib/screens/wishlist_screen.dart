@@ -28,7 +28,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (wishListController.wishlistIds.isNotEmpty) {
         wishListController.getWishlist();
       }
@@ -51,7 +51,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                   const SizedBox(width: 40),
                   const Text(
                     'Wishlist',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                   ),
                   wishListController.wishlistIds.isEmpty
                       ? const SizedBox(
