@@ -8,6 +8,7 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+    mongoose.Promise = global.Promise;
     console.log("Connected to DB..!");
   } catch (error) {
     process.exit(1);
