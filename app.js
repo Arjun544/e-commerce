@@ -21,7 +21,7 @@ const server = require("http").createServer(app);
 // Sooket Connection
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://sellcorner-admin.herokuapp.com",
+    origin: "https://e-commerce-brown-five.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
@@ -41,7 +41,10 @@ app.set("eventEmitter", eventEmitter);
 //Middlewares
 app.use(
   cors({
-    origin: ["http://localhost:4000", "https://sellcorner-admin.herokuapp.com"],
+    origin: [
+      "http://localhost:4000",
+      "https://e-commerce-brown-five.vercel.app/",
+    ],
   })
 );
 app.use(express.urlencoded({ extended: true }));
@@ -49,6 +52,9 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 
 // Api Routes
+app.use("/api/", (req, res)=> {
+  return res.send('Welcome to the Stylish API');
+});
 app.use("/api/users/", userRoutes);
 app.use("/api/categories/", categoriesRoutes);
 app.use("/api/products/", productsRoutes);
