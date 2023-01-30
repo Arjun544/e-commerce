@@ -21,7 +21,7 @@ const server = require("http").createServer(app);
 // Sooket Connection
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://e-commerce-production-45e7.up.railway.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
