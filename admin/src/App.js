@@ -26,8 +26,8 @@ import Notification from "./pages/Notification/Notification";
 export const AppContext = createContext(null);
 
 function App() {
-  // const socketUrl = "https://e-commerce-production-45e7.up.railway.app/";
-  const socketUrl ="http://localhost:4000";
+  const socketUrl = "https://e-commerce-production-45e7.up.railway.app";
+  // const socketUrl ="http://localhost:4000";
   let socket = useRef(null);
 
   const [selectedSideBar, setSelectedSideBar] = useState(0);
