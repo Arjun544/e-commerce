@@ -63,7 +63,7 @@ const ProductsDropDown = ({
               setSearchInput(e.target.value);
             }}
           />
-          <div className="flex-col h-56  overflow-y-auto overflow-x-hidden scrollbar-thin hover:scrollbar-thumb-amber-light scrollbar-thumb-gray-200 scrollbar-track-gray-100">
+          <div className="flex-col h-56  overflow-y-auto overflow-x-hidden scrollbar scrollbar-thin hover:scrollbar-thumb-amber-light scrollbar-thumb-gray-200 scrollbar-track-gray-100">
             {searchInput ? (
               products.filter(filterNames).length === 0 ? (
                 <div className="div ">

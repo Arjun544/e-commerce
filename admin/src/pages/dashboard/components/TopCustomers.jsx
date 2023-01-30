@@ -35,10 +35,10 @@ const TopCustomers = () => {
                   customer.username.slice(1)}
               </span>
               <div className="flex">
-                <span className="text-Grey-dark font-semibold mr-2">
+                <span className="text-Grey-dark text-sm mr-2">
                   Orders:
                 </span>
-                <span className="text-black font-semibold">
+                <span className="text-black text-sm">
                   {
                     orders.filter((order) => order.user._id === customer.id)
                       .length
