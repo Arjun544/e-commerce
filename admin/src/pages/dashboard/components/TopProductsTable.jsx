@@ -1,6 +1,4 @@
 import moment from "moment";
-import React, { useContext } from "react";
-import { useHistory } from "react-router-dom";
 import {
   useTable,
   useFilters,
@@ -9,12 +7,12 @@ import {
   useSortBy,
   usePagination,
 } from "react-table";
-import { AppContext } from "../../../App";
 import {
   SortIcon,
   SortUpIcon,
   SortDownIcon,
 } from "../../../components/pagination_icons";
+import React from "react";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -65,8 +63,6 @@ export function AvatarCell({ value, column, row }) {
 }
 
 function TopProductsTable({ columns, data }) {
-  const history = useHistory();
-  const { setSelectedSideBar } = useContext(AppContext);
   const {
     getTableProps,
     getTableBodyProps,
@@ -86,13 +82,6 @@ function TopProductsTable({ columns, data }) {
     useSortBy,
     usePagination // new
   );
-
-  const onProductClick = (e, product) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setSelectedSideBar(2);
-    history.push(`/products/view/${product.id}`);
-  };
 
   // Render the UI for your table
   return (

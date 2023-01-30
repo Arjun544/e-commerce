@@ -36,7 +36,7 @@ const OrdersMenu = ({ isOrderMenuOpen, setIsOrderMenuOpen }) => {
             className=" h-6 text-black  cursor-pointer"
           />
         </div>
-        <div className="flex flex-col items-start h-full px-5 pt-4 bg-bgColor-light overflow-y-auto scrollbar scrollbar-thin hover:scrollbar-thumb-gray-900 scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+        <div className="flex flex-col items-start h-full px-5 pt-4 bg-bgColor-light overflow-y-auto scrollbar hover:scrollbar-thumb-gray-900 scrollbar-thumb-gray-500 scrollbar-track-gray-300">
           {orders.filter((items) =>
             moment(new Date(new Date(items.dateOrdered).getTime())).isBetween(
               moment(new Date(new Date().getTime() - 24 * 60 * 60 * 1000))

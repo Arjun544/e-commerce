@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import moment from "moment";
 import {
   useTable,
@@ -13,8 +13,6 @@ import {
   SortUpIcon,
   SortDownIcon,
 } from "../../../components/pagination_icons";
-import { useHistory } from "react-router-dom";
-import { AppContext } from "../../../App";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -51,8 +49,6 @@ function ReviewsTable({
   hasNextPage,
   hasPrevPage,
 }) {
-  const history = useHistory();
-  const { setSelectedSideBar } = useContext(AppContext);
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,

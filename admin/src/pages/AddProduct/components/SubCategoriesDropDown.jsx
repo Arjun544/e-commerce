@@ -26,7 +26,7 @@ const SubCategoriesDropDown = ({
       setCurrentSubCategory(editingSubCategoryName);
       setSubCategories(subCategories);
     } 
-  }, [editingSubCategoryName]);
+  }, [editingSubCategoryName,isEditing, subCategories, setCurrentSubCategory, setSubCategories]);
 
   const toggleMenu = (e) => {
     e.preventDefault();

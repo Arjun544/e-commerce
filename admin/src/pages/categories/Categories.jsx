@@ -168,7 +168,7 @@ const Categories = () => {
           <span className="text-black font-semibold">No Categories</span>
         </div>
       ) : (
-        <div className=" w-full h-full overflow-x-hidden max-w-full px-8 scrollbar scrollbar-thin hover:scrollbar-thumb-gray-900 scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+        <div className=" w-full h-full overflow-x-hidden max-w-full px-8 scrollbar-thin hover:scrollbar-thumb-gray-900 scrollbar-thumb-gray-500 scrollbar-track-gray-300">
           {/* Table */}
           <Accordion
             className="h-auto flex-col pt-6 pb-12 items-start mb-6 "

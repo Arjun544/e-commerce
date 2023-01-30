@@ -22,7 +22,7 @@ const AllReviews = ({ reviews }) => {
   const ratings = reviews.map((review) => parseFloat(review.rating));
   const averageRating = ratings.reduce((a, b) => a + b, 0) / ratings.length;
 
-  const [options, setOptions] = useState({
+  const [options] = useState({
     chart: {
       height: 100,
       type: "line",
@@ -40,9 +40,7 @@ const AllReviews = ({ reviews }) => {
     legend: {
       show: false,
     },
-    tooltip: {
-      enabled: false,
-    },
+
     grid: {
       show: false,
     },
@@ -115,7 +113,22 @@ const AllReviews = ({ reviews }) => {
         ],
       },
     ]);
-  }, [reviews, averageRating]);
+  }, [
+    reviews,
+    averageRating,
+    janReviews,
+    febReviews,
+    marReviews,
+    aprReviews,
+    mayReviews,
+    junReviews,
+    julReviews,
+    augReviews,
+    sepReviews,
+    octReviews,
+    novReviews,
+    decReviews,
+  ]);
 
   return (
     <div className="flex flex-col justify-between">

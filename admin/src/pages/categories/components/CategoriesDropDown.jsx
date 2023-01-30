@@ -25,7 +25,7 @@ const CategoriesDropDown = ({
       setCurrentCategory(mainCategoryName);
       setSelectedCategory(mainCategoryId);
     }
-  }, []);
+  }, [isAddCategoryEditing,mainCategoryId, mainCategoryName,setSelectedCategory]);
 
   const toggleMenu = (e) => {
     e.preventDefault();

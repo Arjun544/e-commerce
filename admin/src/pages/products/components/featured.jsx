@@ -6,7 +6,7 @@ import { AppContext } from "../../../App";
 
 const Featured = ({ product }) => {
   const { socket } = useContext(AppContext);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [value, setValue] = useState(product.isFeatured);
 
   const handleOnFeatured = async (nextChecked) => {

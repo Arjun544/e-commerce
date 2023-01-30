@@ -19,7 +19,7 @@ const OrderStats = () => {
 
   useEffect(() => {
     setFilteredOrders(orders);
-  }, []);
+  }, [orders]);
 
   return (
     <div

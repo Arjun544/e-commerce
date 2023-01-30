@@ -201,7 +201,7 @@ const AddProduct = ({ isEditing }) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full mt-30 overflow-y-auto overflow-x-hidden bg-white scrollbar scrollbar-thin hover:scrollbar-thumb-gray-900 scrollbar-thumb-gray-500 scrollbar-track-gray-300">
+    <div className="flex flex-col w-full h-full mt-30 overflow-y-auto overflow-x-hidden bg-white scrollbar-thin hover:scrollbar-thumb-gray-900 scrollbar-thumb-gray-500 scrollbar-track-gray-300">
       <TopBar />
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">

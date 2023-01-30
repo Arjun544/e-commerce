@@ -24,7 +24,7 @@ const ProductsSold = () => {
     [orders]
   );
 
-  const [options, setOptions] = useState({
+  const [options] = useState({
     chart: {
       zoom: {
         enabled: false,
@@ -42,9 +42,7 @@ const ProductsSold = () => {
     grid: {
       show: false,
     },
-    tooltip: {
-      enabled: false,
-    },
+    
     stroke: {
       curve: "smooth",
       lineCap: "butt",
@@ -142,7 +140,7 @@ const ProductsSold = () => {
         ],
       },
     ]);
-  }, [orders]);
+  }, [getYearlyProductsSold, orders]);
 
   return (
     <div id="chart" className="flex flex-col">

@@ -23,7 +23,7 @@ const EarningChart = () => {
     [orders]
   );
 
-  const [options, setOptions] = useState({
+  const [options] = useState({
     chart: {
       zoom: {
         enabled: false,
@@ -41,9 +41,7 @@ const EarningChart = () => {
     grid: {
       show: false,
     },
-    tooltip: {
-      enabled: false,
-    },
+
     stroke: {
       curve: "smooth",
       lineCap: "butt",
@@ -119,7 +117,7 @@ const EarningChart = () => {
         ],
       },
     ]);
-  }, [orders]);
+  }, [getMonthlyEarning, orders]);
 
   return (
     <div className="flex flex-col">

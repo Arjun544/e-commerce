@@ -1,5 +1,4 @@
 import React, { useState, useContext, useRef } from "react";
-import SearchIcon from "./icons/SearchIcon";
 import ArrowLeftIcon from "./icons/ArrowLeftIcon";
 import { AppContext } from "../App";
 import ArrowRightIcon from "../components/icons/ArrowRightIcon";

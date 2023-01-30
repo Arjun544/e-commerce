@@ -1,15 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import EditIcon from "../../../components/icons/EditIcon";
 import DeleteIcon from "../../../components/icons/DeleteIcon";
-import { deleteProduct, getProducts } from "../../../api/productsApi";
 import { useSnackbar } from "notistack";
 import { useHistory } from "react-router-dom";
-import { AppContext } from "../../../App";
 
 const TableActions = ({ product, setIsLoading, tableData, setTableData }) => {
-  const { socket } = useContext(AppContext);
   const history = useHistory();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleDelete = async (e) => {
     e.preventDefault();

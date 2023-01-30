@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import Switch from "react-switch";
 import { useSnackbar } from "notistack";
 import { updateStatus } from "../../../api/categoriesApi";
@@ -7,7 +7,7 @@ import { AppContext } from "../../../App";
 const CategoryStatus = ({ category }) => {
   const { socket } = useContext(AppContext);
   const [value, setValue] = useState(category.status);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
   // useEffect(() => {
   //   setValue(category.status);

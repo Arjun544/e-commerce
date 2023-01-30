@@ -13,7 +13,6 @@ import {
   SortUpIcon,
   SortDownIcon,
 } from "../../../components/pagination_icons";
-import { useHistory } from "react-router-dom";
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -52,7 +51,6 @@ function CustomersTable({
   hasNextPage,
   hasPrevPage,
 }) {
-  const history = useHistory();
   // Use the state and functions returned from useTable to build your UI
   const {
     getTableProps,

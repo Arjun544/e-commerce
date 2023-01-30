@@ -7,7 +7,6 @@ import CartIcon from "./icons/CartIcon";
 import CategoryIcon from "./icons/CategoryIcon";
 import ChatIcon from "./icons/ChatIcon";
 import DashBoardIcon from "./icons/DashBoardIcon";
-import FlashIcon from "./icons/FlashIcon";
 import Logo from "./icons/Logo";
 import PersonIcon from "./icons/PersonIcon";
 import { createBrowserHistory } from "history";
@@ -55,7 +54,7 @@ const SideBar = () => {
       default:
         break;
     }
-  }, []);
+  }, [createHistory.location.pathname, setSelectedSideBar]);
 
   return (
     <div

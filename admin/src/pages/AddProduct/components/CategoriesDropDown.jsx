@@ -26,19 +26,23 @@ const CategoriesDropDown = ({
   });
 
   useEffect(() => {
-    
     if (isEditing) {
-     
       setCurrentCategory(editingCategoryName);
       setSelectedCategoryId(editingCategoryId);
       setSubCategories(categories.map((category) => category.subCategories));
     } else {
       setSelectedCategoryId(categories.map((category) => category.id)[0]);
-      setSubCategories(
-        categories.map((category) => category.subCategories)
-      );
+      setSubCategories(categories.map((category) => category.subCategories));
     }
-  }, [editingCategoryName]);
+  }, [
+    categories,
+    editingCategoryId,
+    isEditing,
+    setSelectedCategory,
+    setSelectedCategoryId,
+    setSubCategories,
+    editingCategoryName,
+  ]);
 
   const toggleMenu = (e) => {
     e.preventDefault();

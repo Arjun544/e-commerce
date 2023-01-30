@@ -1,11 +1,7 @@
-import React, { useContext } from "react";
 import DeleteIcon from "../../../components/icons/DeleteIcon";
 import { useSnackbar } from "notistack";
-import { AppContext } from "../../../App";
-import { deleteUser } from "../../../api/userApi";
 
 const TableActions = ({ user, tableData, setTableData }) => {
-  const { socket } = useContext(AppContext);
   const { enqueueSnackbar } = useSnackbar();
 
   const handleDelete = async (e) => {

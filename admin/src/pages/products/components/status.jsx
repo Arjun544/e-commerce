@@ -6,7 +6,7 @@ import { AppContext } from "../../../App";
 
 const Status = ({ product }) => {
   const { socket } = useContext(AppContext);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [value, setValue] = useState(product.status);
 
   const handleStatus = async (nextChecked) => {

@@ -20,7 +20,7 @@ const AllOrders = () => {
     [orders]
   );
 
-  const [options, setOptions] = useState({
+  const [options] = useState({
     chart: {
       height: 100,
       type: "line",
@@ -40,9 +40,7 @@ const AllOrders = () => {
     legend: {
       show: false,
     },
-    tooltip: {
-      enabled: false,
-    },
+
     grid: {
       show: false,
     },

@@ -7,17 +7,13 @@ const CustomersPaymentChart = () => {
   const cashOrders = orders.filter((order) => order.payment === "Cash").length;
   const cardOrders = orders.filter((order) => order.payment === "Card").length;
 
-  function percentage(percent, total) {
-    return ((percent / 100) * total).toFixed(2);
-  }
-
   const [series, setSeries] = useState([cashOrders, cardOrders]);
 
   useEffect(() => {
     setSeries([cashOrders, cardOrders]);
   }, [cashOrders, cardOrders]);
 
-  const [options, setOptions] = useState({
+  const [options] = useState({
     chart: {
       width: 350,
       type: "donut",

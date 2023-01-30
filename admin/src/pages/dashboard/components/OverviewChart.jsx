@@ -19,7 +19,7 @@ const OverviewChart = () => {
     setSeries([customers.length, products.length, orders.length, categories.length]);
   }, [customers, products, orders, categories]);
 
-  const [options, setOptions] = useState({
+  const [options] = useState({
     chart: {
       width: 350,
       type: "donut",

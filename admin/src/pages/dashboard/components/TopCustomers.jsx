@@ -48,7 +48,7 @@ const TopCustomers = () => {
             </div>
           </div>
           <div className="flex flex-col items-start">
-            <span className="text-black font-semibold">Spent</span>
+            <span className="text-black">Spent</span>
             <span className="text-Grey-dark font-semibold mr-2">
               $
               {orders
