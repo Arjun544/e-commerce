@@ -3,7 +3,7 @@ import CustomButon from "../../components/custom_button";
 import { useSnackbar } from "notistack";
 import { useForm } from "react-hook-form";
 import Logo from "../../components/icons/Logo";
-import Loader from "react-loader-spinner";
+import  { Puff } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../redux/reducers/authSlice";
 import { login } from "../../api/userApi";
@@ -41,7 +41,8 @@ const Login = () => {
 
       setLoading(false);
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, {
+      console.log(error);
+      enqueueSnackbar('Something went wrong', {
         variant: "error",
         autoHideDuration: 2000,
       });
@@ -129,8 +130,7 @@ const Login = () => {
 
         {loading ? (
           <div className="flex items-center justify-center">
-            <Loader
-              type="Puff"
+            <Puff
               color="#00BFFF"
               height={50}
               width={50}

@@ -5,7 +5,7 @@ import { FilePond } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 import { sendNotificationToAllUsers } from "../../api/NotificationApi";
 import { useSnackbar } from "notistack";
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 
 const Notification = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -92,8 +92,7 @@ const Notification = () => {
 
           <div className="flex items-center justify-center">
             {isLoading ? (
-              <Loader
-                type="Puff"
+              <Puff
                 color="#00BFFF"
                 height={50}
                 width={50}

@@ -5,7 +5,7 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { useSnackbar } from "notistack";
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
@@ -39,11 +39,11 @@ const AddBannerDialogue = ({
       setSelectedType(editingBanner.type);
       setFile(editingBanner.image);
     }
-  }, []);
+  }, [editingBanner.image, editingBanner.type, isEditing]);
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    if ( file === "") {
+    if (file === "") {
       enqueueSnackbar("Fields can't be empty", {
         variant: "error",
         autoHideDuration: 2000,
@@ -62,7 +62,7 @@ const AddBannerDialogue = ({
         socket.current.on("add-banner", (newBanners) => {
           setBanners(newBanners);
         });
-        
+
         setIsEditing(false);
         enqueueSnackbar("Banner added", {
           variant: "success",
@@ -81,7 +81,7 @@ const AddBannerDialogue = ({
 
   const handleEdit = async (e) => {
     e.preventDefault();
-    if ( file === "") {
+    if (file === "") {
       enqueueSnackbar("Fields can't be empty", {
         variant: "error",
         autoHideDuration: 2000,
@@ -92,7 +92,7 @@ const AddBannerDialogue = ({
         await updateBanner(
           editingBanner._id,
           file[0].getFileEncodeDataURL(),
-          editingBanner.imageId,
+          editingBanner.imageId
         );
         setLoading(false);
         setAddBannerAlert(false);
@@ -122,8 +122,11 @@ const AddBannerDialogue = ({
           {isEditing ? "Edit Banner" : "Add Banner"}
         </span>
       </div>
-     
-      <TypesDropDown  selectedType={selectedType} setSelectedType={setSelectedType} ></TypesDropDown>
+
+      <TypesDropDown
+        selectedType={selectedType}
+        setSelectedType={setSelectedType}
+      ></TypesDropDown>
       <FilePond
         files={file}
         allowReorder={false}
@@ -152,7 +155,7 @@ const AddBannerDialogue = ({
         </div>
         {loading ? (
           <div className="flex items-center justify-center ml-2">
-            <Loader type="Puff" color="#00BFFF" height={50} width={50} />
+            <Puff color="#00BFFF" height={50} width={50} />
           </div>
         ) : (
           <div

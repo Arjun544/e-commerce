@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import TopBar from "../../components/TopBar";
 import Switch from "react-switch";
+import { Puff } from "react-loader-spinner";
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "notistack";
 import { useHistory, useParams } from "react-router-dom";
 import { getCategories } from "../../api/categoriesApi";
-import Loader from "react-loader-spinner";
 import CategoriesDropDown from "./components/CategoriesDropDown";
 import SubCategoriesDropDown from "./components/SubCategoriesDropDown";
 import { FilePond, registerPlugin } from "react-filepond";
@@ -13,13 +13,12 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
-import ReactTooltip from "react-tooltip";
+import { Tooltip } from "react-tooltip";
 import { Breadcrumb, Breadcrumbs, Textarea } from "react-rainbow-components";
 import {
   addProduct,
   uploadMultiImages,
   getProductById,
-  updateProduct,
 } from "../../api/productsApi";
 
 // Register the plugins
@@ -36,7 +35,7 @@ const AddProduct = ({ isEditing }) => {
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [categories, setCategories] = useState([]);
-  const [editingProduct, setEditingProduct] = useState([]);
+  const [setEditingProduct] = useState([]);
   const [editingCategoryName, setEditingCategoryName] = useState("");
   const [editingCategoryId, setEditingCategoryId] = useState("");
   const [editingSubCategoryName, setEditingSubCategoryName] = useState("");
@@ -105,7 +104,7 @@ const AddProduct = ({ isEditing }) => {
       fetchEditingProduct();
     }
     fetchCategories();
-  }, []);
+  }, [params.id, isEditing, setEditingProduct, setValue]);
 
   const handleAddProduct = async (data) => {
     if (thumbnail.length < 1) {
@@ -206,12 +205,7 @@ const AddProduct = ({ isEditing }) => {
       <TopBar />
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader
-            type="Puff"
-            color="#00BFFF"
-            height={50}
-            width={50}
-          />
+          <Puff color="#00BFFF" height={50} width={50} />
         </div>
       ) : (
         <div className="flex flex-col h-full px-10 mt-6">
@@ -382,7 +376,7 @@ const AddProduct = ({ isEditing }) => {
                     </span>
                   )}
                 </div>
-                <ReactTooltip
+                <Tooltip
                   place="top"
                   type="info"
                   effect="solid"
@@ -572,7 +566,7 @@ const AddProduct = ({ isEditing }) => {
             <div className="flex w-full items-center justify-center mt-8 pb-10">
               {loading ? (
                 <div className="flex items-center justify-center">
-                  <Loader type="Puff" color="#00BFFF" height={50} width={50} />
+                  <Puff color="#00BFFF" height={50} width={50} />
                 </div>
               ) : (
                 <div

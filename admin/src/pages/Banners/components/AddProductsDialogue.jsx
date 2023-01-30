@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import ProductsDropDown from "./ProductsDropDown";
-import Loader from "react-loader-spinner";
+import  { Puff } from "react-loader-spinner";
 import { useSnackbar } from "notistack";
 import DeleteIcon from "../../../components/icons/DeleteIcon";
 import { addBannerProducts } from "../../../api/bannersApi";
@@ -25,7 +25,7 @@ const AddProductsDialogue = ({
   useEffect(() => {
     setAddedProducts(currentBanner.products);
     setDiscounts(currentBanner.products.map((item) => item.discount));
-  }, []);
+  }, [currentBanner.products]);
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -175,7 +175,7 @@ const AddProductsDialogue = ({
 
         {loading ? (
           <div className="flex items-center justify-center ml-2">
-            <Loader type="Puff" color="#00BFFF" height={50} width={50} />
+            <Puff type="Puff" color="#00BFFF" height={50} width={50} />
           </div>
         ) : (
           <div

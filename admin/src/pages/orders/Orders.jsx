@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import OrdersTable from "./components/orders_table";
 import TableActions from "./components/table_actions";
 import TopBar from "../../components/TopBar";
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 import { getOrders } from "../../api/ordersApi";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
@@ -166,12 +166,7 @@ const Orders = () => {
       <TopBar />
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader
-            type="Puff"
-            color="#00BFFF"
-            height={50}
-            width={50}
-          />
+          <Puff color="#00BFFF" height={50} width={50} />
         </div>
       ) : (
         <div className="flex flex-col px-10 w-full">
@@ -179,6 +174,7 @@ const Orders = () => {
           <div className="flex items-center mb-6 w-full justify-center cursor-pointer pt-4">
             <div className="tabs tabs-boxed 2xl :bg-red-500 xl:w-full w-full grid grid-cols-4 md:flex items-center justify-between h-28 pb-4 md:pb-0 pt-4 md:pt-0 md:h-16 rounded-3xl px-5 bg-bgColor-light">
               <a
+                href="All"
                 onClick={(e) => {
                   e.preventDefault();
                   setSelectedOrdersTab(0);
@@ -192,6 +188,7 @@ const Orders = () => {
                 All
               </a>
               <a
+                href="Completed"
                 onClick={(e) => {
                   e.preventDefault();
                   setSelectedOrdersTab(1);
@@ -205,6 +202,7 @@ const Orders = () => {
                 Completed
               </a>
               <a
+                href="Confirmed"
                 onClick={(e) => {
                   e.preventDefault();
                   setSelectedOrdersTab(2);
@@ -218,6 +216,7 @@ const Orders = () => {
                 Confirmed
               </a>
               <a
+                href="Rejected"
                 onClick={(e) => {
                   e.preventDefault();
                   setSelectedOrdersTab(3);
@@ -231,6 +230,7 @@ const Orders = () => {
                 Rejected
               </a>
               <a
+                href="Pending"
                 onClick={(e) => {
                   e.preventDefault();
                   setSelectedOrdersTab(4);
@@ -244,6 +244,7 @@ const Orders = () => {
                 Pending
               </a>
               <a
+                href="Processing"
                 onClick={(e) => {
                   e.preventDefault();
                   setSelectedOrdersTab(5);
@@ -258,6 +259,7 @@ const Orders = () => {
               </a>
 
               <a
+                href="Delivered"
                 onClick={(e) => {
                   e.preventDefault();
                   setSelectedOrdersTab(6);
@@ -272,6 +274,7 @@ const Orders = () => {
               </a>
 
               <a
+                href="Cancelled"
                 onClick={(e) => {
                   e.preventDefault();
                   setSelectedOrdersTab(7);

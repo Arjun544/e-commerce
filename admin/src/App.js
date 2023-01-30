@@ -2,7 +2,7 @@ import { useState, createContext, useEffect, useRef } from "react";
 import "./App.css";
 import SideBar from "./components/SideBar";
 import Dashboard from "./pages/dashboard/Dashboard";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Switch } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import { SnackbarProvider } from "notistack";
 import Grow from "@material-ui/core/Grow";
@@ -12,7 +12,7 @@ import Orders from "./pages/orders/Orders";
 import Products from "./pages/products/Products";
 import { ProtectedRoute } from "./protected_route";
 import { GuestRoute } from "./protected_route";
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import Categories from "./pages/categories/Categories";
 import AddProduct from "./pages/AddProduct/AddProduct";
@@ -26,7 +26,8 @@ import Notification from "./pages/Notification/Notification";
 export const AppContext = createContext(null);
 
 function App() {
-  const socketUrl = "https://sell-corner.herokuapp.com";
+  // const socketUrl = "https://e-commerce-production-45e7.up.railway.app/";
+  const socketUrl ="http://localhost:4000";
   let socket = useRef(null);
 
   const [selectedSideBar, setSelectedSideBar] = useState(0);
@@ -51,8 +52,7 @@ function App() {
 
   return isLoading ? (
     <div className="flex w-full h-screen items-center justify-center bg-white">
-      <Loader
-        type="Puff"
+      <Puff
         color="#00BFFF"
         height={50}
         width={50}

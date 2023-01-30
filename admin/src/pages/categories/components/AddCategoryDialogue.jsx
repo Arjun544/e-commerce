@@ -5,15 +5,11 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileEncode from "filepond-plugin-file-encode";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { useSnackbar } from "notistack";
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
-import {
-  addCategory,
-  getCategories,
-  updateCategory,
-} from "../../../api/categoriesApi";
+import { addCategory, updateCategory } from "../../../api/categoriesApi";
 import { AppContext } from "../../../App";
 
 // Register the plugins
@@ -35,18 +31,17 @@ const AddCategoryDialogue = ({
   addCategoryInput,
   setAddCategoryInput,
 }) => {
-  const {socket} = useContext(AppContext)
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { socket } = useContext(AppContext);
+  const { enqueueSnackbar } = useSnackbar();
   const [file, setFile] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isAddCategoryEditing) {
       setAddCategoryInput(editingCategory.name);
-      setFile(editingCategory.icon)
-   }
-  }, [])
-
+      setFile(editingCategory.icon);
+    }
+  }, [editingCategory, isAddCategoryEditing, setAddCategoryInput]);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -96,13 +91,13 @@ const AddCategoryDialogue = ({
           editingCategory.id,
           addCategoryInput,
           file[0].getFileEncodeDataURL(),
-          editingCategory.iconId,
+          editingCategory.iconId
         );
         setLoading(false);
         setAddCategoryAlert(false);
-         socket.current.on("edit-category", (newCategories) => {
-           setCategories(newCategories);
-         });
+        socket.current.on("edit-category", (newCategories) => {
+          setCategories(newCategories);
+        });
         setAddCategoryInput("");
         setIsAddCategoryEditing(false);
         enqueueSnackbar("Category updated", {
@@ -122,10 +117,7 @@ const AddCategoryDialogue = ({
   };
 
   return (
-    <div
-     
-      className="flex flex-col py-10 w-1/3 rounded-3xl bg-blue-light justify-center px-16"
-    >
+    <div className="flex flex-col py-10 w-1/3 rounded-3xl bg-blue-light justify-center px-16">
       <div className="flex items-center justify-center">
         <span className="text-black font-semibold tracking-wider mb-8">
           {isAddCategoryEditing ? "Edit Category" : "Add Category"}
@@ -171,19 +163,16 @@ const AddCategoryDialogue = ({
         </div>
         {loading ? (
           <div className="flex items-center justify-center ml-2">
-            <Loader
-              type="Puff"
-              color="#00BFFF"
-              height={50}
-              width={50}
-            />
+            <Puff color="#00BFFF" height={50} width={50} />
           </div>
         ) : (
           <div
             onClick={isAddCategoryEditing ? handleEdit : handleAdd}
             className="flex h-12 bg-green-500  shadow-sm border-none ml-4 w-32 rounded-xl  items-center justify-center cursor-pointer transform hover:scale-95  transition duration-500 ease-in-out"
           >
-              <span className="font-semibold text-sm text-white">{ isAddCategoryEditing ? 'Edit' : 'Add' }</span>
+            <span className="font-semibold text-sm text-white">
+              {isAddCategoryEditing ? "Edit" : "Add"}
+            </span>
           </div>
         )}
       </div>

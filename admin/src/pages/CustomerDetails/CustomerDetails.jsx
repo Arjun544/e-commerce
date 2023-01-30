@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import Loader from "react-loader-spinner";
+import  { Puff } from "react-loader-spinner";
 import { getUserById } from "../../api/userApi";
 import TopBar from "../../components/TopBar";
 import PersonIcon from "../../components/icons/PersonIcon";
@@ -12,7 +12,6 @@ import WorkIcon from "../../components/icons/WorkIcon";
 import { AppContext } from "../../App";
 import { getUserOrders } from "../../api/ordersApi";
 import UserOrdersTable from "./components/UserOrdersTable";
-import ItemCard from "./components/ItemCard";
 import { Breadcrumb, Breadcrumbs } from "react-rainbow-components";
 import TableActions from "../orders/components/table_actions";
 import moment from "moment";
@@ -52,7 +51,7 @@ const CustomerDetails = () => {
       }
     };
     getData();
-  }, []);
+  }, [enqueueSnackbar,userId]);
 
   const data = customer.map((item) => ({
     order: item,
@@ -195,7 +194,7 @@ const CustomerDetails = () => {
       </div>
       {isLoading || user.length === 0 ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
+          <Puff color="#00BFFF" height={50} width={50} />
         </div>
       ) : (
         <div className="flex flex-col w-full h-full px-10 mt-4">

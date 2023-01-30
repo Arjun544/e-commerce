@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TableActions from "./components/TableActions";
 import TopBar from "../../components/TopBar";
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 import { getUsers } from "../../api/userApi";
 import CustomersTable from "./components/CustomersTable";
 import { useHistory } from "react-router-dom";
@@ -106,7 +106,7 @@ const Customers = () => {
       {/* Views */}
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
+          <Puff color="#00BFFF" height={50} width={50} />
         </div>
       ) : (
         <div className="px-10">

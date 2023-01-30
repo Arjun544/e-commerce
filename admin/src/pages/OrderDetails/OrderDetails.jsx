@@ -4,7 +4,7 @@ import { getOrderById } from "../../api/ordersApi";
 import TopBar from "../../components/TopBar";
 import Lottie from "lottie-react";
 import empty from "../../assets/images/empty";
-import Loader from "react-loader-spinner";
+import  { Puff } from "react-loader-spinner";
 import TopDetails from "./components/TopDetails";
 import { Breadcrumb, Breadcrumbs } from "react-rainbow-components";
 import { AppContext } from "../../App";
@@ -30,7 +30,7 @@ const OrderDetails = () => {
       }
     };
     getOrder();
-  }, []);
+  }, [orderId]);
 
   return (
     <div className="flex flex-col w-full h-full mt-30 overflow-y-auto overflow-x-hidden bg-white">
@@ -43,7 +43,7 @@ const OrderDetails = () => {
       </div>
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
+          <Puff color="#00BFFF" height={50} width={50} />
         </div>
       ) : order === undefined || order.length === 0 ? (
         <div className="flex flex-col items-center justify-center m-auto">

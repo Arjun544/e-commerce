@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TopBar from "../../components/TopBar";
 import Rating from "./components/Rating";
 import { getAllReviews } from "../../api/reviewsApi";
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 import ReviewsTable from "./components/ReviewsTable";
 import { useHistory } from "react-router-dom";
 
@@ -101,7 +101,7 @@ const Reviews = () => {
       {/* Views */}
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
+          <Puff color="#00BFFF" height={50} width={50} />
         </div>
       ) : (
         <div className="px-10">

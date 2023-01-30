@@ -1,13 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import TopBar from "../../components/TopBar";
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 import { useSnackbar } from "notistack";
-import { AppContext } from "../../App";
-import {
-  getBanners,
-  deleteBanner,
-  removeBannerProducts,
-} from "../../api/bannersApi";
+import { getBanners } from "../../api/bannersApi";
 import AddBannerDialogue from "./components/AddBannerDialogue";
 import { Accordion, AccordionItem } from "react-sanfona";
 import EditIcon from "../../components/icons/EditIcon";
@@ -19,7 +14,6 @@ import { getProducts } from "../../api/productsApi";
 import AddProductsDialogue from "./components/AddProductsDialogue";
 
 const Banners = () => {
-  const { socket } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [banners, setBanners] = useState([]);
@@ -50,7 +44,7 @@ const Banners = () => {
       }
     };
     fetchBanners();
-  }, []);
+  }, [enqueueSnackbar]);
   const generalBanners = banners.filter((item) => item.type === "General");
   const saleBanners = banners.filter((item) => item.type === "Sale");
 
@@ -157,7 +151,7 @@ const Banners = () => {
         </div>
         {isLoading ? (
           <div className="flex w-full h-screen items-center justify-center bg-white">
-            <Loader type="Puff" color="#00BFFF" height={50} width={50} />
+            <Puff color="#00BFFF" height={50} width={50} />
           </div>
         ) : banners.length === 0 ? (
           <div className="flex items-center justify-center mt-20">

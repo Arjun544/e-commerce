@@ -5,7 +5,7 @@ import ProductsTable from "./components/products_table";
 import TableActions from "./components/table_actions";
 import TopBar from "../../components/TopBar";
 import { getProducts } from "../../api/productsApi";
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 import Avatar from "./components/avatar";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
@@ -121,7 +121,7 @@ const Products = () => {
       {/* Views */}
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
+          <Puff color="#00BFFF" height={50} width={50} />
         </div>
       ) : (
         <div className="px-10">

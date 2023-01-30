@@ -4,7 +4,7 @@ import TopBar from "../../components/TopBar";
 import { getProductById } from "../../api/productsApi";
 import Lottie from "lottie-react";
 import empty from "../../assets/images/empty";
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 import ProductOverview from "./components/product_overview";
 import ReactStars from "react-rating-stars-component";
 import { Breadcrumb, Breadcrumbs } from "react-rainbow-components";
@@ -30,7 +30,7 @@ const ProductDetail = () => {
       }
     };
     getProduct();
-  }, []);
+  }, [productId]);
 
   //calculating avg rating from all ratings
   if (product.totalReviews > 0) {
@@ -51,7 +51,7 @@ const ProductDetail = () => {
       </div>
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
+          <Puff color="#00BFFF" height={50} width={50} />
         </div>
       ) : product.length === 0 ? (
         <div className="flex flex-col items-center justify-center m-auto">
@@ -69,6 +69,7 @@ const ProductDetail = () => {
               {/* Tabs */}
               <div className="tabs tabs-boxed flex w-1/5 items-center justify-between h-16 rounded-3xl cursor-pointer">
                 <a
+                  href="Description"
                   onClick={(e) => {
                     e.preventDefault();
                     setSelectedTab(0);
@@ -82,6 +83,7 @@ const ProductDetail = () => {
                   Description
                 </a>
                 <a
+                  href="Reviews"
                   onClick={(e) => {
                     e.preventDefault();
                     setSelectedTab(1);

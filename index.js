@@ -21,7 +21,7 @@ const server = require("http").createServer(app);
 // Sooket Connection
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://e-commerce-brown-five.vercel.app/",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "DELETE"],
   },
 });
@@ -42,8 +42,8 @@ app.set("eventEmitter", eventEmitter);
 app.use(
   cors({
     origin: [
-      "http://localhost:4000",
-      "https://e-commerce-brown-five.vercel.app/",
+      "http://localhost:3000",
+      "https://e-commerce-production-45e7.up.railway.app",
     ],
   })
 );

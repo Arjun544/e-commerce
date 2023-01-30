@@ -1,12 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
-import { AppContext } from "../../App";
+import React, { useState, useEffect } from "react";
 import TopBar from "../../components/TopBar";
 import {
-  deleteCategory,
-  deleteSubCategory,
   getCategories,
 } from "../../api/categoriesApi";
-import Loader from "react-loader-spinner";
+import { Puff } from "react-loader-spinner";
 import { useSnackbar } from "notistack";
 import EditIcon from "../../components/icons/EditIcon";
 import DeleteIcon from "../../components/icons/DeleteIcon";
@@ -18,11 +15,10 @@ import { Accordion, AccordionItem } from "react-sanfona";
 import CategoryStatus from "./components/CategoryStatus";
 
 const Categories = () => {
-  const { isBigScreen, socket } = useContext(AppContext);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [isTileOpen, setIsTileOpen] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [addCategoryInput, setAddCategoryInput] = useState("");
   const [addCategoryAlert, setAddCategoryAlert] = useState(false);
@@ -47,7 +43,6 @@ const Categories = () => {
 
   const mainCategoryName = categories.map((item) => item.name);
   const mainCategoryId = categories.map((item) => item._id);
-  const subCategories = categories.map((item) => item.subCategories);
 
   const handleCategoryEdit = (e, category) => {
     e.preventDefault();
@@ -166,7 +161,7 @@ const Categories = () => {
 
       {isLoading ? (
         <div className="flex w-full h-screen items-center justify-center bg-white">
-          <Loader type="Puff" color="#00BFFF" height={50} width={50} />
+          <Puff color="#00BFFF" height={50} width={50} />
         </div>
       ) : categories.length === 0 ? (
         <div className="flex w-full items-center justify-center mt-40">

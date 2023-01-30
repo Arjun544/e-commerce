@@ -1,11 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useSnackbar } from "notistack";
-import Loader from "react-loader-spinner";
-import {
-  addSubCategory,
-  getCategories,
-  updateSubCategory,
-} from "../../../api/categoriesApi";
+import { Puff } from "react-loader-spinner";
+import { addSubCategory, updateSubCategory } from "../../../api/categoriesApi";
 import CategoriesDropDown from "./CategoriesDropDown";
 import { AppContext } from "../../../App";
 
@@ -16,14 +12,13 @@ const AddSubCategoryDialogue = ({
   editingCategory,
   setIsAddCategoryEditing,
   categories,
-  setIsLoading,
   setCategories,
   setAddSubCategoryAlert,
   addSubCategoryInput,
   setAddSubCategoryInput,
 }) => {
   const { socket } = useContext(AppContext);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -40,9 +35,9 @@ const AddSubCategoryDialogue = ({
         await addSubCategory(selectedCategory, addSubCategoryInput);
         setLoading(false);
         setAddSubCategoryAlert(false);
-         socket.current.on("add-subCategory", (newCategories) => {
-           setCategories(newCategories);
-         });
+        socket.current.on("add-subCategory", (newCategories) => {
+          setCategories(newCategories);
+        });
         setAddSubCategoryInput("");
         setIsAddCategoryEditing(false);
         enqueueSnackbar("Sub category added", {
@@ -78,9 +73,9 @@ const AddSubCategoryDialogue = ({
         );
         setLoading(false);
         setAddSubCategoryAlert(false);
-          socket.current.on("edit-subCategory", (newCategories) => {
-            setCategories(newCategories);
-          });
+        socket.current.on("edit-subCategory", (newCategories) => {
+          setCategories(newCategories);
+        });
         setAddSubCategoryInput("");
         setIsAddCategoryEditing(false);
         enqueueSnackbar("Sub category added", {
@@ -140,12 +135,7 @@ const AddSubCategoryDialogue = ({
         </div>
         {loading ? (
           <div className="flex items-center justify-center ml-2">
-            <Loader
-              type="Puff"
-              color="#00BFFF"
-              height={50}
-              width={50}
-            />
+            <Puff color="#00BFFF" height={50} width={50} />
           </div>
         ) : (
           <div
